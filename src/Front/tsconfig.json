@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "jsx": "react",
+    "target": "es3",
+    "lib": [
+      "es2017",
+      "es2015",
+      "dom"
+    ],
+    "importHelpers": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "noErrorTruncation": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "outDir": "dist",
+    "typeRoots": [
+      "./src/typings",
+      "./node_modules/@types"
+    ],
+    "paths": {
+      "market-ui/*": [
+        "market-ui/*"
+      ],
+      "*": [
+        "src/typings/*"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "**/*.stories.tsx"
+  ]
+}

@@ -1,0 +1,44 @@
+:local {
+  .tableWrapper {
+    table {
+      border: 0;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 15px;
+      border-right: 1px solid #aaa;
+      border-bottom: 1px solid #aaa;
+    }
+
+    th {
+      font-weight: 600;
+      border-bottom: 2px solid black;
+    }
+
+    .row:hover {
+      background: #f1f8ff
+    }
+  }
+  .row-danger, .row-danger:hover {
+    background-color: #ff7f50;
+  }
+  .row-success, .row-success:hover {
+    background-color: #99ff99;
+  }
+  .row-warning, .row-warning:hover {
+    background-color: #fcdd76;
+  }
+  .row-info, .row-info:hover {
+    background-color: #ccc;
+  }
+  .row-default:nth-of-type(2n) {
+    background-color: #eee;
+  }
+
+  .rowColor_red a, .rowColor_green a, .rowColor_yellow a {
+    color: black;
+    text-decoration: underline;
+  }
+}

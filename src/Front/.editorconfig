@@ -1,0 +1,26 @@
+# http://editorconfig.org
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = crlf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{cs,cshtml}]
+insert_final_newline = false
+
+[*.{js,jsx,less,ts,tsx}]
+indent_size = 2
+charset = utf-8
+
+[*.{json}]
+charset = utf-8
+
+[*.{xml,md,txt}]
+indent_style = ignore
+trim_trailing_whitespace = false
+insert_final_newline = false
+charset = ignore

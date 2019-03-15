@@ -1,0 +1,40 @@
+:local {
+  #complexKey {
+    color: #0673ec;
+    background-color: #f2f8ff;
+    cursor: pointer;
+    text-decoration: underline;
+    &.expanded {
+      background-color: #d9ebff;
+    }
+  }
+
+  .table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    td {
+      vertical-align: top;
+      padding: 10px;
+      .complexKey {
+        #complexKey();
+      }
+      &:first-child {
+        border-right: 2px solid black;
+        font-weight: bold;
+        &.complexKey {
+          #complexKey();
+        }
+      }
+    }
+    tr {
+      border-bottom: 1px solid black;
+      &:last-child {
+        border-bottom: none;
+      }
+      .null {
+        font-style: italic;
+        color: #AFAFAF;
+      }
+    }
+  }
+}

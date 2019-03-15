@@ -5,3 +5,4 @@ obj
 *.csproj.user
 *.sln.DotSettings.user
 .idea
+.babel-cache
