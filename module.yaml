@@ -2,7 +2,7 @@ full-build:
   deps:
     - alco.tools
   build:
-    target: src\{solutionName}.sln
+    target: src\DBViewer.sln
     configuration: Release
 
 solution-tests:
