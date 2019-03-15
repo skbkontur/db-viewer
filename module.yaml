@@ -1,0 +1,11 @@
+full-build:
+  deps:
+    - alco.tools
+  build:
+    target: src\{solutionName}.sln
+    configuration: Release
+
+solution-tests:
+  deps:
+    - alco.solution-tests  
+
