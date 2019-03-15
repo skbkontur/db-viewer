@@ -9,9 +9,9 @@ namespace Kontur.DBViewer.Core
 {
     public class DBViewerControllerImpl
     {
-        private readonly SchemaRegistry schemaRegistry;
+        private readonly ISchemaRegistry schemaRegistry;
 
-        public DBViewerControllerImpl(SchemaRegistry schemaRegistry)
+        public DBViewerControllerImpl(ISchemaRegistry schemaRegistry)
         {
             this.schemaRegistry = schemaRegistry;
         }
