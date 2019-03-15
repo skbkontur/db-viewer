@@ -2,7 +2,7 @@ import * as React from "react";
 import { Provider } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import Apis from "../api/Apis";
-import { DataBaseViewerApiImpl } from "../api/impl/DataBaseViewerApi";
+import { DBViewerApiImpl } from "../api/impl/DBViewerApi";
 import configureStore from "./IObjectsViewerStore";
 import ObjectDetails from "./ObjectDetails/ObjectDetailsView";
 import BusinessObjectTypeDetails from "./TypeDetails/TypeDetails";
@@ -16,7 +16,7 @@ interface IProps {
 
 export default class ObjectsViewer extends React.Component<IProps> {
   public componentWillMount(): void {
-    Apis.initialize(new DataBaseViewerApiImpl(this.props.apiPrefix));
+    Apis.initialize(new DBViewerApiImpl(this.props.apiPrefix));
   }
 
   public render() {

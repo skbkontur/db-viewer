@@ -1,8 +1,8 @@
-import { IDataBaseViewerApi } from "./impl/DataBaseViewerApi";
+import { IDBViewerApi } from "./impl/DBViewerApi";
 
 export default class Apis {
-  public static businessObjectsListApi: IDataBaseViewerApi;
-  public static initialize(businessObjectsListApi: IDataBaseViewerApi) {
+  public static businessObjectsListApi: IDBViewerApi;
+  public static initialize(businessObjectsListApi: IDBViewerApi) {
     Apis.businessObjectsListApi = businessObjectsListApi;
   }
 }

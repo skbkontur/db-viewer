@@ -1,12 +1,28 @@
+using System;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.Schemas;
 
 using Newtonsoft.Json.Linq;
-
+[assembly:InternalsVisibleTo("Kontur.DBViewer.TypeScriptGenerator")]
 namespace Kontur.DBViewer.Core
 {
+    internal class HttpGetAttribute : Attribute{}
+    internal class HttpPostAttribute : Attribute{}
+    internal class HttpDeleteAttribute : Attribute{}
+
+    internal class RouteAttribute : Attribute
+    {
+        public RouteAttribute(string template)
+        {
+            Template = template;
+        }
+
+        public string Template { get; set; }
+    }
+    internal class FromBodyAttribute : Attribute{}
+    
     public class DBViewerControllerImpl
     {
         private readonly ISchemaRegistry schemaRegistry;
@@ -16,6 +32,7 @@ namespace Kontur.DBViewer.Core
             this.schemaRegistry = schemaRegistry;
         }
 
+        [HttpGet, Route("List")]
         public TypesListModel GetTypes()
         {
             var allSchemas = schemaRegistry.GetAllSchemas();
@@ -31,17 +48,20 @@ namespace Kontur.DBViewer.Core
                 };
         }
 
-        public object[] Find(string typeIdentifier, FindModel filter)
+        [HttpPost, Route("{typeIdentifier}/Find")]
+        public object[] Find(string typeIdentifier, [FromBody] FindModel filter)
         {
             return schemaRegistry.GetSearcher(typeIdentifier).Search(filter.Filters, filter.Sorts, filter.From, filter.Count);
         }
         
-        public int? Count(string typeIdentifier, CountModel model)
+        [HttpPost, Route("{typeIdentifier}/Count")]
+        public int? Count(string typeIdentifier, [FromBody] CountModel model)
         {
             return schemaRegistry.GetSearcher(typeIdentifier).Count(model.Filters, model.Limit);
         }
 
-        public ObjectDetailsModel Read(string typeIdentifier, ReadModel filters)
+        [HttpPost, Route("{typeIdentifier}/Read")]
+        public ObjectDetailsModel Read(string typeIdentifier, [FromBody] ReadModel filters)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             return new ObjectDetailsModel
@@ -51,13 +71,15 @@ namespace Kontur.DBViewer.Core
                 };
         }
 
-        public void Delete(string typeIdentifier, object @obj)
+        [HttpPost, Route("{typeIdentifier}/Delete")]
+        public void Delete(string typeIdentifier, [FromBody] object @obj)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             schemaRegistry.GetSearcher(typeIdentifier).Delete(((JObject)@obj).ToObject(type));
         }
 
-        public object Write(string typeIdentifier, object @obj)
+        [HttpPost, Route("{typeIdentifier}/Write")]
+        public object Write(string typeIdentifier, [FromBody] object @obj)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             return schemaRegistry.GetSearcher(typeIdentifier).Write(((JObject)@obj).ToObject(type));

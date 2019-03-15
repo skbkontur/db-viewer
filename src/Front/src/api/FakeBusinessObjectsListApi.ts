@@ -1,12 +1,12 @@
 import { CountModel } from "./impl/CountModel";
-import { IDataBaseViewerApi } from "./impl/DataBaseViewerApi";
+import { IDBViewerApi } from "./impl/DBViewerApi";
 import { FindModel } from "./impl/FindModel";
 import { ObjectDetailsModel } from "./impl/ObjectDetailsModel";
 import { ReadModel } from "./impl/ReadModel";
 import { TypeModel } from "./impl/TypeModel";
 import { TypesListModel } from "./impl/TypesListModel";
 
-export class FakeBusinessObjectsListApi implements IDataBaseViewerApi {
+export class FakeBusinessObjectsListApi implements IDBViewerApi {
   private _types: TypeModel[];
   public delete(
     _typeIdentifier: Nullable<string>,

@@ -2,6 +2,6 @@
 // TypeScriptContractGenerator's generated content
 
 export enum SortDirection {
-    Ascending = "Ascending",
-    Descending = "Descending",
+    Ascending = 'Ascending',
+    Descending = 'Descending',
 }

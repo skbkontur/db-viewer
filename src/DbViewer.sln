@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeScriptGenerator", "TypeScriptGenerator\TypeScriptGenerator.csproj", "{98533DBE-38DD-4B1F-8DDE-5E801D90405C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

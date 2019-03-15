@@ -7,6 +7,6 @@ storiesOf("Application", module)
   .addDecorator(StoryRouter())
   .add("Full", () => (
     <div style={{ padding: 20 }}>
-      <ObjectsViewer apiPrefix={"http://localhost:4444/"} />
+      <ObjectsViewer apiPrefix={"http://localhost:4444/DataBaseViewer/"} />
     </div>
   ));

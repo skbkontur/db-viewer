@@ -7,7 +7,7 @@ import { FieldMeta } from './FieldMeta';
 export type ClassFieldInfo = {
     type: FieldType.Class;
     fields: Nullable<{
-        [key: string]: FieldInfo;
+        [key in string]: FieldInfo;
     }>;
     meta: Nullable<FieldMeta>;
 };
