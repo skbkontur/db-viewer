@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeScriptGenerator", "TypeScriptGenerator\TypeScriptGenerator.csproj", "{98533DBE-38DD-4B1F-8DDE-5E801D90405C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
