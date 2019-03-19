@@ -59,14 +59,12 @@ namespace Kontur.DBViewer.Core
         [HttpPost, Route("{typeIdentifier}/Delete")]
         public void Delete(string typeIdentifier, [FromBody] object obj)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             schemaRegistry.GetSearcher(typeIdentifier).Delete(obj);
         }
 
         [HttpPost, Route("{typeIdentifier}/Write")]
         public object Write(string typeIdentifier, [FromBody] object obj)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             return schemaRegistry.GetSearcher(typeIdentifier).Write(obj);
         }
     }
