@@ -1,4 +1,4 @@
-import { Dispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import Apis from "../../api/Apis";
 import { TypeModel } from "../../api/impl/TypeModel";

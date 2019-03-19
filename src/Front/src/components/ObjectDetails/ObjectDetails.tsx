@@ -35,7 +35,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
     };
   }
 
-  public render() {
+  public render(): React.ReactNode {
+    console.log(this.props.typeInfo.type);
     switch (this.props.typeInfo.type) {
       case FieldType.Bool:
       case FieldType.DateTime:
@@ -129,15 +130,15 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
     );
   }
 
-  private renderPrimitiveValue() {
+  private renderPrimitiveValue(): React.ReactNode {
     const { data, typeInfo } = this.props;
-    if (data === null || data === undefined) {
+    if (data == null) {
       return <span className={styles.null}>(null)</span>;
     }
     if (typeInfo.type === FieldType.Bool) {
-      return data.toString();
+      return <span>{data.toString()}</span>;
     }
-    return data;
+    return <span>{data}</span>;
   }
 
   private handleExpand(key: string) {

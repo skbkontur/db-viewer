@@ -1,6 +1,5 @@
 import { InferableComponentEnhancerWithProps } from "react-redux";
 import { Action, applyMiddleware, combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
 import thunk, { ThunkAction } from "redux-thunk";
 import { ObjectDetailsPayload } from "./ObjectDetails/ObjectDetailsView.actions";
 import {
@@ -52,6 +51,6 @@ export default function configureStore() {
       typeDetailsStore: objectsListReducers,
       objectDetailsStore: objectDetailsReducers,
     }),
-    composeWithDevTools(applyMiddleware(thunk))
+    applyMiddleware(thunk)
   );
 }

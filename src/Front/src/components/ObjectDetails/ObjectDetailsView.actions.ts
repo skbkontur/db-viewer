@@ -1,5 +1,5 @@
 import Toast from "@skbkontur/react-ui/components/Toast/Toast";
-import { Dispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import Apis from "../../api/Apis";
 import { FieldInfo } from "../../api/impl/FieldInfo";
