@@ -10,6 +10,7 @@
     }
 
     public interface IObjectsSearcher<T> : IObjectsSearcher
+        where T : class
     {
     }
 }

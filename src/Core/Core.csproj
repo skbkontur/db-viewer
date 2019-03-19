@@ -4,10 +4,16 @@
     <TargetFramework>net471</TargetFramework>
     <AssemblyName>Kontur.DBViewer.Core</AssemblyName>
     <RootNamespace>Kontur.DBViewer.Core</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugType>pdbonly</DebugType>
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin</OutputPath>
   </PropertyGroup>
 
 </Project>

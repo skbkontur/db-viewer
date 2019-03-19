@@ -1,3 +1,5 @@
 baseDirectory: ..\src
 services:
-  
+  - !exe
+    path: SampleApi\bin\Kontur.DBViewer.SampleApi.exe
+    name: SampleApi

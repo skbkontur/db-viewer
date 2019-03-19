@@ -4,6 +4,7 @@ import Gapped from "@skbkontur/react-ui/Gapped";
 import { IconName } from "@skbkontur/react-ui/Icon";
 import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
+import Paging from "@skbkontur/react-ui/Paging";
 import Spinner from "@skbkontur/react-ui/Spinner";
 import { flatten } from "lodash";
 import * as React from "react";
@@ -32,7 +33,6 @@ import ObjectsListActions from "./ObjectsList.actions";
 import { ILoadable } from "./ObjectsListReducers";
 import SearchPanel from "./SearchPanel/SearchPanel";
 import * as styles from "./TypeDetails.less";
-import Paging from "@skbkontur/react-ui/Paging";
 
 const tableConfigsCache: IDictionary<ColumnConfiguration[]> = {};
 

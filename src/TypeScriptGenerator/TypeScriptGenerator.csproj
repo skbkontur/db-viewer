@@ -1,27 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net471</TargetFramework>
-        <AssemblyName>Kontur.DBViewer.TypeScriptGenerator</AssemblyName>
-        <RootNamespace>Kontur.DBViewer.TypeScriptGenerator</RootNamespace>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net471</TargetFramework>
+    <AssemblyName>Kontur.DBViewer.TypeScriptGenerator</AssemblyName>
+    <RootNamespace>Kontur.DBViewer.TypeScriptGenerator</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <DebugType>pdbonly</DebugType>
-      <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <PlatformTarget>AnyCPU</PlatformTarget>
-    </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="1.6.6-rc3" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="1.6.6-rc3"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Core\Core.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj"/>
+  </ItemGroup>
 
 </Project>
