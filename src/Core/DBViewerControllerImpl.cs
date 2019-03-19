@@ -1,28 +1,13 @@
-using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+
+using Kontur.DBViewer.Core.Attributes;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.Schemas;
 
-using Newtonsoft.Json.Linq;
 [assembly:InternalsVisibleTo("Kontur.DBViewer.TypeScriptGenerator")]
 namespace Kontur.DBViewer.Core
 {
-    internal class HttpGetAttribute : Attribute{}
-    internal class HttpPostAttribute : Attribute{}
-    internal class HttpDeleteAttribute : Attribute{}
-
-    internal class RouteAttribute : Attribute
-    {
-        public RouteAttribute(string template)
-        {
-            Template = template;
-        }
-
-        public string Template { get; set; }
-    }
-    internal class FromBodyAttribute : Attribute{}
-    
     public class DBViewerControllerImpl
     {
         private readonly ISchemaRegistry schemaRegistry;
@@ -72,17 +57,17 @@ namespace Kontur.DBViewer.Core
         }
 
         [HttpPost, Route("{typeIdentifier}/Delete")]
-        public void Delete(string typeIdentifier, [FromBody] object @obj)
+        public void Delete(string typeIdentifier, [FromBody] object obj)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
-            schemaRegistry.GetSearcher(typeIdentifier).Delete(((JObject)@obj).ToObject(type));
+            schemaRegistry.GetSearcher(typeIdentifier).Delete(obj);
         }
 
         [HttpPost, Route("{typeIdentifier}/Write")]
-        public object Write(string typeIdentifier, [FromBody] object @obj)
+        public object Write(string typeIdentifier, [FromBody] object obj)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
-            return schemaRegistry.GetSearcher(typeIdentifier).Write(((JObject)@obj).ToObject(type));
+            return schemaRegistry.GetSearcher(typeIdentifier).Write(obj);
         }
     }
 }

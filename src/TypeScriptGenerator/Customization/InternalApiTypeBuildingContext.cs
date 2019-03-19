@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Kontur.DBViewer.Core;
+using Kontur.DBViewer.Core.Attributes;
+
 using SkbKontur.TypeScript.ContractGenerator;
 using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 using SkbKontur.TypeScript.ContractGenerator.Extensions;
