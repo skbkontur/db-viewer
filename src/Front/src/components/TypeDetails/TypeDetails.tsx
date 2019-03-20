@@ -168,10 +168,8 @@ class TypeDetails extends React.Component<IProps, IState> {
     return (
       <Loader active={this.props.list.loadingStatus === LoaderState.Loading}>
         <Gapped vertical>
-          <Gapped verticalAlign={"baseline"} gap={50}>
-            {this.renderBounds()}
-            {this.renderPaging()}
-          </Gapped>
+          {this.renderBounds()}
+          {this.renderPaging()}
           <ResultsTable
             results={this.props.list.data}
             columnsConfiguration={this.getOrCreateTableConfiguration()}
