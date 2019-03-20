@@ -6,3 +6,4 @@ obj
 *.sln.DotSettings.user
 .idea
 .babel-cache
+dist

@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "target": "es3",
+    "target": "es5",
     "lib": [
       "es2017",
       "es2015",
@@ -16,6 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "noErrorTruncation": true,
     "sourceMap": true,
+    "declaration": true,
     "baseUrl": ".",
     "outDir": "dist",
     "typeRoots": [
@@ -23,9 +25,6 @@
       "./node_modules/@types"
     ],
     "paths": {
-      "market-ui/*": [
-        "market-ui/*"
-      ],
       "*": [
         "src/typings/*"
       ]

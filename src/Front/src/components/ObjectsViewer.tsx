@@ -1,6 +1,11 @@
 import * as React from "react";
 import { Provider } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import {
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter,
+} from "react-router-dom";
 import Apis from "../api/Apis";
 import { DBViewerApiImpl } from "../api/impl/DBViewerApi";
 import configureStore from "./IObjectsViewerStore";
@@ -10,11 +15,11 @@ import TypesList from "./TypesList/TypesList";
 
 const store = configureStore();
 
-interface IProps {
+interface IProps extends RouteComponentProps {
   apiPrefix: string;
 }
 
-export default class ObjectsViewer extends React.Component<IProps> {
+class ObjectsViewerImpl extends React.Component<IProps> {
   public componentWillMount(): void {
     Apis.initialize(new DBViewerApiImpl(this.props.apiPrefix));
   }
@@ -23,11 +28,26 @@ export default class ObjectsViewer extends React.Component<IProps> {
     return (
       <Provider store={store}>
         <Switch>
-          <Route exact path={`/`} component={TypesList} />
-          <Route exact path={`/:type`} component={BusinessObjectTypeDetails} />
-          <Route path={`/:type/Details`} component={ObjectDetails} />
+          <Route
+            exact
+            path={this.normalizeUrl(`${this.props.match.url}/`)}
+            component={TypesList}
+          />
+          <Route
+            exact
+            path={this.normalizeUrl(`${this.props.match.url}/:type`)}
+            component={BusinessObjectTypeDetails}
+          />
+          <Route
+            path={this.normalizeUrl(`${this.props.match.url}/:type/Details`)}
+            component={ObjectDetails}
+          />
         </Switch>
       </Provider>
     );
   }
+
+  private normalizeUrl = (url: string): string => url.replace("//", "/");
 }
+
+export default withRouter(ObjectsViewerImpl);
