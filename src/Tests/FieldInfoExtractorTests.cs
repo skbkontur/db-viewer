@@ -78,6 +78,16 @@ namespace Kontur.DBViewer.Tests
         }
 
         [Test]
+        public void Test_Dictionary()
+        {
+            FieldInfoExtractor.Extract(typeof(Dictionary<string, List<string>>), (info, type) => null).Should()
+                              .BeEquivalentTo(new DictionaryFieldInfo(
+                                                  new StringFieldInfo(null),
+                                                  new EnumerableFieldInfo(new StringFieldInfo(null))
+                                              ));
+        }
+
+        [Test]
         public void Test_Enumerable_Primitive()
         {
             FieldInfoExtractor.Extract(typeof(string[]), (info, type) => null).Should()

@@ -11,5 +11,6 @@
         Bool,
         Class,
         Enumerable,
+        Dictionary,
     }
 }

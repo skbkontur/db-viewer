@@ -26,6 +26,8 @@ namespace Kontur.DBViewer.Core.TypeInformation
                 return FieldType.Enumerable;
             if(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
                 return FieldType.Enumerable;
+            if(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+                return FieldType.Dictionary;
             if(type.IsClass)
                 return FieldType.Class;
             throw new NotSupportedException();

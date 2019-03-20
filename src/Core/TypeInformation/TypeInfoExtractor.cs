@@ -32,6 +32,11 @@ namespace Kontur.DBViewer.Core.TypeInformation
             case FieldType.Enum:
                 // ReSharper disable once AssignNullToNotNullAttribute
                 return new EnumFieldInfo(canBeNull, Enum.GetNames(realType), meta);
+            case FieldType.Dictionary:
+                return new DictionaryFieldInfo(
+                    InnerExtract(type.GetGenericArguments()[0], null, metaExtractor),
+                    InnerExtract(type.GetGenericArguments()[1], null, metaExtractor)
+                    );
             case FieldType.Enumerable:
                 if(type.IsArray)
                     return new EnumerableFieldInfo(InnerExtract(type.GetElementType(), null, metaExtractor));
