@@ -361,7 +361,11 @@ class TypeDetails extends React.Component<IProps, IState> {
             )
             .join("&");
           return (
-            <NavLink to={`${this.props.match.url}/Details?${query}`}>
+            <NavLink
+              to={StringUtils.normalizeUrl(
+                `${this.props.match.url}/Details?${query}`
+              )}
+            >
               Подробности
             </NavLink>
           );

@@ -3,7 +3,11 @@ import Input from "@skbkontur/react-ui/Input";
 import * as classnames from "classnames";
 import * as React from "react";
 import { connect } from "react-redux";
-import { NavLink as Link } from "react-router-dom";
+import {
+  NavLink as Link,
+  RouteComponentProps,
+  withRouter,
+} from "react-router-dom";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader from "../Common/FullPageLoader";
 import {
@@ -11,10 +15,11 @@ import {
   TypeOfConnect,
   unboxThunk,
 } from "../IObjectsViewerStore";
+import { StringUtils } from "../utils/StringUtils";
 import TypesListActions from "./TypesList.actions";
 import * as styles from "./TypesList.less";
 
-type Props = TypeOfConnect<typeof reduxConnector>;
+type Props = TypeOfConnect<typeof reduxConnector> & RouteComponentProps<{}>;
 
 class TypesList extends React.Component<Props, {}> {
   public componentDidMount() {
@@ -71,7 +76,13 @@ class TypesList extends React.Component<Props, {}> {
                         letterIdx % 2 === 0 && styles.even
                       )}
                     >
-                      <Link to={`/${type.name}`}>{type.name}</Link>
+                      <Link
+                        to={StringUtils.normalizeUrl(
+                          `${this.props.match.url}/${type.name}`
+                        )}
+                      >
+                        {type.name}
+                      </Link>
                       <span className={styles.schema}>
                         {type.schemaDescription.schemaName}
                       </span>
@@ -98,4 +109,4 @@ const reduxConnector = connect(
   }
 );
 
-export default reduxConnector(TypesList);
+export default reduxConnector(withRouter(TypesList));

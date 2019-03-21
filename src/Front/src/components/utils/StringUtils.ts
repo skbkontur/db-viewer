@@ -11,4 +11,8 @@ export class StringUtils {
     }
     return s[0].toUpperCase() + s.substring(1);
   }
+
+  public static normalizeUrl(url: string): string {
+    return url.replace("//", "/");
+  }
 }

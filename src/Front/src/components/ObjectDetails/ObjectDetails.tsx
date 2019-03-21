@@ -36,7 +36,6 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
   }
 
   public render(): React.ReactNode {
-    console.log(this.props.typeInfo.type);
     switch (this.props.typeInfo.type) {
       case FieldType.Bool:
       case FieldType.DateTime:
