@@ -3,6 +3,8 @@
 
 export enum FieldType {
     String = 'String',
+    Byte = 'Byte',
+    Char = 'Char',
     Int = 'Int',
     Long = 'Long',
     Decimal = 'Decimal',
@@ -11,4 +13,6 @@ export enum FieldType {
     Bool = 'Bool',
     Class = 'Class',
     Enumerable = 'Enumerable',
+    Dictionary = 'Dictionary',
+    HashSet = 'HashSet',
 }

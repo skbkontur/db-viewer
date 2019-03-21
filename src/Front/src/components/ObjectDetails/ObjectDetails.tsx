@@ -44,6 +44,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
       case FieldType.Long:
       case FieldType.Decimal:
       case FieldType.String:
+      case FieldType.Char:
+      case FieldType.Byte:
         if (this.props.edit) {
           return this.renderPrimitiveEdit();
         } else {
@@ -61,6 +63,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           </table>
         );
       }
+      case FieldType.HashSet:
       case FieldType.Enumerable: {
         const typeInfo = this.props.typeInfo;
         return (
@@ -77,11 +80,26 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           </table>
         );
       }
+
+      case FieldType.Dictionary: {
+        const typeInfo = this.props.typeInfo;
+        return (
+          <table className={styles.table}>
+            <tbody>
+              {Object.keys(this.props.data).map(key =>
+                this._renderRow(key, this.props.data[key], typeInfo.value)
+              )}
+            </tbody>
+          </table>
+        );
+      }
     }
   }
 
   public _renderRow(key: string, value: object, typeInfo: FieldInfo) {
     const expandable =
+      typeInfo.type === FieldType.HashSet ||
+      typeInfo.type === FieldType.Dictionary ||
       typeInfo.type === FieldType.Class ||
       typeInfo.type === FieldType.Enumerable;
     return (
@@ -102,7 +120,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
               edit={this.props.edit}
               typeInfo={typeInfo}
               onChange={newValue =>
-                this.props.typeInfo.type === FieldType.Enumerable
+                this.props.typeInfo.type === FieldType.Enumerable ||
+                this.props.typeInfo.type === FieldType.HashSet
                   ? this.props.onChange(
                       (this.props.data as object[]).map((x, idx) =>
                         idx.toString() === key ? newValue : x

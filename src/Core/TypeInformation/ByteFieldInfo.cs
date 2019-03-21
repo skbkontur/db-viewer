@@ -9,6 +9,6 @@ namespace Kontur.DBViewer.Core.TypeInformation
         }
 
         public bool CanBeNull { get; }
-        public override FieldType Type => FieldType.Int;
+        public override FieldType Type => FieldType.Byte;
     }
 }

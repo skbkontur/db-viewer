@@ -48,6 +48,7 @@ export default class FieldEditor extends React.Component<IProps> {
           [true, "true"],
           [false, "false"],
         ]);
+      case FieldType.Char:
       case FieldType.String:
         return (
           <Input
@@ -57,6 +58,7 @@ export default class FieldEditor extends React.Component<IProps> {
             error={this.props.error}
           />
         );
+      case FieldType.Byte:
       case FieldType.Decimal:
       case FieldType.Int:
       case FieldType.Long:
@@ -72,6 +74,8 @@ export default class FieldEditor extends React.Component<IProps> {
             error={this.props.error}
           />
         );
+      case FieldType.Dictionary:
+      case FieldType.HashSet:
       case FieldType.Enumerable:
       case FieldType.Class:
         return null;
