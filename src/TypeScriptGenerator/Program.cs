@@ -11,7 +11,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator
     {
         static void Main(string[] args)
         {
-            var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "..", "..", "..", "..", "Front", "src", "api", "impl");
+            var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "..", "..", "Front", "src", "api", "impl");
 
             var customTypeGenerator = new CustomTypeGenerator();
             var typeScriptCodeGenerator = new SkbKontur.TypeScript.ContractGenerator.TypeScriptGenerator(
