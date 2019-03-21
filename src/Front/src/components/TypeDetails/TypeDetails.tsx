@@ -27,6 +27,7 @@ import {
 } from "../IObjectsViewerStore";
 import ObjectDetailsActions from "../ObjectDetails/ObjectDetailsView.actions";
 import { IDictionary } from "../TypesList/IDictionary";
+import TypesListActions from "../TypesList/TypesList.actions";
 import { StringUtils } from "../utils/StringUtils";
 import { IFilter } from "./IFilter";
 import ObjectsListActions from "./ObjectsList.actions";
@@ -483,8 +484,17 @@ type ScopeNarrowerProps = RouteComponentProps<IMatchParams> &
 
 // tslint:disable-next-line:max-classes-per-file
 class ScopeNarrower extends React.Component<ScopeNarrowerProps> {
+  public componentDidMount() {
+    if (!this.props.typesDescriptions) {
+      this.props.onLoadTypes();
+    }
+  }
+
   public render() {
     const { type } = this.props.match.params;
+    if (!this.props.typesDescriptions) {
+      return <FullPageLoader state={LoaderState.Loading} />;
+    }
     const count = this.props.types[type] ? this.props.types[type].count : null;
     const list = this.props.types[type] ? this.props.types[type].list : null;
     return (
@@ -529,6 +539,7 @@ const reduxConnector = connect(
     onSearch: unboxThunk(ObjectsListActions.search),
     onCount: unboxThunk(ObjectsListActions.count),
     onDelete: unboxThunk(ObjectDetailsActions.delete),
+    onLoadTypes: unboxThunk(TypesListActions.load),
   }
 );
 
