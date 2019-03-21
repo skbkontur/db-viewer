@@ -8,8 +8,12 @@ namespace Kontur.DBViewer.Core.TypeInformation
         public static FieldType Resolve(Type initialType)
         {
             var type = Nullable.GetUnderlyingType(initialType) ?? initialType;
-            if(type == typeof(string))
+            if(type == typeof(string) || type == typeof(Guid))
                 return FieldType.String;
+            if(type == typeof(byte))
+                return FieldType.Byte;
+            if(type == typeof(char))
+                return FieldType.Char;
             if(type == typeof(int))
                 return FieldType.Int;
             if(type == typeof(DateTime))
@@ -28,6 +32,8 @@ namespace Kontur.DBViewer.Core.TypeInformation
                 return FieldType.Enumerable;
             if(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
                 return FieldType.Dictionary;
+            if(type.IsGenericType && type.GetGenericTypeDefinition() == typeof(HashSet<>))
+                return FieldType.HashSet;
             if(type.IsClass)
                 return FieldType.Class;
             throw new NotSupportedException();

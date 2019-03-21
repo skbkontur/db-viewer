@@ -19,6 +19,10 @@ namespace Kontur.DBViewer.Core.TypeInformation
             {
             case FieldType.String:
                 return new StringFieldInfo(meta);
+            case FieldType.Byte:
+                return new ByteFieldInfo(canBeNull, meta);
+            case FieldType.Char:
+                return new CharFieldInfo(canBeNull, meta);
             case FieldType.Int:
                 return new IntFieldInfo(canBeNull, meta);
             case FieldType.Long:
@@ -37,6 +41,8 @@ namespace Kontur.DBViewer.Core.TypeInformation
                     InnerExtract(type.GetGenericArguments()[0], null, metaExtractor),
                     InnerExtract(type.GetGenericArguments()[1], null, metaExtractor)
                     );
+            case FieldType.HashSet:
+                return new HashSetFieldInfo(InnerExtract(type.GetGenericArguments()[0], null, metaExtractor));
             case FieldType.Enumerable:
                 if(type.IsArray)
                     return new EnumerableFieldInfo(InnerExtract(type.GetElementType(), null, metaExtractor));

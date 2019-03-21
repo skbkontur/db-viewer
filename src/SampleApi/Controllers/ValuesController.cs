@@ -37,7 +37,8 @@ namespace Kontur.DBViewer.SampleApi.Controllers
                             typeof(TestComplexObject),
                             typeof(TestObjectWithDateTime),
                             typeof(TestObjectWithEnums),
-                            typeof(TestObjectWithStrings)
+                            typeof(TestObjectWithStrings),
+                            typeof(TestObjectWithAllPrimitives)
                         ),
                         TypeInfoExtractor = new SampleTypeInfoExtractor(),
                         SearcherFactory = new SampleObjectsSearcherFactory(),

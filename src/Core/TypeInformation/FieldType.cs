@@ -3,6 +3,8 @@
     public enum FieldType
     {
         String,
+        Byte,
+        Char,
         Int,
         Long,
         Decimal,
@@ -12,5 +14,6 @@
         Class,
         Enumerable,
         Dictionary,
+        HashSet,
     }
 }
