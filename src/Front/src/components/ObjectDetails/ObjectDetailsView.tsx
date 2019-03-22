@@ -4,11 +4,8 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader, { LoaderState } from "../Common/FullPageLoader";
-import {
-  IObjectsViewerStore,
-  TypeOfConnect,
-  unboxThunk,
-} from "../IObjectsViewerStore";
+import { IObjectsViewerStore } from "../IObjectsViewerStore";
+import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
 import ObjectDetailsContent from "./ObjectDetailsContent";
 import ObjectDetailsViewActions from "./ObjectDetailsView.actions";
 

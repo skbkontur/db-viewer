@@ -2,6 +2,7 @@ import Button from "@skbkontur/react-ui/Button";
 import Gapped from "@skbkontur/react-ui/Gapped";
 import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
+import AccessConfiguration from "../utils/AccessConfiguration";
 import { DeleteModal } from "./DeleteModal";
 import ObjectDetails from "./ObjectDetails";
 import * as styles from "./ObjectDetailsView.less";
@@ -39,7 +40,6 @@ export default class ObjectDetailsContent extends React.Component<
   public render() {
     return (
       <Gapped vertical>
-        <DeleteModal ref={this.refToDeleteModal} />
         <div className={styles.detailsWrapper}>
           <ObjectDetails
             data={this.state.edit ? this.state.currentValue : this.props.data}
@@ -48,6 +48,18 @@ export default class ObjectDetailsContent extends React.Component<
             onChange={this.handleChange}
           />
         </div>
+        {this.renderEditButtons()}
+      </Gapped>
+    );
+  }
+
+  private renderEditButtons() {
+    if (!AccessConfiguration.isEditAllowed()) {
+      return null;
+    }
+    return (
+      <div>
+        <DeleteModal ref={this.refToDeleteModal} />
         {this.state.edit ? (
           <Gapped>
             <Button
@@ -73,7 +85,7 @@ export default class ObjectDetailsContent extends React.Component<
             </Button>
           </Gapped>
         )}
-      </Gapped>
+      </div>
     );
   }
 

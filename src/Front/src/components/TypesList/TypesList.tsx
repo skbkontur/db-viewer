@@ -10,11 +10,8 @@ import {
 } from "react-router-dom";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader from "../Common/FullPageLoader";
-import {
-  IObjectsViewerStore,
-  TypeOfConnect,
-  unboxThunk,
-} from "../IObjectsViewerStore";
+import { IObjectsViewerStore } from "../IObjectsViewerStore";
+import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
 import { StringUtils } from "../utils/StringUtils";
 import TypesListActions from "./TypesList.actions";
 import * as styles from "./TypesList.less";

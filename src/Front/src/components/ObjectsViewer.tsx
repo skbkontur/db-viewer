@@ -6,27 +6,32 @@ import {
   Switch,
   withRouter,
 } from "react-router-dom";
+import { Store } from "redux";
 import Apis from "../api/Apis";
 import { DBViewerApiImpl } from "../api/impl/DBViewerApi";
-import configureStore from "./IObjectsViewerStore";
+import { configureStore, IObjectsViewerStore } from "./IObjectsViewerStore";
 import ObjectDetails from "./ObjectDetails/ObjectDetailsView";
 import BusinessObjectTypeDetails from "./TypeDetails/TypeDetails";
 import TypesList from "./TypesList/TypesList";
-
-const store = configureStore();
+import AccessConfiguration from "./utils/AccessConfiguration";
 
 interface IProps extends RouteComponentProps {
   apiPrefix: string;
+  allowEdit: boolean;
 }
 
 class ObjectsViewerImpl extends React.Component<IProps> {
-  public componentWillMount(): void {
-    Apis.initialize(new DBViewerApiImpl(this.props.apiPrefix));
+  private store: Store<IObjectsViewerStore>;
+  constructor(props) {
+    super(props);
+    Apis.initialize(new DBViewerApiImpl(props.apiPrefix));
+    this.store = configureStore();
+    AccessConfiguration.initialize(props.allowEdit);
   }
 
   public render() {
     return (
-      <Provider store={store}>
+      <Provider store={this.store}>
         <Switch>
           <Route
             exact

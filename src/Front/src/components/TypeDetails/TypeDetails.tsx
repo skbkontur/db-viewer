@@ -20,13 +20,10 @@ import AdminToolsHeader from "../Common/AdminToolsHeader";
 import { ColumnConfiguration } from "../Common/ColumnConfiguration";
 import FullPageLoader, { LoaderState } from "../Common/FullPageLoader";
 import ResultsTable from "../Common/ResultsTable";
-import {
-  IObjectsViewerStore,
-  TypeOfConnect,
-  unboxThunk,
-} from "../IObjectsViewerStore";
+import { IObjectsViewerStore } from "../IObjectsViewerStore";
 import ObjectDetailsActions from "../ObjectDetails/ObjectDetailsView.actions";
 import TypesListActions from "../TypesList/TypesList.actions";
+import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
 import { StringUtils } from "../utils/StringUtils";
 import { IFilter } from "./IFilter";
 import ObjectsListActions from "./ObjectsList.actions";

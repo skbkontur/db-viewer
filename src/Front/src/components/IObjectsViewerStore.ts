@@ -1,6 +1,5 @@
-import { InferableComponentEnhancerWithProps } from "react-redux";
-import { Action, applyMiddleware, combineReducers, createStore } from "redux";
-import thunk, { ThunkAction } from "redux-thunk";
+import { applyMiddleware, combineReducers, createStore, Store } from "redux";
+import thunk from "redux-thunk";
 import { ObjectDetailsPayload } from "./ObjectDetails/ObjectDetailsView.actions";
 import {
   IObjectDetailsStore,
@@ -23,28 +22,12 @@ export interface IObjectsViewerStore {
   objectDetailsStore: IObjectDetailsStore;
 }
 
-// Решение взято отсюда https://habr.com/post/431452/
-type CutMiddleFunction<T> = T extends (
-  ...arg: infer Args
-) => (...args: any[]) => infer R
-  ? (...arg: Args) => R
-  : never;
-export const unboxThunk = <Args extends any[], R, S, E, A extends Action<any>>(
-  thunkFn: (...args: Args) => ThunkAction<R, S, E, A>
-) => (thunkFn as any) as CutMiddleFunction<typeof thunkFn>; /**/
-export type TypeOfConnect<T> = T extends InferableComponentEnhancerWithProps<
-  infer Props,
-  infer _
->
-  ? Props
-  : never;
-
 type AvailableActions =
   | TypesListPayload
   | ObjectsListPayload
   | ObjectDetailsPayload;
 
-export default function configureStore() {
+export function configureStore(): Store<IObjectsViewerStore> {
   return createStore(
     combineReducers<IObjectsViewerStore, AvailableActions>({
       typesListStore: typesListReducers,

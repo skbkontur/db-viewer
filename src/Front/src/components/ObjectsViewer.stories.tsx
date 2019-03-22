@@ -13,7 +13,10 @@ storiesOf("Application", module)
         <Route
           path={"/Sample/"}
           render={() => (
-            <ObjectsViewer apiPrefix={"http://localhost:5555/DBViewer/"} />
+            <ObjectsViewer
+              apiPrefix={"http://localhost:5555/DBViewer/"}
+              allowEdit
+            />
           )}
         />
       </Switch>

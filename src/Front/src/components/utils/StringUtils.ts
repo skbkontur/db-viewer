@@ -5,6 +5,7 @@ export class StringUtils {
     }
     return s[0].toLowerCase() + s.substring(1);
   }
+
   public static upperCaseFirstLetter(s: string) {
     if (!s) {
       return s;

@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import StoryRouter from "storybook-react-router";
 import Apis from "../../api/Apis";
 import { FakeBusinessObjectsListApi } from "../../api/FakeBusinessObjectsListApi";
-import configureStore from "../IObjectsViewerStore";
+import { configureStore } from "../IObjectsViewerStore";
 import TypesList from "./TypesList";
 
 const store = configureStore();

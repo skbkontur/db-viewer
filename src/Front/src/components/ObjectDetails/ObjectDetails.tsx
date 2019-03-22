@@ -3,8 +3,9 @@ import * as ClassNames from "classnames";
 import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import { FieldType } from "../../api/impl/FieldType";
-import FieldEditor from "../primitives/FieldEditor";
+import FieldEditor from "../Common/FieldEditor";
 import * as styles from "./ObjectDetails.less";
+import { StringUtils } from "../utils/StringUtils";
 
 interface IProps {
   data: object;
@@ -56,7 +57,12 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           <table className={styles.table}>
             <tbody>
               {Object.keys(this.props.typeInfo.fields).map(key =>
-                this._renderRow(key, this.props.data[key], typeInfo.fields[key])
+                this._renderRow(
+                  key,
+                  this.props.data[key],
+                  typeInfo.fields[key],
+                  false
+                )
               )}
             </tbody>
           </table>
@@ -72,7 +78,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
                 this._renderRow(
                   key,
                   this.props.data[key],
-                  typeInfo.underlyingType
+                  typeInfo.underlyingType,
+                  false
                 )
               )}
             </tbody>
@@ -86,7 +93,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           <table className={styles.table}>
             <tbody>
               {Object.keys(this.props.data).map(key =>
-                this._renderRow(key, this.props.data[key], typeInfo.value)
+                this._renderRow(key, this.props.data[key], typeInfo.value, true)
               )}
             </tbody>
           </table>
@@ -95,7 +102,12 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
     }
   }
 
-  public _renderRow(key: string, value: object, typeInfo: FieldInfo) {
+  public _renderRow(
+    key: string,
+    value: object,
+    typeInfo: FieldInfo,
+    renderOriginalKey: boolean
+  ) {
     const expandable =
       typeInfo.type === FieldType.HashSet ||
       typeInfo.type === FieldType.Dictionary ||
@@ -110,7 +122,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           )}
           onClick={() => (expandable ? this.handleExpand(key) : () => {})}
         >
-          {key}
+          {renderOriginalKey ? key : StringUtils.upperCaseFirstLetter(key)}
         </td>
         <td className={styles.complexValue}>
           {!expandable || this.state.expandedItems[key] ? (

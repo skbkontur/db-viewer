@@ -1,7 +1,7 @@
 import Select from "@skbkontur/react-ui/Select";
 import * as React from "react";
 import { FilterType } from "../../../api/impl/FilterType";
-import FieldEditor from "../../primitives/FieldEditor";
+import FieldEditor from "../../Common/FieldEditor";
 import {
   buildFiltersSelect,
   FilterSelectItem,
