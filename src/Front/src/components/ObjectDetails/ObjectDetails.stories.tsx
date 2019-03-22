@@ -6,9 +6,43 @@ import { FieldType } from "../../api/impl/FieldType";
 import ObjectDetailsContent from "./ObjectDetailsContent";
 
 storiesOf("ObjectDetailsContent", module).add("Full", () => {
+  const intField: FieldInfo = {
+    type: FieldType.Int,
+    canBeNull: false,
+    meta: {
+      name: "intField",
+      isIdentity: false,
+      availableFilters: null,
+      isRequired: false,
+      isSearchable: false,
+    },
+  };
   const typeInfo: FieldInfo = {
     type: FieldType.Class,
     fields: {
+      classField: {
+        type: FieldType.Class,
+        fields: {
+          intField,
+        },
+        meta: null,
+      },
+      dictionaryField: {
+        type: FieldType.Dictionary,
+        key: intField,
+        value: intField,
+        meta: null,
+      },
+      arrayField: {
+        type: FieldType.Enumerable,
+        underlyingType: intField,
+        meta: null,
+      },
+      hashsetField: {
+        type: FieldType.HashSet,
+        underlyingType: intField,
+        meta: null,
+      },
       intField: {
         type: FieldType.Int,
         canBeNull: false,

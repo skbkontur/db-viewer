@@ -22,17 +22,8 @@ interface IState {
 export default class ObjectDetails extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    const expandedItems = {};
-    if (
-      this.props.typeInfo.type === FieldType.Enumerable ||
-      this.props.typeInfo.type === FieldType.Class
-    ) {
-      for (const key of Object.keys(props.data)) {
-        expandedItems[key] = false;
-      }
-    }
     this.state = {
-      expandedItems,
+      expandedItems: {},
     };
   }
 
@@ -54,6 +45,11 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         }
       case FieldType.Class: {
         const typeInfo = this.props.typeInfo;
+        if (!this.props.data) {
+          return (
+            <PrimitiveValue data={null} fieldType={this.props.typeInfo.type} />
+          );
+        }
         return (
           <table className={styles.table}>
             <tbody>
@@ -72,6 +68,11 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
       case FieldType.HashSet:
       case FieldType.Enumerable: {
         const typeInfo = this.props.typeInfo;
+        if (!this.props.data) {
+          return (
+            <PrimitiveValue data={null} fieldType={this.props.typeInfo.type} />
+          );
+        }
         return (
           <table className={styles.table}>
             <tbody>
@@ -90,6 +91,11 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
 
       case FieldType.Dictionary: {
         const typeInfo = this.props.typeInfo;
+        if (!this.props.data) {
+          return (
+            <PrimitiveValue data={null} fieldType={this.props.typeInfo.type} />
+          );
+        }
         return (
           <table className={styles.table}>
             <tbody>
@@ -110,10 +116,11 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
     renderOriginalKey: boolean
   ) {
     const expandable =
-      typeInfo.type === FieldType.HashSet ||
-      typeInfo.type === FieldType.Dictionary ||
-      typeInfo.type === FieldType.Class ||
-      typeInfo.type === FieldType.Enumerable;
+      !!value &&
+      (typeInfo.type === FieldType.HashSet ||
+        typeInfo.type === FieldType.Dictionary ||
+        typeInfo.type === FieldType.Class ||
+        typeInfo.type === FieldType.Enumerable);
     return (
       <tr key={key}>
         <td
