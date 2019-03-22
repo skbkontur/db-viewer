@@ -5,7 +5,7 @@ import { Filter } from "../../api/impl/Filter";
 import { FilterType } from "../../api/impl/FilterType";
 import { Sort } from "../../api/impl/Sort";
 import { IDBViewerStore } from "../IDBViewerStore";
-import { sleep } from "../utils/PromiseUtils";
+import { sleep } from "../Utils/PromiseUtils";
 import { IFilter } from "./IFilter";
 
 export enum ObjectsListActionTypes {

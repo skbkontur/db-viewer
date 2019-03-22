@@ -5,7 +5,7 @@ import { RouteComponentProps } from "react-router";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader, { LoaderState } from "../Common/FullPageLoader";
 import { IDBViewerStore } from "../IDBViewerStore";
-import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
+import { TypeOfConnect, unboxThunk } from "../Utils/ReduxUtils";
 import ObjectDetailsContent from "./ObjectDetailsContent";
 import ObjectDetailsViewActions from "./ObjectDetailsView.actions";
 

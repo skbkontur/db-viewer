@@ -11,8 +11,8 @@ import {
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader from "../Common/FullPageLoader";
 import { IDBViewerStore } from "../IDBViewerStore";
-import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
-import { StringUtils } from "../utils/StringUtils";
+import { TypeOfConnect, unboxThunk } from "../Utils/ReduxUtils";
+import { StringUtils } from "../Utils/StringUtils";
 import TypesListActions from "./TypesList.actions";
 import * as styles from "./TypesList.less";
 

@@ -13,7 +13,7 @@ import { configureStore, IDBViewerStore } from "./IDBViewerStore";
 import ObjectDetails from "./ObjectDetails/ObjectDetailsView";
 import BusinessObjectTypeDetails from "./TypeDetails/TypeDetails";
 import TypesList from "./TypesList/TypesList";
-import AccessConfiguration from "./utils/AccessConfiguration";
+import AccessConfiguration from "./Utils/AccessConfiguration";
 
 interface IProps extends RouteComponentProps {
   apiPrefix: string;

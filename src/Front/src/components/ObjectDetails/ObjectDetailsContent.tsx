@@ -2,7 +2,7 @@ import Button from "@skbkontur/react-ui/Button";
 import Gapped from "@skbkontur/react-ui/Gapped";
 import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
-import AccessConfiguration from "../utils/AccessConfiguration";
+import AccessConfiguration from "../Utils/AccessConfiguration";
 import { DeleteModal } from "./DeleteModal";
 import ObjectDetails from "./ObjectDetails";
 import * as styles from "./ObjectDetailsView.less";
