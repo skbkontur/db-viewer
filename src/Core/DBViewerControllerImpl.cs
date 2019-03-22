@@ -37,13 +37,13 @@ namespace Kontur.DBViewer.Core
         [HttpPost, Route("{typeIdentifier}/Find")]
         public async Task<object[]> Find(string typeIdentifier, [FromBody] FindModel filter)
         {
-            return await schemaRegistry.GetSearcher(typeIdentifier).Search(filter.Filters, filter.Sorts, filter.From, filter.Count).ConfigureAwait(false);
+            return await schemaRegistry.GetConnector(typeIdentifier).Search(filter.Filters, filter.Sorts, filter.From, filter.Count).ConfigureAwait(false);
         }
         
         [HttpPost, Route("{typeIdentifier}/Count")]
         public async Task<int?> Count(string typeIdentifier, [FromBody] CountModel model)
         {
-            return await schemaRegistry.GetSearcher(typeIdentifier).Count(model.Filters, model.Limit).ConfigureAwait(false);
+            return await schemaRegistry.GetConnector(typeIdentifier).Count(model.Filters, model.Limit).ConfigureAwait(false);
         }
 
         [HttpPost, Route("{typeIdentifier}/Read")]
@@ -52,7 +52,7 @@ namespace Kontur.DBViewer.Core
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             return new ObjectDetailsModel
                 {
-                    Object = await schemaRegistry.GetSearcher(typeIdentifier).Read(filters.Filters).ConfigureAwait(false),
+                    Object = await schemaRegistry.GetConnector(typeIdentifier).Read(filters.Filters).ConfigureAwait(false),
                     TypeInfo = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier).TypeInfoExtractor.GetShape(type),
                 };
         }
@@ -60,13 +60,13 @@ namespace Kontur.DBViewer.Core
         [HttpPost, Route("{typeIdentifier}/Delete")]
         public async Task Delete(string typeIdentifier, [FromBody] object obj)
         {
-            await schemaRegistry.GetSearcher(typeIdentifier).Delete(obj).ConfigureAwait(false);
+            await schemaRegistry.GetConnector(typeIdentifier).Delete(obj).ConfigureAwait(false);
         }
 
         [HttpPost, Route("{typeIdentifier}/Write")]
         public async Task<object> Write(string typeIdentifier, [FromBody] object obj)
         {
-            return await schemaRegistry.GetSearcher(typeIdentifier).Write(obj).ConfigureAwait(false);
+            return await schemaRegistry.GetConnector(typeIdentifier).Write(obj).ConfigureAwait(false);
         }
     }
 }

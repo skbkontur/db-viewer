@@ -5,11 +5,11 @@ namespace Kontur.DBViewer.Core.Schemas
 {
     public static class SchemaRegistryExtensions
     {
-        public static IDBConnector GetSearcher(this ISchemaRegistry registry, string typeIdentifier)
+        public static IDBConnector GetConnector(this ISchemaRegistry registry, string typeIdentifier)
         {
             var type = registry.GetTypeByTypeIdentifier(typeIdentifier);
             return GenericMethod.Invoke(
-                () => registry.GetSchemaByTypeIdentifier(typeIdentifier).SearcherFactory.CreateConnector<object>(),
+                () => registry.GetSchemaByTypeIdentifier(typeIdentifier).ConnectorsFactory.CreateConnector<object>(),
                 typeof(object),
                 type
             );
