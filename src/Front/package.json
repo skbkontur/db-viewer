@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@skbkontur/react-ui": "^0.17.11",
+    "classnames": "^2.2.6",
     "history": "^4.7.2",
     "less": "^3.9.0",
     "lodash": "^4.17.10",
@@ -38,23 +39,23 @@
     "@types/redux": "^3.6.0",
     "babel-loader": "7.1.2",
     "babel-polyfill": "^6.26.0",
+    "css-loader": "0.28.7",
     "file-loader": "1.1.5",
+    "less-loader": "^4.1.0",
     "prettier": "^1.15.3",
-    "react-addons-css-transition-group": "^15.6.2",
     "react": "15.6.1",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "15.6.1",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "storybook-react-router": "^1.0.1",
+    "style-loader": "^0.23.1",
+    "ts-loader": "3",
     "tslib": "^1.9.3",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-plugin-prettier": "^2.0.1",
-    "storybook-react-router": "^1.0.1",
-    "style-loader": "^0.23.1",
-    "ts-loader": "3",
     "typescript": "^3.1.1",
-    "url-loader": "0.6.2",
-    "css-loader": "0.28.7",
-    "less-loader": "^4.1.0"
+    "url-loader": "0.6.2"
   }
 }
