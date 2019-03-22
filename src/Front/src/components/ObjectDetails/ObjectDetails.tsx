@@ -4,6 +4,7 @@ import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import { FieldType } from "../../api/impl/FieldType";
 import FieldEditor from "../Common/FieldEditor";
+import { PrimitiveValue } from "../Common/PrimitiveValue";
 import { StringUtils } from "../Utils/StringUtils";
 import * as styles from "./ObjectDetails.less";
 
@@ -161,13 +162,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
 
   private renderPrimitiveValue(): React.ReactNode {
     const { data, typeInfo } = this.props;
-    if (data == null) {
-      return <span className={styles.null}>(null)</span>;
-    }
-    if (typeInfo.type === FieldType.Bool) {
-      return <span>{data.toString()}</span>;
-    }
-    return <span>{data}</span>;
+    return <PrimitiveValue data={data} fieldType={typeInfo.type} />;
   }
 
   private handleExpand(key: string) {

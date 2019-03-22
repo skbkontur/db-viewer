@@ -19,15 +19,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alko.Configuration.Settings" Version="0.0.4"/>
-    <PackageReference Include="GroboContainer" Version="1.2.37"/>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7"/>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7"/>
-    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7"/>
-    <PackageReference Include="Microsoft.Owin" Version="4.0.1"/>
-    <PackageReference Include="Microsoft.Owin.SelfHost" Version="4.0.1"/>
-    <PackageReference Include="Topshelf" Version="4.2.0"/>
-    <PackageReference Include="AutoFixture" Version="4.8.0"/>
+    <PackageReference Include="Alko.Configuration.Settings" Version="0.0.4" />
+    <PackageReference Include="GroboContainer" Version="1.2.37" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
+    <PackageReference Include="Microsoft.Owin" Version="4.0.1" />
+    <PackageReference Include="Microsoft.Owin.SelfHost" Version="4.0.1" />
+    <PackageReference Include="Topshelf" Version="4.2.0" />
+    <PackageReference Include="AutoFixture" Version="4.8.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

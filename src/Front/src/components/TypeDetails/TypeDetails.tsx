@@ -19,6 +19,7 @@ import { TypeModel } from "../../api/impl/TypeModel";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import { ColumnConfiguration } from "../Common/ColumnConfiguration";
 import FullPageLoader, { LoaderState } from "../Common/FullPageLoader";
+import { PrimitiveValue } from "../Common/PrimitiveValue";
 import ResultsTable from "../Common/ResultsTable";
 import { IDBViewerStore } from "../IDBViewerStore";
 import ObjectDetailsActions from "../ObjectDetails/ObjectDetailsView.actions";
@@ -371,11 +372,9 @@ class TypeDetails extends React.Component<IProps, IState> {
           ColumnConfiguration.createByPath(
             StringUtils.lowerCaseFirstLetter(field.meta.name)
           )
-            .withCustomRender(
-              field.type === "DateTime"
-                ? x => this.handleNullValues(x && x.toString())
-                : x => this.handleNullValues((x || "").toString())
-            )
+            .withCustomRender(x => (
+              <PrimitiveValue data={x} fieldType={field.type} />
+            ))
             .withHeader(() => this.renderTableHeader(field))
         ),
       ];
@@ -446,13 +445,6 @@ class TypeDetails extends React.Component<IProps, IState> {
       return [typeDetails];
     }
     return null;
-  };
-
-  private handleNullValues = value => {
-    if (value == null) {
-      return <span className={styles.nullValue}>(null)</span>;
-    }
-    return value;
   };
 
   private handleShowFilters = () => this.setState({ showFilters: true });
