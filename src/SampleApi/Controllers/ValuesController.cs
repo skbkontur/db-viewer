@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 using Kontur.DBViewer.Core;
@@ -42,7 +43,7 @@ namespace Kontur.DBViewer.SampleApi.Controllers
                             typeof(TestObjectWithBools)
                         ),
                         TypeInfoExtractor = new SampleTypeInfoExtractor(),
-                        SearcherFactory = new SampleObjectsSearcherFactory(),
+                        SearcherFactory = new SampleIdbConnectorFactory(),
                     }
             );
             impl = new DBViewerControllerImpl(schemaRegistry);
@@ -64,35 +65,35 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         }
 
         [HttpPost, Route("{typeIdentifier}/Find")]
-        public object[] Find(string typeIdentifier, [FromBody] FindModel filter)
+        public Task<object[]> Find(string typeIdentifier, [FromBody] FindModel filter)
         {
             return impl.Find(typeIdentifier, filter);
         }
 
         [HttpPost, Route("{typeIdentifier}/Count")]
-        public int? Count(string typeIdentifier, [FromBody] CountModel model)
+        public Task<int?> Count(string typeIdentifier, [FromBody] CountModel model)
         {
             return impl.Count(typeIdentifier, model);
         }
 
         [HttpPost, Route("{typeIdentifier}/Read")]
-        public ObjectDetailsModel Read(string typeIdentifier, [FromBody] ReadModel filters)
+        public Task<ObjectDetailsModel> Read(string typeIdentifier, [FromBody] ReadModel filters)
         {
             return impl.Read(typeIdentifier, filters);
         }
 
         [HttpPost, Route("{typeIdentifier}/Delete")]
-        public void Delete(string typeIdentifier, [FromBody] object @obj)
+        public async Task Delete(string typeIdentifier, [FromBody] object @obj)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
-            impl.Delete(typeIdentifier, ((JObject)obj).ToObject(type));
+            await impl.Delete(typeIdentifier, ((JObject)obj).ToObject(type));
         }
 
         [HttpPost, Route("{typeIdentifier}/Write")]
-        public object Write(string typeIdentifier, [FromBody] object @obj)
+        public async Task<object> Write(string typeIdentifier, [FromBody] object @obj)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
-            return impl.Write(typeIdentifier, ((JObject)obj).ToObject(type));
+            return await impl.Write(typeIdentifier, ((JObject)obj).ToObject(type));
         }
     }
 }

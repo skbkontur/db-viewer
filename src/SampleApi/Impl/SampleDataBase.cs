@@ -5,7 +5,8 @@ using System.Reflection;
 
 using AutoFixture;
 
-using Kontur.DBViewer.Core.Searcher;
+using Kontur.DBViewer.Core.Connector;
+using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.SampleApi.Impl.Classes;
 using Kontur.DBViewer.SampleApi.Impl.Utils;
 

@@ -1,4 +1,4 @@
-using Kontur.DBViewer.Core.Searcher;
+using Kontur.DBViewer.Core.Connector;
 
 namespace Kontur.DBViewer.Core.DTO
 {

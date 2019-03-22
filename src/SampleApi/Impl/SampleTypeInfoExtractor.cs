@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-using Kontur.DBViewer.Core.Searcher;
+using Kontur.DBViewer.Core.Connector;
+using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.TypeInformation;
 using Kontur.DBViewer.SampleApi.Impl.Classes;
 

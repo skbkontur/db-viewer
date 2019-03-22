@@ -1,4 +1,4 @@
-﻿namespace Kontur.DBViewer.Core.Searcher
+﻿namespace Kontur.DBViewer.Core.DTO
 {
     public enum FilterType
     {

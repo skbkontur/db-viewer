@@ -1,13 +1,13 @@
-using Kontur.DBViewer.Core.Searcher;
+using Kontur.DBViewer.Core.Connector;
 
 namespace Kontur.DBViewer.SampleApi.Impl
 {
-    public class SampleObjectsSearcherFactory : IObjectsSearcherFactory
+    public class SampleIdbConnectorFactory : IDBConnectorFactory
     {
-        public IObjectsSearcher CreateSearcher<T>()
+        public IDBConnector CreateConnector<T>()
             where T: class 
         {
-            return new SampleObjectsSearcher<T>();
+            return new SampleDBConnector<T>();
         }
     }
 }
