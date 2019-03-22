@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { Redirect, Route, Switch } from "react-router";
 import StoryRouter from "storybook-react-router";
-import ObjectsViewer from "./ObjectsViewer";
+import DBViewer from "./DBViewer";
 
 storiesOf("Application", module)
   .addDecorator(StoryRouter())
@@ -13,10 +13,7 @@ storiesOf("Application", module)
         <Route
           path={"/Sample/"}
           render={() => (
-            <ObjectsViewer
-              apiPrefix={"http://localhost:5555/DBViewer/"}
-              allowEdit
-            />
+            <DBViewer apiPrefix={"http://localhost:5555/DBViewer/"} allowEdit />
           )}
         />
       </Switch>

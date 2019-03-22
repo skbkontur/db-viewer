@@ -16,7 +16,7 @@ import {
   typesListReducers,
 } from "./TypesList/TypesList.reducers";
 
-export interface IObjectsViewerStore {
+export interface IDBViewerStore {
   typesListStore: ITypesListStore;
   typeDetailsStore: IObjectsListStore;
   objectDetailsStore: IObjectDetailsStore;
@@ -27,9 +27,9 @@ type AvailableActions =
   | ObjectsListPayload
   | ObjectDetailsPayload;
 
-export function configureStore(): Store<IObjectsViewerStore> {
+export function configureStore(): Store<IDBViewerStore> {
   return createStore(
-    combineReducers<IObjectsViewerStore, AvailableActions>({
+    combineReducers<IDBViewerStore, AvailableActions>({
       typesListStore: typesListReducers,
       typeDetailsStore: objectsListReducers,
       objectDetailsStore: objectDetailsReducers,

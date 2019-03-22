@@ -4,7 +4,7 @@ import Apis from "../../api/Apis";
 import { Filter } from "../../api/impl/Filter";
 import { FilterType } from "../../api/impl/FilterType";
 import { Sort } from "../../api/impl/Sort";
-import { IObjectsViewerStore } from "../IObjectsViewerStore";
+import { IDBViewerStore } from "../IDBViewerStore";
 import { sleep } from "../utils/PromiseUtils";
 import { IFilter } from "./IFilter";
 
@@ -64,7 +64,7 @@ export default class ObjectsListActions {
     sorts: Sort[],
     skip: number,
     take: number
-  ): ThunkAction<Promise<void>, IObjectsViewerStore, null, ObjectsListPayload> {
+  ): ThunkAction<Promise<void>, IDBViewerStore, null, ObjectsListPayload> {
     return async (dispatch: Dispatch<ObjectsListPayload>) => {
       dispatch({ type: ObjectsListActionTypes.SearchStart, typeIdentifier });
       try {
@@ -93,7 +93,7 @@ export default class ObjectsListActions {
     typeIdentifier: string,
     filters: IDictionary<IFilter>,
     countLimit: number
-  ): ThunkAction<Promise<void>, IObjectsViewerStore, null, ObjectsListPayload> {
+  ): ThunkAction<Promise<void>, IDBViewerStore, null, ObjectsListPayload> {
     return async (dispatch: Dispatch<ObjectsListPayload>) => {
       dispatch({ type: ObjectsListActionTypes.CountStart, typeIdentifier });
       try {

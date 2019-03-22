@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader from "../Common/FullPageLoader";
-import { IObjectsViewerStore } from "../IObjectsViewerStore";
+import { IDBViewerStore } from "../IDBViewerStore";
 import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
 import { StringUtils } from "../utils/StringUtils";
 import TypesListActions from "./TypesList.actions";
@@ -99,7 +99,7 @@ class TypesList extends React.Component<Props, {}> {
 }
 
 const reduxConnector = connect(
-  (state: IObjectsViewerStore) => state.typesListStore,
+  (state: IDBViewerStore) => state.typesListStore,
   {
     onLoad: unboxThunk(TypesListActions.load),
     onChangeSearchString: TypesListActions.changeSearchString,

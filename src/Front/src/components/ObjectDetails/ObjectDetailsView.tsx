@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader, { LoaderState } from "../Common/FullPageLoader";
-import { IObjectsViewerStore } from "../IObjectsViewerStore";
+import { IDBViewerStore } from "../IDBViewerStore";
 import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
 import ObjectDetailsContent from "./ObjectDetailsContent";
 import ObjectDetailsViewActions from "./ObjectDetailsView.actions";
@@ -88,7 +88,7 @@ class ObjectDetailsView extends React.Component<Props, IState> {
 }
 
 const reduxConnector = connect(
-  (store: IObjectsViewerStore) => store.objectDetailsStore,
+  (store: IDBViewerStore) => store.objectDetailsStore,
   {
     onLoad: unboxThunk(ObjectDetailsViewActions.load),
     onClear: ObjectDetailsViewActions.clear,

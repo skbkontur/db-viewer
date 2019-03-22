@@ -9,7 +9,7 @@ import {
 import { Store } from "redux";
 import Apis from "../api/Apis";
 import { DBViewerApiImpl } from "../api/impl/DBViewerApi";
-import { configureStore, IObjectsViewerStore } from "./IObjectsViewerStore";
+import { configureStore, IDBViewerStore } from "./IDBViewerStore";
 import ObjectDetails from "./ObjectDetails/ObjectDetailsView";
 import BusinessObjectTypeDetails from "./TypeDetails/TypeDetails";
 import TypesList from "./TypesList/TypesList";
@@ -20,8 +20,8 @@ interface IProps extends RouteComponentProps {
   allowEdit: boolean;
 }
 
-class ObjectsViewerImpl extends React.Component<IProps> {
-  private store: Store<IObjectsViewerStore>;
+class DBViewerImpl extends React.Component<IProps> {
+  private store: Store<IDBViewerStore>;
   constructor(props) {
     super(props);
     Apis.initialize(new DBViewerApiImpl(props.apiPrefix));
@@ -55,4 +55,4 @@ class ObjectsViewerImpl extends React.Component<IProps> {
   private normalizeUrl = (url: string): string => url.replace("//", "/");
 }
 
-export default withRouter(ObjectsViewerImpl);
+export default withRouter(DBViewerImpl);

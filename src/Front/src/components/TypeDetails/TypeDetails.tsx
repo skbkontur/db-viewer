@@ -20,7 +20,7 @@ import AdminToolsHeader from "../Common/AdminToolsHeader";
 import { ColumnConfiguration } from "../Common/ColumnConfiguration";
 import FullPageLoader, { LoaderState } from "../Common/FullPageLoader";
 import ResultsTable from "../Common/ResultsTable";
-import { IObjectsViewerStore } from "../IObjectsViewerStore";
+import { IDBViewerStore } from "../IDBViewerStore";
 import ObjectDetailsActions from "../ObjectDetails/ObjectDetailsView.actions";
 import TypesListActions from "../TypesList/TypesList.actions";
 import { TypeOfConnect, unboxThunk } from "../utils/ReduxUtils";
@@ -527,7 +527,7 @@ class ScopeNarrower extends React.Component<ScopeNarrowerProps> {
 }
 
 const reduxConnector = connect(
-  (state: IObjectsViewerStore) => ({
+  (state: IDBViewerStore) => ({
     ...state.typeDetailsStore,
     typesDescriptions: state.typesListStore.descriptions,
   }),
