@@ -4,7 +4,6 @@ import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import { FieldType } from "../../api/impl/FieldType";
 import FieldEditor from "../primitives/FieldEditor";
-import { IDictionary } from "../TypesList/IDictionary";
 import * as styles from "./ObjectDetails.less";
 
 interface IProps {

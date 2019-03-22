@@ -1,5 +1,4 @@
 import { LoaderState } from "../Common/FullPageLoader";
-import { IDictionary } from "../TypesList/IDictionary";
 
 import {
   ObjectsListActionTypes,

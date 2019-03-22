@@ -1,7 +1,6 @@
 import * as React from "react";
 import { FieldInfo } from "../../../api/impl/FieldInfo";
 import { FilterType } from "../../../api/impl/FilterType";
-import { IDictionary } from "../../TypesList/IDictionary";
 import { IFilter } from "../IFilter";
 import { SearchField } from "./SearchField";
 import * as styles from "./SearchPanel.less";

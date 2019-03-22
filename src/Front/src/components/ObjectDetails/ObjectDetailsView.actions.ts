@@ -5,7 +5,6 @@ import Apis from "../../api/Apis";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import { Filter } from "../../api/impl/Filter";
 import { FilterType } from "../../api/impl/FilterType";
-import { IDictionary } from "../TypesList/IDictionary";
 
 export enum ObjectDetailsActionTypes {
   LoadStart = "ObjectDetails/LoadStart",

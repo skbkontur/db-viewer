@@ -5,7 +5,6 @@ import { Filter } from "../../api/impl/Filter";
 import { FilterType } from "../../api/impl/FilterType";
 import { Sort } from "../../api/impl/Sort";
 import { IObjectsViewerStore } from "../IObjectsViewerStore";
-import { IDictionary } from "../TypesList/IDictionary";
 import { sleep } from "../utils/PromiseUtils";
 import { IFilter } from "./IFilter";
 

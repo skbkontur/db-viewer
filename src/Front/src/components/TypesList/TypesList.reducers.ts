@@ -1,7 +1,6 @@
 import { groupBy, keyBy } from "lodash";
 import { TypeModel } from "../../api/impl/TypeModel";
 import { LoaderState } from "../Common/FullPageLoader";
-import { IDictionary } from "./IDictionary";
 import {
   BusinessObjectsTypesListActionType,
   TypesListPayload,

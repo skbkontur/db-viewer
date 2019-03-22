@@ -26,12 +26,11 @@ import {
   unboxThunk,
 } from "../IObjectsViewerStore";
 import ObjectDetailsActions from "../ObjectDetails/ObjectDetailsView.actions";
-import { IDictionary } from "../TypesList/IDictionary";
 import TypesListActions from "../TypesList/TypesList.actions";
 import { StringUtils } from "../utils/StringUtils";
 import { IFilter } from "./IFilter";
 import ObjectsListActions from "./ObjectsList.actions";
-import { ILoadable } from "./ObjectsListReducers";
+import { ILoadable } from "./ObjectsList.reducers";
 import SearchPanel from "./SearchPanel/SearchPanel";
 import * as styles from "./TypeDetails.less";
 

@@ -10,7 +10,7 @@ import { ObjectsListPayload } from "./TypeDetails/ObjectsList.actions";
 import {
   IObjectsListStore,
   objectsListReducers,
-} from "./TypeDetails/ObjectsListReducers";
+} from "./TypeDetails/ObjectsList.reducers";
 import { TypesListPayload } from "./TypesList/TypesList.actions";
 import {
   ITypesListStore,
