@@ -5,6 +5,11 @@
     <AssemblyName>Kontur.DBViewer.Core</AssemblyName>
     <RootNamespace>Kontur.DBViewer.Core</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <PackageId>Alko.DBViewer.Core</PackageId>
+    <PackageVersion>0.0.1-rc1</PackageVersion>
+    <PackageDescription>DBViewer core. Documentation: todo</PackageDescription>
+    <PackageReleaseNotes>MVP</PackageReleaseNotes>
+    <Authors>Alko Team</Authors>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

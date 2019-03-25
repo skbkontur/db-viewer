@@ -16,7 +16,7 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Alko.CodeCakeWrapper" Version="0.0.14" />
+    <PackageReference Include="Alko.CodeCakeWrapper" Version="0.0.28" />
     <PackageReference Include="Costura.Fody" Version="1.6.2">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

@@ -43,6 +43,29 @@ namespace cake
                                                                    .IsDependentOn(startServices)
                                                                    .IsDependentOn(tests)
                                                                    .Finally(() => stopServices.Task.Execute(Cake).Wait());
+            
+            PackAndPublishTasks("Core", "Core");
+        }
+
+        private void PackAndPublishTasks(string taskName, string projectName)
+        {
+            var packCassandraCommons =
+                CakeTask($"Pack{taskName}")
+                    .Does(() => { Cake.PackCsproj(GetCsprojPath(projectName)); });
+
+            CakeTask($"Publish{taskName}")
+                .IsDependentOn(packCassandraCommons)
+                .Does(() => { Cake.PublishProject(GetArtifactsFolderPath(projectName), KonturNugetAddress); });
+        }
+
+        private string GetCsprojPath(string projectName)
+        {
+            return Path.Combine(moduleDirectory, "src", projectName, projectName + ".csproj");
+        }
+
+        private string GetArtifactsFolderPath(string projectName)
+        {
+            return Path.Combine(moduleDirectory, "src", projectName, ".artifacts");
         }
     }
 }
