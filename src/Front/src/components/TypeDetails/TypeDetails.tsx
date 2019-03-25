@@ -383,6 +383,9 @@ class TypeDetails extends React.Component<IProps, IState> {
   }
 
   private renderTableHeader = (field: FieldInfo): React.ReactNode => {
+    if (!field.meta.isSortable) {
+      return <span>{field.meta.name}</span>;
+    }
     const currentDirection =
       this.state.sorts && this.state.sorts.field === field.meta.name
         ? this.state.sorts.direction

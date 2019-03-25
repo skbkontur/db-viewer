@@ -23,12 +23,20 @@ namespace Kontur.DBViewer.SampleApi.Impl
                         var indexed = property.GetCustomAttribute(typeof(IndexedAttribute)) != null;
                         var required = property.GetCustomAttribute(typeof(RequiredAttribute)) != null;
                         var identity = property.GetCustomAttribute(typeof(IdentityAttribute)) != null;
+                        var sortable = property.GetCustomAttribute(typeof(SortableAttribute)) != null;
                         if(indexed || required)
                         {
                             result.IsSearchable = true;
                             result.AvailableFilters = availableFilters[TypeToFieldTypeResolver.Resolve(property.PropertyType)];
                             if(required)
+                            {
                                 result.IsRequired = true;
+                            }
+                        }
+
+                        if(sortable)
+                        {
+                            result.IsSortable = true;
                         }
 
                         if(identity)

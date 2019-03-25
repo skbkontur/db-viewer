@@ -1,5 +1,4 @@
-﻿using Kontur.DBViewer.Core.Connector;
-using Kontur.DBViewer.Core.DTO;
+﻿using Kontur.DBViewer.Core.DTO;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
@@ -13,6 +12,7 @@ namespace Kontur.DBViewer.Core.TypeInformation
         public string Name { get; set; }
         public bool IsIdentity { get; set; }
         public bool IsSearchable { get; set; }
+        public bool IsSortable { get; set; }
         public bool IsRequired { get; set; }
         public FilterType[] AvailableFilters { get; set; }
     }

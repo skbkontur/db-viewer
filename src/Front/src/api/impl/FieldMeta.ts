@@ -6,6 +6,7 @@ export type FieldMeta = {
     name: Nullable<string>;
     isIdentity: boolean;
     isSearchable: boolean;
+    isSortable: boolean;
     isRequired: boolean;
     availableFilters: Nullable<FilterType[]>;
 };

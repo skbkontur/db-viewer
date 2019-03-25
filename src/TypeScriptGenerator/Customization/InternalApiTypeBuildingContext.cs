@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 using Kontur.DBViewer.Core;
 using Kontur.DBViewer.Core.Attributes;
 
@@ -106,8 +108,13 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
 
         private static TypeScriptType GetMethodResult(TypeScriptUnit targetUnit, MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType, bool declareErrorResultType = true)
         {
+            var realType = methodInfo.ReturnType;
+            if(realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(Task<>))
+                realType = realType.GetGenericArguments()[0];
+            else if(realType == typeof(Task))
+                realType = typeof(void);
             TypeScriptType methodResult;
-            methodResult = new TypeScriptPromiseOfType(buildAndImportType(methodInfo, methodInfo.ReturnType));
+            methodResult = new TypeScriptPromiseOfType(buildAndImportType(methodInfo, realType));
 
             return methodResult;
         }

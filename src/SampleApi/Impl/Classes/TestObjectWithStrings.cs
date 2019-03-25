@@ -5,7 +5,7 @@
         [Indexed, Identity]
         public string Id { get; set; }
 
-        [Indexed]
+        [Indexed, Sortable]
         public string Indexed { get; set; }
 
         public string NotIndexed { get; set; }

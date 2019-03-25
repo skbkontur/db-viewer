@@ -15,6 +15,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
       availableFilters: null,
       isRequired: false,
       isSearchable: false,
+      isSortable: false,
     },
   };
   const typeInfo: FieldInfo = {
@@ -52,6 +53,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
       nullableIntField: {
@@ -63,6 +65,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
       boolField: {
@@ -74,6 +77,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
       nullableBoolField: {
@@ -85,6 +89,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
       stringField: {
@@ -95,6 +100,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
       nullableDecimalField: {
@@ -106,6 +112,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
       decimalField: {
@@ -117,6 +124,7 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
           availableFilters: null,
           isRequired: false,
           isSearchable: false,
+          isSortable: false,
         },
       },
     },
