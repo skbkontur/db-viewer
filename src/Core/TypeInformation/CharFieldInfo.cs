@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.Core.TypeInformation
+﻿namespace Kontur.DBViewer.Core.TypeInformation
 {
     public class CharFieldInfo : FieldInfo
     {

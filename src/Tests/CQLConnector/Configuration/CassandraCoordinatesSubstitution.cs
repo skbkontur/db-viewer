@@ -1,4 +1,4 @@
-using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping;
+﻿using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping;
 using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping.Declarative;
 
 namespace Kontur.DBViewer.Tests.CQLConnector.Configuration

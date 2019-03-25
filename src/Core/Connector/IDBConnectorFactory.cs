@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.Core.Connector
+﻿namespace Kontur.DBViewer.Core.Connector
 {
     public interface IDBConnectorFactory
     {

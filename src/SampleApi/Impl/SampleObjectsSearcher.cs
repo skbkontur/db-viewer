@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Core.DTO;

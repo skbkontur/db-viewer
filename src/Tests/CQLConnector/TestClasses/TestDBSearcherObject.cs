@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cassandra.Mapping.Attributes;
 using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping.Declarative.AttributesDefinition;
 

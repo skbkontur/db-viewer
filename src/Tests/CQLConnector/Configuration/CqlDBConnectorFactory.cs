@@ -1,4 +1,4 @@
-using Kontur.DBViewer.Core.Connector;
+﻿using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Recipes.CQL;
 
 using SKBKontur.Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending.PrimitiveStoring;

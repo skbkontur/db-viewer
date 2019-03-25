@@ -1,4 +1,4 @@
-using Alko.Configuration.Settings;
+﻿using Alko.Configuration.Settings;
 using Alko.Configuration.Settings.TopologySearch;
 
 using GroboContainer.Core;

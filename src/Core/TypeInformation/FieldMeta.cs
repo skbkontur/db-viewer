@@ -1,4 +1,4 @@
-using Kontur.DBViewer.Core.Connector;
+﻿using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Core.DTO;
 
 namespace Kontur.DBViewer.Core.TypeInformation

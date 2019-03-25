@@ -1,4 +1,4 @@
-using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping.Declarative.ExtendedDefinition;
+﻿using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping.Declarative.ExtendedDefinition;
 using SKBKontur.Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending.TimestampStoring;
 
 namespace Kontur.DBViewer.Tests.CQLConnector.Configuration

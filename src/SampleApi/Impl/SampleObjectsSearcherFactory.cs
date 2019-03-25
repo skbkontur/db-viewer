@@ -1,4 +1,4 @@
-using Kontur.DBViewer.Core.Connector;
+﻿using Kontur.DBViewer.Core.Connector;
 
 namespace Kontur.DBViewer.SampleApi.Impl
 {

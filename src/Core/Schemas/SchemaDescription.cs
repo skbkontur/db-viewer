@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.Core.Schemas
+﻿namespace Kontur.DBViewer.Core.Schemas
 {
     public class SchemaDescription
     {
