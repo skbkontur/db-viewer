@@ -95,6 +95,80 @@ namespace Kontur.DBViewer.Tests.CQLConnector
         }
 
         [Test]
+        public async Task Test_Search_InequalityAtClusteringKey()
+        {
+            var fixture = new Fixture();
+            var pk1 = Guid.NewGuid().ToString();
+            var pk2 = Guid.NewGuid();
+            var ck = 5;
+            var objects = fixture.Build<TestDBSearcherObject>()
+                                   .With(x => x.PartitionKey1, pk1)
+                                   .With(x => x.PartitionKey2, pk2)
+                                   .With(x => x.ClusteringKey1, ck)
+                                   .CreateMany(10)
+                                   .OrderBy(x => x.ClusteringKey2)
+                                   .ToArray();
+
+            await storage.WriteAsync(objects);
+            
+            (await connector.Search(new[]
+                        {
+                            CreateEqualsFilter("PartitionKey1", pk1),
+                            CreateEqualsFilter("PartitionKey2", pk2),
+                            CreateEqualsFilter("ClusteringKey1", ck),
+                            new Filter
+                                {
+                                    Field = "ClusteringKey2",
+                                    Type = FilterType.GreaterOrEqual,
+                                    Value = objects[4].ClusteringKey2,
+                                }, 
+                        }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Skip(4));
+            
+            
+            
+            (await connector.Search(new[]
+                        {
+                            CreateEqualsFilter("PartitionKey1", pk1),
+                            CreateEqualsFilter("PartitionKey2", pk2),
+                            CreateEqualsFilter("ClusteringKey1", ck),
+                            new Filter
+                                {
+                                    Field = "ClusteringKey2",
+                                    Type = FilterType.Greater,
+                                    Value = objects[4].ClusteringKey2,
+                                }, 
+                        }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Skip(5));
+            
+            
+            
+            (await connector.Search(new[]
+                        {
+                            CreateEqualsFilter("PartitionKey1", pk1),
+                            CreateEqualsFilter("PartitionKey2", pk2),
+                            CreateEqualsFilter("ClusteringKey1", ck),
+                            new Filter
+                                {
+                                    Field = "ClusteringKey2",
+                                    Type = FilterType.LessOrEqual,
+                                    Value = objects[4].ClusteringKey2,
+                                }, 
+                        }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Take(5));
+            
+            (await connector.Search(new[]
+                        {
+                            CreateEqualsFilter("PartitionKey1", pk1),
+                            CreateEqualsFilter("PartitionKey2", pk2),
+                            CreateEqualsFilter("ClusteringKey1", ck),
+                            new Filter
+                                {
+                                    Field = "ClusteringKey2",
+                                    Type = FilterType.Less,
+                                    Value = objects[4].ClusteringKey2,
+                                }, 
+                        }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Take(4));
+        }
+
+        [Test]
         public async Task Test_Read()
         {
             var fixture = new Fixture();

@@ -37,13 +37,13 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
                                        {
                                            var memberExpression = CreateMemberAccessExpression(filter.Field, parameter);
                                            var valueExpression = CreateValueExpression(filter.Value, memberExpression.Type);
-                                           var expression = CreateFilterExpression(filter.Type, memberExpression, valueExpression);
+                                           var expression = CreateFilterExpression(memberExpression.Type, filter.Type, memberExpression, valueExpression);
                                            if(Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
                                                if(filter.Type == FilterType.NotEquals && !string.IsNullOrEmpty(filter.Value))
                                                    expression = Expression.OrElse(
                                                        expression,
-                                                       CreateFilterExpression(FilterType.Equals, memberExpression,
+                                                       CreateFilterExpression(memberExpression.Type, FilterType.Equals, memberExpression,
                                                                               Expression.Constant(null))
                                                    );
                                            }
@@ -67,9 +67,14 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
             return valueExpression;
         }
 
-        private static BinaryExpression CreateFilterExpression(FilterType @operator,
+        private static BinaryExpression CreateFilterExpression(Type propertyType, FilterType @operator,
                                                                Expression leftExpression, Expression rightExpression)
         {
+            if(propertyType == typeof(string))
+            {
+                var compareToInvokation = Expression.Call(leftExpression, typeof(string).GetMethod("CompareTo", new[]{typeof(string)}), rightExpression);
+                return makeBinaryExpressionByOperator[@operator](compareToInvokation, Expression.Constant(0, typeof(int)));
+            }
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);
         }
 

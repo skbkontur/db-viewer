@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
+
 using Cassandra.Mapping.Attributes;
+
 using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.TypeInformation;
@@ -26,13 +29,13 @@ namespace Kontur.DBViewer.Recipes.CQL
                         result.IsSearchable = true;
                         result.IsIdentity = true;
                         result.IsRequired = true;
-                        result.AvailableFilters = new[]{FilterType.Equals};
+                        result.AvailableFilters = new[] {FilterType.Equals};
                     }
 
                     if(property.CustomAttributes.Any(x => x.AttributeType == typeof(ClusteringKeyAttribute)))
                     {
                         result.IsSearchable = true;
-                        result.AvailableFilters = new[]{FilterType.Equals};
+                        result.AvailableFilters = availableFilters.ContainsKey(property.PropertyType) ? availableFilters[property.PropertyType] : new[] {FilterType.Equals, FilterType.No};
                     }
 
                     return result;
@@ -40,5 +43,21 @@ namespace Kontur.DBViewer.Recipes.CQL
         }
 
         private static readonly ConcurrentDictionary<Type, FieldInfo> configurations = new ConcurrentDictionary<Type, FieldInfo>();
+
+        private static readonly Dictionary<Type, FilterType[]> availableFilters = new Dictionary<Type, FilterType[]>
+            {
+                {
+                    typeof(string), new[]
+                        {
+                            FilterType.No,
+                            FilterType.Less,
+                            FilterType.Equals,
+                            FilterType.Greater,
+                            FilterType.NotEquals,
+                            FilterType.LessOrEqual,
+                            FilterType.GreaterOrEqual,
+                        }
+                }
+            };
     }
 }
