@@ -1,6 +1,7 @@
 full-build:
   deps:
     - alco.tools
+    - alco.global-services
   build:
     target: src\DBViewer.sln
     configuration: Release
