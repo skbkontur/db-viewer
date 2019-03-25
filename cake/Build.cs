@@ -45,6 +45,7 @@ namespace cake
                                                                    .Finally(() => stopServices.Task.Execute(Cake).Wait());
             
             PackAndPublishTasks("Core", "Core");
+            PackAndPublishTasks("Recipes.CQL", "Recipes.CQL");
         }
 
         private void PackAndPublishTasks(string taskName, string projectName)

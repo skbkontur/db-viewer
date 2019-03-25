@@ -5,6 +5,11 @@
         <AssemblyName>Kontur.DBViewer.Recipes.CQL</AssemblyName>
         <RootNamespace>Kontur.DBViewer.Recipes.CQL</RootNamespace>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <PackageId>Alko.DBViewer.Recipes.CQL</PackageId>
+        <PackageVersion>0.0.1-rc1</PackageVersion>
+        <PackageDescription>CQL connector for DBViewer</PackageDescription>
+        <PackageReleaseNotes>MVP</PackageReleaseNotes>
+        <Authors>Alko Team</Authors>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
