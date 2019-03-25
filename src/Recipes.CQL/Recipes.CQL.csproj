@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net471</TargetFramework>
+        <AssemblyName>Kontur.DBViewer.Recipes.CQL</AssemblyName>
+        <RootNamespace>Kontur.DBViewer.Recipes.CQL</RootNamespace>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugType>pdbonly</DebugType>
+        <OutputPath>bin</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <OutputPath>bin</OutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CassandraCSharpDriver" Version="3.7.0" />
+      <PackageReference Include="GrEmit" Version="3.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Core\Core.csproj" />
+    </ItemGroup>
+
+</Project>
