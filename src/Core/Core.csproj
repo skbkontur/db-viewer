@@ -6,9 +6,10 @@
     <RootNamespace>Kontur.DBViewer.Core</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <PackageId>Alko.DBViewer.Core</PackageId>
-    <PackageVersion>0.0.1-rc1</PackageVersion>
-    <PackageDescription>DBViewer core. Documentation: todo</PackageDescription>
-    <PackageReleaseNotes>MVP</PackageReleaseNotes>
+    <PackageVersion>0.0.1-rc2</PackageVersion>
+    <PackageDescription>DBViewer core. 
+      Documentation: https://git.skbkontur.ru/alco/db-viewer/blob/master/README.md</PackageDescription>
+    <PackageReleaseNotes>mvp</PackageReleaseNotes>
     <Authors>Alko Team</Authors>
   </PropertyGroup>
 
