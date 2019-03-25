@@ -1,6 +1,4 @@
 baseDirectory: ..\src
-suiterefs:
-  - ~\alco.global-services\serviceSuites\cassandra.yaml
 services:
   - !exe
     path: SampleApi\bin\Kontur.DBViewer.SampleApi.exe
