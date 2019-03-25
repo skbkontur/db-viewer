@@ -1,0 +1,14 @@
+[
+       {
+               "Settings" : {
+                        "Endpoints" : ["127.0.0.1:9042"],
+                        "ReplicationFactor" : 1,
+                        "PageSize" : 1000,
+                        "ReconnectionPolicy" : 1000,
+                        "ConsistencyLevel" : "Quorum"
+               },
+               "Keyspaces" : [
+                       "dbviewer"
+               ]
+       }
+]

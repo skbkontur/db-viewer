@@ -17,18 +17,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="5.6.0"/>
-    <PackageReference Include="nunit" Version="3.11.0"/>
-    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0"/>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0"/>
+    <PackageReference Include="Alko.Configuration.Settings" Version="0.0.4" />
+    <PackageReference Include="AutoFixture" Version="4.8.0" />
+    <PackageReference Include="CassandraCSharpDriver" Version="3.7.0" />
+    <PackageReference Include="CassandraUtils.Cassandra.Commons" Version="0.0.20" />
+    <PackageReference Include="CassandraUtils.SessionTableQueryExtending" Version="0.0.2" />
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="GroboContainer" Version="1.2.37" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj"/>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Recipes.CQL\Recipes.CQL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Objects"/>
+    <None Update="Settings\dependencies.csf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Settings\tests.csf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

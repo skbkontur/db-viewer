@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-
 using FluentAssertions;
-
 using Kontur.DBViewer.Core.TypeInformation;
-using Kontur.DBViewer.Tests.TestClasses;
-
+using Kontur.DBViewer.Tests.FieldInfoExtractor.TestClasses;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
-namespace Kontur.DBViewer.Tests
+namespace Kontur.DBViewer.Tests.FieldInfoExtractor
 {
     [TestFixture]
     public class FieldInfoExtractorTests
@@ -19,7 +16,7 @@ namespace Kontur.DBViewer.Tests
         {
             var enumValues = new[] {"FirstValue", "SecondValue"};
             CheckResult(
-                FieldInfoExtractor.Extract(typeof(TestClass1), (info, type) => null),
+                Core.TypeInformation.FieldInfoExtractor.Extract(typeof(TestClass1), (info, type) => null),
                 new ClassFieldInfo
                     {
                         Fields = new Dictionary<string, FieldInfo>
@@ -50,19 +47,19 @@ namespace Kontur.DBViewer.Tests
         [TestCaseSource(nameof(EnumTestCasesProvider))]
         public void Test_Enum(Type type, FieldInfo expected)
         {
-            CheckResult(FieldInfoExtractor.Extract(type, (i, t) => null), expected);
+            CheckResult(Core.TypeInformation.FieldInfoExtractor.Extract(type, (i, t) => null), expected);
         }
 
         [TestCaseSource(nameof(EnumerableTestCasesProvider))]
         public void Test_Enumerable(Type type, FieldInfo expected)
         {
-            CheckResult(FieldInfoExtractor.Extract(type, (i, t) => null), expected);
+            CheckResult(Core.TypeInformation.FieldInfoExtractor.Extract(type, (i, t) => null), expected);
         }
 
         [TestCaseSource(nameof(PrimitivesTestCasesProvider))]
         public void Test_Primitives(Type type, FieldInfo expected)
         {
-            CheckResult(FieldInfoExtractor.Extract(type, (i, t) => null), expected);
+            CheckResult(Core.TypeInformation.FieldInfoExtractor.Extract(type, (i, t) => null), expected);
         }
 
         private static IEnumerable<ITestCaseData> EnumTestCasesProvider()
