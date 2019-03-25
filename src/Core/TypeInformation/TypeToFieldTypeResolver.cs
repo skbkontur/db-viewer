@@ -16,7 +16,7 @@ namespace Kontur.DBViewer.Core.TypeInformation
                 return FieldType.Char;
             if(type == typeof(int))
                 return FieldType.Int;
-            if(type == typeof(DateTime))
+            if(type == typeof(DateTime) || type == typeof(DateTimeOffset))
                 return FieldType.DateTime;
             if(type == typeof(long))
                 return FieldType.Long;
@@ -36,7 +36,7 @@ namespace Kontur.DBViewer.Core.TypeInformation
                 return FieldType.HashSet;
             if(type.IsClass)
                 return FieldType.Class;
-            throw new NotSupportedException();
+            throw new NotSupportedException($"{initialType.FullName} не поддерживается");
         }
     }
 }
