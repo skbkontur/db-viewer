@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Kontur.DBViewer.Core.GenericHelpers
 {
     [Serializable]
-    public class GenericMethodInvocationException : Exception
+    internal class GenericMethodInvocationException : Exception
     {
         public GenericMethodInvocationException()
         {

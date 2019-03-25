@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Kontur.DBViewer.Core.GenericHelpers
 {
-    public static class GenericMethod
+    internal static class GenericMethod
     {
         public static T Invoke<T>(Expression<Func<T>> expression, Type type)
         {

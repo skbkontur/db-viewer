@@ -1,5 +1,5 @@
 ﻿namespace Kontur.DBViewer.Core.GenericHelpers
 {
-    public class ArgumentHolder
+    internal class ArgumentHolder
     { }
 }
