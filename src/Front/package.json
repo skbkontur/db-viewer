@@ -16,6 +16,7 @@
   "dependencies": {
     "@skbkontur/react-ui": "^0.17.11",
     "classnames": "^2.2.6",
+    "copy-to-clipboard": "^3.0.8",
     "history": "^4.7.2",
     "less": "^3.9.0",
     "lodash": "^4.17.10",

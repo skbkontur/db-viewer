@@ -3,6 +3,7 @@ import Gapped from "@skbkontur/react-ui/Gapped";
 import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import AccessConfiguration from "../Utils/AccessConfiguration";
+import { copyObject } from "../Utils/CopyUtils";
 import { DeleteModal } from "./DeleteModal";
 import ObjectDetails from "./ObjectDetails";
 import * as styles from "./ObjectDetailsView.less";
@@ -49,9 +50,12 @@ export default class ObjectDetailsContent extends React.Component<
           />
         </div>
         {this.renderEditButtons()}
+        <Button onClick={this.handleCopy}>Скопировать весь объект</Button>
       </Gapped>
     );
   }
+
+  private handleCopy = () => copyObject(this.props.data);
 
   private renderEditButtons() {
     if (!AccessConfiguration.isEditAllowed()) {

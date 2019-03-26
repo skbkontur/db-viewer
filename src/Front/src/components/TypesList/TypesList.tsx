@@ -54,20 +54,16 @@ class TypesList extends React.Component<Props, {}> {
           backText={"Вернуться к списку инструментов"}
           backTo={this.props.match.url.endsWith("/") ? ".." : "."}
         />
-        <Gapped vertical>
-          <div>
-            <Input
-              ref={this.handleInputRef}
-              value={this.props.filters.searchString}
-              onChange={this._handleChangeSearchString}
-              placeholder={"Можно искать как в R#"}
-            />
-          </div>
-          <Gapped vertical gap={15}>
-            {Object.keys(categorized).map(schemaName =>
-              this.renderTypes(schemaName, categorized[schemaName])
-            )}
-          </Gapped>
+        <Gapped vertical gap={15}>
+          <Input
+            ref={this.handleInputRef}
+            value={this.props.filters.searchString}
+            onChange={this._handleChangeSearchString}
+            placeholder={"Можно искать как в R#"}
+          />
+          {Object.keys(categorized).map(schemaName =>
+            this.renderTypes(schemaName, categorized[schemaName])
+          )}
         </Gapped>
       </div>
     );

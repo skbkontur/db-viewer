@@ -133,6 +133,9 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
   return (
     <ObjectDetailsContent
       data={{
+        classField: {
+          intField: 17,
+        },
         intField: 147,
         boolField: false,
         nullableBoolField: null,

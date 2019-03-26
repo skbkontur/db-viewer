@@ -1,10 +1,12 @@
 /* tslint:disable:no-empty */
+import Link from "@skbkontur/react-ui/Link";
 import ClassNames from "classnames";
 import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import { FieldType } from "../../api/impl/FieldType";
 import FieldEditor from "../Common/FieldEditor";
 import { PrimitiveValue } from "../Common/PrimitiveValue";
+import { copyObject } from "../Utils/CopyUtils";
 import { StringUtils } from "../Utils/StringUtils";
 import * as styles from "./ObjectDetails.less";
 
@@ -123,6 +125,9 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         typeInfo.type === FieldType.Enumerable);
     return (
       <tr key={key}>
+        <td>
+          <Link icon={"Copy"} onClick={() => copyObject(value)} />
+        </td>
         <td
           className={ClassNames(
             expandable && styles.complexKey,
