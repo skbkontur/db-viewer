@@ -40,7 +40,7 @@ class TypesList extends React.Component<Props, {}> {
           routerLink
           title={"Бизнес объекты"}
           backText={"Вернуться к списку инструментов"}
-          backTo={"."}
+          backTo={this.props.match.url.endsWith("/") ? ".." : "."}
         />
         <Gapped vertical>
           <div>
