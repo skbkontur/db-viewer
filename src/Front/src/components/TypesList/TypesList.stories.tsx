@@ -4,9 +4,9 @@ import { Provider } from "react-redux";
 import StoryRouter from "storybook-react-router";
 import Apis from "../../api/Apis";
 import { FakeBusinessObjectsListApi } from "../../api/FakeBusinessObjectsListApi";
+import { TypeModel } from "../../api/impl/TypeModel";
 import { configureStore } from "../IDBViewerStore";
 import TypesList from "./TypesList";
-import { TypeModel } from "../../api/impl/TypeModel";
 
 const store = configureStore();
 const api = new FakeBusinessObjectsListApi();
