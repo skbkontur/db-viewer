@@ -6,13 +6,15 @@ import Apis from "../../api/Apis";
 import { FakeBusinessObjectsListApi } from "../../api/FakeBusinessObjectsListApi";
 import { configureStore } from "../IDBViewerStore";
 import TypesList from "./TypesList";
+import { TypeModel } from "../../api/impl/TypeModel";
 
 const store = configureStore();
 const api = new FakeBusinessObjectsListApi();
 Apis.initialize(api);
-api.configureTypes([
-  {
-    name: "FirstObject",
+const types: TypeModel[] = [];
+for (let i = 0; i < 20; i++) {
+  types.push({
+    name: `IndexedObject_${i}`,
     schemaDescription: {
       schemaName: "Indexed",
       countable: true,
@@ -21,9 +23,11 @@ api.configureTypes([
       maxCountLimit: null,
     },
     shape: null,
-  },
-  {
-    name: "SecondObject",
+  });
+}
+for (let i = 0; i < 20; i++) {
+  types.push({
+    name: `NotIndexedObject_${i}`,
     schemaDescription: {
       schemaName: "BusinessObjectsStorage",
       countable: true,
@@ -32,8 +36,9 @@ api.configureTypes([
       maxCountLimit: null,
     },
     shape: null,
-  },
-]);
+  });
+}
+api.configureTypes(types);
 
 storiesOf("TypesList", module)
   .addDecorator(story => <Provider store={store}>{story()}</Provider>)

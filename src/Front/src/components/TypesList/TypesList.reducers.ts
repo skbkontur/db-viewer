@@ -1,4 +1,4 @@
-import { groupBy, keyBy } from "lodash";
+import { keyBy } from "lodash";
 import { TypeModel } from "../../api/impl/TypeModel";
 import { LoaderState } from "../Common/FullPageLoader";
 import {
@@ -13,7 +13,7 @@ export interface ITypesListFilter {
 export interface ITypesListStore {
   loadingState: LoaderState;
   rawList: TypeModel[];
-  list: IDictionary<TypeModel[]>;
+  list: TypeModel[];
   descriptions: IDictionary<TypeModel>;
   filters: ITypesListFilter;
 }
@@ -65,9 +65,8 @@ function updateFilters(state: ITypesListStore, newFilters) {
 function applyFilters(
   filters: ITypesListFilter,
   list: TypeModel[]
-): IDictionary<TypeModel[]> {
-  const filteredList = list.filter(x => matches(x, filters));
-  return groupBy(filteredList, x => x.name[0]);
+): TypeModel[] {
+  return list.filter(x => matches(x, filters));
 }
 
 function matches(type: TypeModel, filter: ITypesListFilter): boolean {

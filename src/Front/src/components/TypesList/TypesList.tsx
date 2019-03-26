@@ -1,6 +1,6 @@
 import Gapped from "@skbkontur/react-ui/Gapped";
 import Input from "@skbkontur/react-ui/Input";
-import * as classnames from "classnames";
+import groupBy from "lodash/groupBy";
 import * as React from "react";
 import { connect } from "react-redux";
 import {
@@ -8,6 +8,7 @@ import {
   RouteComponentProps,
   withRouter,
 } from "react-router-dom";
+import { TypeModel } from "../../api/impl/TypeModel";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import FullPageLoader from "../Common/FullPageLoader";
 import { IDBViewerStore } from "../IDBViewerStore";
@@ -19,9 +20,16 @@ import * as styles from "./TypesList.less";
 type Props = TypeOfConnect<typeof reduxConnector> & RouteComponentProps<{}>;
 
 class TypesList extends React.Component<Props, {}> {
+  private input: Input;
   public componentDidMount() {
     if (this.props.list === null) {
       this.props.onLoad();
+    }
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (this.props.list != null && prevProps.list == null) {
+      this.input.focus();
     }
   }
 
@@ -34,6 +42,10 @@ class TypesList extends React.Component<Props, {}> {
         />
       );
     }
+    const categorized = groupBy<TypeModel>(
+      this.props.list,
+      x => x.schemaDescription.schemaName
+    );
     return (
       <div>
         <AdminToolsHeader
@@ -45,56 +57,49 @@ class TypesList extends React.Component<Props, {}> {
         <Gapped vertical>
           <div>
             <Input
+              ref={this.handleInputRef}
               value={this.props.filters.searchString}
               onChange={this._handleChangeSearchString}
+              placeholder={"Можно искать как в R#"}
             />
           </div>
-          <table className={styles.table}>
-            <tbody>
-              {Object.keys(this.props.list).map((letter, letterIdx) => {
-                const types = this.props.list[letter];
-                return types.map((type, idx) => (
-                  <tr key={type.name}>
-                    {idx === 0 && (
-                      <td
-                        rowSpan={types.length}
-                        className={classnames(
-                          styles.letter,
-                          styles.cell,
-                          letterIdx % 2 === 0 && styles.even
-                        )}
-                      >
-                        {letter}
-                      </td>
-                    )}
-                    <td
-                      className={classnames(
-                        styles.cell,
-                        letterIdx % 2 === 0 && styles.even
-                      )}
-                    >
-                      <Link
-                        to={StringUtils.normalizeUrl(
-                          `${this.props.match.url}/${type.name}`
-                        )}
-                      >
-                        {type.name}
-                      </Link>
-                      <span className={styles.schema}>
-                        {type.schemaDescription.schemaName}
-                      </span>
-                    </td>
-                  </tr>
-                ));
-              })}
-            </tbody>
-          </table>
+          <Gapped vertical gap={15}>
+            {Object.keys(categorized).map(schemaName =>
+              this.renderTypes(schemaName, categorized[schemaName])
+            )}
+          </Gapped>
         </Gapped>
       </div>
     );
   }
 
-  public _handleChangeSearchString = (_, v) =>
+  private handleInputRef = c => (this.input = c);
+
+  private renderTypes(schemaName: string, list: TypeModel[]): React.ReactNode {
+    return (
+      <Gapped vertical gap={15} key={schemaName}>
+        <div className={styles.schemaName}>{schemaName}</div>
+        <div className={styles.list}>
+          {list.map(type => (
+            <span
+              className={styles.type}
+              key={type.name + type.schemaDescription.schemaName}
+            >
+              <Link
+                to={StringUtils.normalizeUrl(
+                  `${this.props.match.url}/${type.name}`
+                )}
+              >
+                {type.name}
+              </Link>
+            </span>
+          ))}
+        </div>
+      </Gapped>
+    );
+  }
+
+  private _handleChangeSearchString = (_, v) =>
     this.props.onChangeSearchString(v);
 }
 

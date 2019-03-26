@@ -1,5 +1,5 @@
 /* tslint:disable:no-empty */
-import * as ClassNames from "classnames";
+import ClassNames from "classnames";
 import * as React from "react";
 import { FieldInfo } from "../../api/impl/FieldInfo";
 import { FieldType } from "../../api/impl/FieldType";
