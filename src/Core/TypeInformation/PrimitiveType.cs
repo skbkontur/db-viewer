@@ -1,6 +1,6 @@
 ﻿namespace Kontur.DBViewer.Core.TypeInformation
 {
-    public enum FieldType
+    public enum PrimitiveType
     {
         String,
         Byte,

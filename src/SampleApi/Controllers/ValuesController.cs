@@ -42,7 +42,7 @@ namespace Kontur.DBViewer.SampleApi.Controllers
                             typeof(TestObjectWithAllPrimitives),
                             typeof(TestObjectWithBools)
                         ),
-                        TypeInfoExtractor = new SampleTypeInfoExtractor(),
+                        PropertyDescriptionBuilder = new SampleTypeInfoExtractor(),
                         ConnectorsFactory = new SampleIdbConnectorFactory(),
                     }
             );

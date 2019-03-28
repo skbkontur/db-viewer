@@ -1,6 +1,4 @@
-﻿using Kontur.DBViewer.Core.Connector;
-
-namespace Kontur.DBViewer.Core.DTO
+﻿namespace Kontur.DBViewer.Core.DTO
 {
     public class FindModel
     {

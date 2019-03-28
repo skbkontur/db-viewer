@@ -2,17 +2,8 @@
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
-    public class FieldMeta
+    public class PropertyDescription
     {
-        public FieldMeta(string name)
-        {
-            Name = name;
-        }
-
-        public FieldMeta()
-        {
-        }
-
         public string Name { get; set; }
         public bool IsIdentity { get; set; }
         public bool IsSearchable { get; set; }

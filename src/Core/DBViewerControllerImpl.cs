@@ -28,7 +28,7 @@ namespace Kontur.DBViewer.Core
                                           {
                                               Name = x.TypeIdentifier,
                                               SchemaDescription = schema.Description,
-                                              Shape = schema.TypeInfoExtractor.GetShape(x.Type),
+                                              Shape = schema.TypeInfoExtractor.Extract(x.Type),
                                           }))
                                       .OrderBy(x => x.Name).ToArray(),
                 };
@@ -53,7 +53,7 @@ namespace Kontur.DBViewer.Core
             return new ObjectDetailsModel
                 {
                     Object = await schemaRegistry.GetConnector(typeIdentifier).Read(filters.Filters).ConfigureAwait(false),
-                    TypeInfo = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier).TypeInfoExtractor.GetShape(type),
+                    TypeInfo = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier).TypeInfoExtractor.Extract(type),
                 };
         }
 

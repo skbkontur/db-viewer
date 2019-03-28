@@ -7,6 +7,6 @@ namespace Kontur.DBViewer.Core.DTO
     {
         public string Name { get; set; }
         public SchemaDescription SchemaDescription { get; set; }
-        public FieldInfo Shape { get; set; }
+        public TypeInfo Shape { get; set; }
     }
 }
