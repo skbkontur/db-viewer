@@ -2,7 +2,7 @@
 // TypeScriptContractGenerator's generated content
 import { FilterType } from './FilterType';
 
-export type FieldMeta = {
+export type PropertyDescription = {
     name: Nullable<string>;
     isIdentity: boolean;
     isSearchable: boolean;

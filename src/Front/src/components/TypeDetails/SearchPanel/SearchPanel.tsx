@@ -1,6 +1,7 @@
 import * as React from "react";
-import { FieldInfo } from "../../../api/impl/FieldInfo";
 import { FilterType } from "../../../api/impl/FilterType";
+import { Property } from "../../../api/impl/Property";
+import { TypeInfo } from "../../../api/impl/TypeInfo";
 import { IFilter } from "../IFilter";
 import { SearchField } from "./SearchField";
 import * as styles from "./SearchPanel.less";
@@ -23,7 +24,7 @@ export const buildFiltersSelect = (...args: FilterType[]): FilterSelectItem[] =>
 interface ISearchPanelProps {
   onChangeFilter: (name: string, value: IFilter) => void;
   filters: IDictionary<IFilter>;
-  fields: FieldInfo[];
+  fields: Property[];
   validations: IDictionary<boolean>;
 }
 
@@ -34,11 +35,11 @@ export default class SearchPanel extends React.Component<ISearchPanelProps> {
         <tbody>
           {this.props.fields.map(x => (
             <SearchField
-              name={x.meta.name}
-              availableFilters={x.meta.availableFilters}
-              typeInfo={x}
-              key={x.meta.name}
-              filter={this.props.filters[x.meta.name]}
+              name={x.description.name}
+              availableFilters={x.description.availableFilters}
+              typeInfo={x.typeInfo}
+              key={x.description.name}
+              filter={this.props.filters[x.description.name]}
               onChangeFilter={this._handleChangeFilter}
               validations={this.props.validations}
             />
@@ -56,7 +57,7 @@ export interface ISearchFieldProps {
   filter: IFilter;
   name: string;
   availableFilters: FilterType[];
-  typeInfo: FieldInfo;
+  typeInfo: TypeInfo;
   onChangeFilter: (name: string, value: IFilter) => void;
   validations: IDictionary<boolean>;
 }

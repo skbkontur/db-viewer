@@ -11,10 +11,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { NavLink } from "react-router-dom";
-import { FieldInfo } from "../../api/impl/FieldInfo";
-import { FieldType } from "../../api/impl/FieldType";
+import { PrimitiveType } from "../../api/impl/PrimitiveType";
+import { Property } from "../../api/impl/Property";
+import { PropertyDescription } from "../../api/impl/PropertyDescription";
 import { Sort } from "../../api/impl/Sort";
 import { SortDirection } from "../../api/impl/SortDirection";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 import { TypeModel } from "../../api/impl/TypeModel";
 import AdminToolsHeader from "../Common/AdminToolsHeader";
 import { ColumnConfiguration } from "../Common/ColumnConfiguration";
@@ -54,7 +56,7 @@ interface IState {
   validations: IDictionary<boolean>;
   filters: IDictionary<IFilter>;
   sorts: Nullable<Sort>;
-  searchableFields: FieldInfo[];
+  searchableFields: Property[];
   loaderState: LoaderState;
   paging: Nullable<IPagingState>;
 }
@@ -122,13 +124,13 @@ class TypeDetails extends React.Component<IProps, IState> {
   }
 
   private getDefaultFiltersState = (
-    searchableFields: FieldInfo[]
+    searchableFields: Property[]
   ): IDictionary<IFilter> => {
     const result: IDictionary<IFilter> = {};
-    for (const fieldInfo of searchableFields) {
-      result[fieldInfo.meta.name] = {
+    for (const property of searchableFields) {
+      result[property.description.name] = {
         value: "",
-        type: fieldInfo.meta.availableFilters[0],
+        type: property.description.availableFilters[0],
       };
     }
     return result;
@@ -209,28 +211,33 @@ class TypeDetails extends React.Component<IProps, IState> {
     );
   };
 
-  private getSearchableFields = (typeDetails: FieldInfo): FieldInfo[] => {
-    if (typeDetails.type === FieldType.Class) {
+  private getSearchableFields = (
+    typeInfo: TypeInfo,
+    propertyDescription: PropertyDescription = null
+  ): Property[] => {
+    if (typeInfo.type === PrimitiveType.Class) {
       return flatten(
-        Object.values(typeDetails.fields).map(this.getSearchableFields)
+        Object.values(typeInfo.properties).map(x =>
+          this.getSearchableFields(x.typeInfo, x.description)
+        )
       ).filter(x => !!x);
     }
-    if (typeDetails.meta !== null && typeDetails.meta.isSearchable) {
-      return [typeDetails];
+    if (propertyDescription !== null && propertyDescription.isSearchable) {
+      return [{ typeInfo, description: propertyDescription }];
     }
     return null;
   };
 
   private handleSearch = (skipCount: boolean = false) => {
     const invalidFields = [];
-    for (const fieldInfo of this.state.searchableFields.filter(
-      x => x.meta.isRequired
+    for (const property of this.state.searchableFields.filter(
+      x => x.description.isRequired
     )) {
       if (
-        !this.state.filters[fieldInfo.meta.name] ||
-        !this.state.filters[fieldInfo.meta.name].value
+        !this.state.filters[property.description.name] ||
+        !this.state.filters[property.description.name].value
       ) {
-        invalidFields.push(fieldInfo.meta.name);
+        invalidFields.push(property.description.name);
       }
     }
     if (invalidFields.some(_ => true)) {
@@ -353,8 +360,8 @@ class TypeDetails extends React.Component<IProps, IState> {
           const query = identityFields
             .map(
               x =>
-                `${x.meta.name}=${
-                  item[StringUtils.lowerCaseFirstLetter(x.meta.name)]
+                `${x.description.name}=${
+                  item[StringUtils.lowerCaseFirstLetter(x.description.name)]
                 }`
             )
             .join("&");
@@ -370,10 +377,10 @@ class TypeDetails extends React.Component<IProps, IState> {
         }),
         ...this.state.searchableFields.map(field =>
           ColumnConfiguration.createByPath(
-            StringUtils.lowerCaseFirstLetter(field.meta.name)
+            StringUtils.lowerCaseFirstLetter(field.description.name)
           )
             .withCustomRender(x => (
-              <PrimitiveValue data={x} fieldType={field.type} />
+              <PrimitiveValue data={x} primitiveType={field.typeInfo.type} />
             ))
             .withHeader(() => this.renderTableHeader(field))
         ),
@@ -382,12 +389,12 @@ class TypeDetails extends React.Component<IProps, IState> {
     return tableConfigsCache[this.props.type];
   }
 
-  private renderTableHeader = (field: FieldInfo): React.ReactNode => {
-    if (!field.meta.isSortable) {
-      return <span>{field.meta.name}</span>;
+  private renderTableHeader = (field: Property): React.ReactNode => {
+    if (!field.description.isSortable) {
+      return <span>{field.description.name}</span>;
     }
     const currentDirection =
-      this.state.sorts && this.state.sorts.field === field.meta.name
+      this.state.sorts && this.state.sorts.field === field.description.name
         ? this.state.sorts.direction
         : null;
     return (
@@ -397,7 +404,7 @@ class TypeDetails extends React.Component<IProps, IState> {
         }
         icon={this.getSortDirectionIcon(currentDirection)}
       >
-        {field.meta.name}
+        {field.description.name}
       </Link>
     );
   };
@@ -429,23 +436,28 @@ class TypeDetails extends React.Component<IProps, IState> {
     }
   };
 
-  private handleSort = (field: FieldInfo, direction: SortDirection) => {
+  private handleSort = (field: Property, direction: SortDirection) => {
     this.setState(
       {
-        sorts: { field: field.meta.name, direction },
+        sorts: { field: field.description.name, direction },
       },
       () => this.handleSearch(true)
     );
   };
 
-  private getIdentityFields = (typeDetails: FieldInfo): FieldInfo[] => {
-    if (typeDetails.type === FieldType.Class) {
+  private getIdentityFields = (
+    typeInfo: TypeInfo,
+    propertyDescription: PropertyDescription = null
+  ): Property[] => {
+    if (typeInfo.type === PrimitiveType.Class) {
       return flatten(
-        Object.values(typeDetails.fields).map(this.getIdentityFields)
+        Object.values(typeInfo.properties).map(x =>
+          this.getIdentityFields(x.typeInfo, x.description)
+        )
       ).filter(x => !!x);
     }
-    if (typeDetails.meta !== null && typeDetails.meta.isIdentity) {
-      return [typeDetails];
+    if (propertyDescription !== null && propertyDescription.isIdentity) {
+      return [{ typeInfo, description: propertyDescription }];
     }
     return null;
   };

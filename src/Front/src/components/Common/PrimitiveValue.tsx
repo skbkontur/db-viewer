@@ -1,19 +1,19 @@
 import * as React from "react";
-import { FieldType } from "../../api/impl/FieldType";
+import { PrimitiveType } from "../../api/impl/PrimitiveType";
 import * as styles from "./PrimitiveValue.less";
 
 interface IProps {
   data: any;
-  fieldType: FieldType;
+  primitiveType: PrimitiveType;
 }
 
 export class PrimitiveValue extends React.Component<IProps> {
   public render() {
-    const { data, fieldType } = this.props;
+    const { data, primitiveType } = this.props;
     if (data == null) {
       return <span className={styles.null}>(null)</span>;
     }
-    if (fieldType === FieldType.Bool) {
+    if (primitiveType === PrimitiveType.Bool) {
       return <span>{data.toString()}</span>;
     }
     return <span>{data}</span>;

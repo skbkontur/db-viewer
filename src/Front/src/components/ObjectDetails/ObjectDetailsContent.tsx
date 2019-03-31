@@ -1,7 +1,7 @@
 import Button from "@skbkontur/react-ui/Button";
 import Gapped from "@skbkontur/react-ui/Gapped";
 import * as React from "react";
-import { FieldInfo } from "../../api/impl/FieldInfo";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 import AccessConfiguration from "../Utils/AccessConfiguration";
 import { copyObject } from "../Utils/CopyUtils";
 import { DeleteModal } from "./DeleteModal";
@@ -10,7 +10,7 @@ import * as styles from "./ObjectDetailsView.less";
 
 interface IProps {
   data: object;
-  typeInfo: FieldInfo;
+  typeInfo: TypeInfo;
   onSave: (o: object) => Promise<void>;
   onDelete: () => Promise<void>;
 }

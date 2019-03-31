@@ -1,7 +1,7 @@
 // tslint:disable
 // TypeScriptContractGenerator's generated content
 
-export enum FieldType {
+export enum PrimitiveType {
     String = 'String',
     Byte = 'Byte',
     Char = 'Char',
