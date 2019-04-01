@@ -6,6 +6,68 @@ using System.Reflection;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
+    public class ValueExtractor
+    {
+        private readonly ITypeInfoExtractor typeInfoExtractor;
+        private readonly ICustomPropertyValueExtractor customPropertyValueExtractor;
+        private readonly ICustomPropertyTypeResolver customPropertyTypeResolver;
+
+        public ValueExtractor(
+            ITypeInfoExtractor typeInfoExtractor,
+            ICustomPropertyValueExtractor customPropertyValueExtractor,
+            ICustomPropertyTypeResolver customPropertyTypeResolver
+        )
+        {
+            this.typeInfoExtractor = typeInfoExtractor;
+            this.customPropertyValueExtractor = customPropertyValueExtractor;
+            this.customPropertyTypeResolver = customPropertyTypeResolver;
+        }
+
+        public object ExtractValue(Type type, object o)
+        {
+            var typeInfo = typeInfoExtractor.Extract(type);
+            return ExtractValue(typeInfo, type, o);
+        }
+
+        private object ExtractValue(TypeInfo typeInfo, Type type, object o)
+        {
+            if (typeInfo is ClassTypeInfo classTypeInfo)
+            {
+                var properties = classTypeInfo.Properties;
+                var result = new Dictionary<string, object>();
+                foreach (var property in properties)
+                {
+                    var propertyInfo = type.GetProperty(property.Description.Name);
+                    var propertyValue = propertyInfo.GetMethod.Invoke(o, null);
+                    if (customPropertyValueExtractor != null &&
+                        customPropertyValueExtractor.TryGetPropertyValue(propertyValue, propertyInfo,
+                            out var customExtractionResult))
+                    {
+                        result[property.Description.Name] =
+                            ExtractValue(
+                                property.TypeInfo,
+                                customPropertyTypeResolver.TryResolvePropertyType(propertyInfo),
+                                customExtractionResult
+                            );
+                    }
+                    else
+                    {
+                        result[property.Description.Name] =
+                            ExtractValue(
+                                property.TypeInfo,
+                                propertyInfo.PropertyType,
+                                propertyValue
+                            );
+                    }
+                }
+
+                return result;
+            }
+
+            return o;
+        }
+    }
+
     public class TypeInfoExtractor : ITypeInfoExtractor
     {
         private readonly ICustomPropertyTypeResolver customPropertyTypeResolver;

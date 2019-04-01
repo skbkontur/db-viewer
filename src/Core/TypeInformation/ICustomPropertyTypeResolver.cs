@@ -7,4 +7,9 @@ namespace Kontur.DBViewer.Core.TypeInformation
     {
         Type TryResolvePropertyType(PropertyInfo propertyInfo);
     }
+
+    public interface ICustomPropertyValueExtractor
+    {
+        bool TryGetPropertyValue(object propertyValue, PropertyInfo propertyInfo, out object result);
+    }
 }

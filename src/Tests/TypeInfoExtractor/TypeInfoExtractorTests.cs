@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using FluentAssertions;
+using GroBuf;
+using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.TypeInformation;
 using Kontur.DBViewer.Tests.TypeInfoExtractor.TestClasses;
 using NUnit.Framework;
@@ -8,6 +11,57 @@ using NUnit.Framework.Interfaces;
 
 namespace Kontur.DBViewer.Tests.TypeInfoExtractor
 {
+    [TestFixture]
+    public class ValueExtractorTests
+    {
+        [Test]
+        public void Test()
+        {
+            var serializer = new Serializer(new AllPropertiesExtractor());
+            var typeInfoExtractor =
+                new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), new CustomPropertyTypeResolver());
+            var valueExtractor = new ValueExtractor(typeInfoExtractor, new CustomPropertyValueExtractor(serializer), new CustomPropertyTypeResolver());
+            valueExtractor.ExtractValue(typeof(TestClass1), new TestClass1
+            {
+                NotNullable = TestEnum.FirstValue,
+                Nullable = null,
+                Nested = new TestClass2
+                {
+                    String = "asdf",
+                    Decimal = 1.5555m,
+                }
+            }).Should().BeEquivalentTo(new Dictionary<string, object>
+            {
+                {"NotNullable", TestEnum.FirstValue},
+                {"Nullable", null},
+                {
+                    "Nested", new Dictionary<string, object>
+                    {
+                        {"String", "asdf"},
+                        {"Decimal", 1.5555m}
+                    }
+                }
+            });
+            valueExtractor.ExtractValue(typeof(TestClassWithCustomPropertyType), new TestClassWithCustomPropertyType
+            {
+                Property = serializer.Serialize(new TestClass2
+                {
+                    String = "asdf",
+                    Decimal = 1.5555m,
+                }),
+            }).Should().BeEquivalentTo(new Dictionary<string, object>
+            {
+                {
+                    "Property", new Dictionary<string, object>
+                    {
+                        {"String", "asdf"},
+                        {"Decimal", 1.5555m}
+                    }
+                }
+            });
+        }
+    }
+
     [TestFixture]
     public class TypeInfoExtractorTests
     {
@@ -20,7 +74,7 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                 extractor.Extract(typeof(TestClass1)),
                 new ClassTypeInfo
                 {
-                    Properties = new []
+                    Properties = new[]
                     {
                         new Property
                         {
@@ -51,7 +105,7 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                                         {
                                             Name = "String",
                                         },
-                                    }, 
+                                    },
                                     new Property
                                     {
                                         TypeInfo = new DecimalTypeInfo(false),
@@ -59,7 +113,7 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                                         {
                                             Name = "Decimal",
                                         },
-                                    }, 
+                                    },
                                 }
                             },
                             Description = new PropertyDescription
@@ -95,12 +149,13 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
         [Test]
         public void Test_CustomPropertyTypeResolver()
         {
-            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), new CustomPropertyTypeResolver());
+            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(),
+                new CustomPropertyTypeResolver());
             CheckResult(
                 extractor.Extract(typeof(TestClassWithCustomPropertyType)),
                 new ClassTypeInfo
                 {
-                    Properties = new []
+                    Properties = new[]
                     {
                         new Property
                         {
@@ -115,7 +170,7 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                                         {
                                             Name = "String",
                                         },
-                                    }, 
+                                    },
                                     new Property
                                     {
                                         TypeInfo = new DecimalTypeInfo(false),
@@ -123,7 +178,7 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                                         {
                                             Name = "Decimal",
                                         },
-                                    }, 
+                                    },
                                 }
                             },
                             Description = new PropertyDescription
@@ -145,9 +200,12 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
 
         private static IEnumerable<ITestCaseData> EnumerableTestCasesProvider()
         {
-            yield return CreateTestCase(typeof(string[]), new EnumerableTypeInfo(new StringTypeInfo()), "ArrayOfStrings");
-            yield return CreateTestCase(typeof(List<int?>), new EnumerableTypeInfo(new IntTypeInfo(true)), "ArrayOfNullableInts");
-            yield return CreateTestCase(typeof(HashSet<Guid>), new HashSetTypeInfo(new StringTypeInfo()), "HashSetOfStrings");
+            yield return CreateTestCase(typeof(string[]), new EnumerableTypeInfo(new StringTypeInfo()),
+                "ArrayOfStrings");
+            yield return CreateTestCase(typeof(List<int?>), new EnumerableTypeInfo(new IntTypeInfo(true)),
+                "ArrayOfNullableInts");
+            yield return CreateTestCase(typeof(HashSet<Guid>), new HashSetTypeInfo(new StringTypeInfo()),
+                "HashSetOfStrings");
             yield return CreateTestCase(
                 typeof(Dictionary<string, decimal>),
                 new DictionaryTypeInfo(new StringTypeInfo(), new DecimalTypeInfo(false)), "Dictionary<string, decimal>"

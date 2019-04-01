@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Kontur.DBViewer.Core.Attributes;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.Core.TypeInformation;
 
 [assembly:InternalsVisibleTo("Kontur.DBViewer.TypeScriptGenerator")]
 namespace Kontur.DBViewer.Core
@@ -50,9 +51,11 @@ namespace Kontur.DBViewer.Core
         public async Task<ObjectDetailsModel> Read(string typeIdentifier, [FromBody] ReadModel filters)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
+            var result = await schemaRegistry.GetConnector(typeIdentifier).Read(filters.Filters).ConfigureAwait(false);
             return new ObjectDetailsModel
                 {
-                    Object = await schemaRegistry.GetConnector(typeIdentifier).Read(filters.Filters).ConfigureAwait(false),
+                    Object = new ValueExtractor(schema.TypeInfoExtractor, schema.CustomPropertyValueExtractor, schema.CustomPropertyTypeResolver).ExtractValue(type, result),
                     TypeInfo = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier).TypeInfoExtractor.Extract(type),
                 };
         }

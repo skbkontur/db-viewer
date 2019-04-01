@@ -9,6 +9,7 @@ namespace Kontur.DBViewer.Core.Schemas
         public IDBConnectorFactory ConnectorsFactory { get; set; }
         public IPropertyDescriptionBuilder PropertyDescriptionBuilder { get; set; }
         public ICustomPropertyTypeResolver CustomPropertyTypeResolver { get; set; }
+        public ICustomPropertyValueExtractor CustomPropertyValueExtractor { get; set; }
         public TypeDescription[] Types { get; set; }
 
         public ITypeInfoExtractor TypeInfoExtractor =>
