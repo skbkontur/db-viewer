@@ -14,12 +14,12 @@ using Newtonsoft.Json.Linq;
 namespace Kontur.DBViewer.SampleApi.Controllers
 {
     [RoutePrefix("DBViewer")]
-    public class ValuesController : ApiController
+    public class DbViewerController : ApiController
     {
         private readonly DBViewerControllerImpl impl;
         private readonly SchemaRegistry schemaRegistry;
 
-        public ValuesController()
+        public DbViewerController()
         {
             schemaRegistry = new SchemaRegistry();
             schemaRegistry.Add(
