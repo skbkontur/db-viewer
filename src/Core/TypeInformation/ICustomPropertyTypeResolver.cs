@@ -3,13 +3,15 @@ using System.Reflection;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
-    public interface ICustomPropertyTypeResolver
+    public interface ICustomPropertyConfigurationProvider
     {
-        Type TryResolvePropertyType(PropertyInfo propertyInfo);
+        CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo);
     }
 
-    public interface ICustomPropertyValueExtractor
+    public class CustomPropertyConfiguration
     {
-        bool TryGetPropertyValue(object propertyValue, PropertyInfo propertyInfo, out object result);
+        public Type ResolvedType { get; set; }
+        public Func<object, object> ExtractValue { get; set; }
+        public Func<object, object> BuildValue { get; set; }
     }
 }

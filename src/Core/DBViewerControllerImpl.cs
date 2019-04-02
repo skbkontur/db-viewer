@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
 using Kontur.DBViewer.Core.Attributes;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.Core.TypeInformation;
 
-[assembly:InternalsVisibleTo("Kontur.DBViewer.TypeScriptGenerator")]
+[assembly: InternalsVisibleTo("Kontur.DBViewer.TypeScriptGenerator")]
+
 namespace Kontur.DBViewer.Core
 {
     public class DBViewerControllerImpl
@@ -24,27 +24,30 @@ namespace Kontur.DBViewer.Core
         {
             var allSchemas = schemaRegistry.GetAllSchemas();
             return new TypesListModel
-                {
-                    Types = allSchemas.SelectMany(schema => schema.Types.Select(x => new TypeModel
-                                          {
-                                              Name = x.TypeIdentifier,
-                                              SchemaDescription = schema.Description,
-                                              Shape = schema.TypeInfoExtractor.Extract(x.Type),
-                                          }))
-                                      .OrderBy(x => x.Name).ToArray(),
-                };
+            {
+                Types = allSchemas.SelectMany(schema => schema.Types.Select(x => new TypeModel
+                    {
+                        Name = x.TypeIdentifier,
+                        SchemaDescription = schema.Description,
+                        Shape = TypeInfoExtractor.Extract(x.Type, schema.PropertyDescriptionBuilder,
+                            schema.CustomPropertyConfigurationProvider),
+                    }))
+                    .OrderBy(x => x.Name).ToArray(),
+            };
         }
 
         [HttpPost, Route("{typeIdentifier}/Find")]
         public async Task<object[]> Find(string typeIdentifier, [FromBody] FindModel filter)
         {
-            return await schemaRegistry.GetConnector(typeIdentifier).Search(filter.Filters, filter.Sorts, filter.From, filter.Count).ConfigureAwait(false);
+            return await schemaRegistry.GetConnector(typeIdentifier)
+                .Search(filter.Filters, filter.Sorts, filter.From, filter.Count).ConfigureAwait(false);
         }
-        
+
         [HttpPost, Route("{typeIdentifier}/Count")]
         public async Task<int?> Count(string typeIdentifier, [FromBody] CountModel model)
         {
-            return await schemaRegistry.GetConnector(typeIdentifier).Count(model.Filters, model.Limit).ConfigureAwait(false);
+            return await schemaRegistry.GetConnector(typeIdentifier).Count(model.Filters, model.Limit)
+                .ConfigureAwait(false);
         }
 
         [HttpPost, Route("{typeIdentifier}/Read")]
@@ -52,12 +55,15 @@ namespace Kontur.DBViewer.Core
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
+            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
             var result = await schemaRegistry.GetConnector(typeIdentifier).Read(filters.Filters).ConfigureAwait(false);
             return new ObjectDetailsModel
-                {
-                    Object = new ValueExtractor(schema.TypeInfoExtractor, schema.CustomPropertyValueExtractor, schema.CustomPropertyTypeResolver).ExtractValue(type, result),
-                    TypeInfo = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier).TypeInfoExtractor.Extract(type),
-                };
+            {
+                Object =
+                    ValueExtractor.ExtractValue(typeInfo, type, result, schema.CustomPropertyConfigurationProvider),
+                TypeInfo = typeInfo,
+            };
         }
 
         [HttpPost, Route("{typeIdentifier}/Delete")]

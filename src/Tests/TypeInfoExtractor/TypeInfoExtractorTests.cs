@@ -18,10 +18,11 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
         public void Test()
         {
             var serializer = new Serializer(new AllPropertiesExtractor());
-            var typeInfoExtractor =
-                new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), new CustomPropertyTypeResolver());
-            var valueExtractor = new ValueExtractor(typeInfoExtractor, new CustomPropertyValueExtractor(serializer), new CustomPropertyTypeResolver());
-            valueExtractor.ExtractValue(typeof(TestClass1), new TestClass1
+            var customPropertyConfigurationProvider = new CustomPropertyConfigurationProvider(serializer);
+            var typeInfo1 =
+                Core.TypeInformation.TypeInfoExtractor.Extract(typeof(TestClass1), null,
+                    customPropertyConfigurationProvider);
+            ValueExtractor.ExtractValue(typeInfo1, typeof(TestClass1), new TestClass1
             {
                 NotNullable = TestEnum.FirstValue,
                 Nullable = null,
@@ -30,7 +31,7 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                     String = "asdf",
                     Decimal = 1.5555m,
                 }
-            }).Should().BeEquivalentTo(new Dictionary<string, object>
+            }, customPropertyConfigurationProvider).Should().BeEquivalentTo(new Dictionary<string, object>
             {
                 {"NotNullable", TestEnum.FirstValue},
                 {"Nullable", null},
@@ -42,14 +43,18 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
                     }
                 }
             });
-            valueExtractor.ExtractValue(typeof(TestClassWithCustomPropertyType), new TestClassWithCustomPropertyType
+            
+            var typeInfo2 =
+                Core.TypeInformation.TypeInfoExtractor.Extract(typeof(TestClassWithCustomPropertyType), null,
+                    customPropertyConfigurationProvider);
+            ValueExtractor.ExtractValue(typeInfo2, typeof(TestClassWithCustomPropertyType), new TestClassWithCustomPropertyType
             {
                 Property = serializer.Serialize(new TestClass2
                 {
                     String = "asdf",
                     Decimal = 1.5555m,
                 }),
-            }).Should().BeEquivalentTo(new Dictionary<string, object>
+            }, customPropertyConfigurationProvider).Should().BeEquivalentTo(new Dictionary<string, object>
             {
                 {
                     "Property", new Dictionary<string, object>
@@ -68,10 +73,9 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
         [Test]
         public void Test_EndToEnd()
         {
-            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), null);
             var enumValues = new[] {"FirstValue", "SecondValue"};
             CheckResult(
-                extractor.Extract(typeof(TestClass1)),
+                Core.TypeInformation.TypeInfoExtractor.Extract(typeof(TestClass1), new SimplePropertyDescriptionBuilder(), null),
                 new ClassTypeInfo
                 {
                     Properties = new[]
@@ -128,31 +132,26 @@ namespace Kontur.DBViewer.Tests.TypeInfoExtractor
         [TestCaseSource(nameof(EnumTestCasesProvider))]
         public void Test_Enum(Type type, TypeInfo expected)
         {
-            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), null);
-            CheckResult(extractor.Extract(type), expected);
+            CheckResult(Core.TypeInformation.TypeInfoExtractor.Extract(type, new SimplePropertyDescriptionBuilder(), null), expected);
         }
 
         [TestCaseSource(nameof(EnumerableTestCasesProvider))]
         public void Test_Enumerable(Type type, TypeInfo expected)
         {
-            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), null);
-            CheckResult(extractor.Extract(type), expected);
+            CheckResult(Core.TypeInformation.TypeInfoExtractor.Extract(type, new SimplePropertyDescriptionBuilder(), null), expected);
         }
 
         [TestCaseSource(nameof(PrimitivesTestCasesProvider))]
         public void Test_Primitives(Type type, TypeInfo expected)
         {
-            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(), null);
-            CheckResult(extractor.Extract(type), expected);
+            CheckResult(Core.TypeInformation.TypeInfoExtractor.Extract(type, new SimplePropertyDescriptionBuilder(), null), expected);
         }
 
         [Test]
         public void Test_CustomPropertyTypeResolver()
         {
-            var extractor = new Core.TypeInformation.TypeInfoExtractor(new SimplePropertyDescriptionBuilder(),
-                new CustomPropertyTypeResolver());
             CheckResult(
-                extractor.Extract(typeof(TestClassWithCustomPropertyType)),
+                Core.TypeInformation.TypeInfoExtractor.Extract(typeof(TestClassWithCustomPropertyType), new SimplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider(new Serializer(new AllPropertiesExtractor()))),
                 new ClassTypeInfo
                 {
                     Properties = new[]

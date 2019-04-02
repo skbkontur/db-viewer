@@ -6,30 +6,10 @@ using System.Reflection;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
-    public class ValueExtractor
+    public static class ValueExtractor
     {
-        private readonly ITypeInfoExtractor typeInfoExtractor;
-        private readonly ICustomPropertyValueExtractor customPropertyValueExtractor;
-        private readonly ICustomPropertyTypeResolver customPropertyTypeResolver;
-
-        public ValueExtractor(
-            ITypeInfoExtractor typeInfoExtractor,
-            ICustomPropertyValueExtractor customPropertyValueExtractor,
-            ICustomPropertyTypeResolver customPropertyTypeResolver
-        )
-        {
-            this.typeInfoExtractor = typeInfoExtractor;
-            this.customPropertyValueExtractor = customPropertyValueExtractor;
-            this.customPropertyTypeResolver = customPropertyTypeResolver;
-        }
-
-        public object ExtractValue(Type type, object o)
-        {
-            var typeInfo = typeInfoExtractor.Extract(type);
-            return ExtractValue(typeInfo, type, o);
-        }
-
-        private object ExtractValue(TypeInfo typeInfo, Type type, object o)
+        public static object ExtractValue(TypeInfo typeInfo, Type type, object o,
+            ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             if (typeInfo is ClassTypeInfo classTypeInfo)
             {
@@ -39,15 +19,16 @@ namespace Kontur.DBViewer.Core.TypeInformation
                 {
                     var propertyInfo = type.GetProperty(property.Description.Name);
                     var propertyValue = propertyInfo.GetMethod.Invoke(o, null);
-                    if (customPropertyValueExtractor != null &&
-                        customPropertyValueExtractor.TryGetPropertyValue(propertyValue, propertyInfo,
-                            out var customExtractionResult))
+                    var customPropertyConfiguration =
+                        customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
+                    if (customPropertyConfiguration != null)
                     {
                         result[property.Description.Name] =
                             ExtractValue(
                                 property.TypeInfo,
-                                customPropertyTypeResolver.TryResolvePropertyType(propertyInfo),
-                                customExtractionResult
+                                customPropertyConfiguration.ResolvedType,
+                                customPropertyConfiguration.ExtractValue(propertyValue),
+                                customPropertyConfigurationProvider
                             );
                     }
                     else
@@ -56,7 +37,8 @@ namespace Kontur.DBViewer.Core.TypeInformation
                             ExtractValue(
                                 property.TypeInfo,
                                 propertyInfo.PropertyType,
-                                propertyValue
+                                propertyValue,
+                                customPropertyConfigurationProvider
                             );
                     }
                 }
@@ -68,26 +50,20 @@ namespace Kontur.DBViewer.Core.TypeInformation
         }
     }
 
-    public class TypeInfoExtractor : ITypeInfoExtractor
+    public static class TypeInfoExtractor
     {
-        private readonly ICustomPropertyTypeResolver customPropertyTypeResolver;
-        private readonly IPropertyDescriptionBuilder propertyDescriptionBuilder;
-        private readonly ConcurrentDictionary<Type, TypeInfo> typeInfos;
+        private static readonly ConcurrentDictionary<Type, TypeInfo> typeInfos =
+            new ConcurrentDictionary<Type, TypeInfo>();
 
-        public TypeInfoExtractor(IPropertyDescriptionBuilder propertyDescriptionBuilder,
-            ICustomPropertyTypeResolver customPropertyTypeResolver)
+        public static TypeInfo Extract(Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
+            ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
-            this.customPropertyTypeResolver = customPropertyTypeResolver;
-            this.propertyDescriptionBuilder = propertyDescriptionBuilder;
-            typeInfos = new ConcurrentDictionary<Type, TypeInfo>();
+            return typeInfos.GetOrAdd(type,
+                t => ResolveType(t, propertyDescriptionBuilder, customPropertyConfigurationProvider));
         }
 
-        public TypeInfo Extract(Type type)
-        {
-            return typeInfos.GetOrAdd(type, ResolveType);
-        }
-
-        private TypeInfo ResolveType(Type type)
+        private static TypeInfo ResolveType(Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
+            ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             var realType = Nullable.GetUnderlyingType(type) ?? type;
             var canBeNull = Nullable.GetUnderlyingType(type) != null;
@@ -110,27 +86,40 @@ namespace Kontur.DBViewer.Core.TypeInformation
             if (realType.IsEnum)
                 return new EnumTypeInfo(canBeNull, Enum.GetNames(realType));
             if (realType.IsArray)
-                return new EnumerableTypeInfo(ResolveType(realType.GetElementType()));
+                return new EnumerableTypeInfo(ResolveType(realType.GetElementType(), propertyDescriptionBuilder,
+                    customPropertyConfigurationProvider));
             if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(List<>))
-                return new EnumerableTypeInfo(ResolveType(realType.GetGenericArguments()[0]));
+                return new EnumerableTypeInfo(ResolveType(realType.GetGenericArguments()[0], propertyDescriptionBuilder,
+                    customPropertyConfigurationProvider));
             if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-                return new DictionaryTypeInfo(ResolveType(realType.GetGenericArguments()[0]),
-                    ResolveType(realType.GetGenericArguments()[1]));
+                return new DictionaryTypeInfo(
+                    ResolveType(realType.GetGenericArguments()[0], propertyDescriptionBuilder,
+                        customPropertyConfigurationProvider),
+                    ResolveType(realType.GetGenericArguments()[1], propertyDescriptionBuilder,
+                        customPropertyConfigurationProvider));
             if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(HashSet<>))
-                return new HashSetTypeInfo(ResolveType(realType.GetGenericArguments()[0]));
+                return new HashSetTypeInfo(ResolveType(realType.GetGenericArguments()[0], propertyDescriptionBuilder,
+                    customPropertyConfigurationProvider));
             if (realType.IsClass)
                 return new ClassTypeInfo
                 {
-                    Properties = realType.GetProperties().Select(ResolveProperty).ToArray(),
+                    Properties = realType.GetProperties().Select(p =>
+                        ResolveProperty(p, propertyDescriptionBuilder, customPropertyConfigurationProvider)).ToArray(),
                 };
 
             throw new NotSupportedException($"{type.FullName} не поддерживается");
         }
 
-        private Property ResolveProperty(PropertyInfo propertyInfo)
+        private static Property ResolveProperty(PropertyInfo propertyInfo,
+            IPropertyDescriptionBuilder propertyDescriptionBuilder,
+            ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
-            var typeInfo = ResolveType(customPropertyTypeResolver?.TryResolvePropertyType(propertyInfo) ??
-                                       propertyInfo.PropertyType);
+            var typeInfo = ResolveType(
+                customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo)?.ResolvedType
+                ??
+                propertyInfo.PropertyType,
+                propertyDescriptionBuilder, customPropertyConfigurationProvider
+            );
             return new Property
             {
                 TypeInfo = typeInfo,

@@ -1,40 +1,32 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using GroBuf;
 using Kontur.DBViewer.Core.TypeInformation;
 
 namespace Kontur.DBViewer.Tests.TypeInfoExtractor
 {
-    public class CustomPropertyTypeResolver : ICustomPropertyTypeResolver
-    {
-        public Type TryResolvePropertyType(PropertyInfo propertyInfo)
-        {
-            var serializedAttribute = propertyInfo.GetCustomAttributes<SerializedAttribute>().SingleOrDefault();
-            return serializedAttribute?.Type;
-        }
-    }
-
-    public class CustomPropertyValueExtractor : ICustomPropertyValueExtractor
+    public class CustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
         private readonly ISerializer serializer;
 
-        public CustomPropertyValueExtractor(ISerializer serializer)
+        public CustomPropertyConfigurationProvider(ISerializer serializer)
         {
             this.serializer = serializer;
         }
-        
-        public bool TryGetPropertyValue(object propertyValue, PropertyInfo propertyInfo, out object result)
+
+        public CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
         {
-            result = null;
-            var serializedAttribute = propertyInfo.GetCustomAttributes<SerializedAttribute>().SingleOrDefault();
+            var serializedAttribute = propertyInfo.GetCustomAttribute<SerializedAttribute>();
             if (serializedAttribute != null)
             {
-                result = serializer.Deserialize(serializedAttribute.Type, (byte[]) propertyValue);
-                return true;
+                return new CustomPropertyConfiguration
+                {
+                    ResolvedType = serializedAttribute.Type,
+                    ExtractValue = @object => serializer.Deserialize(serializedAttribute.Type, (byte[]) @object),
+                    BuildValue = @object => serializer.Serialize(serializedAttribute.Type, @object),
+                };
             }
 
-            return false;
+            return null;
         }
     }
 }
