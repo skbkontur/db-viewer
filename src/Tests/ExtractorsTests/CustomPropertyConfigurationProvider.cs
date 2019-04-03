@@ -2,7 +2,7 @@
 using GroBuf;
 using Kontur.DBViewer.Core.TypeInformation;
 
-namespace Kontur.DBViewer.Tests.TypeInfoExtractor
+namespace Kontur.DBViewer.Tests.ExtractorsTests
 {
     public class CustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {

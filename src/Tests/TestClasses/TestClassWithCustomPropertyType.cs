@@ -1,4 +1,6 @@
-﻿namespace Kontur.DBViewer.Tests.TypeInfoExtractor.TestClasses
+﻿using Kontur.DBViewer.Tests.ExtractorsTests;
+
+namespace Kontur.DBViewer.Tests.TestClasses
 {
     public class TestClassWithCustomPropertyType
     {

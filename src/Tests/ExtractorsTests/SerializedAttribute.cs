@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kontur.DBViewer.Tests.TypeInfoExtractor
+namespace Kontur.DBViewer.Tests.ExtractorsTests
 {
     public class SerializedAttribute : Attribute
     {

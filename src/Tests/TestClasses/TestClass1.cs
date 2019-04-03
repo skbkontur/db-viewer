@@ -1,4 +1,4 @@
-﻿namespace Kontur.DBViewer.Tests.TypeInfoExtractor.TestClasses
+﻿namespace Kontur.DBViewer.Tests.TestClasses
 {
     public class TestClass1
     {
