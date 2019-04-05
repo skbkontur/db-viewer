@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using GroBuf;
 using Kontur.DBViewer.Core.TypeInformation;
+using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
 namespace Kontur.DBViewer.Tests.ExtractorsTests
 {

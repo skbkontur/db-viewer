@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kontur.DBViewer.Tests.ExtractorsTests
+namespace Kontur.DBViewer.SampleApi.Impl.Attributes
 {
     public class SerializedAttribute : Attribute
     {

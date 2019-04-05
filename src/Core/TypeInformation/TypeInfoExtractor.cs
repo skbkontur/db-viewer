@@ -3,50 +3,97 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
+    public static class ValueBuilder
+    {
+        public static object BuildValue(TypeInfo typeInfo, Type type, object o,
+            ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
+        {
+            var jObject = (JToken) o;
+            var xxx = jObject.ToString();
+            if (jObject.ToString() == "")
+                return null;
+            if (!(typeInfo is ClassTypeInfo classTypeInfo))
+                return jObject.ToObject(type);
+
+            var result = Activator.CreateInstance(type);
+            foreach (var property in classTypeInfo.Properties)
+            {
+                var propertyInfo = type.GetProperty(property.Description.Name);
+                var customPropertyConfiguration =
+                    customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
+                object value;
+                if (customPropertyConfiguration != null)
+                {
+                    value =
+                        customPropertyConfiguration.BuildValue(BuildValue(
+                            property.TypeInfo,
+                            customPropertyConfiguration.ResolvedType,
+                            jObject.SelectToken(property.Description.Name),
+                            customPropertyConfigurationProvider
+                        ));
+                }
+                else
+                {
+                    value =
+                        BuildValue(
+                            property.TypeInfo,
+                            propertyInfo.PropertyType,
+                            jObject.SelectToken(property.Description.Name),
+                            customPropertyConfigurationProvider
+                        );
+                }
+
+                propertyInfo.SetValue(result, value);
+            }
+
+            return result;
+        }
+    }
+
     public static class ValueExtractor
     {
         public static object ExtractValue(TypeInfo typeInfo, Type type, object o,
             ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
-            if (typeInfo is ClassTypeInfo classTypeInfo)
-            {
-                var properties = classTypeInfo.Properties;
-                var result = new Dictionary<string, object>();
-                foreach (var property in properties)
-                {
-                    var propertyInfo = type.GetProperty(property.Description.Name);
-                    var propertyValue = propertyInfo.GetMethod.Invoke(o, null);
-                    var customPropertyConfiguration =
-                        customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
-                    if (customPropertyConfiguration != null)
-                    {
-                        result[property.Description.Name] =
-                            ExtractValue(
-                                property.TypeInfo,
-                                customPropertyConfiguration.ResolvedType,
-                                customPropertyConfiguration.ExtractValue(propertyValue),
-                                customPropertyConfigurationProvider
-                            );
-                    }
-                    else
-                    {
-                        result[property.Description.Name] =
-                            ExtractValue(
-                                property.TypeInfo,
-                                propertyInfo.PropertyType,
-                                propertyValue,
-                                customPropertyConfigurationProvider
-                            );
-                    }
-                }
+            if (o == null)
+                return null;
+            if (!(typeInfo is ClassTypeInfo classTypeInfo))
+                return o;
 
-                return result;
+            var result = new Dictionary<string, object>();
+            foreach (var property in classTypeInfo.Properties)
+            {
+                var propertyInfo = type.GetProperty(property.Description.Name);
+                var propertyValue = propertyInfo.GetValue(o);
+                var customPropertyConfiguration =
+                    customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
+                if (customPropertyConfiguration != null)
+                {
+                    result[property.Description.Name] =
+                        ExtractValue(
+                            property.TypeInfo,
+                            customPropertyConfiguration.ResolvedType,
+                            customPropertyConfiguration.ExtractValue(propertyValue),
+                            customPropertyConfigurationProvider
+                        );
+                }
+                else
+                {
+                    result[property.Description.Name] =
+                        ExtractValue(
+                            property.TypeInfo,
+                            propertyInfo.PropertyType,
+                            propertyValue,
+                            customPropertyConfigurationProvider
+                        );
+                }
             }
 
-            return o;
+            return result;
         }
     }
 

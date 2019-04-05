@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kontur.DBViewer.SampleApi.Impl.Classes
+namespace Kontur.DBViewer.SampleApi.Impl.Attributes
 {
     public class RequiredAttribute : Attribute
     {

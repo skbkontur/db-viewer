@@ -69,13 +69,24 @@ namespace Kontur.DBViewer.Core
         [HttpPost, Route("{typeIdentifier}/Delete")]
         public async Task Delete(string typeIdentifier, [FromBody] object obj)
         {
-            await schemaRegistry.GetConnector(typeIdentifier).Delete(obj).ConfigureAwait(false);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
+            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+            var x = ValueBuilder.BuildValue(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
+            await schemaRegistry.GetConnector(typeIdentifier).Delete(x).ConfigureAwait(false);
         }
 
         [HttpPost, Route("{typeIdentifier}/Write")]
         public async Task<object> Write(string typeIdentifier, [FromBody] object obj)
         {
-            return await schemaRegistry.GetConnector(typeIdentifier).Write(obj).ConfigureAwait(false);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
+            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+            var x = ValueBuilder.BuildValue(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
+            var newObject = await schemaRegistry.GetConnector(typeIdentifier).Write(x).ConfigureAwait(false);
+            return ValueExtractor.ExtractValue(typeInfo, type, newObject, schema.CustomPropertyConfigurationProvider);
         }
     }
 }

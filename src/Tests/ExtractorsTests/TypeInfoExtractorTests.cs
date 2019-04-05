@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using GroBuf;
-using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.TypeInformation;
-using Kontur.DBViewer.Tests.TestClasses;
+using Kontur.DBViewer.SampleApi.Impl.Classes;
+using Kontur.DBViewer.Tests.ApiTests;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
@@ -90,111 +89,6 @@ namespace Kontur.DBViewer.Tests.ExtractorsTests
             {
                 TestName = testName,
             };
-        }
-
-        [Test]
-        public void Test_CustomPropertyTypeResolver()
-        {
-            CheckResult(
-                TypeInfoExtractor.Extract(typeof(TestClassWithCustomPropertyType),
-                    new SimplePropertyDescriptionBuilder(),
-                    new CustomPropertyConfigurationProvider(new Serializer(new AllPropertiesExtractor()))),
-                new ClassTypeInfo
-                {
-                    Properties = new[]
-                    {
-                        new Property
-                        {
-                            TypeInfo = new ClassTypeInfo
-                            {
-                                Properties = new[]
-                                {
-                                    new Property
-                                    {
-                                        TypeInfo = new StringTypeInfo(),
-                                        Description = new PropertyDescription
-                                        {
-                                            Name = "String",
-                                        },
-                                    },
-                                    new Property
-                                    {
-                                        TypeInfo = new DecimalTypeInfo(false),
-                                        Description = new PropertyDescription
-                                        {
-                                            Name = "Decimal",
-                                        },
-                                    },
-                                }
-                            },
-                            Description = new PropertyDescription
-                            {
-                                Name = "Property",
-                            },
-                        }
-                    }
-                }
-            );
-        }
-
-        [Test]
-        public void Test_EndToEnd()
-        {
-            var enumValues = new[] {"FirstValue", "SecondValue"};
-            CheckResult(
-                TypeInfoExtractor.Extract(typeof(TestClass1),
-                    new SimplePropertyDescriptionBuilder(), null),
-                new ClassTypeInfo
-                {
-                    Properties = new[]
-                    {
-                        new Property
-                        {
-                            TypeInfo = new EnumTypeInfo(false, enumValues),
-                            Description = new PropertyDescription
-                            {
-                                Name = "NotNullable",
-                            },
-                        },
-                        new Property
-                        {
-                            TypeInfo = new EnumTypeInfo(true, enumValues),
-                            Description = new PropertyDescription
-                            {
-                                Name = "Nullable",
-                            },
-                        },
-                        new Property
-                        {
-                            TypeInfo = new ClassTypeInfo
-                            {
-                                Properties = new[]
-                                {
-                                    new Property
-                                    {
-                                        TypeInfo = new StringTypeInfo(),
-                                        Description = new PropertyDescription
-                                        {
-                                            Name = "String",
-                                        },
-                                    },
-                                    new Property
-                                    {
-                                        TypeInfo = new DecimalTypeInfo(false),
-                                        Description = new PropertyDescription
-                                        {
-                                            Name = "Decimal",
-                                        },
-                                    },
-                                }
-                            },
-                            Description = new PropertyDescription
-                            {
-                                Name = "Nested",
-                            },
-                        }
-                    }
-                });
         }
     }
 }

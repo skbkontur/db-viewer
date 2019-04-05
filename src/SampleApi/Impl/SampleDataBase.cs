@@ -5,9 +5,8 @@ using System.Reflection;
 
 using AutoFixture;
 
-using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Core.DTO;
-using Kontur.DBViewer.SampleApi.Impl.Classes;
+using Kontur.DBViewer.SampleApi.Impl.Attributes;
 using Kontur.DBViewer.SampleApi.Impl.Utils;
 
 namespace Kontur.DBViewer.SampleApi.Impl
@@ -21,6 +20,11 @@ namespace Kontur.DBViewer.SampleApi.Impl
             data = Enumerable.Range(0, 1000).Select(x => fixture.Build<T>().Create()).ToArray();
         }
 
+        public SampleDataBase(T[] data)
+        {
+            this.data = data;
+        }
+
         public static SampleDataBase<T> Instance
         {
             get
@@ -31,6 +35,7 @@ namespace Kontur.DBViewer.SampleApi.Impl
                             instance = new SampleDataBase<T>();
                 return instance;
             }
+            set => instance = value;
         }
 
         public T[] Find(Filter[] filters, Sort[] sorts, int @from, int count)
@@ -68,6 +73,11 @@ namespace Kontur.DBViewer.SampleApi.Impl
             }
 
             return @object;
+        }
+
+        public T[] GetContent()
+        {
+            return data;
         }
 
         private bool IdentityEquals(T first, T second)

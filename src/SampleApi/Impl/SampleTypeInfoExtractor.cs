@@ -2,12 +2,12 @@
 using System.Reflection;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.TypeInformation;
-using Kontur.DBViewer.SampleApi.Impl.Classes;
+using Kontur.DBViewer.SampleApi.Impl.Attributes;
 using TypeInfo = Kontur.DBViewer.Core.TypeInformation.TypeInfo;
 
 namespace Kontur.DBViewer.SampleApi.Impl
 {
-    public class SampleTypeInfoExtractor : IPropertyDescriptionBuilder
+    public class SamplePropertyDescriptionBuilder : IPropertyDescriptionBuilder
     {
         private static readonly Dictionary<PrimitiveType, FilterType[]> availableFilters =
             new Dictionary<PrimitiveType, FilterType[]>

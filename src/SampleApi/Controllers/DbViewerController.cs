@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
-
 using Kontur.DBViewer.Core;
 using Kontur.DBViewer.Core.DTO;
-using Kontur.DBViewer.Core.Schemas;
-using Kontur.DBViewer.SampleApi.Impl;
-using Kontur.DBViewer.SampleApi.Impl.Classes;
-
-using Newtonsoft.Json.Linq;
 
 namespace Kontur.DBViewer.SampleApi.Controllers
 {
@@ -18,45 +9,10 @@ namespace Kontur.DBViewer.SampleApi.Controllers
     public class DbViewerController : ApiController
     {
         private readonly DBViewerControllerImpl impl;
-        private readonly SchemaRegistry schemaRegistry;
 
         public DbViewerController()
         {
-            schemaRegistry = new SchemaRegistry();
-            schemaRegistry.Add(
-                new Schema
-                    {
-                        Description = new SchemaDescription
-                            {
-                                Countable = true,
-                                SchemaName = "SampleSchema",
-                                MaxCountLimit = 10_000,
-                                DefaultCountLimit = 100,
-                                EnableDefaultSearch = false,
-                            },
-                        Types = BuildTypeDescriptions(
-                            typeof(TestObjectWithRequiredField),
-                            typeof(TestComplexObject),
-                            typeof(TestObjectWithDateTime),
-                            typeof(TestObjectWithEnums),
-                            typeof(TestObjectWithStrings),
-                            typeof(TestObjectWithAllPrimitives),
-                            typeof(TestObjectWithBools)
-                        ),
-                        PropertyDescriptionBuilder = new SampleTypeInfoExtractor(),
-                        ConnectorsFactory = new SampleIdbConnectorFactory(),
-                    }
-            );
-            impl = new DBViewerControllerImpl(schemaRegistry);
-        }
-
-        private TypeDescription[] BuildTypeDescriptions(params Type[] types)
-        {
-            return types.Select(type => new TypeDescription
-                {
-                    Type = type,
-                    TypeIdentifier = type.Name,
-                }).ToArray();
+            impl = new DBViewerControllerImpl(SchemaRegistryProvider.GetSchemaRegistry());
         }
 
         [HttpGet, Route("List")]
@@ -86,15 +42,13 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         [HttpPost, Route("{typeIdentifier}/Delete")]
         public async Task Delete(string typeIdentifier, [FromBody] object @obj)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
-            await impl.Delete(typeIdentifier, ((JObject)obj).ToObject(type));
+            await impl.Delete(typeIdentifier, obj);
         }
 
         [HttpPost, Route("{typeIdentifier}/Write")]
         public async Task<object> Write(string typeIdentifier, [FromBody] object @obj)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
-            return await impl.Write(typeIdentifier, ((JObject)obj).ToObject(type));
+            return await impl.Write(typeIdentifier, obj);
         }
     }
 }

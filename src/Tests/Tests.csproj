@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Recipes.CQL\Recipes.CQL.csproj" />
+    <ProjectReference Include="..\SampleApi\SampleApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,16 @@
     <None Update="Settings\tests.csf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\..\..\..\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Net.Http\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Net.Http.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestClasses" />
   </ItemGroup>
 
 </Project>
