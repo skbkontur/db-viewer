@@ -55,7 +55,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     },
                     PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                     ConnectorsFactory = new SampleIdbConnectorFactory(),
-                    CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider(serializer),
+                    CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(serializer),
                 }
             );
             var testClassWithAllPrimitivesShape = new ClassTypeInfo
@@ -393,14 +393,14 @@ namespace Kontur.DBViewer.Tests.ApiTests
             }, x => x.RespectingRuntimeTypes());
         }
 
-        private void FillDataBase<T>(params T[] objects) where T : class
+        private void FillDataBase(params TestClass[] objects)
         {
-            SampleDataBase<T>.Instance = new SampleDataBase<T>(objects);
+            SampleDataBase.Instance = new SampleDataBase(objects);
         }
 
-        private void CheckDataBaseContent<T>(params T[] objects) where T : class
+        private void CheckDataBaseContent(params TestClass[] objects)
         {
-            SampleDataBase<T>.Instance.GetContent().Should().BeEquivalentTo(objects);
+            SampleDataBase.Instance.GetContent().Should().BeEquivalentTo(objects);
         }
 
         private void CheckObject<T>(object actual, T expected)

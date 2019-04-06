@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
+using Kontur.DBViewer.SampleApi.Impl;
 using Kontur.DBViewer.SampleApi.Impl.Classes;
-using Kontur.DBViewer.Tests.ApiTests;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
@@ -17,7 +17,7 @@ namespace Kontur.DBViewer.Tests.ExtractorsTests
         public void Test_Enum(Type type, TypeInfo expected)
         {
             CheckResult(
-                TypeInfoExtractor.Extract(type, new SimplePropertyDescriptionBuilder(), null),
+                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(),  null),
                 expected);
         }
 
@@ -25,7 +25,7 @@ namespace Kontur.DBViewer.Tests.ExtractorsTests
         public void Test_Enumerable(Type type, TypeInfo expected)
         {
             CheckResult(
-                TypeInfoExtractor.Extract(type, new SimplePropertyDescriptionBuilder(), null),
+                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null),
                 expected);
         }
 
@@ -33,7 +33,7 @@ namespace Kontur.DBViewer.Tests.ExtractorsTests
         public void Test_Primitives(Type type, TypeInfo expected)
         {
             CheckResult(
-                TypeInfoExtractor.Extract(type, new SimplePropertyDescriptionBuilder(), null),
+                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null),
                 expected);
         }
 

@@ -3,13 +3,13 @@ using GroBuf;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
-namespace Kontur.DBViewer.Tests.ExtractorsTests
+namespace Kontur.DBViewer.SampleApi.Impl
 {
-    public class CustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
+    public class SampleCustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
         private readonly ISerializer serializer;
 
-        public CustomPropertyConfigurationProvider(ISerializer serializer)
+        public SampleCustomPropertyConfigurationProvider(ISerializer serializer)
         {
             this.serializer = serializer;
         }

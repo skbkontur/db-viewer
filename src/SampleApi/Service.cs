@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Alko.Configuration.Settings;
+using GroBuf;
+using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;
@@ -36,6 +38,7 @@ namespace Kontur.DBViewer.SampleApi
                         ),
                         PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                         ConnectorsFactory = new SampleIdbConnectorFactory(),
+                        CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(new Serializer(new AllPropertiesExtractor())),
                     }
                 );
                 SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);

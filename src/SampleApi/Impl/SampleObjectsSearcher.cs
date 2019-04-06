@@ -2,6 +2,8 @@
 
 using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.SampleApi.Impl.Classes;
+
 #pragma warning disable 1998
 
 namespace Kontur.DBViewer.SampleApi.Impl
@@ -12,27 +14,27 @@ namespace Kontur.DBViewer.SampleApi.Impl
         public async Task<object[]> Search(Filter[] filters, Sort[] sorts, int @from, int count)
         {
             // ReSharper disable once CoVariantArrayConversion
-            return SampleDataBase<T>.Instance.Find(filters, sorts, from, count);
+            return SampleDataBase.Instance.Find(filters, sorts, from, count);
         }
 
         public async Task<int?> Count(Filter[] filters, int? limit)
         {
-            return SampleDataBase<T>.Instance.Count(filters, limit);
+            return SampleDataBase.Instance.Count(filters, limit);
         }
 
         public async Task<object> Read(Filter[] filters)
         {
-            return SampleDataBase<T>.Instance.Read(filters);
+            return SampleDataBase.Instance.Read(filters);
         }
 
         public async Task Delete(object @object)
         {
-            SampleDataBase<T>.Instance.Delete((T)@object);
+            SampleDataBase.Instance.Delete((TestClass)@object);
         }
 
         public async Task<object> Write(object @object)
         {
-            return SampleDataBase<T>.Instance.Write((T)@object);
+            return SampleDataBase.Instance.Write((TestClass)@object);
         }
     }
 }
