@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using GroBuf;
-using Kontur.DBViewer.Core.TypeInformation;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
 namespace Kontur.DBViewer.Tests.ExtractorsTests
@@ -22,8 +22,8 @@ namespace Kontur.DBViewer.Tests.ExtractorsTests
                 return new CustomPropertyConfiguration
                 {
                     ResolvedType = serializedAttribute.Type,
-                    ExtractValue = @object => serializer.Deserialize(serializedAttribute.Type, (byte[]) @object),
-                    BuildValue = @object => serializer.Serialize(serializedAttribute.Type, @object),
+                    StoredToApi = @object => serializer.Deserialize(serializedAttribute.Type, (byte[]) @object),
+                    ApiToStored = @object => serializer.Serialize(serializedAttribute.Type, @object),
                 };
             }
 

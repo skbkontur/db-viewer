@@ -2,7 +2,7 @@
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
-namespace Kontur.DBViewer.Core.TypeInformation
+namespace Kontur.DBViewer.Core.TypeAndObjectBulding
 {
     public interface IPropertyDescriptionBuilder
     {

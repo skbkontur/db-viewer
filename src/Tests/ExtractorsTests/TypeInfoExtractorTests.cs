@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
-using Kontur.DBViewer.Core.TypeInformation;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.SampleApi.Impl.Classes;
 using Kontur.DBViewer.Tests.ApiTests;
 using NUnit.Framework;

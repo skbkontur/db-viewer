@@ -1,5 +1,5 @@
 ﻿using Kontur.DBViewer.Core.Connector;
-using Kontur.DBViewer.Core.TypeInformation;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 
 namespace Kontur.DBViewer.Core.Schemas
 {

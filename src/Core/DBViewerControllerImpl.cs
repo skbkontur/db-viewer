@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Kontur.DBViewer.Core.Attributes;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.Schemas;
-using Kontur.DBViewer.Core.TypeInformation;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 
 [assembly: InternalsVisibleTo("Kontur.DBViewer.TypeScriptGenerator")]
 
@@ -61,7 +61,7 @@ namespace Kontur.DBViewer.Core
             return new ObjectDetailsModel
             {
                 Object =
-                    ValueExtractor.ExtractValue(typeInfo, type, result, schema.CustomPropertyConfigurationProvider),
+                    ObjectsConverter.StoredToApi(typeInfo, type, result, schema.CustomPropertyConfigurationProvider),
                 TypeInfo = typeInfo,
             };
         }
@@ -73,7 +73,7 @@ namespace Kontur.DBViewer.Core
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
             var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
-            var x = ValueBuilder.BuildValue(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
+            var x = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
             await schemaRegistry.GetConnector(typeIdentifier).Delete(x).ConfigureAwait(false);
         }
 
@@ -84,9 +84,9 @@ namespace Kontur.DBViewer.Core
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
             var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
-            var x = ValueBuilder.BuildValue(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
-            var newObject = await schemaRegistry.GetConnector(typeIdentifier).Write(x).ConfigureAwait(false);
-            return ValueExtractor.ExtractValue(typeInfo, type, newObject, schema.CustomPropertyConfigurationProvider);
+            var stored = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
+            var newObject = await schemaRegistry.GetConnector(typeIdentifier).Write(stored).ConfigureAwait(false);
+            return ObjectsConverter.StoredToApi(typeInfo, type, newObject, schema.CustomPropertyConfigurationProvider);
         }
     }
 }

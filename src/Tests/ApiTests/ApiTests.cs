@@ -6,7 +6,6 @@ using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
-using Kontur.DBViewer.Core.TypeInformation;
 using Kontur.DBViewer.SampleApi;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;

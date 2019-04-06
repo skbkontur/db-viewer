@@ -2,7 +2,7 @@
 using System.Reflection;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
-using Kontur.DBViewer.Core.TypeInformation;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 

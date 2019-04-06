@@ -1,5 +1,4 @@
 ﻿using Kontur.DBViewer.Core.Schemas;
-using Kontur.DBViewer.Core.TypeInformation;
 
 namespace Kontur.DBViewer.Core.DTO
 {
