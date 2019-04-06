@@ -168,6 +168,38 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     },
                     new Property
                     {
+                        TypeInfo = new DateTimeTypeInfo(false),
+                        Description = new PropertyDescription
+                        {
+                            Name = "DateTime",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new DateTimeTypeInfo(true),
+                        Description = new PropertyDescription
+                        {
+                            Name = "NullableDateTime",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new DateTimeTypeInfo(false),
+                        Description = new PropertyDescription
+                        {
+                            Name = "DateTimeOffset",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new DateTimeTypeInfo(true),
+                        Description = new PropertyDescription
+                        {
+                            Name = "NullableDateTimeOffset",
+                        }
+                    },
+                    new Property
+                    {
                         TypeInfo = new EnumTypeInfo(false, new[]{"FirstValue", "SecondValue"}),
                         Description = new PropertyDescription
                         {

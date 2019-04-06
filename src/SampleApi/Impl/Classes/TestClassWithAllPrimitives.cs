@@ -18,10 +18,10 @@ namespace Kontur.DBViewer.SampleApi.Impl.Classes
         public long? NullableLong { get; set; }
         public decimal Decimal { get; set; }
         public decimal? NullableDecimal { get; set; }
-//        public DateTime DateTime { get; set; }
-//        public DateTime? NullableDateTime { get; set; }
-//        public DateTimeOffset DateTimeOffset { get; set; }
-//        public DateTimeOffset? NullableDateTimeOffset { get; set; }
+        public DateTime DateTime { get; set; }
+        public DateTime? NullableDateTime { get; set; }
+        public DateTimeOffset DateTimeOffset { get; set; }
+        public DateTimeOffset? NullableDateTimeOffset { get; set; }
         public TestEnum Enum { get; set; }
         public TestEnum? NullableEnum { get; set; }
         public int[] Array { get; set; }

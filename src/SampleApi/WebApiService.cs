@@ -35,7 +35,7 @@ namespace Kontur.DBViewer.SampleApi
                                 new StringEnumConverter(),
                                 new IsoDateTimeConverter
                                 {
-                                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffK"
+                                    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"
                                 }
                             }
                         },
