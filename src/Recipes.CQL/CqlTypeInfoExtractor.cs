@@ -5,8 +5,9 @@ using System.Reflection;
 using Cassandra.Mapping.Attributes;
 
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.TypeInformation;
-using TypeInfo = Kontur.DBViewer.Core.TypeInformation.TypeInfo;
+using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
 namespace Kontur.DBViewer.Recipes.CQL
 {

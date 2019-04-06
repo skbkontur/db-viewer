@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.TypeInformation;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
-using TypeInfo = Kontur.DBViewer.Core.TypeInformation.TypeInfo;
+using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
 namespace Kontur.DBViewer.SampleApi.Impl
 {

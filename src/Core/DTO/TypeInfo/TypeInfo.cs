@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
-namespace Kontur.DBViewer.Core.TypeInformation
+namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
     [JsonConverter(typeof(TypeInfoConverter))]
     public abstract class TypeInfo

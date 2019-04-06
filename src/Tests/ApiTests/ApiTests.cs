@@ -4,6 +4,7 @@ using FluentAssertions;
 using GroBuf;
 using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.Core.TypeInformation;
 using Kontur.DBViewer.SampleApi;
@@ -364,6 +365,8 @@ namespace Kontur.DBViewer.Tests.ApiTests
 
             CheckDataBaseContent(newObject);
         }
+        
+        
 
         [Test]
         public async Task Test_List()

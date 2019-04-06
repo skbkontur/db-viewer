@@ -1,4 +1,4 @@
-﻿namespace Kontur.DBViewer.Core.TypeInformation
+﻿namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
     public class HashSetTypeInfo : TypeInfo
     {

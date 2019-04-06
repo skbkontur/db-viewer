@@ -3,7 +3,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Newtonsoft.Json.Linq;
+using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
@@ -13,9 +15,6 @@ namespace Kontur.DBViewer.Core.TypeInformation
             ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             var jObject = (JToken) o;
-            var xxx = jObject.ToString();
-            if (jObject.ToString() == "")
-                return null;
             if (!(typeInfo is ClassTypeInfo classTypeInfo))
                 return jObject.ToObject(type);
 

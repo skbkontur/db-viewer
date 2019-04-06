@@ -1,6 +1,4 @@
-﻿using Kontur.DBViewer.Core.DTO;
-
-namespace Kontur.DBViewer.Core.TypeInformation
+﻿namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
     public class PropertyDescription
     {
