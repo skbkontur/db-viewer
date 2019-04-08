@@ -11,6 +11,8 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
             ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             var jObject = (JToken) o;
+            if (jObject == null || jObject.ToString() == "")
+                return null;
             if (!(typeInfo is ClassTypeInfo classTypeInfo))
                 return jObject.ToObject(type);
 
