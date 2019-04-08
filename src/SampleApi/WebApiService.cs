@@ -29,7 +29,7 @@ namespace Kontur.DBViewer.SampleApi
                     {
                         SerializerSettings = new JsonSerializerSettings
                         {
-                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                            ContractResolver = new DefaultContractResolver(),
                             Converters = new JsonConverter[]
                             {
                                 new StringEnumConverter(),

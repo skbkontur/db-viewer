@@ -1,4 +1,6 @@
-﻿namespace Kontur.DBViewer.Core.DTO.TypeInfo
+﻿using Newtonsoft.Json;
+
+namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
     public class HashSetTypeInfo : TypeInfo
     {
@@ -7,7 +9,9 @@
             UnderlyingType = underlyingType;
         }
         
+        [JsonProperty("type")]
         public override PrimitiveType Type => PrimitiveType.HashSet;
+        [JsonProperty("underlyingType")]
         public TypeInfo UnderlyingType { get; }
     }
 }

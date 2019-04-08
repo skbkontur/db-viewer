@@ -1,5 +1,9 @@
-﻿namespace Kontur.DBViewer.Core.DTO.TypeInfo
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum PrimitiveType
     {
         String,

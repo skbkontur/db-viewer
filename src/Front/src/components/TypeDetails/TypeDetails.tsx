@@ -361,7 +361,7 @@ class TypeDetails extends React.Component<IProps, IState> {
             .map(
               x =>
                 `${x.description.name}=${
-                  item[StringUtils.lowerCaseFirstLetter(x.description.name)]
+                  item[x.description.name]
                 }`
             )
             .join("&");
@@ -377,7 +377,7 @@ class TypeDetails extends React.Component<IProps, IState> {
         }),
         ...this.state.searchableFields.map(field =>
           ColumnConfiguration.createByPath(
-            StringUtils.lowerCaseFirstLetter(field.description.name)
+            field.description.name
           )
             .withCustomRender(x => (
               <PrimitiveValue data={x} primitiveType={field.typeInfo.type} />

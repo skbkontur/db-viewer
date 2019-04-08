@@ -59,10 +59,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
             <tbody>
               {this.props.typeInfo.properties.map(property =>
                 this._renderRow(
-                  StringUtils.lowerCaseFirstLetter(property.description.name),
-                  this.props.data[
-                    StringUtils.lowerCaseFirstLetter(property.description.name)
-                  ],
+                  property.description.name,
+                  this.props.data[property.description.name],
                   property.typeInfo,
                   false
                 )

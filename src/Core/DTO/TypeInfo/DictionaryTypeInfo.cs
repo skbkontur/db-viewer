@@ -1,4 +1,6 @@
-﻿namespace Kontur.DBViewer.Core.DTO.TypeInfo
+﻿using Newtonsoft.Json;
+
+namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
     public class DictionaryTypeInfo : TypeInfo
     {
@@ -8,8 +10,11 @@
             Value = value;
         }
 
+        [JsonProperty("type")]
         public override PrimitiveType Type => PrimitiveType.Dictionary;
+        [JsonProperty("key")]
         public TypeInfo Key { get; }
+        [JsonProperty("value")]
         public TypeInfo Value { get; }
     }
 }

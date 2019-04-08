@@ -10,6 +10,7 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
     public abstract class TypeInfo
     {
         [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("type")]
         public abstract PrimitiveType Type { get; }
     }
 
