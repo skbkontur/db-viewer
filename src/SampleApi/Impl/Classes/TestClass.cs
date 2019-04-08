@@ -4,7 +4,7 @@ namespace Kontur.DBViewer.SampleApi.Impl.Classes
 {
     public class TestClass
     {
-        [Identity]
+        [Identity, Indexed]
         public string Id { get; set; }
         
         public TestClassWithAllPrimitives Content { get; set; }
