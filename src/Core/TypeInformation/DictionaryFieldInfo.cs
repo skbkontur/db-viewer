@@ -8,8 +8,12 @@
             Value = value;
         }
 
+        public DictionaryFieldInfo()
+        {
+        }
+
         public override FieldType Type => FieldType.Dictionary;
-        public FieldInfo Key { get; }
-        public FieldInfo Value { get; }
+        public FieldInfo Key { get; set; }
+        public FieldInfo Value { get; set; }
     }
 }

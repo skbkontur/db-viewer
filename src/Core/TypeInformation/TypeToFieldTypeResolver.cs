@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cassandra;
 
 namespace Kontur.DBViewer.Core.TypeInformation
 {
@@ -8,7 +9,7 @@ namespace Kontur.DBViewer.Core.TypeInformation
         public static FieldType Resolve(Type initialType)
         {
             var type = Nullable.GetUnderlyingType(initialType) ?? initialType;
-            if(type == typeof(string) || type == typeof(Guid))
+            if(type == typeof(string) || type == typeof(Guid) || type == typeof(TimeUuid))
                 return FieldType.String;
             if(type == typeof(byte))
                 return FieldType.Byte;

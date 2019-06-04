@@ -6,7 +6,11 @@
         {
             Meta = meta;
         }
-        
+
+        public StringFieldInfo()
+        {
+        }
+
         public override FieldType Type => FieldType.String;
     }
 }

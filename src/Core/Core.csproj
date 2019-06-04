@@ -22,4 +22,8 @@
     <OutputPath>bin\</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CassandraCSharpDriver" Version="3.7.0" />
+  </ItemGroup>
+
 </Project>

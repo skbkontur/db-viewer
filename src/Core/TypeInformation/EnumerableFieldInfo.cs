@@ -7,7 +7,11 @@
             UnderlyingType = underlyingType;
         }
 
+        public EnumerableFieldInfo()
+        {
+        }
+
         public override FieldType Type => FieldType.Enumerable;
-        public FieldInfo UnderlyingType { get; }
+        public FieldInfo UnderlyingType { get; set; }
     }
 }

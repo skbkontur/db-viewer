@@ -6,8 +6,12 @@
         {
             UnderlyingType = underlyingType;
         }
-        
+
+        public HashSetFieldInfo()
+        {
+        }
+
         public override FieldType Type => FieldType.HashSet;
-        public FieldInfo UnderlyingType { get; }
+        public FieldInfo UnderlyingType { get; set; }
     }
 }

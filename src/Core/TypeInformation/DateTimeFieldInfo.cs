@@ -8,7 +8,11 @@
             Meta = meta;
         }
 
-        public bool CanBeNull { get; }
+        public DateTimeFieldInfo()
+        {
+        }
+
+        public bool CanBeNull { get; set; }
         public override FieldType Type => FieldType.DateTime;
     }
 }

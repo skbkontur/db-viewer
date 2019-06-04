@@ -9,6 +9,10 @@ namespace Kontur.DBViewer.Core.TypeInformation
             Name = name;
         }
 
+        public FieldMeta()
+        {
+        }
+
         public string Name { get; set; }
         public bool IsIdentity { get; set; }
         public bool IsSearchable { get; set; }

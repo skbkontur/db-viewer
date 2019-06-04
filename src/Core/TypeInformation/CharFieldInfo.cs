@@ -8,7 +8,11 @@
             Meta = meta;
         }
 
-        public bool CanBeNull { get; }
+        public CharFieldInfo()
+        {
+        }
+
+        public bool CanBeNull { get; set; }
         public override FieldType Type => FieldType.Char;
     }
 }

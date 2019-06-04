@@ -9,8 +9,12 @@
             Meta = meta;
         }
 
-        public bool CanBeNull { get; }
+        public EnumFieldInfo()
+        {
+        }
+
+        public bool CanBeNull { get; set; }
         public override FieldType Type => FieldType.Enum;
-        public string[] AvailableValues { get; }
+        public string[] AvailableValues { get; set; }
     }
 }
