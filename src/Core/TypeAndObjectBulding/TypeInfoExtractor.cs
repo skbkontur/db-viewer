@@ -40,7 +40,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
                 return new LongTypeInfo(canBeNull);
             if (realType == typeof(bool))
                 return new BoolTypeInfo(canBeNull);
-            if (realType == typeof(decimal))
+            if (realType == typeof(decimal) ||realType == typeof(double))
                 return new DecimalTypeInfo(canBeNull);
             if (realType.IsEnum)
                 return new EnumTypeInfo(canBeNull, Enum.GetNames(realType));
