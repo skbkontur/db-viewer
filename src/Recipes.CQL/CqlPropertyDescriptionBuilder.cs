@@ -31,6 +31,7 @@ namespace Kontur.DBViewer.Recipes.CQL
             if(propertyInfo.CustomAttributes.Any(x => x.AttributeType == typeof(ClusteringKeyAttribute)))
             {
                 result.IsSearchable = true;
+                result.IsIdentity = true;
                 result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType) ? availableFilters[propertyInfo.PropertyType] : new[] {FilterType.Equals, FilterType.No};
             }
 
