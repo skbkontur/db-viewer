@@ -1,4 +1,4 @@
-using Kontur.DBViewer.Core.Schemas;
+﻿using Kontur.DBViewer.Core.Schemas;
 
 namespace Kontur.DBViewer.SampleApi.Controllers
 {

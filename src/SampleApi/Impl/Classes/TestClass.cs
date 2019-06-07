@@ -1,4 +1,4 @@
-using Kontur.DBViewer.SampleApi.Impl.Attributes;
+﻿using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Classes
 {

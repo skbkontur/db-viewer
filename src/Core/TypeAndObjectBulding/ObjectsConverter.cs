@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Newtonsoft.Json.Linq;
