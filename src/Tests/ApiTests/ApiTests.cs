@@ -10,7 +10,6 @@ using Kontur.DBViewer.SampleApi;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;
 using Kontur.DBViewer.SampleApi.Impl.Classes;
-using Kontur.DBViewer.Tests.ExtractorsTests;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
@@ -260,6 +259,8 @@ namespace Kontur.DBViewer.Tests.ApiTests
                             {
                                 Name = "Id",
                                 IsIdentity = true,
+                                IsSearchable = true,
+                                AvailableFilters = new[] {FilterType.No, FilterType.Equals, FilterType.NotEquals},
                             },
                         },
                         new Property
