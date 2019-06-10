@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.Recipes.CQL.DTO
+﻿namespace Kontur.DBViewer.Recipes.CQL.DTO
 {
     public class CassandraLocalTime
     {
