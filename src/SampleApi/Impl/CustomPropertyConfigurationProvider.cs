@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
+using Cassandra;
 using GroBuf;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
+using Kontur.DBViewer.Recipes.CQL;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
 namespace Kontur.DBViewer.SampleApi.Impl
@@ -26,6 +28,9 @@ namespace Kontur.DBViewer.SampleApi.Impl
                     ApiToStored = @object => serializer.Serialize(serializedAttribute.Type, @object),
                 };
             }
+
+            if (propertyInfo.PropertyType == typeof(LocalTime))
+                return CqlCustomPropertyConfiguration.LocalTime;
 
             return null;
         }

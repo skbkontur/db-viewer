@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Recipes.CQL\Recipes.CQL.csproj" />
   </ItemGroup>
 
 </Project>

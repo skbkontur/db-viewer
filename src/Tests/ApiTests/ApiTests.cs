@@ -1,11 +1,14 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoFixture;
+using Cassandra;
 using FluentAssertions;
 using GroBuf;
 using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.Recipes.CQL.DTO;
 using Kontur.DBViewer.SampleApi;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;
@@ -57,6 +60,44 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(serializer),
                 }
             );
+            var localTimeShape = new ClassTypeInfo
+            {
+                Properties = new []
+                {
+                    new Property
+                    {
+                        TypeInfo = new IntTypeInfo(false),
+                        Description = new PropertyDescription
+                        {
+                            Name = "Hour"
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new IntTypeInfo(false),
+                        Description = new PropertyDescription
+                        {
+                            Name = "Minute"
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new IntTypeInfo(false),
+                        Description = new PropertyDescription
+                        {
+                            Name = "Second"
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new IntTypeInfo(false),
+                        Description = new PropertyDescription
+                        {
+                            Name = "Nanoseconds"
+                        },
+                    }
+                }
+            };
             var testClassWithAllPrimitivesShape = new ClassTypeInfo
             {
                 Properties = new[]
@@ -291,7 +332,15 @@ namespace Kontur.DBViewer.Tests.ApiTests
                             {
                                 Name = "Serialized",
                             },
-                        }, 
+                        },
+                        new Property
+                        {
+                            TypeInfo = localTimeShape,
+                            Description = new PropertyDescription
+                            {
+                                Name = "LocalTime",
+                            }
+                        },
                     },
                 };
             SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
@@ -328,12 +377,21 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     Value = @object.Id,
                 }
             });
+            Console.WriteLine($"Object Id: {@object.Id}");
+
             CheckShape(result.TypeInfo, testClassShape);
             CheckObject(result.Object, new ExpandedTestClass
             {
                 Id = @object.Id,
                 Content = @object.Content,
                 Serialized = customPropertyContent,
+                LocalTime = new CassandraLocalTime
+                {
+                    Hour = @object.LocalTime.Hour,
+                    Minute = @object.LocalTime.Minute,
+                    Second = @object.LocalTime.Second,
+                    Nanoseconds = @object.LocalTime.Nanoseconds,
+                }
             });
         }
 
@@ -350,12 +408,20 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 Id = oldObject.Id,
                 Content = fixture.Create<TestClassWithAllPrimitives>(),
                 Serialized = serializer.Serialize(newCustomPropertyContent),
+                LocalTime = new LocalTime(10, 20, 30, 268)
             };
             var newObjectExpanded = new ExpandedTestClass
             {
                 Id = oldObject.Id,
                 Content = newObject.Content,
                 Serialized = newCustomPropertyContent,
+                LocalTime = new CassandraLocalTime
+                {
+                    Hour = 10,
+                    Minute = 20,
+                    Second = 30,
+                    Nanoseconds = 268
+                }
             };
 
             FillDataBase(oldObject);
@@ -391,7 +457,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                         Shape = testClassShape,
                     },
                 }
-            }, x => x.RespectingRuntimeTypes());
+            });
         }
 
         private void FillDataBase(params TestClass[] objects)
