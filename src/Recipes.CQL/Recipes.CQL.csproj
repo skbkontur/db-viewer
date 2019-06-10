@@ -6,9 +6,9 @@
         <RootNamespace>Kontur.DBViewer.Recipes.CQL</RootNamespace>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <PackageId>Alko.DBViewer.Recipes.CQL</PackageId>
-        <PackageVersion>0.0.1-rc3</PackageVersion>
+        <PackageVersion>0.0.1-rc4</PackageVersion>
         <PackageDescription>CQL connector for DBViewer</PackageDescription>
-        <PackageReleaseNotes>add CustomPropertyConfiguration, add support for TimeUuid, Double types and fix bugs</PackageReleaseNotes>
+        <PackageReleaseNotes>add support for LocalTime</PackageReleaseNotes>
         <Authors>Alko Team</Authors>
     </PropertyGroup>
 
