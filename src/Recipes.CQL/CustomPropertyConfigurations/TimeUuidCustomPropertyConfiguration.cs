@@ -9,21 +9,23 @@ namespace Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations
     {
         public static CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
         {
-            if ((Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType) == typeof(TimeUuid))
-                return new CustomPropertyConfiguration
+            var realType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+            if (realType != typeof(TimeUuid))
+                return null;
+            
+            return new CustomPropertyConfiguration
+            {
+                ResolvedType = typeof(string),
+                StoredToApi = @object => @object?.ToString(),
+                ApiToStored = @object =>
                 {
-                    ResolvedType = typeof(string),
-                    StoredToApi = @object => @object?.ToString(),
-                    ApiToStored = @object =>
-                    {
-                        var value = (string) @object;
-                        if (string.IsNullOrEmpty(value))
-                            return (TimeUuid?)null;
-                        return TimeUuid.Parse(value);
-                    }
-                };
+                    var value = (string) @object;
+                    if (string.IsNullOrEmpty(value))
+                        return (TimeUuid?)null;
+                    return TimeUuid.Parse(value);
+                }
+            };
 
-            return null;
         }
 
     }
