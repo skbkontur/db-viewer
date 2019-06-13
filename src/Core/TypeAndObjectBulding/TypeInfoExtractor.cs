@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Cassandra;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
@@ -26,7 +25,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
         {
             var realType = Nullable.GetUnderlyingType(type) ?? type;
             var canBeNull = Nullable.GetUnderlyingType(type) != null;
-            if (realType == typeof(string) || realType == typeof(Guid) || realType == typeof(TimeUuid))
+            if (realType == typeof(string) || realType == typeof(Guid))
                 return new StringTypeInfo();
             if (realType == typeof(byte))
                 return new ByteTypeInfo(canBeNull);

@@ -98,6 +98,36 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     }
                 }
             };
+            var testClassWithCustomPrimitivesShape = new ClassTypeInfo
+            {
+                Properties = new[]
+                {
+                    new Property
+                    {
+                        TypeInfo = localTimeShape,
+                        Description = new PropertyDescription
+                        {
+                            Name = "LocalTime",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new StringTypeInfo(),
+                        Description = new PropertyDescription
+                        {
+                            Name = "TimeUuid",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new StringTypeInfo(),
+                        Description = new PropertyDescription
+                        {
+                            Name = "NullableTimeUuid",
+                        }
+                    },
+                }
+            };
             var testClassWithAllPrimitivesShape = new ClassTypeInfo
             {
                 Properties = new[]
@@ -335,11 +365,11 @@ namespace Kontur.DBViewer.Tests.ApiTests
                         },
                         new Property
                         {
-                            TypeInfo = localTimeShape,
+                            TypeInfo = testClassWithCustomPrimitivesShape,
                             Description = new PropertyDescription
                             {
-                                Name = "LocalTime",
-                            }
+                                Name = "CustomContent",
+                            },
                         },
                     },
                 };
@@ -366,6 +396,12 @@ namespace Kontur.DBViewer.Tests.ApiTests
             var customPropertyContent = fixture.Create<ClassForSerialization>();
             var @object = fixture.Build<TestClass>()
                 .With(x => x.Serialized, serializer.Serialize(customPropertyContent))
+                .With(x => x.CustomContent, new TestClassWithCustomPrimitives
+                {
+                    LocalTime = new LocalTime(10, 20, 30, 40),
+                    TimeUuid = TimeUuid.NewId(),
+                    NullableTimeUuid = TimeUuid.NewId(),
+                })
                 .Create();
             FillDataBase(@object);
             var result = await client.Read("TestClass", new[]
@@ -377,21 +413,24 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     Value = @object.Id,
                 }
             });
-            Console.WriteLine($"Object Id: {@object.Id}");
-
             CheckShape(result.TypeInfo, testClassShape);
             CheckObject(result.Object, new ExpandedTestClass
             {
                 Id = @object.Id,
                 Content = @object.Content,
                 Serialized = customPropertyContent,
-                LocalTime = new CassandraLocalTime
+                CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
-                    Hour = @object.LocalTime.Hour,
-                    Minute = @object.LocalTime.Minute,
-                    Second = @object.LocalTime.Second,
-                    Nanoseconds = @object.LocalTime.Nanoseconds,
-                }
+                    LocalTime = new CassandraLocalTime
+                    {
+                        Hour = @object.CustomContent.LocalTime.Hour,
+                        Minute = @object.CustomContent.LocalTime.Minute,
+                        Second = @object.CustomContent.LocalTime.Second,
+                        Nanoseconds = @object.CustomContent.LocalTime.Nanoseconds,
+                    },
+                    TimeUuid = @object.CustomContent.TimeUuid.ToString(),
+                    NullableTimeUuid = @object.CustomContent.NullableTimeUuid.ToString(),
+                },
             });
         }
 
@@ -403,24 +442,35 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 .With(x => x.Serialized, serializer.Serialize(oldCustomPropertyContent))
                 .Create();
             var newCustomPropertyContent = fixture.Create<ClassForSerialization>();
+            var newCustomContent = new TestClassWithCustomPrimitives
+            {
+                LocalTime = new LocalTime(10, 20, 30, 40),
+                TimeUuid = TimeUuid.NewId(),
+                NullableTimeUuid = TimeUuid.NewId(),
+            };
             var newObject = new TestClass
             {
                 Id = oldObject.Id,
                 Content = fixture.Create<TestClassWithAllPrimitives>(),
                 Serialized = serializer.Serialize(newCustomPropertyContent),
-                LocalTime = new LocalTime(10, 20, 30, 268)
+                CustomContent = newCustomContent,
             };
             var newObjectExpanded = new ExpandedTestClass
             {
                 Id = oldObject.Id,
                 Content = newObject.Content,
                 Serialized = newCustomPropertyContent,
-                LocalTime = new CassandraLocalTime
+                CustomContent = new ExpandedTestClassWithAllPrimitives()
                 {
-                    Hour = 10,
-                    Minute = 20,
-                    Second = 30,
-                    Nanoseconds = 268
+                    LocalTime =  new CassandraLocalTime
+                    {
+                        Hour = newCustomContent.LocalTime.Hour,
+                        Minute = newCustomContent.LocalTime.Minute,
+                        Second = newCustomContent.LocalTime.Second,
+                        Nanoseconds = newCustomContent.LocalTime.Nanoseconds,
+                    },
+                    TimeUuid = newCustomContent.TimeUuid.ToString(),
+                    NullableTimeUuid = newCustomContent.NullableTimeUuid.ToString(),
                 }
             };
 

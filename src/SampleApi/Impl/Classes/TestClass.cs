@@ -1,5 +1,4 @@
-﻿using Cassandra;
-using Kontur.DBViewer.SampleApi.Impl.Attributes;
+﻿using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Classes
 {
@@ -12,7 +11,7 @@ namespace Kontur.DBViewer.SampleApi.Impl.Classes
         
         [Serialized(typeof(ClassForSerialization))]
         public byte[] Serialized { get; set; }
-
-        public LocalTime LocalTime { get; set; }
+        
+        public TestClassWithCustomPrimitives CustomContent { get; set; }
     }
 }

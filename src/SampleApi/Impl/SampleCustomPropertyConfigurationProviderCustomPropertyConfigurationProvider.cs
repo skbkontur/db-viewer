@@ -1,8 +1,10 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Cassandra;
 using GroBuf;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Recipes.CQL;
+using Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
 namespace Kontur.DBViewer.SampleApi.Impl
@@ -29,10 +31,8 @@ namespace Kontur.DBViewer.SampleApi.Impl
                 };
             }
 
-            if (propertyInfo.PropertyType == typeof(LocalTime))
-                return CqlCustomPropertyConfiguration.LocalTime;
-
-            return null;
+            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
+                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo);
         }
     }
 }
