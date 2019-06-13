@@ -12,22 +12,26 @@ namespace Kontur.DBViewer.Recipes.CQL
             StoredToApi = @object =>
             {
                 var localTime = (LocalTime) @object;
-                return new CassandraLocalTime
-                {
-                    Hour = localTime.Hour,
-                    Nanoseconds = localTime.Nanoseconds,
-                    Minute = localTime.Minute,
-                    Second = localTime.Second,
-                };
+                return localTime != null
+                    ? new CassandraLocalTime
+                    {
+                        Hour = localTime.Hour,
+                        Nanoseconds = localTime.Nanoseconds,
+                        Minute = localTime.Minute,
+                        Second = localTime.Second,
+                    }
+                    : null;
             },
             ApiToStored = @object =>
             {
                 var cassandraLocalTime = (CassandraLocalTime) @object;
-                return new LocalTime(
-                    cassandraLocalTime.Hour,
-                    cassandraLocalTime.Minute,
-                    cassandraLocalTime.Second,
-                    cassandraLocalTime.Nanoseconds);
+                return cassandraLocalTime != null
+                    ? new LocalTime(
+                        cassandraLocalTime.Hour,
+                        cassandraLocalTime.Minute,
+                        cassandraLocalTime.Second,
+                        cassandraLocalTime.Nanoseconds)
+                    : null;
             }
         };
     }
