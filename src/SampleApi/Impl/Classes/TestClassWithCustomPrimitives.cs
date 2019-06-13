@@ -1,4 +1,4 @@
-using Cassandra;
+﻿using Cassandra;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Classes
 {
