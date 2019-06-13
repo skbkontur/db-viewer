@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoFixture;
+using AutoFixture.Kernel;
 using Cassandra;
 using FluentAssertions;
 using GroBuf;
@@ -16,6 +16,7 @@ using Kontur.DBViewer.SampleApi.Impl.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
 namespace Kontur.DBViewer.Tests.ApiTests
 {
@@ -35,6 +36,9 @@ namespace Kontur.DBViewer.Tests.ApiTests
             client = new ApiClient();
             serializer = new Serializer(new AllPropertiesExtractor());
             fixture = new Fixture();
+            fixture.Register(TimeUuid.NewId);
+            fixture.Customizations.Add(new LocalTimeBuilder());
+            fixture.Customize<LocalTime>(c => c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
             var schemaRegistry = new SchemaRegistry();
             schemaRegistry.Add(
                 new Schema
@@ -396,12 +400,6 @@ namespace Kontur.DBViewer.Tests.ApiTests
             var customPropertyContent = fixture.Create<ClassForSerialization>();
             var @object = fixture.Build<TestClass>()
                 .With(x => x.Serialized, serializer.Serialize(customPropertyContent))
-                .With(x => x.CustomContent, new TestClassWithCustomPrimitives
-                {
-                    LocalTime = new LocalTime(10, 20, 30, 40),
-                    TimeUuid = TimeUuid.NewId(),
-                    NullableTimeUuid = TimeUuid.NewId(),
-                })
                 .Create();
             FillDataBase(@object);
             var result = await client.Read("TestClass", new[]
@@ -442,12 +440,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 .With(x => x.Serialized, serializer.Serialize(oldCustomPropertyContent))
                 .Create();
             var newCustomPropertyContent = fixture.Create<ClassForSerialization>();
-            var newCustomContent = new TestClassWithCustomPrimitives
-            {
-                LocalTime = new LocalTime(10, 20, 30, 40),
-                TimeUuid = TimeUuid.NewId(),
-                NullableTimeUuid = TimeUuid.NewId(),
-            };
+            var newCustomContent = fixture.Create<TestClassWithCustomPrimitives>();
             var newObject = new TestClass
             {
                 Id = oldObject.Id,

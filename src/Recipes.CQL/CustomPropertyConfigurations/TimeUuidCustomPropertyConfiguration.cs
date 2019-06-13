@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 using Cassandra;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
@@ -16,10 +16,10 @@ namespace Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations
                     StoredToApi = @object => @object?.ToString(),
                     ApiToStored = @object =>
                     {
-                        var cassandraLocalTime = (string) @object;
-                        if (string.IsNullOrEmpty(cassandraLocalTime))
+                        var value = (string) @object;
+                        if (string.IsNullOrEmpty(value))
                             return (TimeUuid?)null;
-                        return TimeUuid.Parse(cassandraLocalTime);
+                        return TimeUuid.Parse(value);
                     }
                 };
 

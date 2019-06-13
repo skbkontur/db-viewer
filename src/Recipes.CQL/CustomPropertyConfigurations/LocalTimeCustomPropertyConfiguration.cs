@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Cassandra;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Recipes.CQL.DTO;
