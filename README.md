@@ -1,1 +1,1 @@
-todo
+Для того чтобы работал yarn build необходимо один раз запустить npm install copyfiles -g

@@ -1,25 +1,19 @@
 ﻿using System;
-using System.Net.Http.Formatting;
-using System.Web.Http;
-using System.Web.Http.Cors;
-
+using System.Linq;
 using Alko.Configuration.Settings;
-
-using Microsoft.Owin.Hosting;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
-
-using Owin;
-
+using GroBuf;
+using GroBuf.DataMembersExtracters;
+using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.SampleApi.Controllers;
+using Kontur.DBViewer.SampleApi.Impl;
+using Kontur.DBViewer.SampleApi.Impl.Classes;
 using Topshelf;
 
 namespace Kontur.DBViewer.SampleApi
 {
     public class Service : ServiceControl
     {
-        private IDisposable service;
+        private WebApiService service;
 
         public bool Start(HostControl hostControl)
         {
@@ -27,33 +21,29 @@ namespace Kontur.DBViewer.SampleApi
             {
                 var applicationSettings = ApplicationSettings.LoadDefault("sampleApi.csf");
                 var port = applicationSettings.GetInt("ListeningPort");
-                service = WebApp.Start(
-                    $"http://*:{port}",
-                    appBuilder =>
+                var schemaRegistry = new SchemaRegistry();
+                schemaRegistry.Add(
+                    new Schema
                     {
-                        var config = new HttpConfiguration();
-                        var cors = new EnableCorsAttribute("*", "*", "*");
-                        config.EnableCors(cors);
-                        config.MapHttpAttributeRoutes();
-                        config.Formatters.Clear();
-                        config.Formatters.Add(new JsonMediaTypeFormatter
+                        Description = new SchemaDescription
                         {
-                            SerializerSettings = new JsonSerializerSettings
-                            {
-                                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                Converters = new JsonConverter[]
-                                {
-                                    new StringEnumConverter(),
-                                    new IsoDateTimeConverter
-                                    {
-                                        DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffK"
-                                    }
-                                }
-                            },
-                        });
-                        config.EnsureInitialized();
-                        appBuilder.UseWebApi(config);
-                    });
+                            Countable = true,
+                            SchemaName = "SampleSchema",
+                            MaxCountLimit = 10_000,
+                            DefaultCountLimit = 100,
+                            EnableDefaultSearch = false,
+                        },
+                        Types = BuildTypeDescriptions(
+                            typeof(TestClass)
+                        ),
+                        PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
+                        ConnectorsFactory = new SampleIdbConnectorFactory(),
+                        CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(new Serializer(new AllPropertiesExtractor())),
+                    }
+                );
+                SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
+                service = new WebApiService();
+                service.Start(port);
                 Console.WriteLine("Service started (for service runner)");
                 return true;
             }
@@ -63,11 +53,20 @@ namespace Kontur.DBViewer.SampleApi
             }
         }
 
+        private TypeDescription[] BuildTypeDescriptions(params Type[] types)
+        {
+            return types.Select(type => new TypeDescription
+            {
+                Type = type,
+                TypeIdentifier = type.Name,
+            }).ToArray();
+        }
+
         public bool Stop(HostControl hostControl)
         {
             try
             {
-                service.Dispose();
+                service.Stop();
                 return true;
             }
             catch

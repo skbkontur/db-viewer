@@ -2,8 +2,8 @@
 import Link from "@skbkontur/react-ui/Link";
 import ClassNames from "classnames";
 import * as React from "react";
-import { FieldInfo } from "../../api/impl/FieldInfo";
-import { FieldType } from "../../api/impl/FieldType";
+import { PrimitiveType } from "../../api/impl/PrimitiveType";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 import FieldEditor from "../Common/FieldEditor";
 import { PrimitiveValue } from "../Common/PrimitiveValue";
 import { copyObject } from "../Utils/CopyUtils";
@@ -13,7 +13,7 @@ import * as styles from "./ObjectDetails.less";
 interface IProps {
   data: object;
   edit: boolean;
-  typeInfo: FieldInfo;
+  typeInfo: TypeInfo;
   onChange: (value: object) => void;
 }
 
@@ -31,35 +31,37 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
 
   public render(): React.ReactNode {
     switch (this.props.typeInfo.type) {
-      case FieldType.Bool:
-      case FieldType.DateTime:
-      case FieldType.Enum:
-      case FieldType.Int:
-      case FieldType.Long:
-      case FieldType.Decimal:
-      case FieldType.String:
-      case FieldType.Char:
-      case FieldType.Byte:
+      case PrimitiveType.Bool:
+      case PrimitiveType.DateTime:
+      case PrimitiveType.Enum:
+      case PrimitiveType.Int:
+      case PrimitiveType.Long:
+      case PrimitiveType.Decimal:
+      case PrimitiveType.String:
+      case PrimitiveType.Char:
+      case PrimitiveType.Byte:
         if (this.props.edit) {
           return this.renderPrimitiveEdit();
         } else {
           return this.renderPrimitiveValue();
         }
-      case FieldType.Class: {
-        const typeInfo = this.props.typeInfo;
+      case PrimitiveType.Class: {
         if (!this.props.data) {
           return (
-            <PrimitiveValue data={null} fieldType={this.props.typeInfo.type} />
+            <PrimitiveValue
+              data={null}
+              primitiveType={this.props.typeInfo.type}
+            />
           );
         }
         return (
           <table className={styles.table}>
             <tbody>
-              {Object.keys(this.props.typeInfo.fields).map(key =>
+              {this.props.typeInfo.properties.map(property =>
                 this._renderRow(
-                  key,
-                  this.props.data[key],
-                  typeInfo.fields[key],
+                  property.description.name,
+                  this.props.data[property.description.name],
+                  property.typeInfo,
                   false
                 )
               )}
@@ -67,12 +69,15 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           </table>
         );
       }
-      case FieldType.HashSet:
-      case FieldType.Enumerable: {
+      case PrimitiveType.HashSet:
+      case PrimitiveType.Enumerable: {
         const typeInfo = this.props.typeInfo;
         if (!this.props.data) {
           return (
-            <PrimitiveValue data={null} fieldType={this.props.typeInfo.type} />
+            <PrimitiveValue
+              data={null}
+              primitiveType={this.props.typeInfo.type}
+            />
           );
         }
         return (
@@ -91,11 +96,14 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         );
       }
 
-      case FieldType.Dictionary: {
+      case PrimitiveType.Dictionary: {
         const typeInfo = this.props.typeInfo;
         if (!this.props.data) {
           return (
-            <PrimitiveValue data={null} fieldType={this.props.typeInfo.type} />
+            <PrimitiveValue
+              data={null}
+              primitiveType={this.props.typeInfo.type}
+            />
           );
         }
         return (
@@ -114,15 +122,15 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
   public _renderRow(
     key: string,
     value: object,
-    typeInfo: FieldInfo,
+    typeInfo: TypeInfo,
     renderOriginalKey: boolean
   ) {
     const expandable =
       !!value &&
-      (typeInfo.type === FieldType.HashSet ||
-        typeInfo.type === FieldType.Dictionary ||
-        typeInfo.type === FieldType.Class ||
-        typeInfo.type === FieldType.Enumerable);
+      (typeInfo.type === PrimitiveType.HashSet ||
+        typeInfo.type === PrimitiveType.Dictionary ||
+        typeInfo.type === PrimitiveType.Class ||
+        typeInfo.type === PrimitiveType.Enumerable);
     return (
       <tr key={key}>
         <td>
@@ -144,8 +152,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
               edit={this.props.edit}
               typeInfo={typeInfo}
               onChange={newValue =>
-                this.props.typeInfo.type === FieldType.Enumerable ||
-                this.props.typeInfo.type === FieldType.HashSet
+                this.props.typeInfo.type === PrimitiveType.Enumerable ||
+                this.props.typeInfo.type === PrimitiveType.HashSet
                   ? this.props.onChange(
                       (this.props.data as object[]).map((x, idx) =>
                         idx.toString() === key ? newValue : x
@@ -174,7 +182,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
 
   private renderPrimitiveValue(): React.ReactNode {
     const { data, typeInfo } = this.props;
-    return <PrimitiveValue data={data} fieldType={typeInfo.type} />;
+    return <PrimitiveValue data={data} primitiveType={typeInfo.type} />;
   }
 
   private handleExpand(key: string) {

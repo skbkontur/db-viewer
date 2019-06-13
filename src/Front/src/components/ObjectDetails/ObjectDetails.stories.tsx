@@ -1,134 +1,112 @@
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { FieldInfo } from "../../api/impl/FieldInfo";
-import { FieldType } from "../../api/impl/FieldType";
+import { PrimitiveType } from "../../api/impl/PrimitiveType";
+import { Property } from "../../api/impl/Property";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 import ObjectDetailsContent from "./ObjectDetailsContent";
 
+const createProperty = (typeInfo: TypeInfo, name: string): Property => ({
+  typeInfo,
+  description: {
+    name,
+    isIdentity: false,
+    availableFilters: null,
+    isRequired: false,
+    isSearchable: false,
+    isSortable: false,
+  },
+});
+
 storiesOf("ObjectDetailsContent", module).add("Full", () => {
-  const intField: FieldInfo = {
-    type: FieldType.Int,
-    canBeNull: false,
-    meta: {
-      name: "intField",
-      isIdentity: false,
-      availableFilters: null,
-      isRequired: false,
-      isSearchable: false,
-      isSortable: false,
+  const intProperty: Property = createProperty(
+    {
+      type: PrimitiveType.Int,
+      canBeNull: false,
     },
-  };
-  const typeInfo: FieldInfo = {
-    type: FieldType.Class,
-    fields: {
-      classField: {
-        type: FieldType.Class,
-        fields: {
-          intField,
+    "intField"
+  );
+  const typeInfo: TypeInfo = {
+    type: PrimitiveType.Class,
+    properties: [
+      createProperty(
+        {
+          type: PrimitiveType.Class,
+          properties: [intProperty],
         },
-        meta: null,
-      },
-      dictionaryField: {
-        type: FieldType.Dictionary,
-        key: intField,
-        value: intField,
-        meta: null,
-      },
-      arrayField: {
-        type: FieldType.Enumerable,
-        underlyingType: intField,
-        meta: null,
-      },
-      hashsetField: {
-        type: FieldType.HashSet,
-        underlyingType: intField,
-        meta: null,
-      },
-      intField: {
-        type: FieldType.Int,
-        canBeNull: false,
-        meta: {
-          name: "intField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "classProperty"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Dictionary,
+          key: intProperty.typeInfo,
+          value: intProperty.typeInfo,
         },
-      },
-      nullableIntField: {
-        type: FieldType.Int,
-        canBeNull: true,
-        meta: {
-          name: "nullableIntField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "dictionaryProperty"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Enumerable,
+          underlyingType: intProperty.typeInfo,
         },
-      },
-      boolField: {
-        type: FieldType.Bool,
-        canBeNull: false,
-        meta: {
-          name: "boolField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "arrayProperty"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.HashSet,
+          underlyingType: intProperty.typeInfo,
         },
-      },
-      nullableBoolField: {
-        type: FieldType.Bool,
-        canBeNull: true,
-        meta: {
-          name: "nullableBoolField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "hashsetProperty"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Int,
+          canBeNull: false,
         },
-      },
-      stringField: {
-        type: FieldType.String,
-        meta: {
-          name: "stringField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "intField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Int,
+          canBeNull: true,
         },
-      },
-      nullableDecimalField: {
-        type: FieldType.Decimal,
-        canBeNull: true,
-        meta: {
-          name: "nullableDecimalField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "nullableIntField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Bool,
+          canBeNull: false,
         },
-      },
-      decimalField: {
-        type: FieldType.Decimal,
-        canBeNull: false,
-        meta: {
-          name: "decimalField",
-          isIdentity: false,
-          availableFilters: null,
-          isRequired: false,
-          isSearchable: false,
-          isSortable: false,
+        "boolField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Bool,
+          canBeNull: true,
         },
-      },
-    },
-    meta: null,
+        "nullableBoolField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.String,
+        },
+        "stringField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Decimal,
+          canBeNull: false,
+        },
+        "decimalField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.Decimal,
+          canBeNull: true,
+        },
+        "nullableDecimalField"
+      ),
+    ],
   };
   return (
     <ObjectDetailsContent

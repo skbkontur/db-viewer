@@ -21,6 +21,7 @@
   <ItemGroup>
     <PackageReference Include="Alko.Configuration.Settings" Version="0.0.4" />
     <PackageReference Include="GroboContainer" Version="1.2.37" />
+    <PackageReference Include="GroBuf" Version="1.4.6" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Recipes.CQL\Recipes.CQL.csproj" />
   </ItemGroup>
 
 </Project>

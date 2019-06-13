@@ -1,4 +1,5 @@
 ﻿using Kontur.DBViewer.Core.Connector;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 
 namespace Kontur.DBViewer.Core.Schemas
 {
@@ -6,7 +7,8 @@ namespace Kontur.DBViewer.Core.Schemas
     {
         public SchemaDescription Description { get; set; }
         public IDBConnectorFactory ConnectorsFactory { get; set; }
-        public ITypeInfoExtractor TypeInfoExtractor { get; set; }
+        public ICustomPropertyConfigurationProvider CustomPropertyConfigurationProvider { get; set; }
+        public IPropertyDescriptionBuilder PropertyDescriptionBuilder { get; set; }
         public TypeDescription[] Types { get; set; }
     }
 }

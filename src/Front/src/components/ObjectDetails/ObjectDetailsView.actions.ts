@@ -2,9 +2,9 @@ import Toast from "@skbkontur/react-ui/components/Toast/Toast";
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import Apis from "../../api/Apis";
-import { FieldInfo } from "../../api/impl/FieldInfo";
 import { Filter } from "../../api/impl/Filter";
 import { FilterType } from "../../api/impl/FilterType";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 
 export enum ObjectDetailsActionTypes {
   LoadStart = "ObjectDetails/LoadStart",
@@ -26,7 +26,7 @@ interface ILoadStart {
 interface ILoadSuccess {
   type: ObjectDetailsActionTypes.LoadSuccess;
   object: any;
-  typeInfo: FieldInfo;
+  typeInfo: TypeInfo;
 }
 
 interface ILoadFail {

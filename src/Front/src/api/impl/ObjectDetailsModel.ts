@@ -1,9 +1,9 @@
 // tslint:disable
 // TypeScriptContractGenerator's generated content
 import { Object } from './Object';
-import { FieldInfo } from './FieldInfo';
+import { TypeInfo } from './TypeInfo';
 
 export type ObjectDetailsModel = {
     object: Nullable<Object>;
-    typeInfo: Nullable<FieldInfo>;
+    typeInfo: Nullable<TypeInfo>;
 };

@@ -3,14 +3,14 @@ import Select from "@skbkontur/react-ui/components/Select";
 import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { FieldInfo } from "../../api/impl/FieldInfo";
-import { FieldType } from "../../api/impl/FieldType";
+import { PrimitiveType } from "../../api/impl/PrimitiveType";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 
 export type EnumSelectItem = [string, string];
 
 interface IProps {
   value: any;
-  typeInfo: FieldInfo;
+  typeInfo: TypeInfo;
   onChange: (value: any) => void;
   dateAsInput?: boolean;
   error?: boolean;
@@ -19,7 +19,7 @@ interface IProps {
 export default class FieldEditor extends React.Component<IProps> {
   public render() {
     switch (this.props.typeInfo.type) {
-      case FieldType.DateTime:
+      case PrimitiveType.DateTime:
         if (this.props.dateAsInput) {
           return (
             <Input
@@ -38,18 +38,18 @@ export default class FieldEditor extends React.Component<IProps> {
             error={this.props.error}
           />
         );
-      case FieldType.Enum:
+      case PrimitiveType.Enum:
         return this.renderSelect(
           this.props.typeInfo.canBeNull,
           this.props.typeInfo.availableValues.map<EnumSelectItem>(x => [x, x])
         );
-      case FieldType.Bool:
+      case PrimitiveType.Bool:
         return this.renderSelect(this.props.typeInfo.canBeNull, [
           [true, "true"],
           [false, "false"],
         ]);
-      case FieldType.Char:
-      case FieldType.String:
+      case PrimitiveType.Char:
+      case PrimitiveType.String:
         return (
           <Input
             value={this.props.value}
@@ -58,26 +58,26 @@ export default class FieldEditor extends React.Component<IProps> {
             error={this.props.error}
           />
         );
-      case FieldType.Byte:
-      case FieldType.Decimal:
-      case FieldType.Int:
-      case FieldType.Long:
+      case PrimitiveType.Byte:
+      case PrimitiveType.Decimal:
+      case PrimitiveType.Int:
+      case PrimitiveType.Long:
         return (
           <CurrencyInput
             value={this.props.value}
             onChange={this.handleChangeNumber}
             fractionDigits={
-              this.props.typeInfo.type === FieldType.Decimal ? 5 : 0
+              this.props.typeInfo.type === PrimitiveType.Decimal ? 5 : 0
             }
             signed
             width={310}
             error={this.props.error}
           />
         );
-      case FieldType.Dictionary:
-      case FieldType.HashSet:
-      case FieldType.Enumerable:
-      case FieldType.Class:
+      case PrimitiveType.Dictionary:
+      case PrimitiveType.HashSet:
+      case PrimitiveType.Enumerable:
+      case PrimitiveType.Class:
         return null;
     }
   }

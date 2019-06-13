@@ -1,4 +1,4 @@
-import { FieldInfo } from "../../api/impl/FieldInfo";
+import { TypeInfo } from "../../api/impl/TypeInfo";
 import { LoaderState } from "../Common/FullPageLoader";
 import {
   ObjectDetailsActionTypes,
@@ -8,7 +8,7 @@ import {
 export interface IObjectDetailsStore {
   loadingStatus: LoaderState;
   object: any;
-  typeInfo: FieldInfo;
+  typeInfo: TypeInfo;
 }
 
 const defaultState: IObjectDetailsStore = {
