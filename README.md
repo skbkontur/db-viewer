@@ -1,1 +1,1 @@
-Для того чтобы работал yarn build необходимо один раз запустить npm install copyfiles -g
+Для того чтобы работал yarn build необходимо один раз запустить yarn add -G copyfiles

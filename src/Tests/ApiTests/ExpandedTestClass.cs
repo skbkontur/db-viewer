@@ -8,6 +8,6 @@ namespace Kontur.DBViewer.Tests.ApiTests
         public string Id { get; set; }
         public TestClassWithAllPrimitives Content { get; set; }
         public ClassForSerialization Serialized { get; set; }
-        public CassandraLocalTime LocalTime { get; set; }
+        public ExpandedTestClassWithAllPrimitives CustomContent { get; set; }
     }
 }

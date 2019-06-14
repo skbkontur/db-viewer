@@ -1,6 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoFixture;
+using AutoFixture.Kernel;
 using Cassandra;
 using FluentAssertions;
 using GroBuf;
@@ -16,6 +16,7 @@ using Kontur.DBViewer.SampleApi.Impl.Classes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 
 namespace Kontur.DBViewer.Tests.ApiTests
 {
@@ -35,6 +36,9 @@ namespace Kontur.DBViewer.Tests.ApiTests
             client = new ApiClient();
             serializer = new Serializer(new AllPropertiesExtractor());
             fixture = new Fixture();
+            fixture.Register(TimeUuid.NewId);
+            fixture.Customizations.Add(new LocalTimeBuilder());
+            fixture.Customize<LocalTime>(c => c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
             var schemaRegistry = new SchemaRegistry();
             schemaRegistry.Add(
                 new Schema
@@ -96,6 +100,36 @@ namespace Kontur.DBViewer.Tests.ApiTests
                             Name = "Nanoseconds"
                         },
                     }
+                }
+            };
+            var testClassWithCustomPrimitivesShape = new ClassTypeInfo
+            {
+                Properties = new[]
+                {
+                    new Property
+                    {
+                        TypeInfo = localTimeShape,
+                        Description = new PropertyDescription
+                        {
+                            Name = "LocalTime",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new StringTypeInfo(),
+                        Description = new PropertyDescription
+                        {
+                            Name = "TimeUuid",
+                        }
+                    },
+                    new Property
+                    {
+                        TypeInfo = new StringTypeInfo(),
+                        Description = new PropertyDescription
+                        {
+                            Name = "NullableTimeUuid",
+                        }
+                    },
                 }
             };
             var testClassWithAllPrimitivesShape = new ClassTypeInfo
@@ -335,11 +369,11 @@ namespace Kontur.DBViewer.Tests.ApiTests
                         },
                         new Property
                         {
-                            TypeInfo = localTimeShape,
+                            TypeInfo = testClassWithCustomPrimitivesShape,
                             Description = new PropertyDescription
                             {
-                                Name = "LocalTime",
-                            }
+                                Name = "CustomContent",
+                            },
                         },
                     },
                 };
@@ -377,21 +411,24 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     Value = @object.Id,
                 }
             });
-            Console.WriteLine($"Object Id: {@object.Id}");
-
             CheckShape(result.TypeInfo, testClassShape);
             CheckObject(result.Object, new ExpandedTestClass
             {
                 Id = @object.Id,
                 Content = @object.Content,
                 Serialized = customPropertyContent,
-                LocalTime = new CassandraLocalTime
+                CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
-                    Hour = @object.LocalTime.Hour,
-                    Minute = @object.LocalTime.Minute,
-                    Second = @object.LocalTime.Second,
-                    Nanoseconds = @object.LocalTime.Nanoseconds,
-                }
+                    LocalTime = new CassandraLocalTime
+                    {
+                        Hour = @object.CustomContent.LocalTime.Hour,
+                        Minute = @object.CustomContent.LocalTime.Minute,
+                        Second = @object.CustomContent.LocalTime.Second,
+                        Nanoseconds = @object.CustomContent.LocalTime.Nanoseconds,
+                    },
+                    TimeUuid = @object.CustomContent.TimeUuid.ToString(),
+                    NullableTimeUuid = @object.CustomContent.NullableTimeUuid.ToString(),
+                },
             });
         }
 
@@ -403,24 +440,30 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 .With(x => x.Serialized, serializer.Serialize(oldCustomPropertyContent))
                 .Create();
             var newCustomPropertyContent = fixture.Create<ClassForSerialization>();
+            var newCustomContent = fixture.Create<TestClassWithCustomPrimitives>();
             var newObject = new TestClass
             {
                 Id = oldObject.Id,
                 Content = fixture.Create<TestClassWithAllPrimitives>(),
                 Serialized = serializer.Serialize(newCustomPropertyContent),
-                LocalTime = new LocalTime(10, 20, 30, 268)
+                CustomContent = newCustomContent,
             };
             var newObjectExpanded = new ExpandedTestClass
             {
                 Id = oldObject.Id,
                 Content = newObject.Content,
                 Serialized = newCustomPropertyContent,
-                LocalTime = new CassandraLocalTime
+                CustomContent = new ExpandedTestClassWithAllPrimitives()
                 {
-                    Hour = 10,
-                    Minute = 20,
-                    Second = 30,
-                    Nanoseconds = 268
+                    LocalTime =  new CassandraLocalTime
+                    {
+                        Hour = newCustomContent.LocalTime.Hour,
+                        Minute = newCustomContent.LocalTime.Minute,
+                        Second = newCustomContent.LocalTime.Second,
+                        Nanoseconds = newCustomContent.LocalTime.Nanoseconds,
+                    },
+                    TimeUuid = newCustomContent.TimeUuid.ToString(),
+                    NullableTimeUuid = newCustomContent.NullableTimeUuid.ToString(),
                 }
             };
 

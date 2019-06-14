@@ -17,7 +17,7 @@ namespace Kontur.DBViewer.Tests.ExtractorsTests
         public void Test_Enum(Type type, TypeInfo expected)
         {
             CheckResult(
-                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(),  null),
+                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null),
                 expected);
         }
 
