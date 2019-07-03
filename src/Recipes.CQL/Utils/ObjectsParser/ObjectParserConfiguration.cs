@@ -40,13 +40,16 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser
                 .Configure<string>(ValueParser.CreateSimpleStringParser())
                 .Configure<int>(int.TryParse)
                 .Configure<byte>(byte.TryParse)
+                .Configure<sbyte>(sbyte.TryParse)
                 .Configure<long>(long.TryParse)
+                .Configure<short>(short.TryParse)
                 .Configure((string value, out double result) => double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                 .Configure((string value, out float result) => float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                 .Configure<bool>(bool.TryParse)
                 .Configure<Guid>(Guid.TryParse)
                 .Configure<TimeUuid>(TimeUuidParseHelper.TryParse)
                 .Configure<DateTime>(DateTimeParseHelper.TryParse)
+                .Configure<LocalDate>(DateTimeParseHelper.TryParse)
                 .ConfigureEnumParse(new EnumParser((Type enumType, string value, out object result) => EnumParseHelper.TryParse(enumType, value, out result)));
         }
 
