@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Cassandra;
 using Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.Exceptions;
 using Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers;
 using Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.Parsers;
@@ -44,7 +45,8 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser
                 .Configure((string value, out float result) => float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                 .Configure<bool>(bool.TryParse)
                 .Configure<Guid>(Guid.TryParse)
-                .Configure((string value, out DateTime result) => DateTimeParseHelper.TryParse(value, out result))
+                .Configure<TimeUuid>(TimeUuidParseHelper.TryParse)
+                .Configure<DateTime>(DateTimeParseHelper.TryParse)
                 .ConfigureEnumParse(new EnumParser((Type enumType, string value, out object result) => EnumParseHelper.TryParse(enumType, value, out result)));
         }
 
