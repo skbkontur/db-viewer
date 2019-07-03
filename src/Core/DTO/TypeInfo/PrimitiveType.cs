@@ -8,9 +8,11 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
     {
         String,
         Byte,
+        SByte,
         Char,
         Int,
         Long,
+        Short,
         Decimal,
         DateTime,
         Enum,

@@ -50,12 +50,16 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
                     return typeof(StringTypeInfo);
                 case PrimitiveType.Byte:
                     return typeof(ByteTypeInfo);
+                case PrimitiveType.SByte:
+                    return typeof(SByteTypeInfo);
                 case PrimitiveType.Char:
                     return typeof(CharTypeInfo);
                 case PrimitiveType.Int:
                     return typeof(IntTypeInfo);
                 case PrimitiveType.Long:
                     return typeof(LongTypeInfo);
+                case PrimitiveType.Short:
+                    return typeof(ShortTypeInfo);
                 case PrimitiveType.Decimal:
                     return typeof(DecimalTypeInfo);
                 case PrimitiveType.DateTime:
