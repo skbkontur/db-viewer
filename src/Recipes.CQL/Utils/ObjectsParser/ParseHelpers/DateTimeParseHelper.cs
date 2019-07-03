@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
 {
-    internal class DateTimeParseHelper
+    internal static class DateTimeParseHelper
     {
         public static bool TryParse(string value, out DateTime result)
         {
