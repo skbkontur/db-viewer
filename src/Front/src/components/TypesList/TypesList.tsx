@@ -56,6 +56,7 @@ class TypesList extends React.Component<Props, {}> {
         />
         <Gapped vertical gap={15}>
           <Input
+            data-tid="FilterInput"
             ref={this.handleInputRef}
             value={this.props.filters.searchString}
             onChange={this._handleChangeSearchString}
@@ -82,6 +83,7 @@ class TypesList extends React.Component<Props, {}> {
               key={type.name + type.schemaDescription.schemaName}
             >
               <Link
+                data-tid="BusinessObjectLink"
                 to={StringUtils.normalizeUrl(
                   `${this.props.match.url}/${type.name}`
                 )}

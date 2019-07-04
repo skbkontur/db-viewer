@@ -31,10 +31,11 @@ interface ISearchPanelProps {
 export default class SearchPanel extends React.Component<ISearchPanelProps> {
   public render() {
     return (
-      <table className={styles.table}>
+      <table data-tid="SearchPanel" className={styles.table}>
         <tbody>
           {this.props.fields.map(x => (
             <SearchField
+              data-tid="SearchField"
               name={x.description.name}
               availableFilters={x.description.availableFilters}
               typeInfo={x.typeInfo}

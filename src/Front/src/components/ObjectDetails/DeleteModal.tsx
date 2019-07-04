@@ -12,10 +12,12 @@ export class DeleteModal extends PromiseModal {
         <Modal.Body>Вы уверены?</Modal.Body>
         <Modal.Footer panel>
           <Gapped>
-            <Button onClick={() => resolve(true)} use={"danger"}>
+            <Button data-tid="ConfirmButton" onClick={() => resolve(true)} use={"danger"}>
               Да
             </Button>
-            <Button onClick={() => resolve(false)}>Нет</Button>
+            <Button data-tid="CancelButton" onClick={() => resolve(false)}>
+              Нет
+            </Button>
           </Gapped>
         </Modal.Footer>
       </Modal>

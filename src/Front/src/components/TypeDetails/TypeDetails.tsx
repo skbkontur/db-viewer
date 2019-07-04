@@ -288,9 +288,11 @@ class TypeDetails extends React.Component<IProps, IState> {
     }
     return (
       <Gapped>
-        <span>Найдено {count === countLimit ? `больше ${count}` : count}</span>
+        <span data-tid="FoundObjects">
+          Найдено {count === countLimit ? `больше ${count}` : count}
+        </span>
         {count === countLimit && (
-          <Link onClick={this.handleGetExactCount}>
+          <Link data-tid="GetExactCountLink" onClick={this.handleGetExactCount}>
             Узнать точное количество (не больше чем {maxCountLimit})
           </Link>
         )}
@@ -315,7 +317,7 @@ class TypeDetails extends React.Component<IProps, IState> {
     if (!this.state.showFilters) {
       return (
         <div className={styles.searchForm}>
-          <Link icon={"ArrowTriangleRight"} onClick={this.handleShowFilters}>
+          <Link data-tid="ShowFiltersToggle" icon={"ArrowTriangleRight"} onClick={this.handleShowFilters}>
             Показать фильтры
           </Link>
         </div>
@@ -324,7 +326,7 @@ class TypeDetails extends React.Component<IProps, IState> {
     return (
       <div className={styles.searchForm}>
         <Gapped vertical>
-          <Link icon={"ArrowTriangleDown"} onClick={this.handleHideFilters}>
+          <Link data-tid="ShowFiltersToggle" icon={"ArrowTriangleDown"} onClick={this.handleHideFilters}>
             Скрыть фильтры
           </Link>
           <SearchPanel
@@ -334,10 +336,12 @@ class TypeDetails extends React.Component<IProps, IState> {
             validations={this.state.validations}
           />
           <Gapped>
-            <Button use={"primary"} onClick={() => this.handleSearch(false)}>
+            <Button data-tid="SearchButton" use={"primary"} onClick={() => this.handleSearch(false)}>
               Искать
             </Button>
-            <Button onClick={this.handleResetFilters}>Сбросить</Button>
+            <Button data-tid="ResetButton" onClick={this.handleResetFilters}>
+              Сбросить
+            </Button>
           </Gapped>
         </Gapped>
       </div>
@@ -367,6 +371,7 @@ class TypeDetails extends React.Component<IProps, IState> {
             .join("&");
           return (
             <NavLink
+              data-tid="DetailsLink"
               to={StringUtils.normalizeUrl(
                 `${this.props.match.url}/Details?${query}`
               )}
@@ -380,7 +385,7 @@ class TypeDetails extends React.Component<IProps, IState> {
             field.description.name
           )
             .withCustomRender(x => (
-              <PrimitiveValue data={x} primitiveType={field.typeInfo.type} />
+              <PrimitiveValue data-tid={field.description.name} data={x} primitiveType={field.typeInfo.type} />
             ))
             .withHeader(() => this.renderTableHeader(field))
         ),
@@ -391,7 +396,7 @@ class TypeDetails extends React.Component<IProps, IState> {
 
   private renderTableHeader = (field: Property): React.ReactNode => {
     if (!field.description.isSortable) {
-      return <span>{field.description.name}</span>;
+      return <span data-tid="ColumnName">{field.description.name}</span>;
     }
     const currentDirection =
       this.state.sorts && this.state.sorts.field === field.description.name
@@ -399,6 +404,7 @@ class TypeDetails extends React.Component<IProps, IState> {
         : null;
     return (
       <Link
+        data-tid="ColumnSortLink"
         onClick={() =>
           this.handleSort(field, this.getNewSortDirection(currentDirection))
         }

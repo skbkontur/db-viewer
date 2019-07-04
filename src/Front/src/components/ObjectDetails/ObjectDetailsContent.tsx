@@ -50,7 +50,9 @@ export default class ObjectDetailsContent extends React.Component<
           />
         </div>
         {this.renderEditButtons()}
-        <Button onClick={this.handleCopy}>Скопировать весь объект</Button>
+        <Button data-tid="CopyButton" onClick={this.handleCopy}>
+          Скопировать весь объект
+        </Button>
       </Gapped>
     );
   }
@@ -67,6 +69,7 @@ export default class ObjectDetailsContent extends React.Component<
         {this.state.edit ? (
           <Gapped>
             <Button
+              data-tid="SaveButton"
               use="primary"
               onClick={this.handleSave}
               loading={this.state.saving}
@@ -74,12 +77,17 @@ export default class ObjectDetailsContent extends React.Component<
             >
               Сохранить
             </Button>
-            <Button onClick={this.handleCancelEdit}>Отменить</Button>
+            <Button data-tid="CancelButton" onClick={this.handleCancelEdit}>
+              Отменить
+            </Button>
           </Gapped>
         ) : (
           <Gapped>
-            <Button onClick={this.handleEdit}>Редактировать</Button>
+            <Button data-tid="EditButton" onClick={this.handleEdit}>
+              Редактировать
+            </Button>
             <Button
+              data-tid="DeleteButton"
               use="danger"
               onClick={this.handleDelete}
               loading={this.state.deleting}

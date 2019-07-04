@@ -27,16 +27,20 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
             var canBeNull = Nullable.GetUnderlyingType(type) != null;
             if (realType == typeof(string) || realType == typeof(Guid))
                 return new StringTypeInfo();
-            if (realType == typeof(byte))
-                return new ByteTypeInfo(canBeNull);
             if (realType == typeof(char))
                 return new CharTypeInfo(canBeNull);
+            if (realType == typeof(byte))
+                return new ByteTypeInfo(canBeNull);
+            if (realType == typeof(sbyte))
+                return new SByteTypeInfo(canBeNull);
             if (realType == typeof(int))
                 return new IntTypeInfo(canBeNull);
             if (realType == typeof(DateTime) || realType == typeof(DateTimeOffset))
                 return new DateTimeTypeInfo(canBeNull);
             if (realType == typeof(long))
                 return new LongTypeInfo(canBeNull);
+            if (realType == typeof(short))
+                return new ShortTypeInfo(canBeNull);
             if (realType == typeof(bool))
                 return new BoolTypeInfo(canBeNull);
             if (realType == typeof(decimal) ||realType == typeof(double))

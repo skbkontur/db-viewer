@@ -59,9 +59,11 @@ export default class FieldEditor extends React.Component<IProps> {
           />
         );
       case PrimitiveType.Byte:
+      case PrimitiveType.SByte:
       case PrimitiveType.Decimal:
       case PrimitiveType.Int:
       case PrimitiveType.Long:
+      case PrimitiveType.Short:
         return (
           <CurrencyInput
             value={this.props.value}
