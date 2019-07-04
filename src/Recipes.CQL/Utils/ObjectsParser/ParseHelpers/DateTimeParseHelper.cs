@@ -18,6 +18,17 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
             return true;
         }
 
+        public static bool TryParse(string value, out DateTimeOffset result)
+        {
+            result = DateTimeOffset.MinValue;
+
+            if (!TryParse(value, out DateTime date))
+                return false;
+
+            result = date;
+            return true;
+        }
+
         public static bool TryParse(string value, out DateTime result)
         {
             return TryParse(value, DateTemplates.Concat(DateTimeTemplates).ToArray(), out result);
@@ -27,11 +38,8 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
         {
             result = DateTime.MinValue;
 
-            foreach (var template in templates)
-            {
-                if (TryParse(value, template, out result))
-                    return true;
-            }
+            if (DateTime.TryParseExact(value, templates, Provider, Style, out result))
+                return true;
 
             if (!long.TryParse(value, out var ticks))
                 return false;
@@ -40,11 +48,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
             return true;
         }
 
-        private static bool TryParse(string value, string template, out DateTime result)
-        {
-            return DateTime.TryParseExact(value, template, new CultureInfo("RU"),
-                DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out result);
-        }
+        private const DateTimeStyles Style = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
 
         private static readonly string[] DateTemplates =
         {
@@ -64,5 +68,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
             "yyyy-MM-dd HH:mm:ss",
             "yyyy-MM-dd HH:mm",
         };
+
+        private static readonly IFormatProvider Provider = new CultureInfo("RU");
     }
 }

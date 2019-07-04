@@ -49,6 +49,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser
                 .Configure<Guid>(Guid.TryParse)
                 .Configure<TimeUuid>(TimeUuidParseHelper.TryParse)
                 .Configure<DateTime>(DateTimeParseHelper.TryParse)
+                .Configure<DateTimeOffset>(DateTimeParseHelper.TryParse)
                 .Configure<LocalDate>(DateTimeParseHelper.TryParse)
                 .ConfigureEnumParse(new EnumParser((Type enumType, string value, out object result) => EnumParseHelper.TryParse(enumType, value, out result)));
         }
