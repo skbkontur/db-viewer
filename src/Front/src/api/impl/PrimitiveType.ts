@@ -4,9 +4,11 @@
 export enum PrimitiveType {
     String = 'String',
     Byte = 'Byte',
+    SByte = 'SByte',
     Char = 'Char',
     Int = 'Int',
     Long = 'Long',
+    Short = 'Short',
     Decimal = 'Decimal',
     DateTime = 'DateTime',
     Enum = 'Enum',
