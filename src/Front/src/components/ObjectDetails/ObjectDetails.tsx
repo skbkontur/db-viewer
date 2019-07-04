@@ -36,10 +36,12 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
       case PrimitiveType.Enum:
       case PrimitiveType.Int:
       case PrimitiveType.Long:
+      case PrimitiveType.Short:
       case PrimitiveType.Decimal:
       case PrimitiveType.String:
       case PrimitiveType.Char:
       case PrimitiveType.Byte:
+      case PrimitiveType.SByte:
         if (this.props.edit) {
           return this.renderPrimitiveEdit();
         } else {
