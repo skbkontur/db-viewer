@@ -18,9 +18,10 @@ export class SearchField extends React.Component<ISearchFieldProps> {
   public render() {
     return (
       <tr>
-        <td>{this.props.name}</td>
+        <td data-tid="Name">{this.props.name}</td>
         <td>
           <Select
+            data-tid="FilterType"
             width={80}
             value={this.props.filter.type}
             items={this.filters}
@@ -29,6 +30,7 @@ export class SearchField extends React.Component<ISearchFieldProps> {
         </td>
         <td>
           <FieldEditor
+            data-tid="FieldEditor"
             typeInfo={this.props.typeInfo}
             value={this.props.filter.value}
             onChange={this._handleChangeFilterValue}

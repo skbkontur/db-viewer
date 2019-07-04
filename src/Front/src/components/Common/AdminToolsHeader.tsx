@@ -16,7 +16,9 @@ export default class AdminToolsHeader extends React.Component<IProps> {
     const linkText = this.props.backText;
     return (
       <header className={styles.root} data-tid="AdminToolsHeader">
-        <h1 className={styles.title}>{title}</h1>
+        <h1 data-tid="Header" className={styles.title}>
+          {title}
+        </h1>
         {this.props.routerLink ? (
           <Link to={url} data-tid="BackLink">
             {linkText}

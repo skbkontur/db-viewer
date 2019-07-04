@@ -55,7 +55,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
           );
         }
         return (
-          <table className={styles.table}>
+          <table data-tid="ObjectDetails" className={styles.table}>
             <tbody>
               {this.props.typeInfo.properties.map(property =>
                 this._renderRow(
@@ -132,11 +132,12 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         typeInfo.type === PrimitiveType.Class ||
         typeInfo.type === PrimitiveType.Enumerable);
     return (
-      <tr key={key}>
+      <tr data-tid="ObjectDetailsRow" key={key}>
         <td>
-          <Link icon={"Copy"} onClick={() => copyObject(value)} />
+          <Link data-tid="CopyLink" icon={"Copy"} onClick={() => copyObject(value)} />
         </td>
         <td
+          data-tid="RowName"
           className={ClassNames(
             expandable && styles.complexKey,
             expandable && this.state.expandedItems[key] && styles.expanded
@@ -145,7 +146,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         >
           {renderOriginalKey ? key : StringUtils.upperCaseFirstLetter(key)}
         </td>
-        <td className={styles.complexValue}>
+        <td data-tid="RowValue" className={styles.complexValue}>
           {!expandable || this.state.expandedItems[key] ? (
             <ObjectDetails
               data={value}
