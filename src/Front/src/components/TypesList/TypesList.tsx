@@ -76,9 +76,10 @@ class TypesList extends React.Component<Props, {}> {
     return (
       <Gapped vertical gap={15} key={schemaName}>
         <div className={styles.schemaName}>{schemaName}</div>
-        <div className={styles.list}>
+        <div data-tid="BusinessObjectsList" className={styles.list}>
           {list.map(type => (
             <span
+              data-tid="BusinessObject"
               className={styles.type}
               key={type.name + type.schemaDescription.schemaName}
             >
