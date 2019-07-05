@@ -16,6 +16,9 @@ export class PrimitiveValue extends React.Component<IProps> {
     if (primitiveType === PrimitiveType.Bool) {
       return <span>{data.toString()}</span>;
     }
-    return <span>{data}</span>;
+    if (typeof data === "string") {
+      return <span>{data}</span>;
+    }
+    return <span>{JSON.stringify(data)}</span>;
   }
 }
