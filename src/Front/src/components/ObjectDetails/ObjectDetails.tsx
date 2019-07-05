@@ -136,7 +136,11 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
     return (
       <tr data-tid="ObjectDetailsRow" key={key}>
         <td>
-          <Link data-tid="CopyLink" icon={"Copy"} onClick={() => copyObject(value)} />
+          <Link
+            data-tid="CopyLink"
+            icon={"Copy"}
+            onClick={() => copyObject(value)}
+          />
         </td>
         <td
           data-tid="RowName"

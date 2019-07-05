@@ -317,7 +317,11 @@ class TypeDetails extends React.Component<IProps, IState> {
     if (!this.state.showFilters) {
       return (
         <div className={styles.searchForm}>
-          <Link data-tid="ShowFiltersToggle" icon={"ArrowTriangleRight"} onClick={this.handleShowFilters}>
+          <Link
+            data-tid="ShowFiltersToggle"
+            icon={"ArrowTriangleRight"}
+            onClick={this.handleShowFilters}
+          >
             Показать фильтры
           </Link>
         </div>
@@ -326,7 +330,11 @@ class TypeDetails extends React.Component<IProps, IState> {
     return (
       <div className={styles.searchForm}>
         <Gapped vertical>
-          <Link data-tid="ShowFiltersToggle" icon={"ArrowTriangleDown"} onClick={this.handleHideFilters}>
+          <Link
+            data-tid="ShowFiltersToggle"
+            icon={"ArrowTriangleDown"}
+            onClick={this.handleHideFilters}
+          >
             Скрыть фильтры
           </Link>
           <SearchPanel
@@ -336,7 +344,11 @@ class TypeDetails extends React.Component<IProps, IState> {
             validations={this.state.validations}
           />
           <Gapped>
-            <Button data-tid="SearchButton" use={"primary"} onClick={() => this.handleSearch(false)}>
+            <Button
+              data-tid="SearchButton"
+              use={"primary"}
+              onClick={() => this.handleSearch(false)}
+            >
               Искать
             </Button>
             <Button data-tid="ResetButton" onClick={this.handleResetFilters}>
@@ -362,12 +374,7 @@ class TypeDetails extends React.Component<IProps, IState> {
             this.props.typeDescription.shape
           );
           const query = identityFields
-            .map(
-              x =>
-                `${x.description.name}=${
-                  item[x.description.name]
-                }`
-            )
+            .map(x => `${x.description.name}=${item[x.description.name]}`)
             .join("&");
           return (
             <NavLink
@@ -381,11 +388,13 @@ class TypeDetails extends React.Component<IProps, IState> {
           );
         }),
         ...this.state.searchableFields.map(field =>
-          ColumnConfiguration.createByPath(
-            field.description.name
-          )
+          ColumnConfiguration.createByPath(field.description.name)
             .withCustomRender(x => (
-              <PrimitiveValue data-tid={field.description.name} data={x} primitiveType={field.typeInfo.type} />
+              <PrimitiveValue
+                data-tid={field.description.name}
+                data={x}
+                primitiveType={field.typeInfo.type}
+              />
             ))
             .withHeader(() => this.renderTableHeader(field))
         ),
