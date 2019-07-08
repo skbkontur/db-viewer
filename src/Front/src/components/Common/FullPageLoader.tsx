@@ -3,6 +3,7 @@ import * as React from "react";
 import Link from "@skbkontur/react-ui/Link";
 import Spinner from "@skbkontur/react-ui/Spinner";
 
+import RefreshIcon from "@skbkontur/react-icons/Refresh";
 import * as styles from "./FullPageLoader.less";
 
 export enum LoaderState {
@@ -40,7 +41,7 @@ export default class FullPageLoader extends React.Component<IProps> {
             </div>
             {this.props.onTryAgain && (
               <div>
-                <Link onClick={this.props.onTryAgain} icon={"Refresh"}>
+                <Link onClick={this.props.onTryAgain} icon={<RefreshIcon />}>
                   Попробовать еще раз
                 </Link>
               </div>

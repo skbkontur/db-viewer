@@ -1,7 +1,10 @@
+import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
+import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
+import ArrowTriangleUpIcon from "@skbkontur/react-icons/ArrowTriangleUp";
+import ArrowTriangleUpDownIcon from "@skbkontur/react-icons/ArrowTriangleUpDown";
 import Button from "@skbkontur/react-ui/Button";
 import Toast from "@skbkontur/react-ui/components/Toast/Toast";
 import Gapped from "@skbkontur/react-ui/Gapped";
-import { IconName } from "@skbkontur/react-ui/Icon";
 import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
 import Paging from "@skbkontur/react-ui/Paging";
@@ -319,7 +322,7 @@ class TypeDetails extends React.Component<IProps, IState> {
         <div className={styles.searchForm}>
           <Link
             data-tid="ShowFiltersToggle"
-            icon={"ArrowTriangleRight"}
+            icon={<ArrowTriangleRightIcon />}
             onClick={this.handleShowFilters}
           >
             Показать фильтры
@@ -332,7 +335,7 @@ class TypeDetails extends React.Component<IProps, IState> {
         <Gapped vertical>
           <Link
             data-tid="ShowFiltersToggle"
-            icon={"ArrowTriangleDown"}
+            icon={<ArrowTriangleDownIcon />}
             onClick={this.handleHideFilters}
           >
             Скрыть фильтры
@@ -426,15 +429,15 @@ class TypeDetails extends React.Component<IProps, IState> {
 
   private getSortDirectionIcon = (
     currentSortDirection: Nullable<SortDirection>
-  ): IconName => {
+  ): JSX.Element => {
     switch (currentSortDirection) {
       case null:
       case undefined:
-        return "ArrowTriangleUpDown";
+        return <ArrowTriangleUpDownIcon />;
       case SortDirection.Descending:
-        return "ArrowTriangleDown";
+        return <ArrowTriangleDownIcon />;
       case SortDirection.Ascending:
-        return "ArrowTriangleUp";
+        return <ArrowTriangleUpIcon />;
     }
   };
 
