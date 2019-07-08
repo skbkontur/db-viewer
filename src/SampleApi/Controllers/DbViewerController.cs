@@ -1,7 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
+using Cassandra.Mapping.Attributes;
 using Kontur.DBViewer.Core;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.Recipes.CQL;
+using Kontur.DBViewer.SampleApi.Impl.Classes;
 
 namespace Kontur.DBViewer.SampleApi.Controllers
 {
@@ -12,7 +17,29 @@ namespace Kontur.DBViewer.SampleApi.Controllers
 
         public DbViewerController()
         {
-            impl = new DBViewerControllerImpl(SchemaRegistryProvider.GetSchemaRegistry());
+            var schemaRegistry = new SchemaRegistry();
+            
+            var descriptions = new []{typeof(TestCqlWorking), typeof(TestCqlNotWorking)}.Select(x => new TypeDescription()
+            {
+                Type = x,
+                TypeIdentifier = x.GetCustomAttributes(typeof(TableAttribute), true)
+                    .Cast<TableAttribute>()
+                    .Select(attr => attr.Name)
+                    .FirstOrDefault()
+            });
+            
+            schemaRegistry.Add(new Schema()
+            {
+                Description = new SchemaDescription
+                {
+                    SchemaName = "CQL",
+                },
+                Types = descriptions.ToArray(),
+                ConnectorsFactory = new CqlDbConnectorFactory(),
+                PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder(),
+                CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider()
+            });
+            impl = new DBViewerControllerImpl(schemaRegistry);
         }
 
         [HttpGet, Route("List")]
@@ -50,5 +77,7 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         {
             return await impl.Write(typeIdentifier, obj);
         }
+        
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Cassandra;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 using Newtonsoft.Json.Linq;
 
@@ -9,6 +10,9 @@ namespace Kontur.DBViewer.SampleApi.Impl.Classes
     {
         [Identity, Indexed] public string Id { get; set; }
 
+        [Indexed]
+        public LocalDate LocalDate { get; set; }
+        
         public TestClassWithAllPrimitives Content { get; set; }
 
         [Serialized(typeof(ClassForSerialization))]
