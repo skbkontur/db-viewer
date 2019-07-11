@@ -65,7 +65,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
             if (realType.IsClass)
                 return new ClassTypeInfo
                 {
-                    Properties = realType.GetProperties().Select(p =>
+                    Properties = realType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(p =>
                         ResolveProperty(p, propertyDescriptionBuilder, customPropertyConfigurationProvider)).ToArray(),
                 };
 

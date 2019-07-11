@@ -16,7 +16,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
         public static LambdaExpression BuildSameIdentitiesPredicate(Type type, object @object)
         {
             var parameter = Expression.Parameter(type);
-            var properties = type.GetProperties().Where(
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(
                 x => x.GetCustomAttribute(typeof(ClusteringKeyAttribute)) != null
                      || x.GetCustomAttribute(typeof(PartitionKeyAttribute)) != null
             ).ToArray();
