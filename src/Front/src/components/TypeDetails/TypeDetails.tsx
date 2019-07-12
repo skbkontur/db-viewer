@@ -156,7 +156,7 @@ class TypeDetails extends React.Component<IProps, IState> {
     }
     if (!this.props.list.data || this.props.list.data.length === 0) {
       return (
-        <div className={styles.noData}>
+        <div className={styles.noData} data-tid="ResultNotFound">
           {this.props.list.loadingStatus === LoaderState.Loading ? (
             <Spinner type="big" caption="Загружаем..." />
           ) : (
