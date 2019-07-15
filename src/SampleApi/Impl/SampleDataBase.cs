@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text;
 using AutoFixture;
 using GroBuf;
 using GroBuf.DataMembersExtracters;
@@ -23,6 +24,32 @@ namespace Kontur.DBViewer.SampleApi.Impl
                     .With(x => x.Serialized, serializer.Serialize(fixture.Create<ClassForSerialization>()))
                     .Create()
             ).ToArray();
+            FillDifficultSerialized(serializer);
+        }
+
+        private void FillDifficultSerialized(ISerializer serializer)
+        {
+            var random = new Random();
+            foreach (var testClass in data)
+            {
+                if (random.Next(0, 2) == 0)
+                {
+                    testClass.DifficultEnum = DifficultEnum.A;
+                    testClass.DifficultSerialized = serializer.Serialize(new A {Int = random.Next()});
+                }
+                else
+                {
+                    testClass.DifficultEnum = DifficultEnum.B;
+                    testClass.DifficultSerialized = serializer.Serialize(new B {String = GetRandomString(random)});
+                }
+            }
+        }
+
+        private string GetRandomString(Random random)
+        {
+            var b = new byte[100];
+            random.NextBytes(b);
+            return Convert.ToBase64String(b);
         }
 
         public SampleDataBase(TestClass[] data)

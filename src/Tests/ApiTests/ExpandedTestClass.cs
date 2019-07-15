@@ -8,6 +8,8 @@ namespace Kontur.DBViewer.Tests.ApiTests
         public string Id { get; set; }
         public TestClassWithAllPrimitives Content { get; set; }
         public ClassForSerialization Serialized { get; set; }
+        public DifficultEnum DifficultEnum => DifficultEnum.A;
+        public A DifficultSerialized { get; set; }
         public ExpandedTestClassWithAllPrimitives CustomContent { get; set; }
     }
 }

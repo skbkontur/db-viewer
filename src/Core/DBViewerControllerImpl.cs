@@ -55,13 +55,13 @@ namespace Kontur.DBViewer.Core
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
-            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
-                schema.CustomPropertyConfigurationProvider);
             var result = await schemaRegistry.GetConnector(typeIdentifier).Read(filters.Filters).ConfigureAwait(false);
+            var typeInfo = TypeInfoExtractor.Extract(result, type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+            var obj = ObjectsConverter.StoredToApi(typeInfo, type, result, schema.CustomPropertyConfigurationProvider);
             return new ObjectDetailsModel
             {
-                Object =
-                    ObjectsConverter.StoredToApi(typeInfo, type, result, schema.CustomPropertyConfigurationProvider),
+                Object = obj,
                 TypeInfo = typeInfo,
             };
         }
@@ -82,7 +82,7 @@ namespace Kontur.DBViewer.Core
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(typeIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(typeIdentifier);
-            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
+            var typeInfo = TypeInfoExtractor.Extract(obj, type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
             var stored = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
             var newObject = await schemaRegistry.GetConnector(typeIdentifier).Write(stored).ConfigureAwait(false);
