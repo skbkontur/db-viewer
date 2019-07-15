@@ -369,6 +369,14 @@ namespace Kontur.DBViewer.Tests.ApiTests
                         },
                         new Property
                         {
+                            TypeInfo = new ByteArrayTypeInfo(),
+                            Description = new PropertyDescription
+                            {
+                                Name = "File",
+                            },
+                        }, 
+                        new Property
+                        {
                             TypeInfo = new EnumTypeInfo(false, new[] {"A", "B"}),
                             Description = new PropertyDescription
                             {
