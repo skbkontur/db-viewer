@@ -68,6 +68,8 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
                     return typeof(EnumTypeInfo);
                 case PrimitiveType.Bool:
                     return typeof(BoolTypeInfo);
+                case PrimitiveType.ByteArray:
+                    return typeof(ByteArrayTypeInfo);
                 case PrimitiveType.Class:
                     return typeof(ClassTypeInfo);
                 case PrimitiveType.Enumerable:

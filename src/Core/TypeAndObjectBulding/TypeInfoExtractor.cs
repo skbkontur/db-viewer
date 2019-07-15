@@ -51,6 +51,8 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
                 return new ShortTypeInfo(canBeNull);
             if (realType == typeof(bool))
                 return new BoolTypeInfo(canBeNull);
+            if (realType == typeof(byte[]))
+                return new ByteArrayTypeInfo();
             if (realType == typeof(decimal) || realType == typeof(double))
                 return new DecimalTypeInfo(canBeNull);
             if (realType.IsEnum)

@@ -32,6 +32,7 @@ namespace Kontur.DBViewer.SampleApi.Impl
             var random = new Random();
             foreach (var testClass in data)
             {
+                testClass.File = Encoding.UTF8.GetBytes(string.Join(",", GetRandomBytes(random)));
                 if (random.Next(0, 2) == 0)
                 {
                     testClass.DifficultEnum = DifficultEnum.A;
@@ -40,16 +41,16 @@ namespace Kontur.DBViewer.SampleApi.Impl
                 else
                 {
                     testClass.DifficultEnum = DifficultEnum.B;
-                    testClass.DifficultSerialized = serializer.Serialize(new B {String = GetRandomString(random)});
+                    testClass.DifficultSerialized = serializer.Serialize(new B {String = Convert.ToBase64String(GetRandomBytes(random))});
                 }
             }
         }
 
-        private string GetRandomString(Random random)
+        private static byte[] GetRandomBytes(Random random)
         {
             var b = new byte[100];
             random.NextBytes(b);
-            return Convert.ToBase64String(b);
+            return b;
         }
 
         public SampleDataBase(TestClass[] data)

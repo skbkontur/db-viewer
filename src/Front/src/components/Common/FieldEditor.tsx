@@ -80,6 +80,7 @@ export default class FieldEditor extends React.Component<IProps> {
       case PrimitiveType.HashSet:
       case PrimitiveType.Enumerable:
       case PrimitiveType.Class:
+      case PrimitiveType.ByteArray:
         return null;
     }
   }

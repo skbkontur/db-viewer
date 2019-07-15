@@ -14,6 +14,7 @@ export enum PrimitiveType {
     Enum = 'Enum',
     Bool = 'Bool',
     Class = 'Class',
+    ByteArray = 'ByteArray',
     Enumerable = 'Enumerable',
     Dictionary = 'Dictionary',
     HashSet = 'HashSet',

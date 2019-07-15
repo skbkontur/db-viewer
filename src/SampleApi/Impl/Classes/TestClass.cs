@@ -14,6 +14,8 @@ namespace Kontur.DBViewer.SampleApi.Impl.Classes
         [Serialized(typeof(ClassForSerialization))]
         public byte[] Serialized { get; set; }
 
+        public byte[] File { get; set; }
+
         public DifficultEnum DifficultEnum { get; set; }
 
         [Serialized(typeof(TestClassResolver))]

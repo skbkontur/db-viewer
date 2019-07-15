@@ -48,6 +48,8 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         } else {
           return this.renderPrimitiveValue();
         }
+      case PrimitiveType.ByteArray:
+        return this.renderDownloadLink();
       case PrimitiveType.Class: {
         if (!this.props.data) {
           return (
@@ -191,6 +193,21 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
   private renderPrimitiveValue(): React.ReactNode {
     const { data, typeInfo } = this.props;
     return <PrimitiveValue data={data} primitiveType={typeInfo.type} />;
+  }
+
+  private renderDownloadLink(): React.ReactNode {
+    return (
+      <Link
+        data-tid="DownloadLink"
+        onClick={() =>
+          window.location.assign(
+            "data:application/octet-stream;base64," + this.props.data
+          )
+        }
+      >
+        Скачать
+      </Link>
+    );
   }
 
   private handleExpand(key: string) {
