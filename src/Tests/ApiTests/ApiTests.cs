@@ -61,7 +61,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     },
                     PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                     ConnectorsFactory = new SampleIdbConnectorFactory(),
-                    CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(serializer),
+                    CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                 }
             );
             var localTimeShape = new ClassTypeInfo
@@ -369,6 +369,43 @@ namespace Kontur.DBViewer.Tests.ApiTests
                         },
                         new Property
                         {
+                            TypeInfo = new ByteArrayTypeInfo(),
+                            Description = new PropertyDescription
+                            {
+                                Name = "File",
+                            },
+                        }, 
+                        new Property
+                        {
+                            TypeInfo = new EnumTypeInfo(false, new[] {"A", "B"}),
+                            Description = new PropertyDescription
+                            {
+                                Name = "DifficultEnum",
+                            },
+                        },
+                        new Property
+                        {
+                            TypeInfo = new ClassTypeInfo
+                            {
+                                Properties = new[]
+                                {
+                                    new Property
+                                    {
+                                        TypeInfo = new IntTypeInfo(false),
+                                        Description = new PropertyDescription
+                                        {
+                                            Name = "Int",
+                                        }
+                                    },
+                                }
+                            },
+                            Description = new PropertyDescription
+                            {
+                                Name = "DifficultSerialized",
+                            },
+                        },
+                        new Property
+                        {
                             TypeInfo = testClassWithCustomPrimitivesShape,
                             Description = new PropertyDescription
                             {
@@ -400,6 +437,8 @@ namespace Kontur.DBViewer.Tests.ApiTests
             var customPropertyContent = fixture.Create<ClassForSerialization>();
             var @object = fixture.Build<TestClass>()
                 .With(x => x.Serialized, serializer.Serialize(customPropertyContent))
+                .With(x => x.DifficultEnum, DifficultEnum.A)
+                .With(x => x.DifficultSerialized, serializer.Serialize(new A {Int = 1}))
                 .Create();
             FillDataBase(@object);
             var result = await client.Read("TestClass", new[]
@@ -417,6 +456,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 Id = @object.Id,
                 Content = @object.Content,
                 Serialized = customPropertyContent,
+                DifficultSerialized = new A {Int = 1},
                 CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
                     LocalTime = new CassandraLocalTime
@@ -438,6 +478,8 @@ namespace Kontur.DBViewer.Tests.ApiTests
             var oldCustomPropertyContent = fixture.Create<ClassForSerialization>();
             var oldObject = fixture.Build<TestClass>()
                 .With(x => x.Serialized, serializer.Serialize(oldCustomPropertyContent))
+                .With(x => x.DifficultEnum, DifficultEnum.A)
+                .With(x => x.DifficultSerialized, serializer.Serialize(new A {Int = 1}))
                 .Create();
             var newCustomPropertyContent = fixture.Create<ClassForSerialization>();
             var newCustomContent = fixture.Create<TestClassWithCustomPrimitives>();
@@ -445,6 +487,8 @@ namespace Kontur.DBViewer.Tests.ApiTests
             {
                 Id = oldObject.Id,
                 Content = fixture.Create<TestClassWithAllPrimitives>(),
+                DifficultEnum = DifficultEnum.A,
+                DifficultSerialized = serializer.Serialize(new A {Int = 2}),
                 Serialized = serializer.Serialize(newCustomPropertyContent),
                 CustomContent = newCustomContent,
             };
@@ -453,9 +497,10 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 Id = oldObject.Id,
                 Content = newObject.Content,
                 Serialized = newCustomPropertyContent,
+                DifficultSerialized = new A {Int = 2},
                 CustomContent = new ExpandedTestClassWithAllPrimitives()
                 {
-                    LocalTime =  new CassandraLocalTime
+                    LocalTime = new CassandraLocalTime
                     {
                         Hour = newCustomContent.LocalTime.Hour,
                         Minute = newCustomContent.LocalTime.Minute,
@@ -474,8 +519,6 @@ namespace Kontur.DBViewer.Tests.ApiTests
 
             CheckDataBaseContent(newObject);
         }
-        
-        
 
         [Test]
         public async Task Test_List()

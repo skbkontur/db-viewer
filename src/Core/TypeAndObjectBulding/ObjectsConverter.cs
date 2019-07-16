@@ -21,7 +21,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
             {
                 var propertyInfo = type.GetProperty(property.Description.Name);
                 var customPropertyConfiguration =
-                    customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
+                    customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
                 var value = ApiToStored(
                     property.TypeInfo,
                     customPropertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType,
@@ -54,7 +54,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
                 var propertyInfo = type.GetProperty(property.Description.Name);
                 var propertyValue = propertyInfo.GetValue(o);
                 var customPropertyConfiguration =
-                    customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
+                    customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
                 if (customPropertyConfiguration != null)
                 {
                     result[property.Description.Name] =

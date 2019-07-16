@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using Cassandra;
 using GroBuf;
+using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
-using Kontur.DBViewer.Recipes.CQL;
 using Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
 
@@ -11,28 +10,70 @@ namespace Kontur.DBViewer.SampleApi.Impl
 {
     public class SampleCustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
-        private readonly ISerializer serializer;
-
-        public SampleCustomPropertyConfigurationProvider(ISerializer serializer)
+        public CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {
-            this.serializer = serializer;
+            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
+                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
+                   ?? CustomTypeConfiguration.TryGetConfiguration(@object, propertyInfo);
         }
 
         public CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
         {
-            var serializedAttribute = propertyInfo.GetCustomAttribute<SerializedAttribute>();
-            if (serializedAttribute != null)
-            {
-                return new CustomPropertyConfiguration
-                {
-                    ResolvedType = serializedAttribute.Type,
-                    StoredToApi = @object => serializer.Deserialize(serializedAttribute.Type, (byte[]) @object),
-                    ApiToStored = @object => serializer.Serialize(serializedAttribute.Type, @object),
-                };
-            }
-
             return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo);
+                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
+                   ?? CustomTypeConfiguration.TryGetConfiguration(propertyInfo);
         }
+    }
+
+    public class CustomTypeConfiguration
+    {
+        public static CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
+        {
+            var serializedAttribute = propertyInfo.GetCustomAttribute<SerializedAttribute>();
+            if (serializedAttribute == null)
+                return null;
+
+            if (!typeof(ITypeResolver).IsAssignableFrom(serializedAttribute.Type))
+                return GetConfiguration(serializedAttribute.Type);
+
+            var resolver = (ITypeResolver) Activator.CreateInstance(serializedAttribute.Type);
+            return GetConfiguration(resolver.ResolveType(@object, propertyInfo));
+        }
+
+
+        public static CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
+        {
+            var serializedAttribute = propertyInfo.GetCustomAttribute<SerializedAttribute>();
+            if (serializedAttribute == null)
+                return null;
+
+            if (!typeof(ITypeResolver).IsAssignableFrom(serializedAttribute.Type))
+                return GetConfiguration(serializedAttribute.Type);
+
+            return GetDummyConfiguration();
+        }
+
+        private static CustomPropertyConfiguration GetConfiguration(Type type)
+        {
+            return new CustomPropertyConfiguration
+            {
+                ResolvedType = type,
+                StoredToApi = @object => serializer.Deserialize(type, (byte[]) @object),
+                ApiToStored = @object => serializer.Serialize(type, @object),
+            };
+        }
+
+
+        private static CustomPropertyConfiguration GetDummyConfiguration()
+        {
+            return new CustomPropertyConfiguration
+            {
+                ResolvedType = typeof(object),
+                StoredToApi = @object => throw new NotSupportedException(),
+                ApiToStored = @object => throw new NotSupportedException(),
+            };
+        }
+
+        private static readonly ISerializer serializer = new Serializer(new AllPropertiesExtractor());
     }
 }

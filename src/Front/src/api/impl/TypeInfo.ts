@@ -1,6 +1,7 @@
 // tslint:disable
 // TypeScriptContractGenerator's generated content
 import { BoolTypeInfo } from './BoolTypeInfo';
+import { ByteArrayTypeInfo } from './ByteArrayTypeInfo';
 import { ByteTypeInfo } from './ByteTypeInfo';
 import { CharTypeInfo } from './CharTypeInfo';
 import { ClassTypeInfo } from './ClassTypeInfo';
@@ -17,6 +18,7 @@ import { ShortTypeInfo } from './ShortTypeInfo';
 import { StringTypeInfo } from './StringTypeInfo';
 
 export type TypeInfo = BoolTypeInfo |
+ByteArrayTypeInfo |
 ByteTypeInfo |
 CharTypeInfo |
 ClassTypeInfo |

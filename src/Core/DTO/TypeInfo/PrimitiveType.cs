@@ -18,6 +18,7 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
         Enum,
         Bool,
         Class,
+        ByteArray,
         Enumerable,
         Dictionary,
         HashSet,

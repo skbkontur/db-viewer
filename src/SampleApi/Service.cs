@@ -38,7 +38,7 @@ namespace Kontur.DBViewer.SampleApi
                         ),
                         PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                         ConnectorsFactory = new SampleIdbConnectorFactory(),
-                        CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(new Serializer(new AllPropertiesExtractor())),
+                        CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                     }
                 );
                 SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
