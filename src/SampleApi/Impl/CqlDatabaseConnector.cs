@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
 using Cassandra;
 using Kontur.DBViewer.Core.Connector;
@@ -12,12 +11,12 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
     {
         public Task<object[]> Search(Filter[] filters, Sort[] sorts, int @from, int count)
         {
-            if (typeof(T) == typeof(TestCqlWorking))
+            if (typeof(T) == typeof(SimpleCqlObject))
             {
                 return Task.FromResult(new object[]
                 {
                                 
-                    new TestCqlWorking()
+                    new SimpleCqlObject
                     {
                         FileExtension = ".ext",
                         FileId = "FileId",
@@ -33,7 +32,7 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
             {
                 return Task.FromResult(new object[]
                 {
-                    new TestCqlNotWorking()
+                    new NestedCqlObject
                     {
                         BindingType = BindingType.ByPriceList,
                         DocumentCirculationId = TimeUuid.NewId(),

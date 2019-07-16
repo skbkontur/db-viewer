@@ -7,23 +7,26 @@ namespace Kontur.DBViewer.SampleApi.Controllers
 {
     public class CustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
+        public CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
+        {
+            return TryGetConfiguration(propertyInfo);
+        }
+
         public CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
         {
-            // todo (d.kop, 02.07.2019): Запилить SerializedAttribute
-
             return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
                    ?? LocalDateCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
                    ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo);
         }
     }
     
-    public class LocalDateCustomPropertyConfiguration
+    public static class LocalDateCustomPropertyConfiguration
     {
         public static CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
         {
             if (!(propertyInfo.PropertyType == typeof(LocalDate)))
                 return null;
-            return new CustomPropertyConfiguration()
+            return new CustomPropertyConfiguration
             {
                 ResolvedType = typeof(string),
                 StoredToApi = @object =>

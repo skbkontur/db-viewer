@@ -5,8 +5,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using GrEmit;
-
-using Kontur.DBViewer.Core.Connector;
 using Kontur.DBViewer.Core.DTO;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Utils

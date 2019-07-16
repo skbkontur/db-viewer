@@ -1,5 +1,4 @@
 using Kontur.DBViewer.Core.Connector;
-using Kontur.DBViewer.Recipes.CQL;
 using Kontur.DBViewer.SampleApi.Impl.Utils;
 
 namespace Kontur.DBViewer.SampleApi.Controllers

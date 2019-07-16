@@ -27,8 +27,7 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
 
     public class TypeInfoConverter : JsonConverter
     {
-        static readonly JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings()
-            {ContractResolver = new TypeInfoResolver()};
+        static readonly JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings {ContractResolver = new TypeInfoResolver()};
 
         public override bool CanWrite => false;
 

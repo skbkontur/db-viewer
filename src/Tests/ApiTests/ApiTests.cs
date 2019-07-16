@@ -498,7 +498,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 Content = newObject.Content,
                 Serialized = newCustomPropertyContent,
                 DifficultSerialized = new A {Int = 2},
-                CustomContent = new ExpandedTestClassWithAllPrimitives()
+                CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
                     LocalTime = new CassandraLocalTime
                     {

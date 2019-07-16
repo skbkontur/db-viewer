@@ -4,7 +4,7 @@ using Cassandra.Mapping.Attributes;
 namespace Kontur.DBViewer.SampleApi.Impl.Classes
 {
     [Table("document_printing_info", Keyspace = "EdiCoreKeyspace", CaseSensitive = true)]
-    public class TestCqlWorking
+    public class SimpleCqlObject
     {
         [Column("id")]
         [PartitionKey(0)]
