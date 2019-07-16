@@ -14,7 +14,8 @@
     "react-router-dom": "^4.2.2"
   },
   "dependencies": {
-    "@skbkontur/react-ui": "^0.17.11",
+    "@skbkontur/react-icons": "^3.1.2",
+    "@skbkontur/react-ui": "^0.46.2",
     "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.0.8",
     "history": "^4.7.2",

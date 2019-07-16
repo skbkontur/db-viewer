@@ -1,4 +1,5 @@
 /* tslint:disable:no-empty */
+import CopyIcon from "@skbkontur/react-icons/Copy";
 import Link from "@skbkontur/react-ui/Link";
 import ClassNames from "classnames";
 import * as React from "react";
@@ -138,7 +139,7 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
         <td>
           <Link
             data-tid="CopyLink"
-            icon={"Copy"}
+            icon={<CopyIcon />}
             onClick={() => copyObject(value)}
           />
         </td>
