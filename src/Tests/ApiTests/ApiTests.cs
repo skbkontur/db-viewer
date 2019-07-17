@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.Kernel;
 using Cassandra;
@@ -63,51 +64,13 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                 }
             );
-            var localTimeShape = new ClassTypeInfo
-            {
-                Properties = new []
-                {
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Hour"
-                        }
-                    },
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Minute"
-                        }
-                    },
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Second"
-                        }
-                    },
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Nanoseconds"
-                        },
-                    }
-                }
-            };
             var testClassWithCustomPrimitivesShape = new ClassTypeInfo
             {
                 Properties = new[]
                 {
                     new Property
                     {
-                        TypeInfo = localTimeShape,
+                        TypeInfo = new TimeTypeInfo(),
                         Description = new PropertyDescription
                         {
                             Name = "LocalTime",
