@@ -9,7 +9,7 @@
     <PackageVersion>0.0.1-rc9</PackageVersion>
     <PackageDescription>DBViewer core. 
       Documentation: https://git.skbkontur.ru/alco/db-viewer/blob/master/README.md</PackageDescription>
-    <PackageReleaseNotes>Add Time and DateTime pickers</PackageReleaseNotes>
+    <PackageReleaseNotes>Use DateTimePicker for both Date and DateTime</PackageReleaseNotes>
     <Authors>Alko Team</Authors>
   </PropertyGroup>
 
