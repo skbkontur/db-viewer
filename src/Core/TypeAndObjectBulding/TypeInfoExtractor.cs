@@ -46,10 +46,6 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
                 return new IntTypeInfo(canBeNull);
             if (realType == typeof(DateTime) || realType == typeof(DateTimeOffset))
                 return new DateTimeTypeInfo(canBeNull);
-            if (realType == typeof(Date))
-                return new DateTypeInfo();
-            if (realType == typeof(Time))
-                return new TimeTypeInfo();
             if (realType == typeof(long))
                 return new LongTypeInfo(canBeNull);
             if (realType == typeof(short))

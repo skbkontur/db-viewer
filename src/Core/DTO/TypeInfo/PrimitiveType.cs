@@ -14,8 +14,6 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
         Long,
         Short,
         Decimal,
-        Date,
-        Time,
         DateTime,
         Enum,
         Bool,

@@ -6,7 +6,6 @@ import { ByteTypeInfo } from './ByteTypeInfo';
 import { CharTypeInfo } from './CharTypeInfo';
 import { ClassTypeInfo } from './ClassTypeInfo';
 import { DateTimeTypeInfo } from './DateTimeTypeInfo';
-import { DateTypeInfo } from './DateTypeInfo';
 import { DecimalTypeInfo } from './DecimalTypeInfo';
 import { DictionaryTypeInfo } from './DictionaryTypeInfo';
 import { EnumerableTypeInfo } from './EnumerableTypeInfo';
@@ -17,7 +16,6 @@ import { LongTypeInfo } from './LongTypeInfo';
 import { SByteTypeInfo } from './SByteTypeInfo';
 import { ShortTypeInfo } from './ShortTypeInfo';
 import { StringTypeInfo } from './StringTypeInfo';
-import { TimeTypeInfo } from './TimeTypeInfo';
 
 export type TypeInfo = BoolTypeInfo |
 ByteArrayTypeInfo |
@@ -25,7 +23,6 @@ ByteTypeInfo |
 CharTypeInfo |
 ClassTypeInfo |
 DateTimeTypeInfo |
-DateTypeInfo |
 DecimalTypeInfo |
 DictionaryTypeInfo |
 EnumerableTypeInfo |
@@ -35,5 +32,4 @@ IntTypeInfo |
 LongTypeInfo |
 SByteTypeInfo |
 ShortTypeInfo |
-StringTypeInfo |
-TimeTypeInfo;
+StringTypeInfo;

@@ -34,8 +34,6 @@ export default class ObjectDetails extends React.Component<IProps, IState> {
     switch (this.props.typeInfo.type) {
       case PrimitiveType.Bool:
       case PrimitiveType.DateTime:
-      case PrimitiveType.Date:
-      case PrimitiveType.Time:
       case PrimitiveType.Enum:
       case PrimitiveType.Int:
       case PrimitiveType.Long:

@@ -1,10 +1,10 @@
-﻿using Kontur.DBViewer.Core.DTO;
+﻿using System;
 
 namespace Kontur.DBViewer.Tests.ApiTests
 {
     public class ExpandedTestClassWithAllPrimitives
     {
-        public Time LocalTime { get; set; }
+        public DateTime? LocalTime { get; set; }
         public string TimeUuid { get; set; }
         public string NullableTimeUuid { get; set; }
     }

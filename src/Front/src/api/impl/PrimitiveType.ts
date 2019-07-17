@@ -10,8 +10,6 @@ export enum PrimitiveType {
     Long = 'Long',
     Short = 'Short',
     Decimal = 'Decimal',
-    Date = 'Date',
-    Time = 'Time',
     DateTime = 'DateTime',
     Enum = 'Enum',
     Bool = 'Bool',

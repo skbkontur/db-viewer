@@ -61,10 +61,6 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
                     return typeof(ShortTypeInfo);
                 case PrimitiveType.Decimal:
                     return typeof(DecimalTypeInfo);
-                case PrimitiveType.Date:
-                    return typeof(DateTypeInfo);
-                case PrimitiveType.Time:
-                    return typeof(TimeTypeInfo);
                 case PrimitiveType.DateTime:
                     return typeof(DateTimeTypeInfo);
                 case PrimitiveType.Enum:

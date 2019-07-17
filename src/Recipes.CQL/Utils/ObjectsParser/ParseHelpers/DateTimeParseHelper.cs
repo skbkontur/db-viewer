@@ -36,6 +36,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
 
         private static bool TryParse(string value, string[] templates, out DateTime result)
         {
+            value = value.Trim();
             result = DateTime.MinValue;
 
             if (DateTime.TryParseExact(value, templates, Provider, Style, out result))
