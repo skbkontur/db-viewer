@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cassandra;
 
 namespace Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations
