@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.Core.DTO.TypeInfo
+﻿namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
     public class DateTypeInfo : TypeInfo
     {

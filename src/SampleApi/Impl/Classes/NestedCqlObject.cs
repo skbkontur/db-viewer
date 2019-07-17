@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cassandra;
 using Cassandra.Mapping.Attributes;
 

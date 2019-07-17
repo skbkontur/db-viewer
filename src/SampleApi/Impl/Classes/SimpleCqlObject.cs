@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Cassandra.Mapping.Attributes;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Classes
@@ -15,7 +15,6 @@ namespace Kontur.DBViewer.SampleApi.Impl.Classes
 
         [Column("file_name_without_extension")]
         public string FileNameWithoutExtension { get; set; }
-
 
         [Column("file_extension")]
         public string FileExtension { get; set; }

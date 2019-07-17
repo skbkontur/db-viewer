@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations;
 

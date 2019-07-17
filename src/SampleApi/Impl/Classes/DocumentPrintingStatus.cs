@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.SampleApi.Impl.Classes
+﻿namespace Kontur.DBViewer.SampleApi.Impl.Classes
 {
     public enum DocumentPrintingStatus
     {

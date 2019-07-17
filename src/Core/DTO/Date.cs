@@ -1,4 +1,4 @@
-namespace Kontur.DBViewer.Core.DTO
+﻿namespace Kontur.DBViewer.Core.DTO
 {
     public class Date
     {
