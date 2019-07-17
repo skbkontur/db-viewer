@@ -5,14 +5,24 @@ namespace Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations
 {
     public static class CassandraPrimitivesExtensions
     {
+        public static LocalDate ToLocalDate(this DateTime dateTime)
+        {
+            return new LocalDate(dateTime.Year, dateTime.Month, dateTime.Day);
+        }
+
+        public static LocalTime ToLocalTime(this DateTime dateTime)
+        {
+            return new LocalTime(dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond * NanosecondsInMilliseconds);
+        }
+        
         public static LocalDate ToLocalDate(this DateTime? dateTime)
         {
-            return dateTime == null ? null : new LocalDate(dateTime.Value.Year, dateTime.Value.Month, dateTime.Value.Day);
+            return dateTime == null ? null : ToLocalDate(dateTime.Value);
         }
 
         public static LocalTime ToLocalTime(this DateTime? dateTime)
         {
-            return dateTime == null ? null : new LocalTime(dateTime.Value.Hour, dateTime.Value.Minute, dateTime.Value.Second, dateTime.Value.Millisecond * NanosecondsInMilliseconds);
+            return dateTime == null ? null : ToLocalTime(dateTime.Value);
         }
 
         public static DateTime? ToDateTime(this LocalDate localDate)
