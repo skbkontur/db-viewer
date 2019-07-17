@@ -5,6 +5,8 @@ import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
 import { PrimitiveType } from "../../api/impl/PrimitiveType";
 import { TypeInfo } from "../../api/impl/TypeInfo";
+import { DateTimePicker } from "./DateTimePicker";
+import {TimePicker} from "./TimePicker";
 
 export type EnumSelectItem = [string, string];
 
@@ -19,17 +21,24 @@ interface IProps {
 export default class FieldEditor extends React.Component<IProps> {
   public render() {
     switch (this.props.typeInfo.type) {
+      case PrimitiveType.Time:
+        return (
+          <TimePicker
+            value={this.props.value}
+            onChange={(_, v) => this.props.onChange(v)}
+            error={this.props.error}
+            width={310}
+          />
+        );
       case PrimitiveType.DateTime:
-        if (this.props.dateAsInput) {
-          return (
-            <Input
-              value={this.props.value}
-              onChange={(_, v) => this.props.onChange(v)}
-              width={310}
-              error={this.props.error}
-            />
-          );
-        }
+        return (
+          <DateTimePicker
+            value={this.props.value}
+            onChange={(_, v) => this.props.onChange(v)}
+            error={this.props.error}
+          />
+        );
+      case PrimitiveType.Date:
         return (
           <DatePicker
             value={this.props.value}

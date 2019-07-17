@@ -8,7 +8,6 @@ using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
-using Kontur.DBViewer.Recipes.CQL.DTO;
 using Kontur.DBViewer.SampleApi;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;
@@ -459,7 +458,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 DifficultSerialized = new A {Int = 1},
                 CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
-                    LocalTime = new CassandraLocalTime
+                    LocalTime = new Time
                     {
                         Hour = @object.CustomContent.LocalTime.Hour,
                         Minute = @object.CustomContent.LocalTime.Minute,
@@ -500,7 +499,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 DifficultSerialized = new A {Int = 2},
                 CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
-                    LocalTime = new CassandraLocalTime
+                    LocalTime = new Time
                     {
                         Hour = newCustomContent.LocalTime.Hour,
                         Minute = newCustomContent.LocalTime.Minute,
