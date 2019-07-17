@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.Kernel;
 using Cassandra;
@@ -8,7 +10,7 @@ using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
-using Kontur.DBViewer.Recipes.CQL.DTO;
+using Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations;
 using Kontur.DBViewer.SampleApi;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;
@@ -64,51 +66,13 @@ namespace Kontur.DBViewer.Tests.ApiTests
                     CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                 }
             );
-            var localTimeShape = new ClassTypeInfo
-            {
-                Properties = new []
-                {
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Hour"
-                        }
-                    },
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Minute"
-                        }
-                    },
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Second"
-                        }
-                    },
-                    new Property
-                    {
-                        TypeInfo = new IntTypeInfo(false),
-                        Description = new PropertyDescription
-                        {
-                            Name = "Nanoseconds"
-                        },
-                    }
-                }
-            };
             var testClassWithCustomPrimitivesShape = new ClassTypeInfo
             {
                 Properties = new[]
                 {
                     new Property
                     {
-                        TypeInfo = localTimeShape,
+                        TypeInfo = new DateTimeTypeInfo(true),
                         Description = new PropertyDescription
                         {
                             Name = "LocalTime",
@@ -451,6 +415,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 }
             });
             CheckShape(result.TypeInfo, testClassShape);
+            var localTime = @object.CustomContent.LocalTime;
             CheckObject(result.Object, new ExpandedTestClass
             {
                 Id = @object.Id,
@@ -459,13 +424,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 DifficultSerialized = new A {Int = 1},
                 CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
-                    LocalTime = new CassandraLocalTime
-                    {
-                        Hour = @object.CustomContent.LocalTime.Hour,
-                        Minute = @object.CustomContent.LocalTime.Minute,
-                        Second = @object.CustomContent.LocalTime.Second,
-                        Nanoseconds = @object.CustomContent.LocalTime.Nanoseconds,
-                    },
+                    LocalTime = new DateTime(1, 1, 1, localTime.Hour, localTime.Minute, localTime.Second, localTime.Nanoseconds / 1000, DateTimeKind.Utc),
                     TimeUuid = @object.CustomContent.TimeUuid.ToString(),
                     NullableTimeUuid = @object.CustomContent.NullableTimeUuid.ToString(),
                 },
@@ -492,21 +451,17 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 Serialized = serializer.Serialize(newCustomPropertyContent),
                 CustomContent = newCustomContent,
             };
+            var localTime = newCustomContent.LocalTime;
+            newCustomContent.LocalTime = localTime.ToDateTime().ToLocalTime();
             var newObjectExpanded = new ExpandedTestClass
             {
                 Id = oldObject.Id,
                 Content = newObject.Content,
                 Serialized = newCustomPropertyContent,
                 DifficultSerialized = new A {Int = 2},
-                CustomContent = new ExpandedTestClassWithAllPrimitives()
+                CustomContent = new ExpandedTestClassWithAllPrimitives
                 {
-                    LocalTime = new CassandraLocalTime
-                    {
-                        Hour = newCustomContent.LocalTime.Hour,
-                        Minute = newCustomContent.LocalTime.Minute,
-                        Second = newCustomContent.LocalTime.Second,
-                        Nanoseconds = newCustomContent.LocalTime.Nanoseconds,
-                    },
+                    LocalTime = localTime.ToDateTime(),
                     TimeUuid = newCustomContent.TimeUuid.ToString(),
                     NullableTimeUuid = newCustomContent.NullableTimeUuid.ToString(),
                 }

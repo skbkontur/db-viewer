@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 using Alko.Configuration.Settings;
-using GroBuf;
-using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.Recipes.CQL;
 using Kontur.DBViewer.SampleApi.Controllers;
 using Kontur.DBViewer.SampleApi.Impl;
 using Kontur.DBViewer.SampleApi.Impl.Classes;
@@ -41,6 +40,19 @@ namespace Kontur.DBViewer.SampleApi
                         CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                     }
                 );
+
+                schemaRegistry.Add(new Schema
+                {
+                    Description = new SchemaDescription
+                    {
+                        SchemaName = "CQL",
+                    },
+                    Types = BuildTypeDescriptions(typeof(SimpleCqlObject), typeof(NestedCqlObject)),
+                    ConnectorsFactory = new CqlDbConnectorFactory(),
+                    PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder(),
+                    CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider()
+                });
+
                 SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
                 service = new WebApiService();
                 service.Start(port);

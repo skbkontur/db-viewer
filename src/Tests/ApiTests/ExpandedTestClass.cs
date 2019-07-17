@@ -1,5 +1,4 @@
-﻿using Kontur.DBViewer.Recipes.CQL.DTO;
-using Kontur.DBViewer.SampleApi.Impl.Classes;
+﻿using Kontur.DBViewer.SampleApi.Impl.Classes;
 
 namespace Kontur.DBViewer.Tests.ApiTests
 {

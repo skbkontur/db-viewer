@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
 

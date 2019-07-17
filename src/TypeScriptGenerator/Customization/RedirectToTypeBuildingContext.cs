@@ -26,7 +26,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
 
         public TypeScriptType ReferenceFrom(TypeScriptUnit targetUnit, ITypeGenerator typeGenerator)
         {
-            return targetUnit.AddTypeImport(type, new TypeScriptInterfaceDeclaration {Name = typeName}, new TypeScriptUnit() {Path = path});
+            return targetUnit.AddTypeImport(type, new TypeScriptInterfaceDeclaration {Name = typeName}, new TypeScriptUnit {Path = path});
         }
 
         private readonly string typeName;

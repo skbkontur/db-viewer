@@ -12,7 +12,8 @@ namespace Kontur.DBViewer.SampleApi.Controllers
 
         public DbViewerController()
         {
-            impl = new DBViewerControllerImpl(SchemaRegistryProvider.GetSchemaRegistry());
+            var schemaRegistry = SchemaRegistryProvider.GetSchemaRegistry();
+            impl = new DBViewerControllerImpl(schemaRegistry);
         }
 
         [HttpGet, Route("List")]
@@ -50,5 +51,7 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         {
             return await impl.Write(typeIdentifier, obj);
         }
+        
+        
     }
 }

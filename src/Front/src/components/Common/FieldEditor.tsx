@@ -1,10 +1,10 @@
-import DatePicker from "@skbkontur/react-ui/components/DatePicker";
 import Select from "@skbkontur/react-ui/components/Select";
 import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
 import { PrimitiveType } from "../../api/impl/PrimitiveType";
 import { TypeInfo } from "../../api/impl/TypeInfo";
+import { DateTimePicker } from "./DateTimePicker";
 
 export type EnumSelectItem = [string, string];
 
@@ -20,21 +20,10 @@ export default class FieldEditor extends React.Component<IProps> {
   public render() {
     switch (this.props.typeInfo.type) {
       case PrimitiveType.DateTime:
-        if (this.props.dateAsInput) {
-          return (
-            <Input
-              value={this.props.value}
-              onChange={(_, v) => this.props.onChange(v)}
-              width={310}
-              error={this.props.error}
-            />
-          );
-        }
         return (
-          <DatePicker
+          <DateTimePicker
             value={this.props.value}
             onChange={(_, v) => this.props.onChange(v)}
-            width={310}
             error={this.props.error}
           />
         );

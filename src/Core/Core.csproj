@@ -6,10 +6,10 @@
     <RootNamespace>Kontur.DBViewer.Core</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <PackageId>Alko.DBViewer.Core</PackageId>
-    <PackageVersion>0.0.1-rc8</PackageVersion>
+    <PackageVersion>0.0.1-rc9</PackageVersion>
     <PackageDescription>DBViewer core. 
       Documentation: https://git.skbkontur.ru/alco/db-viewer/blob/master/README.md</PackageDescription>
-    <PackageReleaseNotes>Serialized type can depend on object properties</PackageReleaseNotes>
+    <PackageReleaseNotes>Use DateTimePicker for both Date and DateTime</PackageReleaseNotes>
     <Authors>Alko Team</Authors>
   </PropertyGroup>
 

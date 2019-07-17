@@ -2,11 +2,23 @@
 using System.Globalization;
 using System.Linq;
 using Cassandra;
+using Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations;
 
 namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
 {
     internal static class DateTimeParseHelper
     {
+        public static bool TryParse(string value, out LocalTime result)
+        {
+            result = default(LocalTime);
+
+            if (!TryParse(value, TimeTemplates, out var date))
+                return false;
+
+            result = CassandraPrimitivesExtensions.ToLocalTime(date);
+            return true;
+        }
+
         public static bool TryParse(string value, out LocalDate result)
         {
             result = default(LocalDate);
@@ -14,7 +26,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
             if (!TryParse(value, DateTemplates, out var date))
                 return false;
 
-            result = new LocalDate(date.Year, date.Month, date.Day);
+            result = date.ToLocalDate();
             return true;
         }
 
@@ -36,6 +48,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
 
         private static bool TryParse(string value, string[] templates, out DateTime result)
         {
+            value = value.Trim();
             result = DateTime.MinValue;
 
             if (DateTime.TryParseExact(value, templates, Provider, Style, out result))
@@ -67,6 +80,13 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser.ParseHelpers
             "yyyy-MM-dd HH:mm:ss.fff",
             "yyyy-MM-dd HH:mm:ss",
             "yyyy-MM-dd HH:mm",
+        };
+
+        private static readonly string[] TimeTemplates =
+        {
+            "HH:mm:ss.fff",
+            "HH:mm:ss",
+            "HH:mm",
         };
 
         private static readonly IFormatProvider Provider = new CultureInfo("RU");
