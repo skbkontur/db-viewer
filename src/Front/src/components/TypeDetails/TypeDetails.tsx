@@ -10,6 +10,7 @@ import Loader from "@skbkontur/react-ui/Loader";
 import Paging from "@skbkontur/react-ui/Paging";
 import Spinner from "@skbkontur/react-ui/Spinner";
 import { flatten } from "lodash";
+import qs from "qs";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -88,10 +89,16 @@ class TypeDetails extends React.Component<IProps, IState> {
     const searchableFields = this.getSearchableFields(
       this.props.typeDescription.shape
     );
+
+    const filters = this.getDefaultFiltersState(searchableFields);
+    const state = this.parseQueryString();
+
+    Object.keys(state).forEach(x => (filters[x].value = state[x]));
+
     this.setState(
       {
         loaderState: LoaderState.Success,
-        filters: this.getDefaultFiltersState(searchableFields),
+        filters,
         searchableFields,
         paging: {
           skip: 0,
@@ -124,6 +131,10 @@ class TypeDetails extends React.Component<IProps, IState> {
 
   public componentWillUnmount() {
     tableConfigsCache[this.props.type] = null;
+  }
+
+  private parseQueryString(): {} {
+    return qs.parse((this.props.location.search || "").replace(/^\?/, ""));
   }
 
   private getDefaultFiltersState = (
@@ -231,16 +242,16 @@ class TypeDetails extends React.Component<IProps, IState> {
     return null;
   };
 
+  private isNotEmpty(filter: IFilter): boolean {
+    return !filter || (!filter.value && filter.value !== false);
+  }
+
   private handleSearch = (skipCount: boolean = false) => {
     const invalidFields = [];
     for (const property of this.state.searchableFields.filter(
       x => x.description.isRequired
     )) {
-      if (
-        !this.state.filters[property.description.name] ||
-        (!this.state.filters[property.description.name].value &&
-          this.state.filters[property.description.name].value !== false)
-      ) {
+      if (this.isNotEmpty(this.state.filters[property.description.name])) {
         invalidFields.push(property.description.name);
       }
     }
@@ -254,6 +265,10 @@ class TypeDetails extends React.Component<IProps, IState> {
       Toast.push(`Поля ${invalidFields.join(", ")} обязательны для заполнения`);
       return;
     }
+
+    const query = this.buildQuery();
+    this.props.history.push(`${this.props.match.url}?${query}`);
+
     this.props.onSearch(
       this.state.filters,
       this.state.sorts ? [this.state.sorts] : null,
@@ -264,6 +279,17 @@ class TypeDetails extends React.Component<IProps, IState> {
       this.props.onCount(this.state.filters, this.state.paging.countLimit);
     }
   };
+
+  private buildQuery(): string {
+    const { searchableFields, filters } = this.state;
+    const fields = searchableFields
+      .filter(x => this.isNotEmpty(filters[x.description.name]))
+      .map(p => ({
+        name: p.description.name,
+        value: filters[p.description.name].value,
+      }));
+    return fields.map(x => `${x.name}=${x.value}`).join("&");
+  }
 
   private renderBounds() {
     if (this.props.list.loadingStatus === LoaderState.Loading) {
