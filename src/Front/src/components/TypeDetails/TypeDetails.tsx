@@ -238,7 +238,8 @@ class TypeDetails extends React.Component<IProps, IState> {
     )) {
       if (
         !this.state.filters[property.description.name] ||
-        !this.state.filters[property.description.name].value
+        (!this.state.filters[property.description.name].value &&
+          this.state.filters[property.description.name].value !== false)
       ) {
         invalidFields.push(property.description.name);
       }
