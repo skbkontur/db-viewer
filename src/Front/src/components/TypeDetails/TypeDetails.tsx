@@ -15,6 +15,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { NavLink } from "react-router-dom";
+import { FilterType } from "../../api/impl/FilterType";
 import { PrimitiveType } from "../../api/impl/PrimitiveType";
 import { Property } from "../../api/impl/Property";
 import { PropertyDescription } from "../../api/impl/PropertyDescription";
@@ -72,6 +73,10 @@ interface IPagingState {
 }
 
 class TypeDetails extends React.Component<IProps, IState> {
+  private static isInvalidFilterValue(filter: IFilter): boolean {
+    return !filter || (!filter.value && filter.value !== false);
+  }
+  public private;
   constructor(props) {
     super(props);
     this.state = {
@@ -91,9 +96,15 @@ class TypeDetails extends React.Component<IProps, IState> {
     );
 
     const filters = this.getDefaultFiltersState(searchableFields);
+
     const state = this.parseQueryString();
 
-    Object.keys(state).forEach(x => (filters[x].value = state[x]));
+    Object.keys(state).forEach(x => {
+      const [type, ...other] = state[x].split(":");
+      const value = other.join(":");
+      filters[x].type = type;
+      filters[x].value = value;
+    });
 
     this.setState(
       {
@@ -108,7 +119,10 @@ class TypeDetails extends React.Component<IProps, IState> {
         },
       },
       () => {
-        if (this.props.typeDescription.schemaDescription.enableDefaultSearch) {
+        const shouldSearch =
+          this.getInvalidFields().length === 0 ||
+          this.props.typeDescription.schemaDescription.enableDefaultSearch;
+        if (shouldSearch) {
           this.handleSearch();
         }
       }
@@ -142,9 +156,12 @@ class TypeDetails extends React.Component<IProps, IState> {
   ): IDictionary<IFilter> => {
     const result: IDictionary<IFilter> = {};
     for (const property of searchableFields) {
+      const availableFilters = property.description.availableFilters;
       result[property.description.name] = {
         value: "",
-        type: property.description.availableFilters[0],
+        type: availableFilters.includes(FilterType.No)
+          ? FilterType.No
+          : availableFilters[0],
       };
     }
     return result;
@@ -242,19 +259,24 @@ class TypeDetails extends React.Component<IProps, IState> {
     return null;
   };
 
-  private isNotEmpty(filter: IFilter): boolean {
-    return !filter || (!filter.value && filter.value !== false);
-  }
-
-  private handleSearch = (skipCount: boolean = false) => {
+  private getInvalidFields(): string[] {
     const invalidFields = [];
     for (const property of this.state.searchableFields.filter(
       x => x.description.isRequired
     )) {
-      if (this.isNotEmpty(this.state.filters[property.description.name])) {
+      if (
+        TypeDetails.isInvalidFilterValue(
+          this.state.filters[property.description.name]
+        )
+      ) {
         invalidFields.push(property.description.name);
       }
     }
+    return invalidFields;
+  }
+
+  private handleSearch = (skipCount: boolean = false) => {
+    const invalidFields = this.getInvalidFields();
     if (invalidFields.some(_ => true)) {
       this.setState({
         validations: invalidFields.reduce(
@@ -282,13 +304,13 @@ class TypeDetails extends React.Component<IProps, IState> {
 
   private buildQuery(): string {
     const { searchableFields, filters } = this.state;
-    const fields = searchableFields
-      .filter(x => this.isNotEmpty(filters[x.description.name]))
-      .map(p => ({
-        name: p.description.name,
-        value: filters[p.description.name].value,
-      }));
-    return fields.map(x => `${x.name}=${x.value}`).join("&");
+    const fields = searchableFields.map(p => ({
+      name: p.description.name,
+      filter: filters[p.description.name],
+    }));
+    return fields
+      .map(x => `${x.name}=${x.filter.type}:${x.filter.value}`)
+      .join("&");
   }
 
   private renderBounds() {
