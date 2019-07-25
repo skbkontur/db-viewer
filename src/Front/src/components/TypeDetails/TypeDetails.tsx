@@ -76,7 +76,6 @@ class TypeDetails extends React.Component<IProps, IState> {
   private static isInvalidFilterValue(filter: IFilter): boolean {
     return !filter || (!filter.value && filter.value !== false);
   }
-  public private;
   constructor(props) {
     super(props);
     this.state = {
