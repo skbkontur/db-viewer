@@ -10,10 +10,12 @@ import Loader from "@skbkontur/react-ui/Loader";
 import Paging from "@skbkontur/react-ui/Paging";
 import Spinner from "@skbkontur/react-ui/Spinner";
 import { flatten } from "lodash";
+import qs from "qs";
 import * as React from "react";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { NavLink } from "react-router-dom";
+import { FilterType } from "../../api/impl/FilterType";
 import { PrimitiveType } from "../../api/impl/PrimitiveType";
 import { Property } from "../../api/impl/Property";
 import { PropertyDescription } from "../../api/impl/PropertyDescription";
@@ -71,6 +73,9 @@ interface IPagingState {
 }
 
 class TypeDetails extends React.Component<IProps, IState> {
+  private static isInvalidFilterValue(filter: IFilter): boolean {
+    return !filter || (!filter.value && filter.value !== false);
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -88,10 +93,22 @@ class TypeDetails extends React.Component<IProps, IState> {
     const searchableFields = this.getSearchableFields(
       this.props.typeDescription.shape
     );
+
+    const filters = this.getDefaultFiltersState(searchableFields);
+
+    const state = this.parseQueryString();
+
+    Object.keys(state).forEach(x => {
+      const [type, ...other] = state[x].split(":");
+      const value = other.join(":");
+      filters[x].type = type;
+      filters[x].value = value;
+    });
+
     this.setState(
       {
         loaderState: LoaderState.Success,
-        filters: this.getDefaultFiltersState(searchableFields),
+        filters,
         searchableFields,
         paging: {
           skip: 0,
@@ -101,7 +118,10 @@ class TypeDetails extends React.Component<IProps, IState> {
         },
       },
       () => {
-        if (this.props.typeDescription.schemaDescription.enableDefaultSearch) {
+        const shouldSearch =
+          this.getInvalidFields().length === 0 ||
+          this.props.typeDescription.schemaDescription.enableDefaultSearch;
+        if (shouldSearch) {
           this.handleSearch();
         }
       }
@@ -126,14 +146,21 @@ class TypeDetails extends React.Component<IProps, IState> {
     tableConfigsCache[this.props.type] = null;
   }
 
+  private parseQueryString(): {} {
+    return qs.parse((this.props.location.search || "").replace(/^\?/, ""));
+  }
+
   private getDefaultFiltersState = (
     searchableFields: Property[]
   ): IDictionary<IFilter> => {
     const result: IDictionary<IFilter> = {};
     for (const property of searchableFields) {
+      const availableFilters = property.description.availableFilters;
       result[property.description.name] = {
         value: "",
-        type: property.description.availableFilters[0],
+        type: availableFilters.includes(FilterType.No)
+          ? FilterType.No
+          : availableFilters[0],
       };
     }
     return result;
@@ -231,19 +258,24 @@ class TypeDetails extends React.Component<IProps, IState> {
     return null;
   };
 
-  private handleSearch = (skipCount: boolean = false) => {
+  private getInvalidFields(): string[] {
     const invalidFields = [];
     for (const property of this.state.searchableFields.filter(
       x => x.description.isRequired
     )) {
       if (
-        !this.state.filters[property.description.name] ||
-        (!this.state.filters[property.description.name].value &&
-          this.state.filters[property.description.name].value !== false)
+        TypeDetails.isInvalidFilterValue(
+          this.state.filters[property.description.name]
+        )
       ) {
         invalidFields.push(property.description.name);
       }
     }
+    return invalidFields;
+  }
+
+  private handleSearch = (skipCount: boolean = false) => {
+    const invalidFields = this.getInvalidFields();
     if (invalidFields.some(_ => true)) {
       this.setState({
         validations: invalidFields.reduce(
@@ -254,6 +286,10 @@ class TypeDetails extends React.Component<IProps, IState> {
       Toast.push(`Поля ${invalidFields.join(", ")} обязательны для заполнения`);
       return;
     }
+
+    const query = this.buildQuery();
+    this.props.history.push(`${this.props.match.url}?${query}`);
+
     this.props.onSearch(
       this.state.filters,
       this.state.sorts ? [this.state.sorts] : null,
@@ -264,6 +300,17 @@ class TypeDetails extends React.Component<IProps, IState> {
       this.props.onCount(this.state.filters, this.state.paging.countLimit);
     }
   };
+
+  private buildQuery(): string {
+    const { searchableFields, filters } = this.state;
+    const fields = searchableFields.map(p => ({
+      name: p.description.name,
+      filter: filters[p.description.name],
+    }));
+    return fields
+      .map(x => `${x.name}=${x.filter.type}:${x.filter.value}`)
+      .join("&");
+  }
 
   private renderBounds() {
     if (this.props.list.loadingStatus === LoaderState.Loading) {
