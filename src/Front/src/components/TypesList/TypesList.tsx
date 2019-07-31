@@ -54,7 +54,7 @@ class TypesList extends React.Component<Props, {}> {
           backText={"Вернуться к списку инструментов"}
           backTo={this.props.match.url.endsWith("/") ? ".." : "."}
         />
-        <Gapped vertical gap={15}>
+        <Gapped vertical gap={15} data-tid="BusinessObjectGroups">
           <Input
             data-tid="FilterInput"
             ref={this.handleInputRef}
@@ -74,8 +74,10 @@ class TypesList extends React.Component<Props, {}> {
 
   private renderTypes(schemaName: string, list: TypeModel[]): React.ReactNode {
     return (
-      <Gapped vertical gap={15} key={schemaName}>
-        <div className={styles.schemaName}>{schemaName}</div>
+      <Gapped vertical gap={15} key={schemaName} data-tid="BusinessObjectGroup">
+        <div className={styles.schemaName} data-tid="Name">
+          {schemaName}
+        </div>
         <div data-tid="BusinessObjectsList" className={styles.list}>
           {list.map(type => (
             <span
