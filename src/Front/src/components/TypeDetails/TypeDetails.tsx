@@ -74,7 +74,7 @@ interface IPagingState {
 
 class TypeDetails extends React.Component<IProps, IState> {
   private static isInvalidFilterValue(filter: IFilter): boolean {
-    return filter == null || filter.value == null;
+    return filter == null || filter.value == null || filter.value === "";
   }
 
   constructor(props) {
