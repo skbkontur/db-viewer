@@ -106,6 +106,20 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
         },
         "nullableDecimalField"
       ),
+      createProperty(
+        {
+          type: PrimitiveType.DateTime,
+          canBeNull: false,
+        },
+        "dateTimeUtcField"
+      ),
+      createProperty(
+        {
+          type: PrimitiveType.DateTime,
+          canBeNull: false,
+        },
+        "dateTimeCustomField"
+      ),
     ],
   };
   return (
@@ -118,6 +132,8 @@ storiesOf("ObjectDetailsContent", module).add("Full", () => {
         boolField: false,
         nullableBoolField: null,
         decimalField: 14.6666,
+        dateTimeUtcField: "2016-11-30T23:05:10Z",
+        dateTimeCustomField: "18.08.2019 12:15:41.457",
       }}
       typeInfo={typeInfo}
       onDelete={action("Delete")}
