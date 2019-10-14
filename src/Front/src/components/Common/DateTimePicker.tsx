@@ -1,6 +1,7 @@
 import DatePicker from "@skbkontur/react-ui/components/DatePicker/DatePicker";
 import * as React from "react";
 import { TimePicker } from "./TimePicker";
+import {DateTimeUtils} from "../Utils/DateTimeUtils";
 
 interface IDateTimePickerProps {
   value: any;
@@ -32,29 +33,20 @@ export class DateTimePicker extends React.Component<IDateTimePickerProps> {
   }
 
   private getDatePart(): string {
-    return this.props.value.split(" ")[0];
+    return DateTimeUtils.getDatePart(this.props.value);
   }
 
   private getTimePart(): string {
-    return this.props.value.split(" ")[1];
+    return DateTimeUtils.getTimePart(this.props.value);
   }
 
   private onDateChange(_: any, date: string) {
-    const { value } = this.props;
-    let newDate = date;
-    const oldTime = value.split(" ")[1];
-    if (oldTime != null) {
-      newDate = newDate + " " + oldTime;
-    }
+    const newDate = DateTimeUtils.updateDate(this.props.value, date);
     this.props.onChange(_, newDate);
   }
 
   private onTimeChange(_: any, time: string) {
-    const { value } = this.props;
-    let oldDate = value.split(" ")[0];
-    if (time != null) {
-      oldDate = oldDate + " " + time;
-    }
-    this.props.onChange(_, oldDate);
+    const newDate = DateTimeUtils.updateTime(this.props.value, time);
+    this.props.onChange(_, newDate);
   }
 }
