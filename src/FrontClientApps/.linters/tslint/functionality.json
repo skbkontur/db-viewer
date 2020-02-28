@@ -1,0 +1,65 @@
+{
+    "rules": {
+        "no-invalid-this": true,
+        "await-promise": true,
+        "ban-comma-operator": true,
+        "curly": true,
+        "forin": true,
+        "label-position": true,
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-conditional-assignment": true,
+        "no-console": [true, "log"],
+        "no-construct": true,
+        "no-debugger": true,
+        "no-duplicate-super": true,
+        "no-duplicate-switch-case": true,
+        "no-duplicate-variable": [true, "check-parameters"],
+        "no-dynamic-delete": true,
+        "no-empty": true,
+        "no-eval": true,
+        "no-floating-promises": false, // TODO Подумать включать или нет
+        "no-for-in-array": true,
+        "no-implicit-dependencies": false,
+        "no-inferred-empty-object-type": false, // TODO Включить
+        "no-invalid-template-strings": true,
+        "no-misused-new": true,
+        "no-null-keyword": false, // TODO Включить
+        "no-object-literal-type-assertion": true,
+        "no-return-await": true,
+        "no-shadowed-variable": false, // TODO Включить
+//        {
+//            "class": true,
+//            "enum": true,
+//            "function": true,
+//            "import": true,
+//            "interface": true,
+//            "namespace": true,
+//            "typeAlias": true,
+//            "typeParameter": true,
+//            "temporalDeadZone": false
+//        },
+        "no-string-literal": false,
+        "no-string-throw": true,
+        "no-sparse-arrays": true,
+        "no-submodule-imports": false,
+        "no-unbound-method": false, // TODO Подумать включать или нет
+        "no-unnecessary-class": false,
+        "no-unsafe-any": false, // TODO Включить
+        "no-unsafe-finally": true,
+        "no-unused-expression": false, // TODO Разобраться с тестами и включать
+        "no-unused-variable": false,
+        "no-use-before-declare": false,
+        "no-var-keyword": true,
+        "no-void-expression": [true, "ignore-arrow-function-shorthand"],
+        "prefer-conditional-expression": false,
+        "radix": true,
+        "restrict-plus-operands": false, // TODO Подумать включать или нет
+        "strict-boolean-expressions": false,
+        "strict-type-predicates": false,
+        "switch-default": true,
+        "triple-equals": [true, "allow-undefined-check", "allow-null-check"],
+        "use-default-type-parameter": false,
+        "use-isnan": true
+    }
+}

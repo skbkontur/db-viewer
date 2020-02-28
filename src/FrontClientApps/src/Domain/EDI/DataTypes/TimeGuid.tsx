@@ -1,0 +1,1 @@
+export type TimeGuid = string;

@@ -1,0 +1,20 @@
+{
+    "presets": [
+        [
+            "@babel/env",
+            {
+                "modules": false,
+                "useBuiltIns": "entry",
+                "corejs": "3.6.4"
+            }
+        ],
+        "@babel/preset-react",
+        ["@babel/preset-typescript", { "isTSX": true, "allExtensions": true }]
+    ],
+    "plugins": [
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }],
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-syntax-dynamic-import"
+    ]
+}

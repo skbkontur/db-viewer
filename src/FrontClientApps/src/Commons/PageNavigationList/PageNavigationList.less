@@ -1,0 +1,52 @@
+@import '~ui/styles/variables.less';
+
+:local {
+    .pages {
+        a {
+            display: inline-block;
+            margin: 0 @base-size 0 0;
+            padding: @base-size;
+            border-radius: 3px;
+            text-decoration: none;
+            color: @link-color;
+
+            &:hover {
+                border-bottom-color: @menu-hovered-item-background;
+                background-color: @menu-hovered-item-background;
+            }
+
+            &.active {
+                background-color: @menu-selected-item-background;
+                color: @muted-text;
+            }
+        }
+
+        .ellipsis {
+            display: inline-block;
+            margin: 0 @base-size 0 0;
+            padding: @base-size;
+        }
+    }
+
+    .prev-next-navigation {
+        margin-left: @base-size * -3;
+
+        a {
+            display: inline-block;
+            margin: @base-size;
+            text-decoration: none;
+
+            &:hover .link-text {
+                text-decoration: underline;
+            }
+
+            &.disabled {
+                color: @double-muted-text;
+                //
+                /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+                pointer-events: none;
+                cursor: default;
+            }
+        }
+    }
+}

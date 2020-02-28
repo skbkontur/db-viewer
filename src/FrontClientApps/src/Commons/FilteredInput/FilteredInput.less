@@ -1,0 +1,53 @@
+@import '~ui/styles/variables.less';
+
+@input-background: @primary-background;
+
+:local {
+    .root {
+        display: inline-block;
+        position: relative;
+        background-color: @input-background;
+    }
+
+    .input-container label {
+        z-index: 2;
+
+        input {
+            background-color: @color-transparent;
+        }
+    }
+
+    .hint-container {
+        z-index: 1;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+
+        label {
+            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+
+            input {
+                // Перекрывается поведение retail-ui input-а
+                // stylelint-disable-next-line declaration-no-important
+                background-color: @input-background !important;
+            }
+        }
+    }
+
+    .test-width {
+        position: absolute;
+        display: inline-block;
+        visibility: hidden;
+        height: auto;
+        width: auto;
+        white-space: nowrap;
+    }
+}

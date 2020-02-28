@@ -20,6 +20,14 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
                 return "DBViewerApi";
             }
 
+            const string dbViewerNamespace = "Kontur.DBViewer.Core.VNext.";
+            if (type.FullName != null && type.FullName.StartsWith(dbViewerNamespace))
+            {
+                var name = type.FullName.Replace(dbViewerNamespace, "Api.AdminTools.").Replace(".", "/")
+                    .Replace("BusinessObjectsApiController", "BusinessObjectsApi");
+                return new Regex("`.*$").Replace(name, "");
+            }
+
             return type.IsGenericType ? new Regex("`.*$").Replace(typeName, "") : typeName;
         }
 
@@ -75,7 +83,8 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
             return null;
         }
 
-        public TypeScriptTypeMemberDeclaration ResolveProperty(TypeScriptUnit unit, ITypeGenerator typeGenerator, Type type,
+        public TypeScriptTypeMemberDeclaration ResolveProperty(TypeScriptUnit unit, ITypeGenerator typeGenerator,
+            Type type,
             PropertyInfo property)
         {
             if (property.PropertyType.IsEnum && !property.CanWrite)
@@ -84,10 +93,12 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
                 {
                     Name = property.Name.ToLowerCamelCase(),
                     Optional = false,
-                    Type = new TypeScriptEnumValueType(typeGenerator.BuildAndImportType(unit, property, property.PropertyType), property.GetMethod.Invoke(
-                            CreateDefaultNotNullObject(type),
-                            null
-                        ).ToString()
+                    Type = new TypeScriptEnumValueType(
+                        typeGenerator.BuildAndImportType(unit, property, property.PropertyType), property.GetMethod
+                            .Invoke(
+                                CreateDefaultNotNullObject(type),
+                                null
+                            ).ToString()
                     ),
                 };
             }

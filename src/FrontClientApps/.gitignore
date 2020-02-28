@@ -1,0 +1,13 @@
+.idea/workspace.xml
+node_modules
+npm-debug.log
+plan.todo
+coverage
+.nyc_output
+screenshot-tests/current
+screenshot-tests/diff
+src/Domain/EDI/**/*.ts
+!src/Domain/EDI/**/*Extensions.ts
+!src/Domain/EDI/**/*Utils.ts
+!src/Domain/EDI/**/*ApiFake.ts
+test-mutators-dist

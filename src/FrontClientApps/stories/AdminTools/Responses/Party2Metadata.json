@@ -1,0 +1,142 @@
+{
+    "identifier": "Party2",
+    "mySqlTableName": "Party2",
+    "storageType": "SingleObjectPerRow",
+    "typeMetaInformation": {
+        "typeName": "Party",
+        "isArray": false,
+        "properties": [
+            {
+                "name": "Gln",
+                "indexed": true,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "PartyName",
+                "indexed": false,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "PartyTypeCode",
+                "indexed": false,
+                "type": {
+                    "typeName": "PartyType",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "Inn",
+                "indexed": true,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "Kpp",
+                "indexed": false,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "IsDemo",
+                "indexed": false,
+                "type": {
+                    "typeName": "Boolean",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "DiadocOrgId",
+                "indexed": true,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "TestDiadocOrgId",
+                "indexed": false,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "Id",
+                "indexed": true,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "ScopeId",
+                "indexed": true,
+                "type": {
+                    "typeName": "String",
+                    "isArray": false,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": null
+                }
+            },
+            {
+                "name": "LastModificationDateTime",
+                "indexed": true,
+                "type": {
+                    "typeName": "Nullable",
+                    "isArray": true,
+                    "properties": null,
+                    "itemType": null,
+                    "genericTypeArguments": [
+                        {
+                            "typeName": "DateTime",
+                            "isArray": false,
+                            "properties": null,
+                            "itemType": null,
+                            "genericTypeArguments": null
+                        }
+                    ]
+                }
+            }
+        ],
+        "itemType": null,
+        "genericTypeArguments": null
+    }
+}

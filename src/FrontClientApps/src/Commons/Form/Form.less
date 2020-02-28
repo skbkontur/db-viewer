@@ -1,0 +1,46 @@
+@import '~ui/styles/variables.less';
+
+@hang-char-size: 20px;
+
+:local {
+    .caption {
+        padding-top: 7px;
+        box-sizing: border-box;
+
+        &.with-hanging-chars {
+            padding-right: @hang-char-size + @base-size * 2;
+        }
+
+        &.hacked {
+            padding-top: 7px;
+            min-height: auto;
+            //box-sizing: content-box;
+        }
+
+        &.greyed {
+            color: @muted-text;
+        }
+    }
+
+    .hang-left {
+        margin-left: -@hang-char-size;
+    }
+
+    .another-form-element {
+        position: relative;
+    }
+
+    .shift-children {
+        padding-left: 70px;
+    }
+
+    .row-gap {
+        width: 10px;
+        display: inline-block;
+    }
+
+    .shrinkable {
+        /* stylelint-disable-next-line */
+        flex-shrink: 1 !important;
+    }
+}

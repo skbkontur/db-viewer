@@ -4,10 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
 using Kontur.DBViewer.Core;
 using Kontur.DBViewer.Core.Attributes;
-
+using Kontur.DBViewer.Core.VNext;
 using SkbKontur.TypeScript.ContractGenerator;
 using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 using SkbKontur.TypeScript.ContractGenerator.Extensions;
@@ -24,51 +23,54 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
 
         public static bool Accept(Type type)
         {
-            return typeof(DBViewerControllerImpl).IsAssignableFrom(type);
+            return typeof(DBViewerControllerImpl).IsAssignableFrom(type) ||
+                   typeof(BusinessObjectsApi).IsAssignableFrom(type);
         }
 
         public override void Initialize(ITypeGenerator typeGenerator)
         {
-            Declaration = GenerateInternalApiController(Unit, Type, (x, y) => typeGenerator.BuildAndImportType(Unit, x, y));
+            Declaration =
+                GenerateInternalApiController(Unit, Type, (x, y) => typeGenerator.BuildAndImportType(Unit, x, y));
             base.Initialize(typeGenerator);
         }
 
-        private TypeScriptTypeDeclaration GenerateInternalApiController(TypeScriptUnit targetUnit, Type type, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType)
+        private TypeScriptTypeDeclaration GenerateInternalApiController(TypeScriptUnit targetUnit, Type type,
+            Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType)
         {
             var baseApiClassName = GetBaseApiClassName(type);
             var apiName = DoCreateApiName(type);
             var TypeScriptClassDefinition = new TypeScriptClassDefinition
-                {
-                    BaseClass = new TypeScriptTypeReference(baseApiClassName),
-                };
+            {
+                BaseClass = new TypeScriptTypeReference(baseApiClassName),
+            };
             var methodInfos = type
-                              .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                              .Where(m => !m.IsSpecialName)
-                              .Where(x => x.DeclaringType == type)
-                              .ToArray();
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(m => !m.IsSpecialName)
+                .Where(x => x.DeclaringType == type)
+                .ToArray();
 
             TypeScriptClassDefinition.Members.AddRange(
                 methodInfos
                     .SelectMany(x => BuildApiImplMember(targetUnit, x, buildAndImportType, type)));
 
             targetUnit.Body.Add(new TypeScriptExportStatement
+            {
+                Declaration = new TypeScriptClassDeclaration
                 {
-                    Declaration = new TypeScriptClassDeclaration
-                        {
-                            Name = apiName + "Impl",
-                            Defintion = TypeScriptClassDefinition
-                        }
-                });
+                    Name = apiName + "Impl",
+                    Defintion = TypeScriptClassDefinition
+                }
+            });
             var definition = new TypeScriptInterfaceDefinition();
             definition.Members.AddRange(methodInfos
-                                            .SelectMany(x => BuildApiInterfaceMember(targetUnit, x, buildAndImportType)));
+                .SelectMany(x => BuildApiInterfaceMember(targetUnit, x, buildAndImportType)));
             targetUnit.AddDefaultSymbolImport(baseApiClassName, $"../apiBase/{baseApiClassName}");
 
             var interfaceDeclaration = new TypeScriptInterfaceDeclaration
-                {
-                    Name = "I" + apiName,
-                    Definition = definition
-                };
+            {
+                Name = "I" + apiName,
+                Definition = definition
+            };
 
             return interfaceDeclaration;
         }
@@ -83,35 +85,38 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
             return new Regex("ControllerImpl").Replace(type.Name, "Api");
         }
 
-        private IEnumerable<TypeScriptClassMemberDefinition> BuildApiImplMember(TypeScriptUnit targetUnit, MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType, Type controllerType)
+        private IEnumerable<TypeScriptClassMemberDefinition> BuildApiImplMember(TypeScriptUnit targetUnit,
+            MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType,
+            Type controllerType)
         {
             var functionDefinition = new TypeScriptFunctionDefinition
-                {
-                    IsAsync = true,
-                    Result = GetMethodResult(targetUnit, methodInfo, buildAndImportType),
-                    Body = {CreateCall(methodInfo, controllerType)}
-                };
+            {
+                IsAsync = true,
+                Result = GetMethodResult(targetUnit, methodInfo, buildAndImportType),
+                Body = {CreateCall(methodInfo, controllerType)}
+            };
             functionDefinition.Arguments.AddRange(
                 methodInfo.GetParameters().Where(AcceptParameter).Select(x => new TypeScriptArgumentDeclaration
-                    {
-                        Name = x.Name,
-                        Type = buildAndImportType(x, x.ParameterType)
-                    })
+                {
+                    Name = x.Name,
+                    Type = buildAndImportType(x, x.ParameterType)
+                })
             );
             yield return
                 new TypeScriptClassMemberDefinition
-                    {
-                        Name = methodInfo.Name.ToLowerCamelCase(),
-                        Definition = functionDefinition
-                    };
+                {
+                    Name = methodInfo.Name.ToLowerCamelCase(),
+                    Definition = functionDefinition
+                };
         }
 
-        private static TypeScriptType GetMethodResult(TypeScriptUnit targetUnit, MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType, bool declareErrorResultType = true)
+        private static TypeScriptType GetMethodResult(TypeScriptUnit targetUnit, MethodInfo methodInfo,
+            Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType, bool declareErrorResultType = true)
         {
             var realType = methodInfo.ReturnType;
-            if(realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(Task<>))
+            if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(Task<>))
                 realType = realType.GetGenericArguments()[0];
-            else if(realType == typeof(Task))
+            else if (realType == typeof(Task))
                 realType = typeof(void);
             TypeScriptType methodResult;
             methodResult = new TypeScriptPromiseOfType(buildAndImportType(methodInfo, realType));
@@ -127,17 +132,17 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
 
         private static TypeScriptReturnStatement CreateInnerCall(MethodInfo methodInfo, Type controllerType)
         {
-            if(methodInfo.GetCustomAttribute<HttpGetAttribute>() != null)
+            if (methodInfo.GetCustomAttribute<HttpGetAttribute>() != null)
             {
                 return GenerateGetMethodCall(methodInfo, controllerType);
             }
 
-            if(methodInfo.GetCustomAttribute<HttpPostAttribute>() != null)
+            if (methodInfo.GetCustomAttribute<HttpPostAttribute>() != null)
             {
                 return GenerateMethodCallWithBody(methodInfo, "post", controllerType);
             }
 
-            if(methodInfo.GetCustomAttribute<HttpDeleteAttribute>() != null)
+            if (methodInfo.GetCustomAttribute<HttpDeleteAttribute>() != null)
             {
                 return GenerateMethodCallWithBody(methodInfo, "delete", controllerType);
             }
@@ -164,7 +169,8 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
                 ));
         }
 
-        private static TypeScriptReturnStatement GenerateMethodCallWithBody(MethodInfo methodInfo, string methodName, Type controllerType)
+        private static TypeScriptReturnStatement GenerateMethodCallWithBody(MethodInfo methodInfo, string methodName,
+            Type controllerType)
         {
             var routeTemplate = methodInfo.GetCustomAttribute<RouteAttribute>()?.Template;
             return new TypeScriptReturnStatement(
@@ -184,7 +190,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
         private static bool AcceptParameter(ParameterInfo parameterInfo)
         {
             var parameter = parameterInfo;
-            if(parameter.GetCustomAttributes<FromBodyAttribute>().Any())
+            if (parameter.GetCustomAttributes<FromBodyAttribute>().Any())
                 return true;
             return !autoInjectedTypes.Contains(parameter.ParameterType);
         }
@@ -193,9 +199,9 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
         {
             var bodyParameters = parameters.Where(x => !IsParameterPassedViaUrl(x, routeTemplate)).ToArray();
 
-            if(bodyParameters.Any(x => x.ParameterType.IsArray && x.GetCustomAttribute<FromBodyAttribute>() != null))
+            if (bodyParameters.Any(x => x.ParameterType.IsArray && x.GetCustomAttribute<FromBodyAttribute>() != null))
             {
-                if(bodyParameters.Length != 1)
+                if (bodyParameters.Length != 1)
                 {
                     throw new Exception("Only one array argument with Body attribute can appears in method signature");
                 }
@@ -207,24 +213,24 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
                 parameters
                     .Where(AcceptParameter)
                     .Select<ParameterInfo, TypeScriptObjectLiteralInitializer>(parameter =>
+                    {
+                        if (parameter.GetCustomAttributes<FromBodyAttribute>().Any())
                         {
-                            if(parameter.GetCustomAttributes<FromBodyAttribute>().Any())
-                            {
-                                return new TypeScriptObjectLiteralSpread(new TypeScriptVariableReference(parameter.Name));
-                            }
+                            return new TypeScriptObjectLiteralSpread(new TypeScriptVariableReference(parameter.Name));
+                        }
 
-                            if(IsParameterPassedViaUrl(parameter, routeTemplate))
-                            {
-                                // do nothing
-                                return null;
-                            }
+                        if (IsParameterPassedViaUrl(parameter, routeTemplate))
+                        {
+                            // do nothing
+                            return null;
+                        }
 
-                            return new TypeScriptObjectLiteralProperty
-                                {
-                                    Name = new TypeScriptStringLiteral(parameter.Name),
-                                    Value = new TypeScriptVariableReference(parameter.Name),
-                                };
-                        })
+                        return new TypeScriptObjectLiteralProperty
+                        {
+                            Name = new TypeScriptStringLiteral(parameter.Name),
+                            Value = new TypeScriptVariableReference(parameter.Name),
+                        };
+                    })
                     .Where(x => x != null)
             );
             return result;
@@ -238,52 +244,54 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
         private static TypeScriptExpression GenerateConstructGetParams(ParameterInfo[] parameters, string routeTemplate)
         {
             var literalProperies = parameters
-                                   .Where(AcceptParameter)
-                                   .Select<ParameterInfo, TypeScriptObjectLiteralInitializer>(parameter =>
-                                       {
-                                           if(parameter.GetCustomAttributes<FromBodyAttribute>().Any())
-                                           {
-                                               throw new Exception(string.Format("Невозможно обработать параметр {0}: {1} для пути {2}", parameter.Name, parameter.ParameterType.Name, routeTemplate));
-                                           }
+                .Where(AcceptParameter)
+                .Select<ParameterInfo, TypeScriptObjectLiteralInitializer>(parameter =>
+                {
+                    if (parameter.GetCustomAttributes<FromBodyAttribute>().Any())
+                    {
+                        throw new Exception(string.Format("Невозможно обработать параметр {0}: {1} для пути {2}",
+                            parameter.Name, parameter.ParameterType.Name, routeTemplate));
+                    }
 
-                                           if(routeTemplate.Contains("{" + parameter.Name + "}"))
-                                           {
-                                               return null;
-                                           }
+                    if (routeTemplate.Contains("{" + parameter.Name + "}"))
+                    {
+                        return null;
+                    }
 
-                                           return new TypeScriptObjectLiteralProperty
-                                               {
-                                                   Name = new TypeScriptStringLiteral(parameter.Name),
-                                                   Value = new TypeScriptVariableReference(parameter.Name),
-                                               };
-                                       })
-                                   .Where(x => x != null)
-                                   .ToArray();
-            if(!literalProperies.Any())
+                    return new TypeScriptObjectLiteralProperty
+                    {
+                        Name = new TypeScriptStringLiteral(parameter.Name),
+                        Value = new TypeScriptVariableReference(parameter.Name),
+                    };
+                })
+                .Where(x => x != null)
+                .ToArray();
+            if (!literalProperies.Any())
                 return null;
             var result = new TypeScriptObjectLiteral(literalProperies);
             return result;
         }
 
-        private IEnumerable<TypeScriptInterfaceFunctionMember> BuildApiInterfaceMember(TypeScriptUnit targetUnit, MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType)
+        private IEnumerable<TypeScriptInterfaceFunctionMember> BuildApiInterfaceMember(TypeScriptUnit targetUnit,
+            MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType)
         {
             var result = new TypeScriptInterfaceFunctionMember
-                {
-                    Name = methodInfo.Name.ToLowerCamelCase(),
-                    Result = GetMethodResult(targetUnit, methodInfo, buildAndImportType, false)
-                };
+            {
+                Name = methodInfo.Name.ToLowerCamelCase(),
+                Result = GetMethodResult(targetUnit, methodInfo, buildAndImportType, false)
+            };
             result.Arguments.AddRange(
                 methodInfo.GetParameters().Where(AcceptParameter).Select(x => new TypeScriptArgumentDeclaration
-                    {
-                        Name = x.Name,
-                        Type = buildAndImportType(x, x.ParameterType)
-                    })
+                {
+                    Name = x.Name,
+                    Type = buildAndImportType(x, x.ParameterType)
+                })
             );
             yield return result;
         }
 
         private static readonly Type[] autoInjectedTypes =
-            {
-            };
+        {
+        };
     }
 }

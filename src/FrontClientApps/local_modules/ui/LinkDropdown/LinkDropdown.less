@@ -1,0 +1,138 @@
+@import '../styles/variables.less';
+
+:local {
+    .root {
+        display: inline-block;
+        position: relative;
+        color: @primary-text;
+
+        &.opened {
+            z-index: 1003; // https://yt.skbkontur.ru/issue/EDITSKS-1154
+        }
+
+        &.opened > .title-container {
+            &::after {
+                position: absolute;
+                content: '';
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                box-shadow: @dropdown-shadow;
+                z-index: 1;
+            }
+
+            > .title {
+                background-color: @dropdown-link-background-color;
+                border-top: 1px solid @dropdown-border-color;
+                border-left: 1px solid @dropdown-border-color;
+                border-right: 1px solid @dropdown-border-color;
+                border-bottom: 0;
+                padding-bottom: 1px;
+            }
+        }
+
+        &.closed > .title-container > .title {
+            color: @link-color;
+
+            &:hover > .text {
+                text-decoration: underline;
+            }
+        }
+
+        &.disabled > .title-container > .title {
+            color: @double-muted-text;
+            cursor: default;
+
+            &:hover > .text {
+                text-decoration: none;
+            }
+        }
+
+        .title-container {
+            position: relative;
+
+            > .title {
+                position: relative;
+                z-index: 2;
+                display: inline-block;
+                padding: 0 9px;
+                line-height: 32px;
+                cursor: pointer;
+                border: 1px solid #00000000;
+                border-radius: 2px 2px 0 0;
+
+                > .text {
+                    margin-right: 5px;
+                }
+            }
+        }
+
+        .menu-container {
+            position: absolute;
+            z-index: 1;
+            bottom: 0;
+            left: 0;
+            height: 0;
+            min-width: 100%;
+
+            .menu {
+                position: absolute;
+                z-index: 1;
+                top: -1px;
+                left: 0;
+                min-width: 100%;
+                background-color: @dropdown-link-background-color;
+                border: 1px solid @dropdown-border-color;
+                border-radius: 0 2px 2px;
+                box-sizing: border-box;
+                box-shadow: @dropdown-shadow;
+
+                .menu-item {
+                    display: block;
+                    color: @primary-text;
+                    cursor: pointer;
+                    padding: 0 10px;
+                    line-height: 34px;
+                    white-space: nowrap;
+
+                    &:hover {
+                        background-color: @dropdown-menu-item-hover-color;
+                        color: @dropdown-menu-item-hover-text-color;
+
+                        > span {
+                            text-decoration: none;
+                        }
+
+                        .menu-item-description {
+                            color: fadeout(@edi-product-text, 20%);
+                        }
+                    }
+
+                    &.disabled {
+                        color: @double-muted-text;
+                        cursor: default;
+
+                        &:hover {
+                            text-decoration: none;
+                            background-color: @dropdown-link-background-color;
+
+                            .menu-item-description {
+                                color: @double-muted-text;
+                            }
+                        }
+                    }
+                }
+
+                .menu-item-description {
+                    color: @double-muted-text;
+                    line-height: 20px;
+                    padding: @base-size 0;
+                    white-space: normal;
+                    margin-top: -2 * @base-size;
+                    display: block;
+                }
+            }
+        }
+    }
+}
