@@ -1,7 +1,9 @@
+import Input from "@skbkontur/react-ui/Input";
+import Loader from "@skbkontur/react-ui/Loader";
 import * as React from "react";
-import { Input, Loader } from "ui";
-import { ColumnStack, Fit } from "ui/layout";
-import { CommonLayout } from "Commons/Layouts";
+import { ColumnStack } from "Commons/Layouts/ColumnStack";
+import { CommonLayout } from "Commons/Layouts/CommonLayout";
+import { Fit } from "Commons/Layouts/Fit";
 import { IBusinessObjectsApi } from "Domain/EDI/Api/AdminTools/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/EDI/Api/AdminTools/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObjectDescription";

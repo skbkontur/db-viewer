@@ -1,10 +1,11 @@
 import { action, storiesOf } from "@kadira/storybook";
 import * as React from "react";
 import { ButtonLink } from "ui";
-import { Fill, Fit, RowStack } from "ui/layout";
-import { CommonLayout } from "Commons/Layouts";
-
-import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer/ScrollableContainer";
+import { CommonLayout } from "Commons/Layouts/CommonLayout";
+import { Fill } from "Commons/Layouts/Fill";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
+import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer";
 
 import AddIcon from "@skbkontur/react-icons/Add";
 import MenuIcon from "@skbkontur/react-icons/Menu";

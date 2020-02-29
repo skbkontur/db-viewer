@@ -1,10 +1,12 @@
 import SearchIcon from "@skbkontur/react-icons/Search";
 import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
+import Checkbox from "@skbkontur/react-ui/Checkbox";
+import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { Checkbox, Input } from "ui";
-import { Fit, RowStack } from "ui/layout";
-import { capitalizeFirstLetter } from "utils";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { TextHighlight } from "Commons/TextHighlight";
+import { StringUtils } from "Commons/Utils/StringUtils";
 
 import cn from "./FieldSelector.less";
 
@@ -79,7 +81,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         return (
             <div className={cn("field")} key={fieldDefinition.name + fieldDefinition.caption}>
                 <Checkbox
-                    data-tid={capitalizeFirstLetter(fieldDefinition.name.replace(".", "_"))}
+                    data-tid={StringUtils.capitalizeFirstLetter(fieldDefinition.name.replace(".", "_"))}
                     checked={!hiddenFields.includes(fieldDefinition.name)}
                     onChange={(e, checked) => this.handleToogle(checked, fieldDefinition.name)}>
                     <div className={cn("content")}>

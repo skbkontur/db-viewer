@@ -6,7 +6,8 @@ import { ButtonLink } from "ui";
 import { CopyToClipboardToast } from "Commons/AllowCopyToClipboard";
 import cn from "Commons/ErrorHandling/ErrorHandlingContainer.less";
 
-import { Fit, RowStack } from "../../../local_modules/ui/layout";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 interface ErrorHandlingContainerModalState {
     showStack: boolean;

@@ -8,8 +8,9 @@ import Modal from "@skbkontur/react-ui/Modal";
 import Tooltip from "@skbkontur/react-ui/Tooltip";
 import _ from "lodash";
 import * as React from "react";
-import { Fill, Fit, RowStack } from "ui/layout";
-import { Spinner } from "Commons/Spinner/Spinner";
+import { Fill } from "Commons/Layouts/Fill";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { Condition } from "Domain/EDI/Api/AdminTools/DataTypes/Condition";
 import { SearchResult } from "Domain/EDI/Api/AdminTools/DataTypes/SearchResult";
 import { Object } from "Domain/EDI/Object";
@@ -21,6 +22,7 @@ import { FieldSelector } from "../FieldSelector/FieldSelector";
 import cn from "./BusinessObjectTableLayoutHeader.less";
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { FilterModal } from "./FilterModal";
+import { Spinner } from "./Spinner";
 
 interface BusinessObjectTableLayoutHeaderProps {
     query: BusinessObjectSearchQuery;

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { capitalizeFirstLetter } from "utils";
+import { StringUtils } from "Commons/Utils/StringUtils";
 
 import { Property } from "../../../../../AdminTools/Domain/BusinessObjects/Property";
 
@@ -86,7 +86,7 @@ export class PropertyMetaInformationExtensions {
         let typeObj: any | null | Property = null;
         if (arrOfTypes != null) {
             const fullPath = path
-                .map(capitalizeFirstLetter)
+                .map(StringUtils.capitalizeFirstLetter)
                 .join(".")
                 .replace(/[\d+]/g, "");
             typeObj = arrOfTypes.find(x => x.name === fullPath);

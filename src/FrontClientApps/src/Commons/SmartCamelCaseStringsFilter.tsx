@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { capitalizeFirstLetter } from "utils";
+import { StringUtils } from "Commons/Utils/StringUtils";
 
 interface FilterResult {
     source: string;
@@ -14,7 +14,7 @@ function notNullIdentity<T>(value: Nullable<T>): T {
 }
 
 export function checkWordByCase(target: string, query: string): boolean {
-    const queryStrings = capitalizeFirstLetter(query).match(/[A-Z,0-9]{1}[a-z]*/g);
+    const queryStrings = StringUtils.capitalizeFirstLetter(query).match(/[A-Z,0-9]{1}[a-z]*/g);
     const targetStrings = target.match(/[A-Z,0-9]{1}[a-z]*/g);
     if (queryStrings && targetStrings) {
         let queryStringIndex = 0;

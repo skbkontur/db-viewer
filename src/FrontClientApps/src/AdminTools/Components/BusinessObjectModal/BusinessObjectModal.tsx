@@ -1,13 +1,15 @@
 import { tooltip, ValidationContainer, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
+import Input from "@skbkontur/react-ui/Input";
+import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { RouterLink, Input } from "ui";
-import { Fit, RowStack } from "ui/layout";
+import { RouterLink } from "ui";
 import { Form, FormRow } from "Commons/Form/Form";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { StringUtils } from "Commons/Utils/StringUtils";
 
 import { validateBusinessObjectField } from "../Utils";
-import Modal from "@skbkontur/react-ui/Modal";
 
 interface BusinessObjectModalState {
     scopeId: string;

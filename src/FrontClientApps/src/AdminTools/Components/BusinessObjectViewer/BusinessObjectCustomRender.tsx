@@ -4,7 +4,9 @@ import UndoIcon from "@skbkontur/react-icons/Undo";
 import _ from "lodash";
 import * as React from "react";
 import { ButtonLink } from "ui";
-import { Fill, Fit, RowStack } from "ui/layout";
+import { Fill } from "Commons/Layouts/Fill";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 import { customRender, customRenderForEdit } from "./BusinessObjectItemCustomRender";
 

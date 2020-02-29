@@ -1,10 +1,12 @@
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import * as React from "react";
 import { ButtonLink } from "ui";
-import { ColumnStack, Fit, RowStack } from "ui/layout";
 import { AllowCopyToClipboard } from "Commons/AllowCopyToClipboard";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
-import { CommonLayout } from "Commons/Layouts";
+import { ColumnStack } from "Commons/Layouts/ColumnStack";
+import { CommonLayout } from "Commons/Layouts/CommonLayout";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { ApiError } from "Domain/ApiBase/ApiError";
 import { IBusinessObjectsApi } from "Domain/EDI/Api/AdminTools/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/EDI/Api/AdminTools/BusinessObjectsApiUtils";

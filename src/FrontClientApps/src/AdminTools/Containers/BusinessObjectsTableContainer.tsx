@@ -4,12 +4,13 @@ import { LocationDescriptor } from "history";
 import _ from "lodash";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { ColumnStack, Fit, RowStack } from "ui/layout";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
-import { CommonLayout } from "Commons/Layouts";
+import { ColumnStack } from "Commons/Layouts/ColumnStack";
+import { CommonLayout } from "Commons/Layouts/CommonLayout";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { PageNavigationList } from "Commons/PageNavigationList/PageNavigationList";
 import { queryStringMapping, QueryStringMapping } from "Commons/QueryStringMapping";
-import { delay } from "Commons/Utils/PromiseUtils";
 import { IBusinessObjectsApi } from "Domain/EDI/Api/AdminTools/BusinessObjectsApi";
 import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/EDI/Api/AdminTools/BusinessObjectsApiUtils";
 import { BusinessObject } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObject";
@@ -390,7 +391,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                     );
                     return;
                 }
-                await delay(500);
+                await new Promise(f => setTimeout(f, 500));
             }
         } finally {
             this.setState({ downloading: false });

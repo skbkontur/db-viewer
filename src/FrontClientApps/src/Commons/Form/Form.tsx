@@ -1,6 +1,9 @@
 import PropTypes from "prop-types";
 import * as React from "react";
-import { ColumnStack, Fit, Fixed, RowStack } from "ui/layout";
+import { ColumnStack } from "Commons/Layouts/ColumnStack";
+import { Fit } from "Commons/Layouts/Fit";
+import { Fixed } from "Commons/Layouts/Fixed";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 import cn from "./Form.less";
 
@@ -86,6 +89,7 @@ class FormRow extends React.Component<FormRowProps> {
             allowDefaultShrink,
         } = this.props;
         const { formSettings } = this.context;
+        // @ts-ignore
         const hasHangChar = React.Children.toArray(children).some(hasHangCharTrait);
 
         if (useAlignTopHack) {

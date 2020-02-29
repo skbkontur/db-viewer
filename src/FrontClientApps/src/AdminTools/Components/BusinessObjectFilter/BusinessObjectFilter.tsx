@@ -1,9 +1,12 @@
 import { tooltip, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
+import Checkbox from "@skbkontur/react-ui/Checkbox";
+import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { Checkbox, Input } from "ui";
-import { ColumnStack, Fit, RowStack } from "ui/layout";
 import { ticksToTimestamp, timestampToTicks } from "Commons/ConvertTimeUtil";
 import { Form, FormRow } from "Commons/Form/Form";
+import { ColumnStack } from "Commons/Layouts/ColumnStack";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { TimeUtils } from "Commons/TimeUtils";
 import { BusinessObjectFieldFilterOperator } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObjectFieldFilterOperator";
 import { Condition } from "Domain/EDI/Api/AdminTools/DataTypes/Condition";

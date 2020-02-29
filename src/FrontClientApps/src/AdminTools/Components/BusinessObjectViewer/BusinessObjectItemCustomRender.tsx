@@ -1,6 +1,8 @@
+import Checkbox from "@skbkontur/react-ui/Checkbox";
+import Input from "@skbkontur/react-ui/Input";
 import _ from "lodash";
 import * as React from "react";
-import { Checkbox, Input, RouterLink } from "ui";
+import { RouterLink } from "ui";
 import { FormattedNumberInput } from "Commons/FormattedNumberInput/FormattedNumberInput";
 
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";

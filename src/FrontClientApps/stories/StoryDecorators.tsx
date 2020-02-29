@@ -1,7 +1,7 @@
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import * as React from "react";
-import { RowStack } from "ui/layout";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 import cn from "./StoryDecorators.less";
 

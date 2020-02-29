@@ -1,5 +1,5 @@
 import * as React from "react";
-import { capitalizeFirstLetter } from "utils";
+import { StringUtils } from "Commons/Utils/StringUtils";
 import { BusinessObjectDescription } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObjectDescription";
 import { PropertyMetaInformationExtensions } from "Domain/EDI/Api/AdminTools/DataTypes/PropertyMetaInformationExtensions";
 import { UpdateBusinessObjectInfo } from "Domain/EDI/Api/AdminTools/DataTypes/UpdateBusinessObjectInfo";
@@ -27,7 +27,7 @@ export class BusinessObjectViewer extends React.Component<BusinessObjectViewerPr
             this.props.onChange({
                 value: serverValue,
                 path: path
-                    .map(capitalizeFirstLetter)
+                    .map(StringUtils.capitalizeFirstLetter)
                     .map(x => x.replace(/\[|\]/g, ""))
                     .join("."),
                 lastModificationDateTime: lastModificationDateTime,

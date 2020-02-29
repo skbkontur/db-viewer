@@ -3,7 +3,8 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { Fit, RowStack } from "ui/layout";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 import { Condition } from "Domain/EDI/Api/AdminTools/DataTypes/Condition";
 
 import { Property } from "../../Domain/BusinessObjects/Property";

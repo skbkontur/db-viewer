@@ -3,8 +3,8 @@ import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
 import * as React from "react";
 import { ButtonLink, RouterLink } from "ui";
-import { capitalizeFirstLetter } from "utils";
-import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer/ScrollableContainer";
+import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer";
+import { StringUtils } from "Commons/Utils/StringUtils";
 import { BusinessObject } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObject";
 import { Sort } from "Domain/EDI/Api/AdminTools/DataTypes/Sort";
 
@@ -126,7 +126,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
     }
 
     public renderTableHeader(item: Property, key: number): JSX.Element {
-        const name = capitalizeFirstLetter(item.name);
+        const name = StringUtils.capitalizeFirstLetter(item.name);
         const content = item.indexed ? (
             <ButtonLink
                 data-tid={`Header_${name}`}

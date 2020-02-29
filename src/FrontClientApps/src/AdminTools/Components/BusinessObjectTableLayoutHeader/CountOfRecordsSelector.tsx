@@ -1,7 +1,7 @@
-import * as React from "react";
-import { LinkDropdown } from "ui";
-
 import CellsEqualHeightIcon from "@skbkontur/react-icons/CellsEqualHeight";
+import * as React from "react";
+
+import { LinkDropdown } from "./LinkDropdown";
 
 interface CountOfRecordsSelectorProps {
     count: number;

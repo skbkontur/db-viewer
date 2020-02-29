@@ -1,7 +1,8 @@
 import Button from "@skbkontur/react-ui/Button";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { Fit, RowStack } from "ui/layout";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 interface ConfirmDeleteObjectModalProps {
     onDelete: () => void;

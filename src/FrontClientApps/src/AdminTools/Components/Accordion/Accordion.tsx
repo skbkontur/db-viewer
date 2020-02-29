@@ -3,8 +3,9 @@ import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import * as React from "react";
-import { Fill, Fit, RowStack } from "ui/layout";
-import { isTestingMode } from "ui/testing";
+import { Fill } from "Commons/Layouts/Fill";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 import cn from "./Accordion.less";
 
@@ -34,7 +35,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     public constructor(props: TaskAccordionProps) {
         super(props);
         const canCollapseSelf = props.title !== undefined;
-        const defaultCollapsedValue = isTestingMode() ? false : props.defaultCollapsed || false;
+        const defaultCollapsedValue = props.defaultCollapsed || false;
         const collapsed = canCollapseSelf && defaultCollapsedValue;
 
         if (props._internalForceCollapsed !== undefined) {

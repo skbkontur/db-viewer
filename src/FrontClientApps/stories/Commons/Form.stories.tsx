@@ -1,6 +1,6 @@
 import { action, storiesOf } from "@kadira/storybook";
+import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { Input } from "ui";
 import { Form, FormRow, FormSection } from "Commons/Form/Form";
 
 storiesOf(module)

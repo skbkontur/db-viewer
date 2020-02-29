@@ -1,5 +1,5 @@
+import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { Input } from "ui";
 
 import cn from "./FilteredInput.less";
 

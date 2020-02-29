@@ -1,6 +1,7 @@
 import { storiesOf } from "@kadira/storybook";
 import * as React from "react";
-import { Fit, RowStack } from "ui/layout";
+import { Fit } from "Commons/Layouts/Fit";
+import { RowStack } from "Commons/Layouts/RowStack";
 
 storiesOf(module).add("Default", () => (
     <RowStack baseline block gap={2}>

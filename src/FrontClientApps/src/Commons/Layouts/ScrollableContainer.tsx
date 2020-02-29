@@ -1,6 +1,5 @@
 import _ from "lodash";
 import * as React from "react";
-import { isTestingMode } from "ui/testing";
 
 import cn from "./ScrollableContainer.less";
 
@@ -155,7 +154,7 @@ export class ScrollableContainer extends React.Component<ScrollableContainerProp
             <div ref={el => (this.root = el)} className={cn("container", className)} style={style}>
                 <div className={cn("root", className)} style={style} ref={el => (this.container = el)}>
                     {children}
-                    {!isTestingMode() && (
+                    {
                         <div
                             style={{
                                 overflowX: "auto",
@@ -167,7 +166,7 @@ export class ScrollableContainer extends React.Component<ScrollableContainerProp
                             ref={el => (this.scrollbar = el)}>
                             <div ref={el => (this.scrollbarChild = el)} style={{ height: "1px" }} />
                         </div>
-                    )}
+                    }
                 </div>
             </div>
         );
