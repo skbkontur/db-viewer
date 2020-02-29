@@ -1,7 +1,8 @@
-import { action, storiesOf } from "@kadira/storybook";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { DatePicker } from "ui";
-import { TimeUtils } from "Commons/TimeUtils";
+import { DatePicker } from "Commons/DatePicker/DatePicker";
+import { TimeUtils } from "Commons/Utils/TimeUtils";
 
 import { WithState } from "../WithState";
 
@@ -11,7 +12,7 @@ function getInitialValue(value: Date): { value: Date } {
     };
 }
 
-storiesOf(module)
+storiesOf("DatePicker", module)
     .add("Default", () => (
         <WithState initial={getInitialValue(new Date())}>
             {(state, onChange) => (

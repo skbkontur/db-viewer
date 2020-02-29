@@ -34,7 +34,7 @@ namespace Kontur.DBViewer.SampleApi
                     {
                         SerializerSettings = new JsonSerializerSettings
                         {
-                            ContractResolver = new DefaultContractResolver(),
+                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
                             Converters = new JsonConverter[]
                             {
                                 new CqlObjectPropertyToStringConverter(),

@@ -1,15 +1,12 @@
 import { expect } from "chai";
 import { suite, test } from "mocha-typescript";
 import { queryStringMapping, QueryStringMapping } from "Commons/QueryStringMapping";
-import { BusinessObjectFieldFilterOperator } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObjectFilterSortOrder";
-import { Condition } from "Domain/EDI/Api/AdminTools/DataTypes/Condition";
-import { Sort } from "Domain/EDI/Api/AdminTools/DataTypes/Sort";
+import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
+import { Condition } from "Domain/Api/DataTypes/Condition";
+import { Sort } from "Domain/Api/DataTypes/Sort";
 
-import {
-    ConditionsMapper,
-    SortMapper,
-} from "../../src/AdminTools/Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
+import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
 
 interface BusinessObjectSearchQuery {
     conditions: Nullable<Condition[]>;

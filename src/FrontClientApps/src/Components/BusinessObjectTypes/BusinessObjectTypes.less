@@ -1,0 +1,30 @@
+@import '../../styles/variables.less';
+
+:local {
+    .root {
+        min-width: 800px;
+        column-count: 3; /* stylelint-disable-line */
+    }
+
+    .first-letter {
+        margin-top: 20px;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        font-weight: 600;
+        border-bottom: @table-cell-border;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .indexed {
+        vertical-align: super;
+        font-size: 9px;
+        line-height: 14px;
+    }
+
+    .muted-keyword {
+        color: @double-muted-text;
+    }
+}

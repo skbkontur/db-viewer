@@ -1,0 +1,46 @@
+@import '../../styles/variables.less';
+
+:local {
+    .root {
+        min-width: 500px;
+
+        .nothing-to-display {
+            color: @double-muted-text;
+            font-style: italic;
+        }
+
+        .field-list {
+            margin: @base-size * 2 0;
+            min-height: 40px;
+
+            .field {
+                padding-bottom: @base-size;
+                padding-right: @base-size * 2;
+                // стиль чтобы пофиксить багу https://github.com/skbkontur/retail-ui/issues/1332
+                line-height: 0;
+            }
+
+            .content {
+                max-width: 350px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    .select-all {
+        width: 170px;
+        display: inline-block;
+        background-color: @menu-panel-background;
+        color: @muted-text;
+        padding: @base-size @base-size * 2;
+        margin-left: @base-size * 2;
+        text-align: center;
+
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}

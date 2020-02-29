@@ -1,0 +1,33 @@
+@import '../../styles/variables.less';
+
+:local {
+    .table-wrapper {
+        white-space: nowrap;
+    }
+
+    .table {
+        display: inline-block;
+    }
+
+    .cell {
+        padding: 10px;
+        background-color: @primary-background;
+    }
+
+    .header-cell {
+        text-align: left;
+    }
+
+    .row {
+        border-bottom: @table-cell-border;
+    }
+
+    .table-header {
+        background-color: @primary-background;
+
+        .row {
+            border-bottom: @table-header-border;
+            background-color: @primary-background;
+        }
+    }
+}

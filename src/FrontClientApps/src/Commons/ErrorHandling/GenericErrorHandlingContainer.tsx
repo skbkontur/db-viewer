@@ -58,6 +58,7 @@ export class GenericErrorHandlingContainer extends React.Component<
     }
 
     public componentDidMount() {
+        // @ts-ignore
         this.oldOnunhandledrejection = window.onunhandledrejection;
         window.onunhandledrejection = (e: any, ...restArgs: any[]) => {
             if (this.oldOnunhandledrejection) {

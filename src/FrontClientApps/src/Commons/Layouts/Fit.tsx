@@ -10,7 +10,7 @@ interface FitProps {
     style?: any;
     title?: null | string;
     htlmFor?: null | string;
-    onClick?: (e: React.MouseEvent<any>) => mixed;
+    onClick?: (e: React.MouseEvent<any>) => any;
 }
 
 export function Fit({ tag, nextGap, className, children, ...rest }: FitProps): JSX.Element {

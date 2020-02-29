@@ -1,9 +1,9 @@
-import { storiesOf } from "@kadira/storybook";
+import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { Fit } from "Commons/Layouts/Fit";
 import { RowStack } from "Commons/Layouts/RowStack";
 
-storiesOf(module).add("Default", () => (
+storiesOf("UiLayout", module).add("Default", () => (
     <RowStack baseline block gap={2}>
         <Fit>
             <div style={{ border: "1px solid #888", padding: 5 }}>Test 1</div>

@@ -1,6 +1,7 @@
-import { action, storiesOf } from "@kadira/storybook";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { ButtonLink } from "ui";
+import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 import { CommonLayout } from "Commons/Layouts/CommonLayout";
 import { Fill } from "Commons/Layouts/Fill";
 import { Fit } from "Commons/Layouts/Fit";
@@ -33,7 +34,7 @@ function SpaceFiller(props: { width?: number | string; height?: number | string 
         </div>
     );
 }
-storiesOf(module)
+storiesOf("Layouts", module)
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>

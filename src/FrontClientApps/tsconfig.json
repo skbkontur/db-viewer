@@ -24,7 +24,6 @@
         "strictFunctionTypes": true,
         "lib": ["es2015", "dom", "esnext", "dom.iterable"],
         "paths": {
-            "@kadira/storybook": ["local_modules/@kadira/storybook.js"],
             "Domain/*": ["src/Domain/*"],
             "Commons/*": ["src/Commons/*"],
             "*": ["local_modules/*", "typings/*"],

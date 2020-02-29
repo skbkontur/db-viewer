@@ -39,7 +39,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator
         private static void GenerateEdiTypes()
         {
             var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "..",
-                "..", @"FrontClientApps\src\Domain\EDI");
+                "..", @"FrontClientApps\src\Domain\Api");
 
             var customTypeGenerator = new CustomTypeGenerator();
             var typeScriptCodeGenerator = new SkbKontur.TypeScript.ContractGenerator.TypeScriptGenerator(

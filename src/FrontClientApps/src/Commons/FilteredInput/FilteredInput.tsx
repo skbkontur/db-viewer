@@ -77,7 +77,7 @@ export class FilteredInput<T> extends React.Component<FilteredInputProps<T>, Fil
         }
     }
 
-    public handleInputChange(event: SyntheticEvent<any>, value: string) {
+    public handleInputChange(event: React.SyntheticEvent<any>, value: string) {
         const { onChange, filterValue } = this.props;
         const filteredValue = filterValue(value);
         if (filteredValue !== null) {
@@ -173,7 +173,7 @@ export class FilteredInput<T> extends React.Component<FilteredInputProps<T>, Fil
         }
     }
 
-    public handleBlur(event: SyntheticEvent<any>) {
+    public handleBlur(event: React.SyntheticEvent<any>) {
         const displayValueForEdit = this.props.valueForEdit(this.props.value);
         const nextDisplayValue = this.props.valueForView(this.props.value);
         this.setState({

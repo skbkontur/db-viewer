@@ -1,7 +1,7 @@
 import _ from "lodash";
 import moment from "moment";
 
-import { DateTimeRange } from "Domain/EDI/DataTypes/DateTimeRange";
+import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
 
 export type QueryObject = any;
 

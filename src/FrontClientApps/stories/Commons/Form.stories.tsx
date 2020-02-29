@@ -1,9 +1,10 @@
-import { action, storiesOf } from "@kadira/storybook";
 import Input from "@skbkontur/react-ui/Input";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { Form, FormRow, FormSection } from "Commons/Form/Form";
 
-storiesOf(module)
+storiesOf("Form", module)
     .add("SimpleForm", () => (
         <Form>
             <FormRow caption="Caption 1">

@@ -1,6 +1,6 @@
-import { Lens, pathLens, PropertyPicker } from "lens";
+import { Lens, pathLens, PropertyPicker } from "Commons/lens";
 
-import { DateTimeRange } from "Domain/EDI/DataTypes/DateTimeRange";
+import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
 
 import {
     BooleanMapper,

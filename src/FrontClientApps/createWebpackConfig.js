@@ -30,7 +30,6 @@ module.exports = (dir, env, options) => {
         context: __dirname,
         entry: {
             "commons-entry": [
-                "./src/Commons/DisableNativePromises.tsx",
                 "core-js",
                 "regenerator-runtime",
                 require.resolve("core-js/features/array/flat.js"),
@@ -194,6 +193,9 @@ module.exports = (dir, env, options) => {
                 "/IncidentsProxy/**": bypassNetSuiteApi("/IncidentsProxy/**"),
                 "/internal-api/**": {
                     target: "http://localhost.dev.kontur:2233/",
+                },
+                "/business-objects/**": {
+                    target: "http://localhost:5555/",
                 },
                 "*": {
                     secure: false,

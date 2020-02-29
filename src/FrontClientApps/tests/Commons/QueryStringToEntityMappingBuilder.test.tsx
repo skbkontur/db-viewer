@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { DateTimeRange } from "Domain/EDI/DataTypes/DateTimeRange";
+import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
 
 import { queryStringMapping, QueryStringMapping, StringSimpleExpression } from "../../src/Commons/QueryStringMapping";
 

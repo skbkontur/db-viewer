@@ -1,9 +1,9 @@
 import * as React from "react";
 import ReactDom from "react-dom";
-import "ui/styles/reset.less";
-import "ui/styles/typography.less";
-import { WindowUtils } from "Commons/DomUtils";
 
-import { RootEntryPoint } from "./RootEntryPoint";
+import "./styles/reset.less";
+import "./styles/typography.less";
 
-ReactDom.render(<RootEntryPoint />, WindowUtils.getElementByIdToRenderApp("content"));
+import { AdminToolsEntryPoint } from "./AdminToolsEntryPoint";
+
+ReactDom.render(<AdminToolsEntryPoint />, document.getElementById("content"));

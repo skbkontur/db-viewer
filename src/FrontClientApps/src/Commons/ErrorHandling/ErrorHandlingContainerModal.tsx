@@ -2,8 +2,8 @@ import CopyIcon from "@skbkontur/react-icons/Copy";
 import Button from "@skbkontur/react-ui/Button";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { ButtonLink } from "ui";
 import { CopyToClipboardToast } from "Commons/AllowCopyToClipboard";
+import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 import cn from "Commons/ErrorHandling/ErrorHandlingContainer.less";
 
 import { Fit } from "Commons/Layouts/Fit";

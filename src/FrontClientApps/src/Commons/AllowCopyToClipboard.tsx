@@ -6,7 +6,7 @@ import Link from "@skbkontur/react-ui/Link";
 import Toast from "@skbkontur/react-ui/Toast";
 
 export class CopyToClipboardToast {
-    public static timeout: null | TimeoutID = null;
+    public static timeout: null | NodeJS.Timer = null;
 
     public static copyText(value: string) {
         if (this.timeout) {
@@ -22,7 +22,7 @@ export class CopyToClipboardToast {
 }
 
 export class AllowCopyToClipboard extends React.Component<{ children?: any }> {
-    public timeout: Nullable<TimeoutID> = null;
+    public timeout: Nullable<NodeJS.Timer> = null;
     public children: null | HTMLSpanElement = null;
 
     public handleCopy() {

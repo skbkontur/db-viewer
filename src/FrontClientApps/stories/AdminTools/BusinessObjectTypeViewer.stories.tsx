@@ -1,17 +1,20 @@
-import { action, storiesOf } from "@kadira/storybook";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import React from "react";
 
-import { BusinessObjectViewer } from "../../src/AdminTools/Components/BusinessObjectViewer/BusinessObjectViewer";
+import { BusinessObjectViewer } from "../../src/Components/BusinessObjectViewer/BusinessObjectViewer";
 
 import Ordrsp2BusinessObject from "./Responses/Ordrsp2BusinessObject.json";
 import Ordrsp2MetaData from "./Responses/Ordrsp2MetaData.json";
 
-storiesOf(module)
+storiesOf("BusinessObjectTypeViewer", module)
     .add("Ordrsp2", () => (
         <BusinessObjectViewer
             objectInfo={Ordrsp2BusinessObject}
             objectMeta={Ordrsp2MetaData}
-            onChange={action("change")}
+            onChange={async () => {
+                action("change");
+            }}
             allowEdit
         />
     ))
@@ -19,7 +22,9 @@ storiesOf(module)
         <BusinessObjectViewer
             objectInfo={Ordrsp2BusinessObject}
             objectMeta={Ordrsp2MetaData}
-            onChange={action("change")}
+            onChange={async () => {
+                action("change");
+            }}
             allowEdit={false}
         />
     ));

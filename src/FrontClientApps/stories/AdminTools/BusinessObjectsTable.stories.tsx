@@ -1,16 +1,19 @@
-import { storiesOf } from "@kadira/storybook";
+import { storiesOf } from "@storybook/react";
 import React from "react";
 import StoryRouter from "storybook-react-router";
-import { BusinessObjectFilterSortOrder } from "Domain/EDI/Api/AdminTools/DataTypes/BusinessObjectFilterSortOrder";
+import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 
-import { BusinessObjectsTable } from "../../src/AdminTools/Components/BusinessObjectsTable/BusinessObjectsTable";
-import { emptyMethod } from "../StoryHelpers";
+import { BusinessObjectsTable } from "../../src/Components/BusinessObjectsTable/BusinessObjectsTable";
 
 async function deleteObject(_index: number): Promise<void> {
     // Ничего не делаем
 }
 
-storiesOf(module)
+export function emptyMethod() {
+    // fake method
+}
+
+storiesOf("BusinessObjectsTable", module)
     .addDecorator(StoryRouter())
     .add("Default", () => (
         <BusinessObjectsTable

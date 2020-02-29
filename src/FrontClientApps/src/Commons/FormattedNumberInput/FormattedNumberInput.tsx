@@ -1,4 +1,4 @@
-import { numeral } from "edi-numeral";
+import { numeral } from "Commons/edi-numeral";
 import * as React from "react";
 
 import { FilteredInput, FilterValueResult } from "../FilteredInput/FilteredInput";

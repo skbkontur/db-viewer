@@ -1,4 +1,4 @@
-import { storiesOf } from "@kadira/storybook";
+import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import StoryRouter from "storybook-react-router";
 import { PageNavigationList } from "Commons/PageNavigationList/PageNavigationList";
@@ -7,7 +7,7 @@ const commonProps = {
     createHrefToPage: (x: number) => `/page/${x}`,
 };
 
-storiesOf(module)
+storiesOf("PageNavigationList", module)
     .addDecorator(StoryRouter())
     .add("Default", () => <PageNavigationList current={0} count={1} {...commonProps} />)
     .add("With option [0, 10]", () => <PageNavigationList current={0} count={10} {...commonProps} />)

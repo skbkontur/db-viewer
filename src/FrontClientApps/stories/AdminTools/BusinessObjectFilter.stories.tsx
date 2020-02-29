@@ -1,12 +1,13 @@
-import { action, storiesOf } from "@kadira/storybook";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import React from "react";
 
-import { BusinessObjectFilter } from "../../src/AdminTools/Components/BusinessObjectFilter/BusinessObjectFilter";
+import { BusinessObjectFilter } from "../../src/Components/BusinessObjectFilter/BusinessObjectFilter";
 import { ValidationContainerWithSubmitButton } from "../StoryDecorators";
 
 import Party2Metadata from "./Responses/Party2Metadata.json";
 
-storiesOf(module)
+storiesOf("BusinessObjectFilter", module)
     .addDecorator(ValidationContainerWithSubmitButton())
     .add("Default", () => (
         <BusinessObjectFilter

@@ -1,4 +1,4 @@
-import { storiesOf } from "@kadira/storybook";
+import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { FormattedNumberInput } from "Commons/FormattedNumberInput/FormattedNumberInput";
 
@@ -26,7 +26,7 @@ class FormattedNumberInputContainer extends React.Component<
     }
 }
 
-storiesOf(module)
+storiesOf("FormattedNumberInput", module)
     .add("Default", () => <FormattedNumberInputContainer />)
     .add("Format 0.000", () => <FormattedNumberInputContainer editFormat="0.000" />)
     .add("Format 0 0.000", () => <FormattedNumberInputContainer viewFormat="0,0.000" editFormat="0.000" />)

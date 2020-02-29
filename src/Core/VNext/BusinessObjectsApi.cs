@@ -1,17 +1,31 @@
 ﻿using System;
+using System.Linq;
 using Kontur.DBViewer.Core.Attributes;
+using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.Core.VNext.DataTypes;
+using Kontur.DBViewer.Core.VNext.Helpers;
 
 namespace Kontur.DBViewer.Core.VNext
 {
     public class BusinessObjectsApi
     {
+        public BusinessObjectsApi(ISchemaRegistry schemaRegistry)
+        {
+            this.schemaRegistry = schemaRegistry;
+        }
+
         [HttpGet]
         [Route("names")]
         [NotNull, ItemNotNull]
         public BusinessObjectDescription[] GetBusinessObjectNames()
         {
-            throw new NotImplementedException();
+            return schemaRegistry.GetAllSchemas().SelectMany(x => x.Types)
+                .Select(x => new BusinessObjectDescription
+                {
+                    Identifier = x.Type.Name,
+                    StorageType = BusinessObjectStorageType.SingleObjectPerRow
+                })
+                .ToArray();
         }
 
         [NotNull]
@@ -23,7 +37,10 @@ namespace Kontur.DBViewer.Core.VNext
             /* [FromBody] */ int offset,
             /* [FromBody] */ int count)
         {
+
             throw new NotImplementedException();
+            // return schemaRegistry.GetConnector(businessObjectIdentifier)
+                // .Search(filter.Filters, filter.Sorts, offset, count).GetAwaiter().GetResult();
         }
 
         [NotNull]
@@ -34,6 +51,8 @@ namespace Kontur.DBViewer.Core.VNext
             [NotNull] [FromBody] BusinessObjectSearchRequest query)
         {
             throw new NotImplementedException();
+            // return schemaRegistry.GetConnector(typeIdentifier).Count(model.Filters, 10000)
+                // .GetAwaiter().GetResult();
         }
 
         [HttpPost]
@@ -116,7 +135,19 @@ namespace Kontur.DBViewer.Core.VNext
         [Route("{businessObjectIdentifier}/meta")]
         public BusinessObjectDescription GetBusinessObjectMeta([NotNull] string businessObjectIdentifier)
         {
-            throw new NotImplementedException();
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            return new BusinessObjectDescription
+            {
+                Identifier = businessObjectIdentifier,
+                StorageType = BusinessObjectStorageType.SingleObjectPerRow,
+                MySqlTableName = "kek",
+                TypeMetaInformation =
+                    PropertyHelpers.BuildTypeMetaInformation(schema.Types
+                        .Single(x => x.Type.Name == businessObjectIdentifier).Type),
+            };
         }
+
+
+        private readonly ISchemaRegistry schemaRegistry;
     }
 }
