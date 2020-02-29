@@ -2,7 +2,7 @@ import { LocationDescriptor } from "history";
 import * as React from "react";
 import { CommonLayout } from "Commons/Layouts";
 
-import SorryImage from "../../../RemoteTaskQueueMonitoring/components/TaskNotFoundPage/Sorry.png";
+import SorryImage from "./Sorry.png";
 
 interface BusinessObjectNotFoundPageProps {
     parentLocation: LocationDescriptor;

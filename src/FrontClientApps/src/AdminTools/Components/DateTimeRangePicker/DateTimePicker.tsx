@@ -10,7 +10,7 @@ import { Time, TimeZone } from "Domain/EDI/DataTypes/Time";
 
 import { TimePicker } from "./TimePicker";
 
-import cn from "./DateTimeRangePicker.less";
+import cn from "./DateTimePicker.less";
 
 interface DateTimePickerProps {
     error?: boolean;

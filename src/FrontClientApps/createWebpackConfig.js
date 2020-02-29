@@ -33,7 +33,6 @@ module.exports = (dir, env, options) => {
                 "./src/Commons/DisableNativePromises.tsx",
                 "core-js",
                 "regenerator-runtime",
-                "./local_modules/ui/metrics/init.ts",
                 require.resolve("core-js/features/array/flat.js"),
                 "whatwg-fetch",
                 "./react-selenium-testing-config.js",
@@ -41,20 +40,7 @@ module.exports = (dir, env, options) => {
                 "moment",
                 "moment/locale/ru",
             ],
-            "supplier-web": "./src/SupplierWeb/index",
-            "legacy-price-list-delivery-points": "./src/PriceLists/index",
-            createPriceLightbox: "./src/BuyerSelectLightbox/components/index",
-            "legacy-admin-toolbar": "./src/ServiceHeader/legacy-admin-toolbar",
-            "legacy-edi-topbar": "./src/ServiceHeader/legacy-edi-topbar",
-            "legacy-footer": "./src/ServiceHeader/legacy-footer",
-            "legacy-edi-navigation": "./src/ServiceHeader/legacy-edi-navigation",
             root: "./src/index",
-            "legacy-help-links": "./src/SupplierWeb/legacy-help-links",
-            "legacy-amendment-requested-tooltip": "./src/SupplierWeb/legacy-amendment-requested-tooltip",
-            "legacy-limited-error-list": "./src/SupplierWeb/legacy-limited-error-list",
-            "draft-invoic-reset-package-level-button": "./src/SupplierWeb/draft-invoic-reset-package-level-button",
-            "certificates-list": "./src/SupplierWeb/certificates-list",
-			"legacy-side-menu-banner": "./src/SupplierWeb/components/SideMenuBanner/legacy-side-menu-banner",
         },
         output: {
             path: path.resolve(dir, "dist"),
@@ -96,6 +82,25 @@ module.exports = (dir, env, options) => {
                                 "postcss-loader",
                                 "less-loader",
                             ],
+                        },
+                    ],
+                },
+                {
+                    test: /\.(woff|woff2|eot|ttf)$/,
+                    include: /react-ui/,
+                    exclude: /react-ui(\\|\/)node_modules/,
+                    use: "file-loader",
+                },
+                {
+                    test: /\.(svg|gif|png)$/,
+                    include: /react-ui/,
+                    exclude: /react-ui(\\|\/)node_modules/,
+                    use: [
+                        {
+                            loader: "url-loader",
+                            options: {
+                                limit: 32768,
+                            },
                         },
                     ],
                 },
@@ -173,10 +178,6 @@ module.exports = (dir, env, options) => {
                     ignore: ["webpack-vendor-assets.json", "vendor-manifest.json"],
                 }
             ),
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require("./prebuild/" + NODE_ENV + "/vendor-manifest.json"),
-            }),
             new webpack.DefinePlugin({
                 "process.env.API": JSON.stringify(API_MODE),
                 "process.env.enableReactTesting": JSON.stringify(TEST || DEV),

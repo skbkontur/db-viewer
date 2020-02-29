@@ -262,19 +262,6 @@ storiesOf(module)
             </CommonLayout>
         </div>
     ))
-    .add("SideMenu/SmallContent", () => (
-        <div style={{ height: 300 }}>
-            <CommonLayout.WithSideMenu>
-                <CommonLayout.WithSideMenu.Menu>Some menu content</CommonLayout.WithSideMenu.Menu>
-                <CommonLayout.WithSideMenu.Content>
-                    <CommonLayout.Header title="Заголовок раздела" />
-                    <CommonLayout.Content>
-                        <SpaceFiller height="100px" />
-                    </CommonLayout.Content>
-                </CommonLayout.WithSideMenu.Content>
-            </CommonLayout.WithSideMenu>
-        </div>
-    ))
     .add("Большой контент", () => (
         <div style={{ maxWidth: "600px" }}>
             <ScrollableContainer>

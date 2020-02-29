@@ -5,7 +5,6 @@ import { Loader, RouterLink, Sticky } from "ui";
 import { Fill, Fit, RowStack } from "ui/layout";
 
 import cn from "./Layouts.less";
-import { SideMenu } from "./SideMenu/SideMenu";
 
 interface CommonLayoutProps {
     topRightTools?: Nullable<JSX.Element> | string;
@@ -74,8 +73,6 @@ interface CommonLayoutTabbedHeaderProps {
 }
 
 export class CommonLayout extends React.Component<CommonLayoutProps> {
-    public static WithSideMenu = SideMenu;
-
     public static Content = function Content({
         children,
         paddingInUnits,
