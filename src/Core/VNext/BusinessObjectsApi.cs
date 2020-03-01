@@ -2,7 +2,9 @@
 using System.Linq;
 using Kontur.DBViewer.Core.Attributes;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Core.VNext.DataTypes;
 using Kontur.DBViewer.Core.VNext.Helpers;
 using Sort = Kontur.DBViewer.Core.DTO.Sort;
@@ -92,35 +94,24 @@ namespace Kontur.DBViewer.Core.VNext
         }
 
         [NotNull]
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
-        public object GetBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
-            [NotNull] string id)
+        [HttpPost]
+        [Route("{businessObjectIdentifier}")]
+        public object GetBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] [FromBody] BusinessObjectSearchRequest query)
         {
-            return schemaRegistry.GetConnector(businessObjectIdentifier).Read(new Filter[0]).GetAwaiter().GetResult();
-        }
-
-        [NotNull]
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}/{arrayIndex}")]
-        public object GetBusinessArrayObject([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
-            [NotNull] string id, [NotNull] string arrayIndex)
-        {
-            throw new NotImplementedException();
+            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var result = schemaRegistry.GetConnector(businessObjectIdentifier).Read(query.GetFilters()).GetAwaiter()
+                .GetResult();
+            var typeInfo = TypeInfoExtractor.Extract(result, type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+            var obj = ObjectsConverter.StoredToApi(typeInfo, type, result, schema.CustomPropertyConfigurationProvider);
+            return obj;
         }
 
         [HttpDelete]
         [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
         public void DeleteBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
             [NotNull] string id)
-        {
-            throw new NotImplementedException();
-        }
-
-        [HttpDelete]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}/{arrayIndex}")]
-        public void DeleteBusinessArrayObject([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
-            [NotNull] string id, [NotNull] string arrayIndex)
         {
             throw new NotImplementedException();
         }
@@ -133,28 +124,31 @@ namespace Kontur.DBViewer.Core.VNext
             throw new NotImplementedException();
         }
 
-        [HttpPost]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}/{arrayIndex}")]
-        public void UpdateBusinessArrayObject([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
-            [NotNull] string id, [NotNull] string arrayIndex, [NotNull] [FromBody] UpdateBusinessObjectInfo updateInfo)
-        {
-            throw new NotImplementedException();
-        }
-
         [NotNull]
         [HttpGet]
         [Route("{businessObjectIdentifier}/meta")]
         public BusinessObjectDescription GetBusinessObjectMeta([NotNull] string businessObjectIdentifier)
         {
+            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+
+
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type);
+
+            if (typeInfo is ClassTypeInfo classTypeInfo)
+            {
+                foreach (var e in classTypeInfo.Properties)
+                    typeMeta.Properties.Single(x => x.Name == e.Description.Name).Indexed = e.Description.IsSearchable;
+            }
+
             return new BusinessObjectDescription
             {
                 Identifier = businessObjectIdentifier,
                 StorageType = BusinessObjectStorageType.SingleObjectPerRow,
                 MySqlTableName = "kek",
-                TypeMetaInformation =
-                    PropertyHelpers.BuildTypeMetaInformation(schema.Types
-                        .Single(x => x.Type.Name == businessObjectIdentifier).Type),
+                TypeMetaInformation = typeMeta,
             };
         }
 

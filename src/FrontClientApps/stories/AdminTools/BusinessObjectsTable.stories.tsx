@@ -23,7 +23,7 @@ storiesOf("BusinessObjectsTable", module)
                 { name: "boxId", type: "String", indexed: false },
                 { name: "lastEditedTime", type: "String", indexed: true },
             ]}
-            onDetailsClick={({ scopeId, id }) => `${scopeId}/${id}`}
+            onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}
             onDeleteClick={deleteObject}
             currentSort={{ path: "BoxId", sortOrder: BusinessObjectFilterSortOrder.Descending }}
@@ -38,7 +38,7 @@ storiesOf("BusinessObjectsTable", module)
                 { name: "boxId", type: "String", indexed: true },
                 { name: "lastEditedTime", type: "String", indexed: false },
             ]}
-            onDetailsClick={({ scopeId, id }) => `${scopeId}/${id}`}
+            onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}
             onDeleteClick={deleteObject}
             currentSort={{ path: "BoxId", sortOrder: BusinessObjectFilterSortOrder.Descending }}

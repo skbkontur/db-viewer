@@ -59,19 +59,11 @@ namespace Kontur.DBViewer.SampleApi.Controllers
             return impl.DownloadBusinessObjects(businessObjectIdentifier, exportationId);
         }
 
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
-        public object GetBusinessObjects(string businessObjectIdentifier, string scopeId, string id)
+        [HttpPost]
+        [Route("{businessObjectIdentifier}/details")]
+        public object GetBusinessObjects(string businessObjectIdentifier, [FromBody] BusinessObjectSearchRequest query)
         {
-            return impl.GetBusinessObjects(businessObjectIdentifier, scopeId, id);
-        }
-
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}/{arrayIndex}")]
-        public object GetBusinessArrayObject(string businessObjectIdentifier, string scopeId, string id,
-            string arrayIndex)
-        {
-            return impl.GetBusinessArrayObject(businessObjectIdentifier, scopeId, id, arrayIndex);
+            return impl.GetBusinessObjects(businessObjectIdentifier, query);
         }
 
         [HttpDelete]
@@ -81,28 +73,12 @@ namespace Kontur.DBViewer.SampleApi.Controllers
             impl.DeleteBusinessObjects(businessObjectIdentifier, scopeId, id);
         }
 
-        [HttpDelete]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}/{arrayIndex}")]
-        public void DeleteBusinessArrayObject(string businessObjectIdentifier, string scopeId, string id,
-            string arrayIndex)
-        {
-            impl.DeleteBusinessArrayObject(businessObjectIdentifier, scopeId, id, arrayIndex);
-        }
-
         [HttpPost]
         [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
         public void UpdateBusinessObjects(string businessObjectIdentifier, string scopeId, string id,
             [FromBody] UpdateBusinessObjectInfo updateInfo)
         {
             impl.UpdateBusinessObjects(businessObjectIdentifier, scopeId, id, updateInfo);
-        }
-
-        [HttpPost]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}/{arrayIndex}")]
-        public void UpdateBusinessArrayObject(string businessObjectIdentifier, string scopeId,
-            string id, string arrayIndex, [FromBody] UpdateBusinessObjectInfo updateInfo)
-        {
-            impl.UpdateBusinessArrayObject(businessObjectIdentifier, scopeId, id, arrayIndex, updateInfo);
         }
 
         [HttpGet]

@@ -6,8 +6,8 @@ import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer";
 import { RouterLink } from "Commons/RouterLink/RouterLink";
 import { StringUtils } from "Commons/Utils/StringUtils";
-import { BusinessObject } from "Domain/Api/DataTypes/BusinessObject";
 import { Sort } from "Domain/Api/DataTypes/Sort";
+import { Object } from "Domain/Api/Object";
 import { Property } from "Domain/BusinessObjects/Property";
 
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
@@ -17,10 +17,10 @@ import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDel
 import cn from "./BusinessObjectsTable.less";
 
 interface BusinessObjectsTableProps {
-    items: null | undefined | BusinessObject[];
+    items: null | undefined | Object[];
     properties: Property[];
     onChangeSortClick: (name: string) => void;
-    onDetailsClick: (item: BusinessObject) => string;
+    onDetailsClick: (item: Object) => string;
     onDeleteClick: (index: number) => Promise<void>;
     currentSort: Nullable<Sort>;
     allowDelete: boolean;
@@ -140,7 +140,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
         );
     }
 
-    public renderControls(item: BusinessObject, index: number): JSX.Element[] {
+    public renderControls(item: Object, index: number): JSX.Element[] {
         const arr: JSX.Element[] = [];
         let key = 0;
         let disabled = true;

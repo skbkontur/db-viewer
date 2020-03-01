@@ -10,6 +10,13 @@ export class StringUtils {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    public static lowerFirstLetter(str?: string): string {
+        if (str == null || str.length === 0) {
+            return "";
+        }
+        return str.charAt(0).toLowerCase() + str.slice(1);
+    }
+
     public static checkWordByCase(target: string, query: string): boolean {
         const queryStrings = StringUtils.capitalizeFirstLetter(query).match(/[A-Z,0-9]{1}[a-z]*/g);
         const targetStrings = target.match(/[A-Z,0-9]{1}[a-z]*/g);

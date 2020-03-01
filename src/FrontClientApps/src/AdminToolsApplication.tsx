@@ -25,13 +25,9 @@ export function AdminToolsApplication({ match }: RouteComponentProps): JSX.Eleme
                 )}
             />
             <Route
-                path={`${match.url}/BusinessObjects/:objectId/:scopeId/:id`}
-                render={({ match: { params } }) => (
-                    <BusinessObjectContainer
-                        parentObjectId={params.objectId || ""}
-                        objectId={params.id || ""}
-                        scopeId={params.scopeId || ""}
-                    />
+                path={`${match.url}/BusinessObjects/:objectId/details`}
+                render={({ location, match: { params } }) => (
+                    <BusinessObjectContainer objectId={params.objectId || ""} objectQuery={location.search || ""} />
                 )}
             />
         </Switch>

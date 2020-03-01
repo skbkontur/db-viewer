@@ -1,4 +1,5 @@
 import TrashIcon from "@skbkontur/react-icons/Trash";
+import qs from "qs";
 import * as React from "react";
 import { AllowCopyToClipboard } from "Commons/AllowCopyToClipboard";
 import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
@@ -10,6 +11,8 @@ import { RowStack } from "Commons/Layouts/RowStack";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
+import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectSearchRequest } from "Domain/Api/DataTypes/BusinessObjectSearchRequest";
 import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
 import { UpdateBusinessObjectInfo } from "Domain/Api/DataTypes/UpdateBusinessObjectInfo";
 import { ApiError } from "Domain/ApiBase/ApiError";
@@ -19,9 +22,8 @@ import { BusinessObjectViewer } from "../Components/BusinessObjectViewer/Busines
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 
 interface BusinessObjectContainerProps {
-    parentObjectId: string;
     objectId: string;
-    scopeId: string;
+    objectQuery: string;
     businessObjectsApi: IBusinessObjectsApi;
 }
 
@@ -50,22 +52,18 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 
     public componentDidUpdate(prevProps: BusinessObjectContainerProps) {
-        const { parentObjectId, objectId, scopeId } = this.props;
-        const shouldUpdate =
-            parentObjectId !== prevProps.parentObjectId ||
-            objectId !== prevProps.objectId ||
-            scopeId !== prevProps.scopeId;
-        if (shouldUpdate) {
+        const { objectId, objectQuery } = this.props;
+        if (objectId !== prevProps.objectId || objectQuery !== prevProps.objectQuery) {
             this.load();
         }
     }
 
     public async load(): Promise<void> {
-        const { businessObjectsApi, parentObjectId } = this.props;
+        const { businessObjectsApi, objectId } = this.props;
         this.setState({ loading: true });
         try {
             const objectInfo = await this.loadObject();
-            const objectMeta = await businessObjectsApi.getBusinessObjectMeta(parentObjectId);
+            const objectMeta = await businessObjectsApi.getBusinessObjectMeta(objectId);
             this.setState({
                 objectInfo: objectInfo,
                 objectMeta: objectMeta,
@@ -76,9 +74,17 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 
     public async loadObject(): Promise<Nullable<{}>> {
-        const { businessObjectsApi, parentObjectId, scopeId, objectId } = this.props;
+        const { businessObjectsApi, objectId, objectQuery } = this.props;
+        const query = qs.parse(objectQuery.replace(/^\?/, ""));
+        const searchQuery: BusinessObjectSearchRequest = {
+            conditions: Object.keys(query).map(x => ({
+                path: x,
+                value: query[x],
+                operator: BusinessObjectFieldFilterOperator.Equals,
+            })),
+        };
         try {
-            return await businessObjectsApi.getBusinessObjects(parentObjectId, scopeId, objectId);
+            return await businessObjectsApi.getBusinessObjects(objectId, searchQuery);
         } catch (e) {
             if (e instanceof ApiError && e.statusCode === 404) {
                 this.setState({
@@ -94,12 +100,12 @@ class BusinessObjectContainerInternal extends React.Component<
     public async handleChange(value: UpdateBusinessObjectInfo): Promise<void> {
         const { objectMeta } = this.state;
         if (objectMeta != null) {
-            await this.props.businessObjectsApi.updateBusinessObjects(
-                objectMeta.identifier,
-                this.props.scopeId,
-                this.props.objectId,
-                value
-            );
+            // await this.props.businessObjectsApi.updateBusinessObjects(
+            //     objectMeta.identifier,
+            //     this.props.scopeId,
+            //     this.props.objectId,
+            //     value
+            // );
         }
         const objectInfo = await this.loadObject();
         this.setState({
@@ -109,15 +115,15 @@ class BusinessObjectContainerInternal extends React.Component<
 
     public async handleDelete(): Promise<void> {
         const { objectMeta } = this.state;
-        const { businessObjectsApi } = this.props;
+        // const { businessObjectsApi } = this.props;
         if (objectMeta != null) {
             if (objectMeta.storageType === BusinessObjectStorageType.SingleObjectPerRow) {
-                await businessObjectsApi.deleteBusinessObjects(
-                    objectMeta.identifier,
-                    this.props.scopeId,
-                    this.props.objectId
-                );
-                window.location.href = `/AdminTools/BusinessObjects/${this.props.parentObjectId}`;
+                // await businessObjectsApi.deleteBusinessObjects(
+                //     objectMeta.identifier,
+                //     this.props.scopeId,
+                //     this.props.objectId
+                // );
+                window.location.href = `/AdminTools/BusinessObjects/${this.props.objectId}`;
                 return;
             }
         }
@@ -141,13 +147,14 @@ class BusinessObjectContainerInternal extends React.Component<
     };
 
     public render(): JSX.Element {
-        const { parentObjectId, objectId, scopeId } = this.props;
+        const { objectId } = this.props;
+        const scopeId = "scopeId";
         const { objectInfo, objectMeta, loading } = this.state;
         const allowEdit = true;
         if (this.state.objectNotFound) {
             return (
                 <BusinessObjectNotFoundPage
-                    parentLocation={{ pathname: "/AdminTools/BusinessObjects" + `/${parentObjectId}` }}
+                    parentLocation={{ pathname: "/AdminTools/BusinessObjects" + `/${objectId}` }}
                 />
             );
         }
@@ -155,13 +162,13 @@ class BusinessObjectContainerInternal extends React.Component<
             <CommonLayout>
                 <ErrorHandlingContainer />
                 <CommonLayout.GoBack
-                    to={{ pathname: "/AdminTools/BusinessObjects" + `/${parentObjectId}` }}
+                    to={{ pathname: "/AdminTools/BusinessObjects" + `/${objectId}` }}
                     data-tid="GoBack">
                     Вернуться к списку бизнес объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.ContentLoader active={loading}>
                     <CommonLayout.GreyLineHeader
-                        title={parentObjectId}
+                        title={objectId}
                         tools={
                             <div style={{ textAlign: "right" }}>
                                 {allowEdit && (

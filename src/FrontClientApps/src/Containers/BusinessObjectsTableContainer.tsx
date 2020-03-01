@@ -2,6 +2,7 @@ import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
 import { LocationDescriptor } from "history";
 import _ from "lodash";
+import qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
@@ -11,9 +12,9 @@ import { Fit } from "Commons/Layouts/Fit";
 import { RowStack } from "Commons/Layouts/RowStack";
 import { PageNavigationList } from "Commons/PageNavigationList/PageNavigationList";
 import { queryStringMapping, QueryStringMapping } from "Commons/QueryStringMapping";
+import { StringUtils } from "Commons/Utils/StringUtils";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
-import { BusinessObject } from "Domain/Api/DataTypes/BusinessObject";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
@@ -36,7 +37,7 @@ interface ObjectTableProps extends RouteComponentProps {
 }
 
 interface ObjectTableState {
-    objects: Nullable<SearchResult<BusinessObject>>;
+    objects: Nullable<SearchResult<Object>>;
     loading: boolean;
     showModal: boolean;
     showModalFilter: boolean;
@@ -280,7 +281,18 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     };
 
-    private readonly getDetailsUrl = ({ scopeId, id }: BusinessObject) => this.props.path + `/${scopeId}/${id}`;
+    private readonly getDetailsUrl = (item: Object): string => {
+        const meta = this.state.metaInformation;
+        const typeMeta = meta && meta.typeMetaInformation;
+        const properties = (typeMeta && typeMeta.properties) || [];
+        const query = {};
+        for (const prop of properties) {
+            if (prop.indexed) {
+                query[prop.name] = item[StringUtils.lowerFirstLetter(prop.name)];
+            }
+        }
+        return `${this.props.path}/details?${qs.stringify(query)}`;
+    };
 
     private readonly handleOpenFilter = () => {
         this.setState({
@@ -402,7 +414,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { businessObjectsApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
             const deletedObject = objects.items[index];
+            // @ts-ignore
             const scopeId = deletedObject.scopeId;
+            // @ts-ignore
             const id = deletedObject.id;
             if (scopeId != null && id != null) {
                 if (metaInformation.storageType === BusinessObjectStorageType.SingleObjectPerRow) {

@@ -1,4 +1,3 @@
-import { BusinessObject } from "Domain/Api/DataTypes/BusinessObject";
 import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { Guid } from "Domain/DataTypes/Guid";
@@ -62,7 +61,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectsCount(
         businessObjectIdentifier: string,
         query: BusinessObjectSearchRequest
-    ): Promise<SearchResult<BusinessObject>> {
+    ): Promise<SearchResult<Object>> {
         return {
             countLimit: 100000,
             count: 0,
@@ -90,7 +89,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         query: BusinessObjectSearchRequest,
         offset: number,
         count: number
-    ): Promise<SearchResult<BusinessObject>> {
+    ): Promise<SearchResult<Object>> {
         return {
             items: [
                 {
@@ -144,7 +143,10 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         };
     }
 
-    public async getBusinessObjects(businessObjectIdentifier: string, scopeId: string, id: string): Promise<Object> {
+    public async getBusinessObjects(
+        businessObjectIdentifier: string,
+        query: BusinessObjectSearchRequest
+    ): Promise<Object> {
         return {
             id: "3821a146-bf0d-4ca4-b69e-ebc6365582da",
             scopeId: "0ba4bc7f-1137-44ab-b4e7-9a6181b964f4",
