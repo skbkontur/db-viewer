@@ -23,8 +23,8 @@ namespace Kontur.DBViewer.SampleApi.Controllers
 
         [HttpPost]
         [Route("{businessObjectIdentifier}/search")]
-        public SearchResult<BusinessObject> FindBusinessObjects(string businessObjectIdentifier,
-            [FromBody] BusinessObjectSearchRequest query, /* [FromBody] */ int offset, /* [FromBody] */ int count)
+        public SearchResult<object> FindBusinessObjects(string businessObjectIdentifier,
+            [FromBody] BusinessObjectSearchRequest query, /* [FromBody] */ int offset = 0, /* [FromBody] */ int count = 20)
         {
             return impl.FindBusinessObjects(businessObjectIdentifier, query, offset, count);
         }

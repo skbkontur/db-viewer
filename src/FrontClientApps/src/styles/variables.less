@@ -6,78 +6,21 @@
 @base-font-size: 14px;
 @base-line-height: @base-size * 4;
 
-@small-font-size: 12px;
-@small-line-height: 15px;
-
-@medium-font-size: 16px;
-@medium-line-height: 24px;
-
-@large-font-size: 32px;
-@large-line-height: 40px;
-
-.h4() {
-    font-family: @base-font-family;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: @base-size * 5;
-}
-
-// =================
-// ==== PALETTE ====
-// =================
-
-@color-edi-main-background: #e6e6e6;
-@color-transparent: transparent;
-@color-gold: #ff9900;
-@color-pale-gray: #cccccc;
-@tool-link-active-background: #ededed;
-
 // ============== COLORS ================
 // ============== TEXT   ================
 
 @primary-text: #333333; // Главный текст
-@primary-text-hovered: #ffffff; // Главный текст
 @edi-product-text: #ffffff; // Текст на фирменном цвете
 
 @link-color: #3072c4; // Цвет ссылки
-@link-active-color: #044785;
-@link-hover-color: @link-color;
-
-@success-text: #3f9726; // Позитив
-@warning-text: @color-gold; // Предупреждение
-@danger-text: #d43517; // Опасность
-@highlighted-text: #f8ec58;
-
 @muted-text: #666666; // Серый текст
 @double-muted-text: #a0a0a0; // Более серый текст
-@double-muted-text-hovered: rgba(255, 255, 255, 0.6); // Более серый текст на фоне наведения в выпадшках
-@error-panel-primary-text: @primary-text;
 
 // ============== BACKGROUND ============
 
 @primary-background: #ffffff; // Главный фон
-@edi-product-background: #0084d2; // Фирменный цвет
-@panel-background: #f5f5f5;
-@secondary-panel-background: #dddddd;
-@darken-panel-background: #eeeeee;
-@grey-panel-background: rgba(0, 0, 0, 0.5);
-
-@menu-panel-background: #f5f5f5;
-@menu-selected-item-background: #e1e1e1;
-@menu-hovered-item-background: #daeffc;
-@menu-noticeable-item-background: #fff0bc;
-
-@error-panel-background: #ffd2d2;
-@warning-panel-background: #ffefbf;
-@secondary-warning-panel-background: rgba(255, 239, 191, 0.5); //Tусклый желтый фон
-
 @primary-divider-color: rgba(0, 0, 0, 0.2); // Разделитель
 @secondary-divider-color: rgba(0, 0, 0, 0.08); // Тусклый разделитель
-
-@error-panel-background-secondary: rgba(255, 210, 210, 0.4);
-@error-panel-background-secondary-hover: rgba(255, 210, 210, 0.8);
-
-// ============== CONTROLS ============
 
 // **********************
 // TABLES
@@ -85,14 +28,3 @@
 
 @table-header-border: 1px solid  @primary-divider-color;
 @table-cell-border: 1px solid @secondary-divider-color;
-
-// **********************
-// DROPDOWN
-// **********************
-
-@dropdown-menu-item-hover-color: #5d99da;
-@dropdown-border-color: #bbbbbb;
-@dropdown-menu-item-hover-text-color: #ffffff;
-@dropdown-menu-item-comment-hover-text-color: fadeout(@dropdown-menu-item-hover-text-color, 50%);
-@dropdown-link-background-color: #ffffff;
-@dropdown-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);

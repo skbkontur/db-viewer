@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Kontur.DBViewer.Core.Attributes;
+using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.Core.VNext.DataTypes;
 using Kontur.DBViewer.Core.VNext.Helpers;
+using Sort = Kontur.DBViewer.Core.DTO.Sort;
 
 namespace Kontur.DBViewer.Core.VNext
 {
@@ -31,16 +33,20 @@ namespace Kontur.DBViewer.Core.VNext
         [NotNull]
         [HttpPost]
         [Route("{businessObjectIdentifier}/search")]
-        public SearchResult<BusinessObject> FindBusinessObjects(
+        public SearchResult<object> FindBusinessObjects(
             [NotNull] string businessObjectIdentifier,
             [NotNull] [FromBody] BusinessObjectSearchRequest query,
             /* [FromBody] */ int offset,
             /* [FromBody] */ int count)
         {
-
-            throw new NotImplementedException();
-            // return schemaRegistry.GetConnector(businessObjectIdentifier)
-                // .Search(filter.Filters, filter.Sorts, offset, count).GetAwaiter().GetResult();
+            var results = schemaRegistry.GetConnector(businessObjectIdentifier)
+                .Search(query.GetFilters(), query.GetSorts(), offset, count).GetAwaiter().GetResult();
+            return new SearchResult<object>
+            {
+                Count = results.Length,
+                CountLimit = 10000,
+                Items = results,
+            };
         }
 
         [NotNull]
@@ -50,9 +56,14 @@ namespace Kontur.DBViewer.Core.VNext
             [NotNull] string businessObjectIdentifier,
             [NotNull] [FromBody] BusinessObjectSearchRequest query)
         {
-            throw new NotImplementedException();
-            // return schemaRegistry.GetConnector(typeIdentifier).Count(model.Filters, 10000)
-                // .GetAwaiter().GetResult();
+            var results = schemaRegistry.GetConnector(businessObjectIdentifier).Count(query.GetFilters(), 10000)
+                .GetAwaiter().GetResult();
+            return new SearchResult<object>
+            {
+                Count = results ?? 0,
+                CountLimit = 10000,
+                Items = new object[0],
+            };
         }
 
         [HttpPost]
@@ -86,7 +97,7 @@ namespace Kontur.DBViewer.Core.VNext
         public object GetBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
             [NotNull] string id)
         {
-            throw new NotImplementedException();
+            return schemaRegistry.GetConnector(businessObjectIdentifier).Read(new Filter[0]).GetAwaiter().GetResult();
         }
 
         [NotNull]

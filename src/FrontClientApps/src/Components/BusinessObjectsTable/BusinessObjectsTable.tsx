@@ -20,7 +20,7 @@ interface BusinessObjectsTableProps {
     items: null | undefined | BusinessObject[];
     properties: Property[];
     onChangeSortClick: (name: string) => void;
-    onDetailsClick: (scopeId: string, id: string) => string;
+    onDetailsClick: (item: BusinessObject) => string;
     onDeleteClick: (index: number) => Promise<void>;
     currentSort: Nullable<Sort>;
     allowDelete: boolean;
@@ -83,7 +83,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
                         <AdvancedTable.Body data-tid="Body">
                             {items.map((item, index) => (
                                 <AdvancedTable.Row key={index} className={cn("row")} data-tid="Row">
-                                    {this.renderControls(item.scopeId, item.id, index)}
+                                    {this.renderControls(item, index)}
                                     {properties.map(key => this.renderCell(item, key.name))}
                                 </AdvancedTable.Row>
                             ))}
@@ -140,14 +140,14 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
         );
     }
 
-    public renderControls(scopeId: Nullable<string>, id: Nullable<string>, index: number): JSX.Element[] {
+    public renderControls(item: BusinessObject, index: number): JSX.Element[] {
         const arr: JSX.Element[] = [];
         let key = 0;
         let disabled = true;
         let pathToItem = "";
-        if (scopeId && id) {
+        if (item) {
             disabled = false;
-            pathToItem = this.props.onDetailsClick(scopeId, id);
+            pathToItem = this.props.onDetailsClick(item);
         }
         arr.push(
             <td key={++key} className={cn("cell")}>

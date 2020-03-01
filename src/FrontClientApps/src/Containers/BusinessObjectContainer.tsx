@@ -22,7 +22,6 @@ interface BusinessObjectContainerProps {
     parentObjectId: string;
     objectId: string;
     scopeId: string;
-    index: string;
     businessObjectsApi: IBusinessObjectsApi;
 }
 
@@ -51,12 +50,11 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 
     public componentDidUpdate(prevProps: BusinessObjectContainerProps) {
-        const { parentObjectId, objectId, scopeId, index } = this.props;
+        const { parentObjectId, objectId, scopeId } = this.props;
         const shouldUpdate =
             parentObjectId !== prevProps.parentObjectId ||
             objectId !== prevProps.objectId ||
-            scopeId !== prevProps.scopeId ||
-            index !== prevProps.index;
+            scopeId !== prevProps.scopeId;
         if (shouldUpdate) {
             this.load();
         }
@@ -78,15 +76,9 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 
     public async loadObject(): Promise<Nullable<{}>> {
-        const { businessObjectsApi, parentObjectId, scopeId, objectId, index } = this.props;
+        const { businessObjectsApi, parentObjectId, scopeId, objectId } = this.props;
         try {
-            let objectInfo = null;
-            if (index) {
-                objectInfo = await businessObjectsApi.getBusinessArrayObject(parentObjectId, scopeId, objectId, index);
-            } else {
-                objectInfo = await businessObjectsApi.getBusinessObjects(parentObjectId, scopeId, objectId);
-            }
-            return objectInfo;
+            return await businessObjectsApi.getBusinessObjects(parentObjectId, scopeId, objectId);
         } catch (e) {
             if (e instanceof ApiError && e.statusCode === 404) {
                 this.setState({
@@ -102,22 +94,12 @@ class BusinessObjectContainerInternal extends React.Component<
     public async handleChange(value: UpdateBusinessObjectInfo): Promise<void> {
         const { objectMeta } = this.state;
         if (objectMeta != null) {
-            if (objectMeta.storageType === BusinessObjectStorageType.SingleObjectPerRow) {
-                await this.props.businessObjectsApi.updateBusinessObjects(
-                    objectMeta.identifier,
-                    this.props.scopeId,
-                    this.props.objectId,
-                    value
-                );
-            } else {
-                await this.props.businessObjectsApi.updateBusinessArrayObject(
-                    objectMeta.identifier,
-                    this.props.scopeId,
-                    this.props.objectId,
-                    this.props.index,
-                    value
-                );
-            }
+            await this.props.businessObjectsApi.updateBusinessObjects(
+                objectMeta.identifier,
+                this.props.scopeId,
+                this.props.objectId,
+                value
+            );
         }
         const objectInfo = await this.loadObject();
         this.setState({
@@ -159,7 +141,7 @@ class BusinessObjectContainerInternal extends React.Component<
     };
 
     public render(): JSX.Element {
-        const { parentObjectId, objectId, scopeId, index } = this.props;
+        const { parentObjectId, objectId, scopeId } = this.props;
         const { objectInfo, objectMeta, loading } = this.state;
         const allowEdit = true;
         if (this.state.objectNotFound) {
@@ -210,16 +192,6 @@ class BusinessObjectContainerInternal extends React.Component<
                                     <Fit />
                                 </RowStack>
                             </Fit>
-                            {index !== "" && (
-                                <Fit>
-                                    <RowStack gap={2}>
-                                        <Fit>Index:</Fit>
-                                        <Fit>
-                                            <AllowCopyToClipboard data-tid={"Index"}>{index}</AllowCopyToClipboard>
-                                        </Fit>
-                                    </RowStack>
-                                </Fit>
-                            )}
                         </ColumnStack>
                     </CommonLayout.GreyLineHeader>
                     <CommonLayout.Content>

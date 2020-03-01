@@ -25,13 +25,12 @@ export function AdminToolsApplication({ match }: RouteComponentProps): JSX.Eleme
                 )}
             />
             <Route
-                path={`${match.url}/BusinessObjects/:objectId/:scopeId/:id/:index?`}
+                path={`${match.url}/BusinessObjects/:objectId/:scopeId/:id`}
                 render={({ match: { params } }) => (
                     <BusinessObjectContainer
                         parentObjectId={params.objectId || ""}
                         objectId={params.id || ""}
                         scopeId={params.scopeId || ""}
-                        index={params.index || ""}
                     />
                 )}
             />

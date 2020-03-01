@@ -108,7 +108,6 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             showDownloadModal,
             downloadCount,
         } = this.state;
-        const { path } = this.props;
         let properties: null | Property[] = null;
         if (metaInformation && metaInformation.typeMetaInformation && metaInformation.typeMetaInformation.properties) {
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
@@ -160,7 +159,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             properties={this.getVisibleProperties(properties)}
                                             currentSort={sort}
                                             items={objects.items}
-                                            onDetailsClick={(scopeId: string, id: string) => path + `/${scopeId}/${id}`}
+                                            onDetailsClick={this.getDetailsUrl}
                                             onDeleteClick={index => this.handleDeleteObject(index)}
                                             onChangeSortClick={(columnName: string) =>
                                                 this.updateQuery({
@@ -280,6 +279,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             this.updateRoute
         );
     };
+
+    private readonly getDetailsUrl = ({ scopeId, id }: BusinessObject) => this.props.path + `/${scopeId}/${id}`;
 
     private readonly handleOpenFilter = () => {
         this.setState({
