@@ -1,10 +1,11 @@
 import CopyIcon from "@skbkontur/react-icons/Copy";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Button from "@skbkontur/react-ui/Button";
+import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
 import { CopyToClipboardToast } from "Commons/AllowCopyToClipboard";
-import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
+
 import cn from "Commons/ErrorHandling/ErrorHandlingContainer.less";
 
 interface ErrorHandlingContainerModalState {
@@ -87,9 +88,9 @@ export class ErrorHandlingContainerModal extends React.Component<
                                         <h4>Client stack trace</h4>
                                     </Fit>
                                     <Fit>
-                                        <ButtonLink icon={<CopyIcon />} onClick={() => this.copyData(stack)}>
+                                        <Link icon={<CopyIcon />} onClick={() => this.copyData(stack)}>
                                             Скопировать
-                                        </ButtonLink>
+                                        </Link>
                                     </Fit>
                                 </RowStack>
                             )}
@@ -106,9 +107,9 @@ export class ErrorHandlingContainerModal extends React.Component<
                                         <h4>Server stack trace</h4>
                                     </Fit>
                                     <Fit>
-                                        <ButtonLink icon={<CopyIcon />} onClick={() => this.copyData(serverStack)}>
+                                        <Link icon={<CopyIcon />} onClick={() => this.copyData(serverStack)}>
                                             Скопировать
-                                        </ButtonLink>
+                                        </Link>
                                     </Fit>
                                 </RowStack>
                             )}

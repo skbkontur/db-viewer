@@ -5,7 +5,7 @@ import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
 import { TextHighlight } from "Commons/TextHighlight";
-import { StringUtils } from "Commons/Utils/StringUtils";
+import { StringUtils } from "Domain/Utils/StringUtils";
 
 import cn from "./FieldSelector.less";
 

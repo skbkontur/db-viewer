@@ -3,15 +3,15 @@ import { tooltip, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { Form, FormRow } from "Commons/Form/Form";
-import { ticksToTimestamp, timestampToTicks } from "Commons/Utils/ConvertTimeUtil";
-import { TimeUtils } from "Commons/Utils/TimeUtils";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Property } from "Domain/BusinessObjects/Property";
+import { ticksToTimestamp, timestampToTicks } from "Domain/Utils/ConvertTimeUtil";
+import { TimeUtils } from "Domain/Utils/TimeUtils";
+import { validateBusinessObjectField } from "Domain/Utils/ValidationUtils";
 
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
-import { validateBusinessObjectField } from "../Utils";
+import { FormRow } from "../FormRow/FormRow";
 
 import { OperatorSelect } from "./OperatorSelect";
 
@@ -111,11 +111,11 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
         const { tableColumns } = this.props;
 
         return (
-            <Form captionWidth={200} data-tid="BusinessObjectFilters">
+            <ColumnStack gap={2} data-tid="BusinessObjectFilters">
                 {tableColumns
                     .map(x => [x, this.getCondition(x)] as [Property, Condition])
                     .map(([property, condition]) => (
-                        <FormRow key={property.name} caption={property.name} data-tid="Filter">
+                        <FormRow key={property.name} captionWidth={200} caption={property.name} data-tid="Filter">
                             <RowStack baseline block gap={5} data-tid={property.name}>
                                 <Fit>
                                     <OperatorSelect
@@ -137,7 +137,7 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
                             </RowStack>
                         </FormRow>
                     ))}
-            </Form>
+            </ColumnStack>
         );
     }
 }

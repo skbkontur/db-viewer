@@ -1,9 +1,9 @@
 import Checkbox from "@skbkontur/react-ui/Checkbox";
+import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
 import _ from "lodash";
 import * as React from "react";
-import { FormattedNumberInput } from "Commons/FormattedNumberInput/FormattedNumberInput";
-import { RouterLink } from "Commons/RouterLink/RouterLink";
+import { Link } from "react-router-dom";
 
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 
@@ -25,11 +25,11 @@ export function customRender(target: any, path: string[], objectType?: string): 
             const entityId = id.entityId;
             if (typeof boxId === "string" && typeof entityId === "string" && objectType != null) {
                 return (
-                    <RouterLink
+                    <Link
                         data-tid="GoToLink"
                         to={`/AdminTools/BusinessObjects/${getBaseOnObjectType(objectType)}/${boxId}/${entityId}`}>
                         {entityId}
-                    </RouterLink>
+                    </Link>
                 );
             }
         }
@@ -40,9 +40,9 @@ export function customRender(target: any, path: string[], objectType?: string): 
         const orderId = getByPath(target, ["orderId"]);
         if (orderId != null) {
             return (
-                <RouterLink data-tid="GoToLink" to={`/AdminTools/BusinessObjects/Order_Web/${scopeId}/${orderId}`}>
+                <Link data-tid="GoToLink" to={`/AdminTools/BusinessObjects/Order_Web/${scopeId}/${orderId}`}>
                     {orderId}
-                </RouterLink>
+                </Link>
             );
         }
     }
@@ -59,11 +59,11 @@ export function customRender(target: any, path: string[], objectType?: string): 
             const objectId = id.objectId;
             if (typeof webObjectName === "string" && typeof scopeId === "string" && typeof objectId === "string") {
                 return (
-                    <RouterLink
+                    <Link
                         data-tid="GoToLink"
                         to={`/AdminTools/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
                         {objectId}
-                    </RouterLink>
+                    </Link>
                 );
             }
         }
@@ -77,11 +77,11 @@ export function customRender(target: any, path: string[], objectType?: string): 
             const objectId = id.objectId;
             if (typeof webObjectName === "string" && typeof scopeId === "string" && typeof objectId === "string") {
                 return (
-                    <RouterLink
+                    <Link
                         data-tid="GoToLink"
                         to={`/AdminTools/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
                         {objectId}
-                    </RouterLink>
+                    </Link>
                 );
             }
         }
@@ -113,21 +113,19 @@ export function customRenderForEdit(
             );
         case "Decimal":
             return (
-                <FormattedNumberInput
+                <CurrencyInput
                     value={Number(value)}
                     onChange={(e, nextValue) => onChange(nextValue)}
-                    viewFormat="0,0.00"
-                    editFormat="0.00"
+                    fractionDigits={2}
                 />
             );
 
         case "Int32":
             return (
-                <FormattedNumberInput
+                <CurrencyInput
                     value={Number(value)}
                     onChange={(e, nextValue) => onChange(nextValue)}
-                    viewFormat="0,0"
-                    editFormat="0"
+                    fractionDigits={0}
                 />
             );
         case null:

@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { StringUtils } from "Commons/Utils/StringUtils";
 import { Property } from "Domain/BusinessObjects/Property";
+import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { PropertyMetaInformation } from "./PropertyMetaInformation";
 import { TypeMetaInformation } from "./TypeMetaInformation";

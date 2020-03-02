@@ -1,16 +1,12 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
-import { LocationDescriptor } from "history";
+import Paging from "@skbkontur/react-ui/Paging";
 import _ from "lodash";
 import qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
-import { CommonLayout } from "Commons/Layouts/CommonLayout";
-import { PageNavigationList } from "Commons/PageNavigationList/PageNavigationList";
-import { queryStringMapping, QueryStringMapping } from "Commons/QueryStringMapping";
-import { StringUtils } from "Commons/Utils/StringUtils";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
@@ -22,10 +18,14 @@ import { Object } from "Domain/Api/Object";
 import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
 import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
 import { Property } from "Domain/BusinessObjects/Property";
+import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
+import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
+import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { BusinessObjectsTable } from "../Components/BusinessObjectsTable/BusinessObjectsTable";
 import { BusinessObjectModal } from "../Components/BusinessObjectModal/BusinessObjectModal";
 import { BusinessObjectTableLayoutHeader } from "../Components/BusinessObjectTableLayoutHeader/BusinessObjectTableLayoutHeader";
+import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
 interface ObjectTableProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;
@@ -48,7 +48,7 @@ interface ObjectTableState {
     downloadCount?: SearchResult<Object>;
 }
 
-const businessObjectsQueryMapping: QueryStringMapping<BusinessObjectSearchQuery> = queryStringMapping<
+const businessObjectsQueryMapping: QueryStringMapping<BusinessObjectSearchQuery> = new QueryStringMappingBuilder<
     BusinessObjectSearchQuery
 >()
     .mapToInteger(x => x.count, "count", 20)
@@ -324,11 +324,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             return null;
         }
         return (
-            <PageNavigationList
-                data-tid="PageNavigationList"
-                current={Math.floor(offset / count)}
-                count={Math.ceil(totalCount / count)}
-                createHrefToPage={this.createHrefToPage}
+            <Paging
+                activePage={Math.floor(offset / count) + 1}
+                pagesCount={Math.ceil(totalCount / count)}
+                onPageChange={this.goToPage}
             />
         );
     }
@@ -442,8 +441,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return path + businessObjectsQueryMapping.stringify({ ...query, ...overrides });
     }
 
-    private readonly createHrefToPage = (page: number): LocationDescriptor =>
-        this.getQuery({ offset: page * this.state.query.count });
+    private readonly goToPage = (page: number) => {
+        this.props.history.push(this.getQuery({ offset: (page - 1) * this.state.query.count }));
+    };
 }
 
 export const ObjectTableContainer = withBusinessObjectsApi(withRouter(ObjectTableContainerInternal));

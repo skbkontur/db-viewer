@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { createPages } from "Commons/PageNavigationList/Utils";
+import { createPages } from "Domain/Utils/PageNavigationUtils";
 
 describe("createPages", () => {
     it("должен работать для одной страницы", () => {

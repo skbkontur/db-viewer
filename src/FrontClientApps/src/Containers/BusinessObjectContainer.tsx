@@ -1,11 +1,10 @@
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import Link from "@skbkontur/react-ui/Link";
 import qs from "qs";
 import * as React from "react";
 import { AllowCopyToClipboard } from "Commons/AllowCopyToClipboard";
-import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
-import { CommonLayout } from "Commons/Layouts/CommonLayout";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
@@ -18,6 +17,7 @@ import { ApiError } from "Domain/ApiBase/ApiError";
 import { BusinessObjectNotFoundPage } from "../Components/BusinessObjectNotFoundPage/BusinessObjectNotFoundPage";
 import { BusinessObjectViewer } from "../Components/BusinessObjectViewer/BusinessObjectViewer";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
+import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
 interface BusinessObjectContainerProps {
     objectId: string;
@@ -170,12 +170,12 @@ class BusinessObjectContainerInternal extends React.Component<
                         tools={
                             <div style={{ textAlign: "right" }}>
                                 {allowEdit && (
-                                    <ButtonLink
+                                    <Link
                                         icon={<TrashIcon />}
                                         onClick={() => this.handleTryDeleteObject()}
                                         data-tid="Delete">
                                         Удалить
-                                    </ButtonLink>
+                                    </Link>
                                 )}
                             </div>
                         }>

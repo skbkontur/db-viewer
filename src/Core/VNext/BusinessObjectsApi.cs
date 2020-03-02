@@ -45,7 +45,7 @@ namespace Kontur.DBViewer.Core.VNext
                 .Search(query.GetFilters(), query.GetSorts(), offset, count).GetAwaiter().GetResult();
             return new SearchResult<object>
             {
-                Count = results.Length,
+                Count = 1000,
                 CountLimit = 10000,
                 Items = results,
             };

@@ -4,7 +4,7 @@ import Loader from "@skbkontur/react-ui/Loader";
 import Sticky from "@skbkontur/react-ui/Sticky";
 import { LocationDescriptor } from "history";
 import * as React from "react";
-import { RouterLink } from "Commons/RouterLink/RouterLink";
+import { Link } from "react-router-dom";
 
 import cn from "./CommonLayout.less";
 
@@ -18,12 +18,6 @@ interface CommonLayoutContentProps {
     children?: any;
     paddingInUnits?: 0 | 3 | 5;
     className?: void | string;
-}
-
-interface FullWidthContainerProps {
-    className?: Nullable<string>;
-    negativePadding?: 0 | 2;
-    children?: any;
 }
 
 interface CommonLayoutHeaderProps {
@@ -47,18 +41,7 @@ interface CommonLayoutGreyLineHeaderProps {
 
 interface CommonLayoutGoBackProps {
     children?: any;
-    href?: string | null;
-    to?: LocationDescriptor;
-}
-
-interface ContentTopBlockProps {
-    children?: React.ReactNode;
-    className?: Nullable<string>;
-}
-
-interface ContentBlockProps {
-    children?: React.ReactNode;
-    bottomGap?: Nullable<number>;
+    to: LocationDescriptor;
 }
 
 interface ContentLoaderProps {
@@ -66,12 +49,6 @@ interface ContentLoaderProps {
     active: boolean;
     type?: "big";
     caption?: string;
-}
-
-interface CommonLayoutTabbedHeaderProps {
-    title: JSX.Element | string;
-    tools?: JSX.Element;
-    tabs: Array<{ to: LocationDescriptor; tid?: string; caption: string }>;
 }
 
 export class CommonLayout extends React.Component<CommonLayoutProps> {
@@ -84,49 +61,6 @@ export class CommonLayout extends React.Component<CommonLayoutProps> {
             <div
                 className={cn("content", "padding-" + (paddingInUnits == null ? 4 : paddingInUnits).toString())}
                 {...restProps}>
-                {children}
-            </div>
-        );
-    };
-
-    public static FullWidthContainer = function FullWidthContainer({
-        children,
-        className,
-        negativePadding,
-        ...restProps
-    }: FullWidthContainerProps): JSX.Element {
-        return (
-            <div
-                className={cn(
-                    "full-with-container",
-                    "negative-padding-" + (negativePadding == null ? 0 : negativePadding),
-                    className
-                )}
-                {...restProps}>
-                {children}
-            </div>
-        );
-    };
-
-    public static ContentTopBlock = function ContentTopBlock({
-        children,
-        className,
-        ...restProps
-    }: ContentTopBlockProps): JSX.Element {
-        return (
-            <div className={cn("content-top-block", className)} {...restProps}>
-                {children}
-            </div>
-        );
-    };
-
-    public static ContentBlock = function ContentBlock({
-        children,
-        bottomGap,
-        ...restProps
-    }: ContentBlockProps): JSX.Element {
-        return (
-            <div className={cn("content-block", `bottom-gap-${bottomGap || 0}`)} {...restProps}>
                 {children}
             </div>
         );
@@ -185,38 +119,15 @@ export class CommonLayout extends React.Component<CommonLayoutProps> {
         );
     };
 
-    public static GoBack = function CommonLayoutGoBack({ children, href, to }: CommonLayoutGoBackProps): JSX.Element {
+    public static GoBack = function CommonLayoutGoBack({ children, to }: CommonLayoutGoBackProps): JSX.Element {
         return (
             <div className={cn("back-link-container")}>
-                <RouterLink data-tid="GoBack" icon={<ArrowChevronLeftIcon />} href={href} to={to}>
+                <Link className={cn("back-link")} data-tid="GoBack" to={to}>
+                    <ArrowChevronLeftIcon />
+                    {"\u00A0"}
                     {children}
-                </RouterLink>
+                </Link>
             </div>
-        );
-    };
-
-    public static TabbedHeader = function CommonLayoutTabbedHeader(props: CommonLayoutTabbedHeaderProps): JSX.Element {
-        const { title, tools, tabs, ...restProps } = props;
-
-        return (
-            <RowStack className={cn("tabbed-header")} block baseline gap={10} {...restProps}>
-                <Fit>
-                    <h2 data-tid="Header">{title}</h2>
-                </Fit>
-                <Fit>
-                    {tabs.map((tab, index) => (
-                        <RouterLink
-                            key={index}
-                            data-tid={tab.tid}
-                            to={tab.to}
-                            className={cn("tab-link")}
-                            activeClassName={cn("active")}>
-                            <span>{tab.caption}</span>
-                        </RouterLink>
-                    ))}
-                </Fit>
-                {tools && <Fill className={cn("show-changes")}>{tools}</Fill>}
-            </RowStack>
         );
     };
 

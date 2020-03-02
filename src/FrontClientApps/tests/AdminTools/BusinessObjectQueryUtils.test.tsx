@@ -1,12 +1,13 @@
 import { expect } from "chai";
 import { suite, test } from "mocha-typescript";
-import { queryStringMapping, QueryStringMapping } from "Commons/QueryStringMapping";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Sort } from "Domain/Api/DataTypes/Sort";
 
 import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
+import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
+import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
 
 interface BusinessObjectSearchQuery {
     conditions: Nullable<Condition[]>;
@@ -17,7 +18,7 @@ interface BusinessObjectSearchQuery {
     hiddenColumns: Nullable<string[]>;
 }
 
-const mapper: QueryStringMapping<BusinessObjectSearchQuery> = queryStringMapping<BusinessObjectSearchQuery>()
+const mapper: QueryStringMapping<BusinessObjectSearchQuery> = new QueryStringMappingBuilder<BusinessObjectSearchQuery>()
     .mapToInteger(x => x.count, "count")
     .mapToInteger(x => x.offset, "offset")
     .mapToInteger(x => x.countLimit, "countLimit")

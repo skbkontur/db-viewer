@@ -1,8 +1,8 @@
-import { PlainValueMapper, QueryObject } from "Commons/QueryStringMapping/Mappers";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Sort } from "Domain/Api/DataTypes/Sort";
+import { PlainValueMapper, QueryObject } from "Domain/QueryStringMapping/Mappers";
 
 import { convertOperationToString, convertStringToOperation } from "./OperationsConverter";
 

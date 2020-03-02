@@ -1,8 +1,8 @@
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
 
-import { DateUtils } from "Commons/Utils/DateUtils";
 import { Time } from "Domain/DataTypes/Time";
+import { DateUtils } from "Domain/Utils/DateUtils";
 
 interface TimePickerProps {
     error?: boolean;

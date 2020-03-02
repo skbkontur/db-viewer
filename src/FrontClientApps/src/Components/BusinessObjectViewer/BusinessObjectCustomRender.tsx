@@ -2,9 +2,9 @@ import EditIcon from "@skbkontur/react-icons/Edit";
 import OkIcon from "@skbkontur/react-icons/Ok";
 import UndoIcon from "@skbkontur/react-icons/Undo";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import * as React from "react";
-import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 
 import { customRender, customRenderForEdit } from "./BusinessObjectItemCustomRender";
 
@@ -92,23 +92,23 @@ export class BusinessObjectCustomRender extends React.Component<
                 {canEdit &&
                     !editableMode && (
                         <Fit>
-                            <ButtonLink icon={<EditIcon />} onClick={this.handleClick} data-tid="Edit" />
+                            <Link icon={<EditIcon />} onClick={this.handleClick} data-tid="Edit" />
                         </Fit>
                     )}
                 {canEdit &&
                     editableMode && (
                         <Fit>
-                            <ButtonLink icon={<OkIcon />} onClick={this.handleSaveChanges} data-tid="Save">
+                            <Link icon={<OkIcon />} onClick={this.handleSaveChanges} data-tid="Save">
                                 Сохранить
-                            </ButtonLink>
+                            </Link>
                         </Fit>
                     )}
                 {canEdit &&
                     editableMode && (
                         <Fit>
-                            <ButtonLink icon={<UndoIcon />} onClick={this.handleCancelChanges} data-tid="Cancel">
+                            <Link icon={<UndoIcon />} onClick={this.handleCancelChanges} data-tid="Cancel">
                                 Отменить
-                            </ButtonLink>
+                            </Link>
                         </Fit>
                     )}
             </RowStack>

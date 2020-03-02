@@ -1,8 +1,8 @@
 import _ from "lodash";
 import * as React from "react";
-import { RouterLink } from "Commons/RouterLink/RouterLink";
-import { StringUtils } from "Commons/Utils/StringUtils";
+import { Link } from "react-router-dom";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
+import { StringUtils } from "Domain/Utils/StringUtils";
 
 import cn from "./BusinessObjectTypes.less";
 
@@ -43,9 +43,9 @@ export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProp
         const { getPath } = this.props;
         return (
             <div key={item.identifier} data-tid="BusinessObjectItem">
-                <RouterLink to={getPath(item.identifier)} data-tid="BusinessObjectLink">
+                <Link className={cn("link")} to={getPath(item.identifier)} data-tid="BusinessObjectLink">
                     {this.renderIdentifier(item.identifier)}
-                </RouterLink>{" "}
+                </Link>{" "}
                 {item.mySqlTableName && (
                     <span className={cn("indexed")} data-tid="IndexedLabel">
                         indexed

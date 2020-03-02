@@ -1,14 +1,14 @@
+import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import CellsEqualHeightIcon from "@skbkontur/react-icons/CellsEqualHeight";
+import DropdownMenu from "@skbkontur/react-ui/DropdownMenu";
+import Link from "@skbkontur/react-ui/Link";
+import MenuItem from "@skbkontur/react-ui/MenuItem";
 import * as React from "react";
-
-import { LinkDropdown } from "./LinkDropdown";
 
 interface CountOfRecordsSelectorProps {
     count: number;
     onChange: (x0: number) => void;
 }
-
-const LinkDropdownMenuItem = LinkDropdown.MenuItem;
 
 export class CountOfRecordsSelector extends React.Component<CountOfRecordsSelectorProps> {
     public renderLinkDropdownItem = (count: number): null | string | JSX.Element => {
@@ -16,27 +16,25 @@ export class CountOfRecordsSelector extends React.Component<CountOfRecordsSelect
             return null;
         }
         return (
-            <LinkDropdownMenuItem
-                onClick={() => this.props.onChange(count)}
-                key={`${count}Items`}
-                data-tid={`${count}Items`}>
+            <MenuItem onClick={() => this.props.onChange(count)} key={`${count}Items`} data-tid={`${count}Items`}>
                 {count}
-            </LinkDropdownMenuItem>
+            </MenuItem>
         );
     };
 
     public render(): JSX.Element {
         return (
-            <LinkDropdown
-                renderTitle={() => (
-                    <span>
-                        <CellsEqualHeightIcon />
-                        {` ${this.props.count}`} записей на странице
-                    </span>
-                )}
-                data-tid="ActionsLinkDropdown">
+            <DropdownMenu
+                menuWidth={200}
+                caption={
+                    <Link icon={<CellsEqualHeightIcon />}>
+                        {this.props.count} записей на странице
+                        {"\u00A0"}
+                        <ArrowTriangleDownIcon />
+                    </Link>
+                }>
                 {[20, 50, 100].map(this.renderLinkDropdownItem)}
-            </LinkDropdown>
+            </DropdownMenu>
         );
     }
 }

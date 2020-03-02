@@ -1,14 +1,14 @@
-import { Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { tooltip, ValidationContainer, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import Input from "@skbkontur/react-ui/Input";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { Form, FormRow } from "Commons/Form/Form";
-import { RouterLink } from "Commons/RouterLink/RouterLink";
-import { StringUtils } from "Commons/Utils/StringUtils";
+import { Link } from "react-router-dom";
+import { StringUtils } from "Domain/Utils/StringUtils";
+import { validateBusinessObjectField } from "Domain/Utils/ValidationUtils";
 
-import { validateBusinessObjectField } from "../Utils";
+import { FormRow } from "../FormRow/FormRow";
 
 interface BusinessObjectModalState {
     scopeId: string;
@@ -46,8 +46,8 @@ export class BusinessObjectModal extends React.Component<BusinessObjectModalProp
                 <Modal.Header data-tid="Header">{objectName}</Modal.Header>
                 <Modal.Body>
                     <ValidationContainer ref={el => (this.container = el)} scrollOffset={{ top: 100 }}>
-                        <Form captionWidth={100}>
-                            <FormRow caption="ScopeId">
+                        <ColumnStack gap={2}>
+                            <FormRow captionWidth={100} caption="ScopeId">
                                 <ValidationWrapperV1
                                     data-tid="ScopeIdValidation"
                                     renderMessage={tooltip("right middle")}
@@ -59,7 +59,7 @@ export class BusinessObjectModal extends React.Component<BusinessObjectModalProp
                                     />
                                 </ValidationWrapperV1>
                             </FormRow>
-                            <FormRow caption="Id">
+                            <FormRow captionWidth={100} caption="Id">
                                 <ValidationWrapperV1
                                     data-tid="IdValidation"
                                     renderMessage={tooltip("right middle")}
@@ -68,7 +68,7 @@ export class BusinessObjectModal extends React.Component<BusinessObjectModalProp
                                 </ValidationWrapperV1>
                             </FormRow>
                             {showIndex && (
-                                <FormRow caption="Index">
+                                <FormRow captionWidth={100} caption="Index">
                                     <ValidationWrapperV1
                                         data-tid="IndexValidation"
                                         renderMessage={tooltip("right middle")}
@@ -81,7 +81,7 @@ export class BusinessObjectModal extends React.Component<BusinessObjectModalProp
                                     </ValidationWrapperV1>
                                 </FormRow>
                             )}
-                        </Form>
+                        </ColumnStack>
                     </ValidationContainer>
                 </Modal.Body>
                 <Modal.Footer panel>
@@ -91,9 +91,9 @@ export class BusinessObjectModal extends React.Component<BusinessObjectModalProp
                                 Перейти
                             </Button>
                         </Fit>
-                        <RouterLink to="/AdminTools/BusinessObjects" data-tid="GoBackToList">
+                        <Link to="/AdminTools/BusinessObjects" data-tid="GoBackToList">
                             Вернуться к списку видов бизнес объектов
-                        </RouterLink>
+                        </Link>
                     </RowStack>
                 </Modal.Footer>
             </Modal>

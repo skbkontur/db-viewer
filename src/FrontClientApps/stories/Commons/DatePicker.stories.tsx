@@ -1,9 +1,9 @@
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
-import { DatePicker } from "Commons/DatePicker/DatePicker";
-import { TimeUtils } from "Commons/Utils/TimeUtils";
+import { TimeUtils } from "Domain/Utils/TimeUtils";
 
+import { DatePicker } from "../../src/Components/DateTimeRangePicker/DatePicker";
 import { WithState } from "../WithState";
 
 function getInitialValue(value: Date): { value: Date } {

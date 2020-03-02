@@ -2,17 +2,16 @@ import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
 import * as React from "react";
-import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
-import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer";
-import { RouterLink } from "Commons/RouterLink/RouterLink";
-import { StringUtils } from "Commons/Utils/StringUtils";
+import { Link as RouterLink } from "react-router-dom";
 import { Sort } from "Domain/Api/DataTypes/Sort";
 import { Object } from "Domain/Api/Object";
 import { Property } from "Domain/BusinessObjects/Property";
+import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { customRender } from "../BusinessObjectViewer/BusinessObjectItemCustomRender";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
+import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 
 import cn from "./BusinessObjectsTable.less";
 
@@ -123,12 +122,12 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
     public renderTableHeader(item: Property, key: number): JSX.Element {
         const name = StringUtils.capitalizeFirstLetter(item.name);
         const content = item.indexed ? (
-            <ButtonLink
+            <Link
                 data-tid={`Header_${name}`}
-                rightIcon={this.getIcon(name, this.props.currentSort)}
+                icon={this.getIcon(name, this.props.currentSort)}
                 onClick={() => this.props.onChangeSortClick(name)}>
                 {name}
-            </ButtonLink>
+            </Link>
         ) : (
             name
         );
@@ -143,15 +142,13 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
     public renderControls(item: Object, index: number): JSX.Element[] {
         const arr: JSX.Element[] = [];
         let key = 0;
-        let disabled = true;
         let pathToItem = "";
         if (item) {
-            disabled = false;
             pathToItem = this.props.onDetailsClick(item);
         }
         arr.push(
             <td key={++key} className={cn("cell")}>
-                <RouterLink disabled={disabled} to={pathToItem} data-tid="Details">
+                <RouterLink className={cn("link")} to={pathToItem} data-tid="Details">
                     Подробности
                 </RouterLink>
             </td>

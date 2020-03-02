@@ -190,10 +190,6 @@ module.exports = (dir, env, options) => {
         mode: PROD || TEST ? "production" : "development",
         devServer: {
             proxy: {
-                "/IncidentsProxy/**": bypassNetSuiteApi("/IncidentsProxy/**"),
-                "/internal-api/**": {
-                    target: "http://localhost.dev.kontur:2233/",
-                },
                 "/business-objects/**": {
                     target: "http://localhost:5555/",
                 },
@@ -237,57 +233,6 @@ module.exports = (dir, env, options) => {
     }
     return config;
 };
-
-function bypassNetSuiteApi() {
-    // Написано экспериментальным путём (для webpack-dev-server 1.14), возможно есть решение лучше
-    return {
-        target: "https://rest.na1.netsuite.com",
-        secure: false,
-        headers: {
-            ["content-type"]: "application/json",
-            ["Authorization"]:
-                "NLAuth nlauth_account=3883090, nlauth_email=vip@edi.kontur.ru, nlauth_signature=LYKtITWlqbP6Aw, nlauth_role=3",
-        },
-        changeOrigin: true,
-        bypass: function(req, res, options) {
-            if (mm.isMatch(req.originalUrl, options.context)) {
-                req.url =
-                    "https://rest.na1.netsuite.com/app/site/hosting/restlet.nl?deploy=1" +
-                    "&" +
-                    req.url.replace("/IncidentsProxy/?", "");
-            }
-        },
-    };
-}
-
-function remoteApi(host) {
-    return {
-        target: "https://" + host + "/",
-        secure: false,
-        headers: {
-            host: host,
-        },
-        bypass: function(req, res, proxyOptions) {
-            if (fs.existsSync("auth.sid")) {
-                var auth = fs.readFileSync("auth.sid", { encoding: "utf8" });
-                auth = auth.replace("\n", "");
-                var cookie = req.headers.cookie;
-                req.headers.cookie = cookie + "; auth.sid=" + auth;
-            }
-        },
-    };
-}
-
-function serveStatic(pathToHtml) {
-    return {
-        secure: false,
-        bypass: function(req, res, options) {
-            if (mm.isMatch(req.originalUrl, options.context)) {
-                return pathToHtml;
-            }
-        },
-    };
-}
 
 function getOutputFilename(hashNames, ext) {
     return (hashNames ? "[name].[hash]." : "[name].") + ext;

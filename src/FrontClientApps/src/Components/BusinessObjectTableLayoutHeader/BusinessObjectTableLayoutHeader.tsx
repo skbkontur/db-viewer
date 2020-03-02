@@ -121,7 +121,7 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
                         Фильтрация
                     </Link>
                 </Fit>
-                <Fit>
+                <Fit className={cn("count-selector")}>
                     <CountOfRecordsSelector count={query.count} onChange={value => onChange({ count: value })} />
                 </Fit>
                 <Fit>

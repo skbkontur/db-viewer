@@ -2,12 +2,12 @@ import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
 import Input from "@skbkontur/react-ui/Input";
 import Loader from "@skbkontur/react-ui/Loader";
 import * as React from "react";
-import { CommonLayout } from "Commons/Layouts/CommonLayout";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 
 import { BusinessObjectTypes } from "../Components/BusinessObjectTypes/BusinessObjectTypes";
+import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
 interface BusinessObjectsProps {
     businessObjectsApi: IBusinessObjectsApi;
