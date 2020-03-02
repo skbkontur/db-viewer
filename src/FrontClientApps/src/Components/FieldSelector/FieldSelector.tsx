@@ -1,10 +1,9 @@
 import SearchIcon from "@skbkontur/react-icons/Search";
+import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 import { TextHighlight } from "Commons/TextHighlight";
 import { StringUtils } from "Commons/Utils/StringUtils";
 

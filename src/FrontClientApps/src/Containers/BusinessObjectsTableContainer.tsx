@@ -1,3 +1,4 @@
+import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
 import { LocationDescriptor } from "history";
@@ -6,10 +7,7 @@ import qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
-import { ColumnStack } from "Commons/Layouts/ColumnStack";
 import { CommonLayout } from "Commons/Layouts/CommonLayout";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 import { PageNavigationList } from "Commons/PageNavigationList/PageNavigationList";
 import { queryStringMapping, QueryStringMapping } from "Commons/QueryStringMapping";
 import { StringUtils } from "Commons/Utils/StringUtils";

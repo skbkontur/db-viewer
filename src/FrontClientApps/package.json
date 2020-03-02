@@ -14,6 +14,7 @@
     "license": "ISC",
     "dependencies": {
         "@skbkontur/react-icons": "^3.1.2",
+        "@skbkontur/react-stack-layout": "^1.0.3",
         "@skbkontur/react-ui": "^1.9.0",
         "@skbkontur/react-ui-validations": "^1.1.1",
         "copy-to-clipboard": "^3.0.8",

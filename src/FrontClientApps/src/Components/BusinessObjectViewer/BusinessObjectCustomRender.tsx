@@ -1,12 +1,10 @@
 import EditIcon from "@skbkontur/react-icons/Edit";
 import OkIcon from "@skbkontur/react-icons/Ok";
 import UndoIcon from "@skbkontur/react-icons/Undo";
+import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import _ from "lodash";
 import * as React from "react";
 import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
-import { Fill } from "Commons/Layouts/Fill";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 
 import { customRender, customRenderForEdit } from "./BusinessObjectItemCustomRender";
 

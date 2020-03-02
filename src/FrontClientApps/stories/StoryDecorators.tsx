@@ -1,8 +1,8 @@
+import { RowStack } from "@skbkontur/react-stack-layout";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import { DecoratorFunction } from "@storybook/addons";
 import * as React from "react";
-import { RowStack } from "Commons/Layouts/RowStack";
 
 export function ValidationContainerWithSubmitButton(): DecoratorFunction<React.ReactElement<unknown>> {
     return function ValidationContainerWithSubmitButtonDecorator(

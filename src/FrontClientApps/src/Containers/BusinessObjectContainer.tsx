@@ -1,13 +1,11 @@
 import TrashIcon from "@skbkontur/react-icons/Trash";
+import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import qs from "qs";
 import * as React from "react";
 import { AllowCopyToClipboard } from "Commons/AllowCopyToClipboard";
 import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
-import { ColumnStack } from "Commons/Layouts/ColumnStack";
 import { CommonLayout } from "Commons/Layouts/CommonLayout";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";

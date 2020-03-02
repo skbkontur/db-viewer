@@ -1,11 +1,10 @@
+import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { tooltip, ValidationContainer, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import Input from "@skbkontur/react-ui/Input";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
 import { Form, FormRow } from "Commons/Form/Form";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 import { RouterLink } from "Commons/RouterLink/RouterLink";
 import { StringUtils } from "Commons/Utils/StringUtils";
 

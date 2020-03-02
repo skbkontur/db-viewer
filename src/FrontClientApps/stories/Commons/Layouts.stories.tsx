@@ -3,15 +3,13 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import { ButtonLink } from "Commons/ButtonLink/ButtonLink";
 import { CommonLayout } from "Commons/Layouts/CommonLayout";
-import { Fill } from "Commons/Layouts/Fill";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer";
 
 import AddIcon from "@skbkontur/react-icons/Add";
 import MenuIcon from "@skbkontur/react-icons/Menu";
 import RubleIcon from "@skbkontur/react-icons/Ruble";
 import SearchIcon from "@skbkontur/react-icons/Search";
+import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 
 function SpaceFiller(props: { width?: number | string; height?: number | string }): JSX.Element {
     return (

@@ -1,11 +1,9 @@
 import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
+import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import * as React from "react";
-import { Fill } from "Commons/Layouts/Fill";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
 
 import cn from "./Accordion.less";
 

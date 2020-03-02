@@ -1,12 +1,11 @@
+import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { Fit } from "Commons/Layouts/Fit";
-import { RowStack } from "Commons/Layouts/RowStack";
-import { Property } from "Domain/BusinessObjects/Property";
 import { Condition } from "Domain/Api/DataTypes/Condition";
+import { Property } from "Domain/BusinessObjects/Property";
 
 import { BusinessObjectFilter } from "../BusinessObjectFilter/BusinessObjectFilter";
 
