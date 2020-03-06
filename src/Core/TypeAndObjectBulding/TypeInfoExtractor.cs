@@ -93,7 +93,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
         {
             var configuration = @object == null
                 ? customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo)
-                : customPropertyConfigurationProvider.TryGetConfiguration(@object, propertyInfo);
+                : customPropertyConfigurationProvider?.TryGetConfiguration(@object, propertyInfo);
             var typeInfo = ResolveType(null,
                 configuration?.ResolvedType ?? propertyInfo.PropertyType,
                 propertyDescriptionBuilder,
