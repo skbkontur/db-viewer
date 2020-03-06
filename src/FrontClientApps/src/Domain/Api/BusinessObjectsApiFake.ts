@@ -8,7 +8,6 @@ import { IBusinessObjectsApi } from "./BusinessObjectsApi";
 import { BusinessObjectDescription } from "./DataTypes/BusinessObjectDescription";
 import { BusinessObjectSearchRequest } from "./DataTypes/BusinessObjectSearchRequest";
 import { FileResponse } from "./DataTypes/FileResponse";
-import { UpdateBusinessObjectInfo } from "./DataTypes/UpdateBusinessObjectInfo";
 
 export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectNames(): Promise<BusinessObjectDescription[]> {
@@ -218,7 +217,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         };
     }
 
-    public async deleteBusinessObjects(businessObjectIdentifier: string, scopeId: string, id: string): Promise<void> {
+    public async deleteBusinessObjects(businessObjectIdentifier: string, obj: Object): Promise<void> {
         // noop
     }
 
@@ -231,22 +230,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         // noop
     }
 
-    public async updateBusinessObjects(
-        businessObjectIdentifier: string,
-        scopeId: string,
-        id: string,
-        updateInfo: UpdateBusinessObjectInfo
-    ): Promise<void> {
-        // noop
-    }
-
-    public async updateBusinessArrayObject(
-        businessObjectIdentifier: string,
-        scopeId: string,
-        id: string,
-        arrayIndex: string,
-        updateInfo: UpdateBusinessObjectInfo
-    ): Promise<void> {
+    public async updateBusinessObjects(businessObjectIdentifier: string, obj: Object): Promise<void> {
         // noop
     }
 

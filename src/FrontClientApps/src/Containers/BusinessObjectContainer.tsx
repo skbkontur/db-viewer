@@ -3,20 +3,19 @@ import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import qs from "qs";
 import * as React from "react";
-import { AllowCopyToClipboard } from "Commons/AllowCopyToClipboard";
-import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectSearchRequest } from "Domain/Api/DataTypes/BusinessObjectSearchRequest";
 import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
-import { UpdateBusinessObjectInfo } from "Domain/Api/DataTypes/UpdateBusinessObjectInfo";
 import { ApiError } from "Domain/ApiBase/ApiError";
 
+import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";
 import { BusinessObjectNotFoundPage } from "../Components/BusinessObjectNotFoundPage/BusinessObjectNotFoundPage";
 import { BusinessObjectViewer } from "../Components/BusinessObjectViewer/BusinessObjectViewer";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
+import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
 interface BusinessObjectContainerProps {
@@ -95,15 +94,10 @@ class BusinessObjectContainerInternal extends React.Component<
         return null;
     }
 
-    public async handleChange(value: UpdateBusinessObjectInfo): Promise<void> {
+    public async handleChange(value: Object): Promise<void> {
         const { objectMeta } = this.state;
         if (objectMeta != null) {
-            // await this.props.businessObjectsApi.updateBusinessObjects(
-            //     objectMeta.identifier,
-            //     this.props.scopeId,
-            //     this.props.objectId,
-            //     value
-            // );
+            await this.props.businessObjectsApi.updateBusinessObjects(objectMeta.identifier, value);
         }
         const objectInfo = await this.loadObject();
         this.setState({
@@ -112,15 +106,11 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 
     public async handleDelete(): Promise<void> {
-        const { objectMeta } = this.state;
-        // const { businessObjectsApi } = this.props;
+        const { objectMeta, objectInfo } = this.state;
+        const { businessObjectsApi } = this.props;
         if (objectMeta != null) {
             if (objectMeta.storageType === BusinessObjectStorageType.SingleObjectPerRow) {
-                // await businessObjectsApi.deleteBusinessObjects(
-                //     objectMeta.identifier,
-                //     this.props.scopeId,
-                //     this.props.objectId
-                // );
+                await businessObjectsApi.deleteBusinessObjects(objectMeta.identifier, objectInfo as any);
                 window.location.href = `/AdminTools/BusinessObjects/${this.props.objectId}`;
                 return;
             }

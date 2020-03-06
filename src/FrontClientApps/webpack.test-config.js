@@ -47,8 +47,6 @@ module.exports = ((dir, argv, options) => {
             extensions: [".js", ".jsx", ".ts", ".tsx"],
             alias: {
                 Domain: path.join(__dirname, "src/Domain"),
-                Commons: path.join(__dirname, "src/Commons"),
-                assets: path.join(__dirname, "assets"),
             },
         },
         externals: [

@@ -6,7 +6,6 @@ import _ from "lodash";
 import qs from "qs";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { ErrorHandlingContainer } from "Commons/ErrorHandling/ErrorHandlingContainer";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
@@ -25,6 +24,7 @@ import { StringUtils } from "Domain/Utils/StringUtils";
 import { BusinessObjectsTable } from "../Components/BusinessObjectsTable/BusinessObjectsTable";
 import { BusinessObjectModal } from "../Components/BusinessObjectModal/BusinessObjectModal";
 import { BusinessObjectTableLayoutHeader } from "../Components/BusinessObjectTableLayoutHeader/BusinessObjectTableLayoutHeader";
+import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
 interface ObjectTableProps extends RouteComponentProps {
@@ -411,18 +411,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { businessObjectsApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
             const deletedObject = objects.items[index];
-            // @ts-ignore
-            const scopeId = deletedObject.scopeId;
-            // @ts-ignore
-            const id = deletedObject.id;
-            if (scopeId != null && id != null) {
-                if (metaInformation.storageType === BusinessObjectStorageType.SingleObjectPerRow) {
-                    await businessObjectsApi.deleteBusinessObjects(metaInformation.identifier, scopeId, id);
-                    await this.loadObjects();
-                    return;
-                }
-                throw new Error("Пытаемся удалить объект с типом массив");
-            }
+            await businessObjectsApi.deleteBusinessObjects(metaInformation.identifier, deletedObject);
+            await this.loadObjects();
         }
     }
 

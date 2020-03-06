@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Kontur.DBViewer.Core.Attributes;
-using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Core.VNext.DataTypes;
 using Kontur.DBViewer.Core.VNext.Helpers;
-using Sort = Kontur.DBViewer.Core.DTO.Sort;
 
 namespace Kontur.DBViewer.Core.VNext
 {
@@ -95,8 +93,9 @@ namespace Kontur.DBViewer.Core.VNext
 
         [NotNull]
         [HttpPost]
-        [Route("{businessObjectIdentifier}")]
-        public object GetBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] [FromBody] BusinessObjectSearchRequest query)
+        [Route("{businessObjectIdentifier}/details")]
+        public object GetBusinessObjects([NotNull] string businessObjectIdentifier,
+            [NotNull] [FromBody] BusinessObjectSearchRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
@@ -109,19 +108,27 @@ namespace Kontur.DBViewer.Core.VNext
         }
 
         [HttpDelete]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
-        public void DeleteBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
-            [NotNull] string id)
+        [Route("{businessObjectIdentifier}/delete")]
+        public void DeleteBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] [FromBody] object obj)
         {
-            throw new NotImplementedException();
+            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+            var x = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
+            schemaRegistry.GetConnector(businessObjectIdentifier).Delete(x).GetAwaiter().GetResult();
         }
 
         [HttpPost]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
-        public void UpdateBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] string scopeId,
-            [NotNull] string id, [NotNull] [FromBody] UpdateBusinessObjectInfo updateInfo)
+        [Route("{businessObjectIdentifier}/update")]
+        public void UpdateBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] [FromBody] object obj)
         {
-            throw new NotImplementedException();
+            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var typeInfo = TypeInfoExtractor.Extract(obj, type, schema.PropertyDescriptionBuilder,
+                schema.CustomPropertyConfigurationProvider);
+            var stored = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
+            schemaRegistry.GetConnector(businessObjectIdentifier).Write(stored).GetAwaiter().GetResult();
         }
 
         [NotNull]

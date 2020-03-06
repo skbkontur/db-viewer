@@ -34,8 +34,6 @@ module.exports = (dir, env, options) => {
                 "regenerator-runtime",
                 require.resolve("core-js/features/array/flat.js"),
                 "whatwg-fetch",
-                "./react-selenium-testing-config.js",
-                require.resolve("../../Assemblies/SeleniumTesting/react-selenium-testing.js"),
                 "moment",
                 "moment/locale/ru",
             ],
@@ -118,12 +116,10 @@ module.exports = (dir, env, options) => {
             ],
         },
         resolve: {
-            modules: ["node_modules", "local_modules"],
+            modules: ["node_modules"],
             extensions: [".js", ".jsx", ".ts", ".tsx"],
             alias: {
-                Domain: path.join(__dirname, "src/Domain"),
-                Commons: path.join(__dirname, "src/Commons"),
-                assets: path.join(__dirname, "assets"),
+                Domain: path.join(__dirname, "src/Domain")
             },
         },
         optimization: {
@@ -151,8 +147,7 @@ module.exports = (dir, env, options) => {
                             if (
                                 name.endsWith("reset.less") ||
                                 name.endsWith("typography.less") ||
-                                name.endsWith("variables.less") ||
-                                name.endsWith("mixins.less")
+                                name.endsWith("variables.less")
                             ) {
                                 return false;
                             }

@@ -1,5 +1,4 @@
-import { Lens, pathLens, PropertyPicker } from "Commons/lens";
-
+import { Lens, pathLens, PropertyPicker } from "Domain/lens";
 import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
 
 import {

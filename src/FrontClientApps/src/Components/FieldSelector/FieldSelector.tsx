@@ -4,8 +4,9 @@ import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
-import { TextHighlight } from "Commons/TextHighlight";
 import { StringUtils } from "Domain/Utils/StringUtils";
+
+import { TextHighlight } from "../TextHighlight";
 
 import cn from "./FieldSelector.less";
 

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { DefaultErrorModal } from "Commons/ErrorHandling/DefaultErrorModal";
 
+import { DefaultErrorModal } from "./DefaultErrorModal";
 import { apiErrorHandler, ErrorModalProps, GenericErrorHandlingContainer } from "./GenericErrorHandlingContainer";
 
 interface DefaultErrorHandlingContainerProps {

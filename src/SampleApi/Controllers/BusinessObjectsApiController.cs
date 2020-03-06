@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using Kontur.DBViewer.Core.VNext;
 using Kontur.DBViewer.Core.VNext.DataTypes;
@@ -24,7 +25,8 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         [HttpPost]
         [Route("{businessObjectIdentifier}/search")]
         public SearchResult<object> FindBusinessObjects(string businessObjectIdentifier,
-            [FromBody] BusinessObjectSearchRequest query, /* [FromBody] */ int offset = 0, /* [FromBody] */ int count = 20)
+            [FromBody] BusinessObjectSearchRequest query, /* [FromBody] */ int offset = 0, /* [FromBody] */
+            int count = 20)
         {
             return impl.FindBusinessObjects(businessObjectIdentifier, query, offset, count);
         }
@@ -67,18 +69,17 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         }
 
         [HttpDelete]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
-        public void DeleteBusinessObjects(string businessObjectIdentifier, string scopeId, string id)
+        [Route("{businessObjectIdentifier}/delete")]
+        public void DeleteBusinessObjects(string businessObjectIdentifier, [FromBody] object obj)
         {
-            impl.DeleteBusinessObjects(businessObjectIdentifier, scopeId, id);
+            impl.DeleteBusinessObjects(businessObjectIdentifier, obj);
         }
 
         [HttpPost]
-        [Route("{businessObjectIdentifier}/{scopeId}/{id}")]
-        public void UpdateBusinessObjects(string businessObjectIdentifier, string scopeId, string id,
-            [FromBody] UpdateBusinessObjectInfo updateInfo)
+        [Route("{businessObjectIdentifier}/update")]
+        public void UpdateBusinessObjects(string businessObjectIdentifier, [FromBody] object obj)
         {
-            impl.UpdateBusinessObjects(businessObjectIdentifier, scopeId, id, updateInfo);
+            impl.UpdateBusinessObjects(businessObjectIdentifier, obj);
         }
 
         [HttpGet]
@@ -89,5 +90,6 @@ namespace Kontur.DBViewer.SampleApi.Controllers
         }
 
         private readonly BusinessObjectsApi impl;
+        private readonly Dictionary<Guid, byte[]> storage = new Dictionary<Guid, byte[]>();
     }
 }

@@ -1,8 +1,8 @@
 import Link from "@skbkontur/react-ui/Link";
 import * as React from "react";
-import { ErrorHandlingContainerModal } from "Commons/ErrorHandling/ErrorHandlingContainerModal";
 import { ApiError } from "Domain/ApiBase/ApiError";
 
+import { ErrorHandlingContainerModal } from "./ErrorHandlingContainerModal";
 import { ErrorModalProps } from "./GenericErrorHandlingContainer";
 
 interface DefaultErrorModalProps extends ErrorModalProps {

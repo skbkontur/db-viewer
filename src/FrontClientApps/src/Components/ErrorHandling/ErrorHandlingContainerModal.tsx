@@ -4,9 +4,10 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { CopyToClipboardToast } from "Commons/AllowCopyToClipboard";
 
-import cn from "Commons/ErrorHandling/ErrorHandlingContainer.less";
+import { CopyToClipboardToast } from "../AllowCopyToClipboard";
+
+import cn from "./ErrorHandlingContainer.less";
 
 interface ErrorHandlingContainerModalState {
     showStack: boolean;
