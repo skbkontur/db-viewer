@@ -1,6 +1,6 @@
 import DefaultDatePicker from "@skbkontur/react-ui/DatePicker";
 import moment from "moment";
-import * as React from "react";
+import React from "react";
 import { ICanBeValidated, RussianDateFormat } from "Domain/DataTypes/DateTimeRange";
 import { Time, TimeZone } from "Domain/DataTypes/Time";
 import { DateUtils } from "Domain/Utils/DateUtils";

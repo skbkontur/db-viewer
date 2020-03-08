@@ -1,5 +1,5 @@
 import { LocationDescriptor } from "history";
-import * as React from "react";
+import React from "react";
 
 import { CommonLayout } from "../Layouts/CommonLayout";
 

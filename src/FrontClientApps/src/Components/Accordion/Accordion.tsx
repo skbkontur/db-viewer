@@ -3,7 +3,7 @@ import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
-import * as React from "react";
+import React from "react";
 
 import cn from "./Accordion.less";
 

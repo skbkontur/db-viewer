@@ -3,7 +3,7 @@ import { tooltip, ValidationContainer, ValidationInfo, ValidationWrapperV1 } fro
 import Button from "@skbkontur/react-ui/Button";
 import Input from "@skbkontur/react-ui/Input";
 import Modal from "@skbkontur/react-ui/Modal";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { StringUtils } from "Domain/Utils/StringUtils";
 import { validateBusinessObjectField } from "Domain/Utils/ValidationUtils";

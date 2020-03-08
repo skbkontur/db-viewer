@@ -1,4 +1,4 @@
-import { Ticks, TimeZone } from "Domain/DataTypes/Time";
+import { TimeZone } from "Domain/DataTypes/Time";
 
 export class TimeUtils {
     public static TimeZones: { [x: string]: TimeZone } = {
@@ -6,19 +6,6 @@ export class TimeUtils {
         Moscow: 180,
         Yekaterinburg: 300,
     };
-
-    public static ticksToDate(value: Ticks): Date {
-        const unixTimestamp = (parseInt(value, 10) - 621355968000000000) / 10000;
-        return new Date(unixTimestamp);
-    }
-
-    public static dateToTicks(value: Date): Ticks {
-        return (value.getTime() * 10000 + 621355968000000000).toString();
-    }
-
-    public static getAllTimeZones(): TimeZone[] {
-        return [this.TimeZones.UTC, this.TimeZones.Moscow, this.TimeZones.Yekaterinburg];
-    }
 
     public static getTimeZoneOffsetOrDefault(timeZone?: Nullable<TimeZone | number>): number {
         return timeZone != null ? timeZone : -new Date().getTimezoneOffset();

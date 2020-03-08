@@ -3,10 +3,8 @@ import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
-import * as React from "react";
+import React from "react";
 import { StringUtils } from "Domain/Utils/StringUtils";
-
-import { TextHighlight } from "../TextHighlight";
 
 import cn from "./FieldSelector.less";
 
@@ -75,7 +73,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         }
     };
 
-    public renderFieldSelector(fieldDefinition: IFieldDefinition, textToHighlight: string): JSX.Element {
+    public renderFieldSelector(fieldDefinition: IFieldDefinition): JSX.Element {
         const { hiddenFields } = this.props;
 
         return (
@@ -85,7 +83,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                     checked={!hiddenFields.includes(fieldDefinition.name)}
                     onChange={(e, checked) => this.handleToogle(checked, fieldDefinition.name)}>
                     <div className={cn("content")}>
-                        <TextHighlight text={fieldDefinition.caption} highlight={textToHighlight} />
+                        {fieldDefinition.caption}
                     </div>
                 </Checkbox>
             </div>
@@ -106,7 +104,6 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         );
 
         const nothingToDisplay = <span className={cn("nothing-to-display")}>Ничего не найдено</span>;
-        const textToHighlight = fieldDefinitionsFiltered.length > 1 ? this.state.searchText : "";
         const allFieldsSelected = this.isAllFieldSelected(fieldDefinitionsFiltered);
         return (
             <div className={cn("root")}>
@@ -137,7 +134,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                         .filter(column => column.some(x => x != null))
                         .map((column, key) => (
                             <Fit key={key}>
-                                {column.map(field => field != null && this.renderFieldSelector(field, textToHighlight))}
+                                {column.map(field => field != null && this.renderFieldSelector(field))}
                             </Fit>
                         ))}
                 </RowStack>

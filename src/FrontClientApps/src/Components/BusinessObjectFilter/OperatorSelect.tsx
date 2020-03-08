@@ -1,5 +1,5 @@
 import Select from "@skbkontur/react-ui/Select";
-import * as React from "react";
+import React from "react";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 
 interface OperatorSelectProps {

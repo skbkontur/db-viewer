@@ -9,14 +9,3 @@ export function validateBusinessObjectField(value: Nullable<string>): Validation
     }
     return null;
 }
-
-export function validateRequiredField(value?: string): ValidationInfo | null {
-    if (value == undefined || value.trim() === "") {
-        return {
-            message: "Поле должно быть заполнено",
-            type: "submit",
-        };
-    }
-
-    return null;
-}

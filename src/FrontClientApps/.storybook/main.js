@@ -1,22 +1,18 @@
 const path = require("path");
 const fs = require("fs");
-const webpack = require("@storybook/core/node_modules/webpack");
-const babelConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../babel.config.json")));
+
+const babelConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../.babelrc")));
 
 module.exports = {
     stories: ["../stories/**/*.stories.tsx"],
-    addons: ["@storybook/addon-actions/register", "@storybook/addon-knobs/register"],
-    webpackFinal: async (config, { configType }) => {
-        config.module.rules = [];
-        config.module.rules.push(
+    addons: ["@storybook/addon-actions/register"],
+    webpackFinal: config => {
+        config.module.rules = [
             {
-                test: [/\.jsx?$/, /\.tsx?$/],
+                test: /\.[jt]sx?$/,
                 use: {
                     loader: "babel-loader",
-                    options: {
-                        cacheDirectory: path.join(__dirname, "..", ".babel-cache", "storybook"),
-                        ...babelConfig,
-                    },
+                    options: babelConfig,
                 },
                 exclude: /node_modules/,
             },
@@ -29,22 +25,15 @@ module.exports = {
                     "less-loader",
                 ],
             },
-
             {
                 test: /\.(woff|woff2|eot|ttf|svg|gif|png)$/,
                 loader: "url-loader",
             },
-            {
-                test: /\.html$/,
-                loader: "html-loader",
-            },
-        );
+        ];
 
-        config.resolve.modules = ["node_modules"];
         config.resolve.extensions = [".js", ".jsx", ".ts", ".tsx"];
         config.resolve.alias = config.resolve.alias || {};
         config.resolve.alias.Domain = path.join(__dirname, "../src/Domain");
-        config.plugins.push(new webpack.NamedModulesPlugin());
 
         return config;
     },

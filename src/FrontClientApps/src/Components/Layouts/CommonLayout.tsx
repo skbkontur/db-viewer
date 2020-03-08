@@ -3,7 +3,7 @@ import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Loader from "@skbkontur/react-ui/Loader";
 import Sticky from "@skbkontur/react-ui/Sticky";
 import { LocationDescriptor } from "history";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import cn from "./CommonLayout.less";

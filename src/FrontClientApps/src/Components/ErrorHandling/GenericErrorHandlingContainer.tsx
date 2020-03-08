@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { ApiError } from "Domain/ApiBase/ApiError";
 
 export interface ErrorHandlingContainerProps {

@@ -1,5 +1,5 @@
 import { Fit, Fixed, RowStack } from "@skbkontur/react-stack-layout";
-import * as React from "react";
+import React from "react";
 
 import cn from "./FormRow.less";
 

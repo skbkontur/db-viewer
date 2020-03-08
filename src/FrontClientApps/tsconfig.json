@@ -28,18 +28,7 @@
             "Commons/*": ["src/Commons/*"],
             "*": ["local_modules/*", "typings/*"],
             "assets/*":["assets/*"]
-        },
-        "plugins": [
-            {
-                "name": "tslint-language-service",
-                "alwaysShowRuleFailuresAsWarnings": false,
-                "ignoreDefinitionFiles": true,
-                "configFile": "./tslint-webstorm-local.json",
-                "disableNoUnusedVariableRule": true,
-                "supressWhileTypeErrorsPresent": false,
-                "mockTypeScriptVersion": false
-            }
-        ]
+        }
     },
     "include": [
         "src/**/*",

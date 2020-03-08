@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard";
-import * as React from "react";
+import React from "react";
 
 import CopyIcon from "@skbkontur/react-icons/Copy";
 import Link from "@skbkontur/react-ui/Link";

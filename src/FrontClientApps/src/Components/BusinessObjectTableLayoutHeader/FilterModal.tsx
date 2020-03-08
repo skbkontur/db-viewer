@@ -3,7 +3,7 @@ import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
-import * as React from "react";
+import React from "react";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Property } from "Domain/BusinessObjects/Property";
 

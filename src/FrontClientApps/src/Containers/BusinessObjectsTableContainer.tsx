@@ -4,7 +4,7 @@ import Loader from "@skbkontur/react-ui/Loader";
 import Paging from "@skbkontur/react-ui/Paging";
 import _ from "lodash";
 import qs from "qs";
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";

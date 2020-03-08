@@ -15,13 +15,6 @@
             margin: @base-size 0;
             color: @double-muted-text;
 
-            &.disabled {
-                span:hover {
-                    text-decoration: none;
-                    cursor: default;
-                }
-            }
-
             span {
                 margin-right: @base-size * 4;
             }
@@ -38,6 +31,13 @@
 
                 span:last-child {
                     margin-right: 0;
+                }
+            }
+
+            &.disabled {
+                span:hover {
+                    text-decoration: none;
+                    cursor: default;
                 }
             }
         }

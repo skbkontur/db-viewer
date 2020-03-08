@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
 import { StringUtils } from "Domain/Utils/StringUtils";

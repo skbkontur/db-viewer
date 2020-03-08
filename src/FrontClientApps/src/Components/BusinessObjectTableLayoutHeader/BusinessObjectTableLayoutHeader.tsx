@@ -8,7 +8,7 @@ import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import Tooltip from "@skbkontur/react-ui/Tooltip";
 import _ from "lodash";
-import * as React from "react";
+import React from "react";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { Object } from "Domain/Api/Object";
