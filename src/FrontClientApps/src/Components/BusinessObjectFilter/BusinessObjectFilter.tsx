@@ -3,6 +3,7 @@ import { tooltip, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import React from "react";
+
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Property } from "Domain/BusinessObjects/Property";

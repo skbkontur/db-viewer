@@ -2,8 +2,6 @@ import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectSt
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { Guid } from "Domain/DataTypes/Guid";
 
-import { Object } from "./Object";
-
 import { IBusinessObjectsApi } from "./BusinessObjectsApi";
 import { BusinessObjectDescription } from "./DataTypes/BusinessObjectDescription";
 import { BusinessObjectSearchRequest } from "./DataTypes/BusinessObjectSearchRequest";
@@ -60,7 +58,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectsCount(
         businessObjectIdentifier: string,
         query: BusinessObjectSearchRequest
-    ): Promise<SearchResult<Object>> {
+    ): Promise<SearchResult<object>> {
         return {
             countLimit: 100000,
             count: 0,
@@ -88,7 +86,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         query: BusinessObjectSearchRequest,
         offset: number,
         count: number
-    ): Promise<SearchResult<Object>> {
+    ): Promise<SearchResult<object>> {
         return {
             items: [
                 {
@@ -145,7 +143,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjects(
         businessObjectIdentifier: string,
         query: BusinessObjectSearchRequest
-    ): Promise<Object> {
+    ): Promise<object> {
         return {
             id: "3821a146-bf0d-4ca4-b69e-ebc6365582da",
             scopeId: "0ba4bc7f-1137-44ab-b4e7-9a6181b964f4",
@@ -158,7 +156,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         scopeId: string,
         id: string,
         arrayIndex: string
-    ): Promise<Object> {
+    ): Promise<object> {
         return {};
     }
 
@@ -217,7 +215,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         };
     }
 
-    public async deleteBusinessObjects(businessObjectIdentifier: string, obj: Object): Promise<void> {
+    public async deleteBusinessObjects(businessObjectIdentifier: string, obj: object): Promise<void> {
         // noop
     }
 
@@ -230,7 +228,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         // noop
     }
 
-    public async updateBusinessObjects(businessObjectIdentifier: string, obj: Object): Promise<void> {
+    public async updateBusinessObjects(businessObjectIdentifier: string, obj: object): Promise<void> {
         // noop
     }
 

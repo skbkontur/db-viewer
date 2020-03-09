@@ -1,14 +1,14 @@
 import moment from "moment";
 import React from "react";
+
 import { ICanBeValidated } from "Domain/DataTypes/DateTimeRange";
 import { Time, TimeZone } from "Domain/DataTypes/Time";
 import { DateUtils } from "Domain/Utils/DateUtils";
 import { TimeUtils } from "Domain/Utils/TimeUtils";
 
 import { DatePicker } from "./DatePicker";
-import { TimePicker } from "./TimePicker";
-
 import cn from "./DateTimePicker.less";
+import { TimePicker } from "./TimePicker";
 
 interface DateTimePickerProps {
     error?: boolean;

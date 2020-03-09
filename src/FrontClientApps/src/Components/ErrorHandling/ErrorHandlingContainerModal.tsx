@@ -72,15 +72,14 @@ export class ErrorHandlingContainerModal extends React.Component<
                         )}
                         <div data-tid="CallToActionInErrorMessage">{children}</div>
                     </div>
-                    {showStack &&
-                        !showMessageFromServerByDefault && (
-                            <div>
-                                <hr />
-                                <div className={cn("error-message-wrap")} data-tid="ErrorMessage">
-                                    {message}
-                                </div>
+                    {showStack && !showMessageFromServerByDefault && (
+                        <div>
+                            <hr />
+                            <div className={cn("error-message-wrap")} data-tid="ErrorMessage">
+                                {message}
                             </div>
-                        )}
+                        </div>
+                    )}
                     {showStack && (
                         <div className={cn("stack-traces")}>
                             {stack && (

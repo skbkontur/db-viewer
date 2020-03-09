@@ -21,7 +21,14 @@ module.exports = {
                 loaders: [
                     "classnames-loader",
                     "style-loader",
-                    "css-loader?localIdentName=[name]-[local]-[hash:base64:4]",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName: "[name]-[local]-[hash:base64:4]",
+                            },
+                        },
+                    },
                     "less-loader",
                 ],
             },
@@ -33,6 +40,8 @@ module.exports = {
 
         config.resolve.extensions = [".js", ".jsx", ".ts", ".tsx"];
         config.resolve.alias = config.resolve.alias || {};
+        config.resolve.alias.Components = path.join(__dirname, "../src/Components");
+        config.resolve.alias.Containers = path.join(__dirname, "../src/Containers");
         config.resolve.alias.Domain = path.join(__dirname, "../src/Domain");
 
         return config;

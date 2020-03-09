@@ -3,8 +3,8 @@ import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+
 import { Sort } from "Domain/Api/DataTypes/Sort";
-import { Object } from "Domain/Api/Object";
 import { Property } from "Domain/BusinessObjects/Property";
 import { StringUtils } from "Domain/Utils/StringUtils";
 
@@ -16,10 +16,10 @@ import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 import cn from "./BusinessObjectsTable.less";
 
 interface BusinessObjectsTableProps {
-    items: null | undefined | Object[];
+    items: null | undefined | object[];
     properties: Property[];
     onChangeSortClick: (name: string) => void;
-    onDetailsClick: (item: Object) => string;
+    onDetailsClick: (item: object) => string;
     onDeleteClick: (index: number) => Promise<void>;
     currentSort: Nullable<Sort>;
     allowDelete: boolean;
@@ -139,7 +139,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
         );
     }
 
-    public renderControls(item: Object, index: number): JSX.Element[] {
+    public renderControls(item: object, index: number): JSX.Element[] {
         const arr: JSX.Element[] = [];
         let key = 0;
         let pathToItem = "";

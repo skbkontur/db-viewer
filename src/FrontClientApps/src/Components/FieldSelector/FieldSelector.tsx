@@ -1,22 +1,23 @@
 import SearchIcon from "@skbkontur/react-icons/Search";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
+import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
 import React from "react";
+
 import { StringUtils } from "Domain/Utils/StringUtils";
 
 import cn from "./FieldSelector.less";
 
 const MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS = 30;
 
-export interface IFieldDefinition {
+export interface FieldDefinition {
     name: string;
     caption: string;
 }
 
 interface FieldSelectorProps {
-    fieldDefinitions: IFieldDefinition[];
+    fieldDefinitions: FieldDefinition[];
     hiddenFields: string[];
     onShowField: (fieldNames: string[]) => void;
     onHideField: (fieldNames: string[]) => void;
@@ -36,7 +37,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         showSelectAllButton: false,
     };
 
-    public static filterFieldDefintionsByText(fieldDefinitions: IFieldDefinition[], text: string): IFieldDefinition[] {
+    public static filterFieldDefintionsByText(fieldDefinitions: FieldDefinition[], text: string): FieldDefinition[] {
         if (!text) {
             return fieldDefinitions;
         }
@@ -63,7 +64,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         }
     }
 
-    public handleSelectAll = (filteredFields: IFieldDefinition[]) => {
+    public handleSelectAll = (filteredFields: FieldDefinition[]) => {
         const { onShowField, onHideField } = this.props;
         const fields = filteredFields.map(x => x.name);
         if (this.isAllFieldSelected(filteredFields)) {
@@ -73,7 +74,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         }
     };
 
-    public renderFieldSelector(fieldDefinition: IFieldDefinition): JSX.Element {
+    public renderFieldSelector(fieldDefinition: FieldDefinition): JSX.Element {
         const { hiddenFields } = this.props;
 
         return (
@@ -82,15 +83,13 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                     data-tid={StringUtils.capitalizeFirstLetter(fieldDefinition.name.replace(".", "_"))}
                     checked={!hiddenFields.includes(fieldDefinition.name)}
                     onChange={(e, checked) => this.handleToogle(checked, fieldDefinition.name)}>
-                    <div className={cn("content")}>
-                        {fieldDefinition.caption}
-                    </div>
+                    <div className={cn("content")}>{fieldDefinition.caption}</div>
                 </Checkbox>
             </div>
         );
     }
 
-    public isAllFieldSelected = (fieldDefinition: IFieldDefinition[]): boolean => {
+    public isAllFieldSelected = (fieldDefinition: FieldDefinition[]): boolean => {
         const { hiddenFields } = this.props;
         return !fieldDefinition.map(x => x.name).some(x => hiddenFields.includes(x));
     };
@@ -126,16 +125,14 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                     {fieldDefinitionsFiltered.length === 0 ? <Fit>{nothingToDisplay}</Fit> : null}
 
                     {fieldDefinitionsFiltered
-                        .reduce<[IFieldDefinition[], IFieldDefinition[], IFieldDefinition[]]>(FieldSelector.byColumns, [
+                        .reduce<[FieldDefinition[], FieldDefinition[], FieldDefinition[]]>(FieldSelector.byColumns, [
                             [],
                             [],
                             [],
                         ])
                         .filter(column => column.some(x => x != null))
                         .map((column, key) => (
-                            <Fit key={key}>
-                                {column.map(field => field != null && this.renderFieldSelector(field))}
-                            </Fit>
+                            <Fit key={key}>{column.map(field => field != null && this.renderFieldSelector(field))}</Fit>
                         ))}
                 </RowStack>
             </div>

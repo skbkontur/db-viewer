@@ -1,12 +1,12 @@
-import { Lens, pathLens, PropertyPicker } from "Domain/lens";
 import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
+import { Lens, pathLens, PropertyPicker } from "Domain/lens";
 
 import {
     BooleanMapper,
     DateTimeRangeMapper,
     DefaultMapper,
     EnumMapper,
-    IMapper,
+    Mapper,
     IntegerMapper,
     SetMapper,
     SetMapperWithNulls,
@@ -17,18 +17,17 @@ import {
 } from "./Mappers";
 import { Parser, QueryStringMapping, Stringifier } from "./QueryStringMapping";
 
-export type StringSimpleExpression = StringSimpleExpression;
-
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IPropertyConfigurator<T> {
     createParser(): Parser<T>;
     createStringifier(): Stringifier<T>;
 }
 
 class PropertyConfigurator<T extends {}, TProperty> implements IPropertyConfigurator<T> {
-    public mapper: IMapper<TProperty>;
+    public mapper: Mapper<TProperty>;
     public lens: Lens<T, Nullable<TProperty>>;
 
-    public constructor(propertyPicker: PropertyPicker<T, Nullable<TProperty>>, mapper: IMapper<TProperty>) {
+    public constructor(propertyPicker: PropertyPicker<T, Nullable<TProperty>>, mapper: Mapper<TProperty>) {
         this.lens = pathLens(propertyPicker);
         this.mapper = mapper;
     }
@@ -47,7 +46,7 @@ export class QueryStringMappingBuilder<T extends {}> {
 
     public mapTo<TProperty>(
         propertyPicker: PropertyPicker<T, Nullable<TProperty>>,
-        mapper: IMapper<TProperty>
+        mapper: Mapper<TProperty>
     ): QueryStringMappingBuilder<T> {
         const result = new PropertyConfigurator<T, TProperty>(propertyPicker, mapper);
         this.configurators.push(result);
@@ -65,7 +64,7 @@ export class QueryStringMappingBuilder<T extends {}> {
         propertyPicker: PropertyPicker<T, Nullable<Array<TEnum | null>>>,
         queryStringParameterName: string,
         enumValues: { [key: string]: TEnum },
-        allowNegationOperator: boolean = false
+        allowNegationOperator = false
     ): QueryStringMappingBuilder<T> {
         return this.mapTo(
             propertyPicker,
@@ -77,7 +76,7 @@ export class QueryStringMappingBuilder<T extends {}> {
         propertyPicker: PropertyPicker<T, Nullable<TEnum[]>>,
         queryStringParameterName: string,
         enumValues: { [key: string]: TEnum },
-        allowNegationOperator: boolean = false
+        allowNegationOperator = false
     ): QueryStringMappingBuilder<T> {
         return this.mapTo(propertyPicker, new SetMapper(queryStringParameterName, enumValues, allowNegationOperator));
     }

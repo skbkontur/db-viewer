@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { suite, test } from "mocha-typescript";
+
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Sort } from "Domain/Api/DataTypes/Sort";
-
 import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
 import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";

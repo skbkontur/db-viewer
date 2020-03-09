@@ -89,28 +89,25 @@ export class BusinessObjectCustomRender extends React.Component<
                         : customRender(target, path, objectType)}
                 </Fit>
                 <Fill />
-                {canEdit &&
-                    !editableMode && (
-                        <Fit>
-                            <Link icon={<EditIcon />} onClick={this.handleClick} data-tid="Edit" />
-                        </Fit>
-                    )}
-                {canEdit &&
-                    editableMode && (
-                        <Fit>
-                            <Link icon={<OkIcon />} onClick={this.handleSaveChanges} data-tid="Save">
-                                Сохранить
-                            </Link>
-                        </Fit>
-                    )}
-                {canEdit &&
-                    editableMode && (
-                        <Fit>
-                            <Link icon={<UndoIcon />} onClick={this.handleCancelChanges} data-tid="Cancel">
-                                Отменить
-                            </Link>
-                        </Fit>
-                    )}
+                {canEdit && !editableMode && (
+                    <Fit>
+                        <Link icon={<EditIcon />} onClick={this.handleClick} data-tid="Edit" />
+                    </Fit>
+                )}
+                {canEdit && editableMode && (
+                    <Fit>
+                        <Link icon={<OkIcon />} onClick={this.handleSaveChanges} data-tid="Save">
+                            Сохранить
+                        </Link>
+                    </Fit>
+                )}
+                {canEdit && editableMode && (
+                    <Fit>
+                        <Link icon={<UndoIcon />} onClick={this.handleCancelChanges} data-tid="Cancel">
+                            Отменить
+                        </Link>
+                    </Fit>
+                )}
             </RowStack>
         );
     }

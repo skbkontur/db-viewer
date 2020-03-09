@@ -6,6 +6,7 @@ import _ from "lodash";
 import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
@@ -13,7 +14,6 @@ import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObje
 import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
 import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
-import { Object } from "Domain/Api/Object";
 import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
 import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
 import { Property } from "Domain/BusinessObjects/Property";
@@ -21,9 +21,9 @@ import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping
 import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
 import { StringUtils } from "Domain/Utils/StringUtils";
 
-import { BusinessObjectsTable } from "../Components/BusinessObjectsTable/BusinessObjectsTable";
 import { BusinessObjectModal } from "../Components/BusinessObjectModal/BusinessObjectModal";
 import { BusinessObjectTableLayoutHeader } from "../Components/BusinessObjectTableLayoutHeader/BusinessObjectTableLayoutHeader";
+import { BusinessObjectsTable } from "../Components/BusinessObjectsTable/BusinessObjectsTable";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
@@ -35,7 +35,7 @@ interface ObjectTableProps extends RouteComponentProps {
 }
 
 interface ObjectTableState {
-    objects: Nullable<SearchResult<Object>>;
+    objects: Nullable<SearchResult<object>>;
     loading: boolean;
     showModal: boolean;
     showModalFilter: boolean;
@@ -45,7 +45,7 @@ interface ObjectTableState {
     query: BusinessObjectSearchQuery;
     downloading: boolean;
     showDownloadModal: boolean;
-    downloadCount?: SearchResult<Object>;
+    downloadCount?: SearchResult<object>;
 }
 
 const businessObjectsQueryMapping: QueryStringMapping<BusinessObjectSearchQuery> = new QueryStringMappingBuilder<
@@ -137,17 +137,15 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>
                         <ColumnStack gap={4}>
-                            {showModal &&
-                                metaInformation && (
-                                    <BusinessObjectModal
-                                        objectName={metaInformation.identifier}
-                                        showIndex={
-                                            metaInformation.storageType ===
-                                            BusinessObjectStorageType.ArrayOfObjectsPerRow
-                                        }
-                                        onOpenClick={this.redirectFromModal}
-                                    />
-                                )}
+                            {showModal && metaInformation && (
+                                <BusinessObjectModal
+                                    objectName={metaInformation.identifier}
+                                    showIndex={
+                                        metaInformation.storageType === BusinessObjectStorageType.ArrayOfObjectsPerRow
+                                    }
+                                    onOpenClick={this.redirectFromModal}
+                                />
+                            )}
                             <Fit>
                                 {objects && this.renderItemsCount(offset, count, objects.count, objects.countLimit)}
                             </Fit>
@@ -279,7 +277,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     };
 
-    private readonly getDetailsUrl = (item: Object): string => {
+    private readonly getDetailsUrl = (item: object): string => {
         const meta = this.state.metaInformation;
         const typeMeta = meta && meta.typeMetaInformation;
         const properties = (typeMeta && typeMeta.properties) || [];
@@ -315,7 +313,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     private renderPageNavigation(): null | JSX.Element {
-        const { objects, query: { offset, count } } = this.state;
+        const {
+            objects,
+            query: { offset, count },
+        } = this.state;
         if (objects == null) {
             return null;
         }
@@ -387,6 +388,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 { conditions: conditions, sort: sort },
                 hiddenColumns
             );
+            // eslint-disable-next-line no-constant-condition
             while (true) {
                 const downloadStatus = await businessObjectsApi.getBusinessObjectsDownloadStatus(
                     metaInformation.identifier,

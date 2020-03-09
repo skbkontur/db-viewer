@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React from "react";
 import { Link } from "react-router-dom";
+
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { StringUtils } from "Domain/Utils/StringUtils";
 

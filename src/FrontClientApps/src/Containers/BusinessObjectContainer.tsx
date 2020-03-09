@@ -3,6 +3,7 @@ import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import qs from "qs";
 import React from "react";
+
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
@@ -94,7 +95,7 @@ class BusinessObjectContainerInternal extends React.Component<
         return null;
     }
 
-    public async handleChange(value: Object): Promise<void> {
+    public async handleChange(value: object): Promise<void> {
         const { objectMeta } = this.state;
         if (objectMeta != null) {
             await this.props.businessObjectsApi.updateBusinessObjects(objectMeta.identifier, value);
@@ -192,25 +193,23 @@ class BusinessObjectContainerInternal extends React.Component<
                     <CommonLayout.Content>
                         <ColumnStack gap={4} block>
                             <Fit style={{ maxWidth: "100%" }}>
-                                {objectInfo != null &&
-                                    objectMeta != null && (
-                                        <BusinessObjectViewer
-                                            objectInfo={objectInfo}
-                                            objectMeta={objectMeta}
-                                            allowEdit={allowEdit}
-                                            onChange={value => this.handleChange(value)}
-                                        />
-                                    )}
+                                {objectInfo != null && objectMeta != null && (
+                                    <BusinessObjectViewer
+                                        objectInfo={objectInfo}
+                                        objectMeta={objectMeta}
+                                        allowEdit={allowEdit}
+                                        onChange={value => this.handleChange(value)}
+                                    />
+                                )}
                             </Fit>
                         </ColumnStack>
                     </CommonLayout.Content>
-                    {this.state.showConfirmModal &&
-                        allowEdit && (
-                            <ConfirmDeleteObjectModal
-                                onDelete={this.handleConfirmDelete}
-                                onCancel={this.handleCancelDelete}
-                            />
-                        )}
+                    {this.state.showConfirmModal && allowEdit && (
+                        <ConfirmDeleteObjectModal
+                            onDelete={this.handleConfirmDelete}
+                            onCancel={this.handleCancelDelete}
+                        />
+                    )}
                 </CommonLayout.ContentLoader>
             </CommonLayout>
         );

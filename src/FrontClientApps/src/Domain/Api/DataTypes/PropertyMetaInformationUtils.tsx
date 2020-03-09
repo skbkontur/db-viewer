@@ -1,9 +1,14 @@
 import _ from "lodash";
+
 import { Property } from "Domain/BusinessObjects/Property";
 import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { PropertyMetaInformation } from "./PropertyMetaInformation";
 import { TypeMetaInformation } from "./TypeMetaInformation";
+
+function getTypeName(prevName: string, currentName: string, isArray = false): string {
+    return `${prevName !== "" ? prevName + "." : ""}${currentName}${isArray ? ".[]" : ""}`;
+}
 
 export class PropertyMetaInformationUtils {
     public static getType(type: Nullable<TypeMetaInformation>): Nullable<string> {
@@ -19,14 +24,13 @@ export class PropertyMetaInformationUtils {
         return type.typeName;
     }
 
-    public static getProperties(properties: PropertyMetaInformation[], prevName: string = ""): Property[] {
+    public static getProperties(properties: PropertyMetaInformation[], prevName = ""): Property[] {
         const props: Property[] = [];
         properties.map(item => {
             if (item.type != null && item.type.properties != null) {
-                props.push(this.getProperties(
-                    item.type.properties,
-                    prevName ? `${prevName}.${item.name}` : item.name
-                ) as any);
+                props.push(
+                    this.getProperties(item.type.properties, prevName ? `${prevName}.${item.name}` : item.name) as any
+                );
             } else {
                 props.push({
                     name: prevName ? `${prevName}.${item.name}` : item.name,
@@ -40,7 +44,7 @@ export class PropertyMetaInformationUtils {
 
     public static getTypes(
         properties: any | null | undefined | PropertyMetaInformation[],
-        prevName: string = ""
+        prevName = ""
     ): null | undefined | Property[] {
         const props: Property[] = [];
         if (properties == null) {
@@ -92,8 +96,4 @@ export class PropertyMetaInformationUtils {
         }
         return typeObj ? typeObj.type : null;
     }
-}
-
-function getTypeName(prevName: string, currentName: string, isArray: boolean = false): string {
-    return `${prevName !== "" ? prevName + "." : ""}${currentName}${isArray ? ".[]" : ""}`;
 }

@@ -4,6 +4,7 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import React from "react";
+
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Property } from "Domain/BusinessObjects/Property";
 

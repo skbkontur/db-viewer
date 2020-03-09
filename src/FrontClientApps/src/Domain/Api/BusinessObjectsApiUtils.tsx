@@ -1,4 +1,5 @@
 import React from "react";
+
 import { BusinessObjectsApiImpl, IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { Guid } from "Domain/DataTypes/Guid";
 
@@ -25,7 +26,7 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export const businessObjectsApi =
     process.env.API === "fake"
         ? // tslint:disable-next-line:no-require-imports
-          new (require("./BusinessObjectsApiFake")).BusinessObjectsApiFake()
+          new (require("./BusinessObjectsApiFake").BusinessObjectsApiFake)()
         : new BusinessObjectsApiImpl(businessObjectsApiPrefix);
 
 const defaultContext: BusinessObjectsApiProps = { businessObjectsApi: businessObjectsApi };
@@ -37,7 +38,11 @@ export function withBusinessObjectsApi<TProps extends BusinessObjectsApiProps>(
     return function withBusinessObjectsApiWrapper(props: Omit<TProps, keyof BusinessObjectsApiProps>): JSX.Element {
         return (
             <BusinessObjectsApiContext.Consumer>
-                {context => <Comp {...props} {...context} />}
+                {context => (
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                    // @ts-ignore
+                    <Comp {...props} {...context} />
+                )}
             </BusinessObjectsApiContext.Consumer>
         );
     };

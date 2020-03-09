@@ -1,16 +1,16 @@
-export interface IApiErrorInfo {
+export interface ApiErrorInfo {
     readonly message: string;
     readonly statusCode: number;
     readonly serverStackTrace: null | undefined | string;
     readonly serverErrorType: null | undefined | string;
-    readonly innerErrors: null | undefined | (any[]);
+    readonly innerErrors: null | undefined | any[];
 }
 
-export class ApiError extends Error implements IApiErrorInfo {
+export class ApiError extends Error implements ApiErrorInfo {
     public statusCode: number;
     public serverStackTrace: null | undefined | string;
     public serverErrorType: null | undefined | string;
-    public innerErrors: null | undefined | (any[]);
+    public innerErrors: null | undefined | any[];
     public responseAsText: string;
 
     public constructor(
@@ -19,7 +19,7 @@ export class ApiError extends Error implements IApiErrorInfo {
         statusCode: number,
         type?: null | undefined | string,
         stackTrace?: null | undefined | string,
-        innerErrors?: null | undefined | (any[])
+        innerErrors?: null | undefined | any[]
     ) {
         super(message);
         this.responseAsText = responseAsText;

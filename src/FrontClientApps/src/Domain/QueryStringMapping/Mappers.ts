@@ -5,12 +5,12 @@ import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
 
 export type QueryObject = any;
 
-export interface IMapper<T> {
+export interface Mapper<T> {
     parse(parsedQueryString: QueryObject): Nullable<T>;
     stringify(parsedQueryString: QueryObject, value: Nullable<T>): QueryObject;
 }
 
-export class PlainValueMapper<T> implements IMapper<T> {
+export class PlainValueMapper<T> implements Mapper<T> {
     public parameterName: string;
 
     public constructor(queryStringParameterName: string) {
@@ -260,7 +260,7 @@ export class DateTimeRangeMapper {
     }
 }
 
-export class DefaultMapper<T> implements IMapper<T> {
+export class DefaultMapper<T> implements Mapper<T> {
     public defaultValue: T;
 
     public constructor(defaultValue: T) {
@@ -433,6 +433,7 @@ export class StringSimpleExpressionMapper extends PlainValueMapper<Nullable<Stri
             if (parameterValue.startsWith("-")) {
                 return {
                     operator: 1,
+                    // eslint-disable-next-line no-useless-escape
                     value: parameterValue.replace(/^\-/, ""),
                 };
             }

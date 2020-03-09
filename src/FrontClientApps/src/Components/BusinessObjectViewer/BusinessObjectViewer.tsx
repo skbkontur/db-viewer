@@ -1,4 +1,5 @@
 import React from "react";
+
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
 import { StringUtils } from "Domain/Utils/StringUtils";
@@ -8,9 +9,9 @@ import { Accordion } from "../Accordion/Accordion";
 import { BusinessObjectCustomRender } from "./BusinessObjectCustomRender";
 
 interface BusinessObjectViewerProps {
-    objectInfo: Object;
+    objectInfo: object;
     objectMeta: BusinessObjectDescription;
-    onChange: (x0: Object) => Promise<void>;
+    onChange: (x0: object) => Promise<void>;
     allowEdit: boolean;
 }
 

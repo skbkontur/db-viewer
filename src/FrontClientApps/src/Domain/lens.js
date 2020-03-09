@@ -1,8 +1,5 @@
+/* eslint-disable no-useless-escape */
 import _ from "lodash";
-
-export const idx = propertyPickerFunction => {
-    return view(pathLens(propertyPickerFunction));
-};
 
 export function pathLens(propertyPicker) {
     const fieldsString = /return [^\{\}\(\)]*?\.([^\{\}\(\)]*?)\s*[;\}]/.exec(propertyPicker.toString())[1];
@@ -33,13 +30,19 @@ export function getPath(propertyPicker) {
     if (fieldsString != undefined && fieldsString[2] == undefined) {
         return [];
     }
-    return fieldsString[2].replace(/\[/g, '.').replace(/]/, '').split(".");
-
+    return fieldsString[2]
+        .replace(/\[/g, ".")
+        .replace(/]/, "")
+        .split(".");
 }
 
 export function view(lens, target) {
     return lens.get(target);
 }
+
+export const idx = propertyPickerFunction => {
+    return view(pathLens(propertyPickerFunction));
+};
 
 export function set(lens, value, target) {
     return lens.set(target, value);

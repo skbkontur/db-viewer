@@ -1,40 +1,36 @@
 {
-    "compilerOptions": {
-        "allowJs": false,
-        "allowSyntheticDefaultImports": true,
-        "baseUrl": "./",
-        "rootDir": "./",
-        "jsx": "react",
-        "module": "esnext",
-        "target": "ES2015",
-        "moduleResolution": "node",
-        "noEmit": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": false,
-        "pretty": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "strictNullChecks": true,
-        "maxNodeModuleJsDepth": 5,
-        "experimentalDecorators": true,
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "noImplicitReturns": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "strictFunctionTypes": true,
-        "lib": ["es2015", "dom", "esnext", "dom.iterable"],
-        "paths": {
-            "Domain/*": ["src/Domain/*"],
-            "Commons/*": ["src/Commons/*"],
-            "*": ["local_modules/*", "typings/*"],
-            "assets/*":["assets/*"]
-        }
-    },
-    "include": [
-        "src/**/*",
-        "stories/**/*",
-        "tests/**/*",
-        "story-tests/**/*",
-        "typings/**/*"
-    ]
+  "compilerOptions": {
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "rootDir": "./",
+    "jsx": "react",
+    "module": "esnext",
+    "target": "ES2015",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "pretty": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "maxNodeModuleJsDepth": 5,
+    "strict": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "lib": ["es2015", "dom", "esnext", "dom.iterable"],
+    "paths": {
+      "Components/*": ["src/Components/*"],
+      "Containers/*": ["src/Containers/*"],
+      "Domain/*": ["src/Domain/*"],
+      "*": ["typings/*"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "stories/**/*",
+    "tests/**/*",
+    "typings/**/*"
+  ]
 }

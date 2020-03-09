@@ -1,4 +1,5 @@
 import React from "react";
+
 import { ApiError } from "Domain/ApiBase/ApiError";
 
 export interface ErrorHandlingContainerProps {
@@ -46,7 +47,7 @@ export class GenericErrorHandlingContainer extends React.Component<
         showModal: false,
     };
 
-    public oldOnunhandledrejection: (e: PromiseRejectionEvent, ...rest: any[]) => void;
+    public oldOnunhandledrejection: null | ((e: PromiseRejectionEvent, ...rest: any[]) => void) = null;
 
     public componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         this.setState({
@@ -58,7 +59,6 @@ export class GenericErrorHandlingContainer extends React.Component<
     }
 
     public componentDidMount() {
-        // @ts-ignore
         this.oldOnunhandledrejection = window.onunhandledrejection;
         window.onunhandledrejection = (e: any, ...restArgs: any[]) => {
             if (this.oldOnunhandledrejection) {

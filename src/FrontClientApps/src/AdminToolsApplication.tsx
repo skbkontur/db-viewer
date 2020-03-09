@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 
-import { ObjectTableContainer } from "./Containers/BusinessObjectsTableContainer";
 import { BusinessObjectContainer } from "./Containers/BusinessObjectContainer";
 import { BusinessObjectTypesContainer } from "./Containers/BusinessObjectTypesContainer";
+import { ObjectTableContainer } from "./Containers/BusinessObjectsTableContainer";
 
 export function AdminToolsApplication({ match }: RouteComponentProps): JSX.Element {
     return (

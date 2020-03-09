@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 interface WithStateProps<S> {
     initial: S;
@@ -21,6 +21,7 @@ export class WithState<S> extends React.Component<WithStateProps<S>, WithStateSt
         return this.props.children(
             this.state.state,
             (x: Partial<S>) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
                 // @ts-ignore
                 this.setState({ state: { ...this.state.state, ...x } });
             },

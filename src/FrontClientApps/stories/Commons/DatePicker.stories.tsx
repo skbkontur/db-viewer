@@ -1,6 +1,7 @@
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
-import * as React from "react";
+import React from "react";
+
 import { TimeUtils } from "Domain/Utils/TimeUtils";
 
 import { DatePicker } from "../../src/Components/DateTimeRangePicker/DatePicker";
@@ -20,8 +21,7 @@ storiesOf("DatePicker", module)
                     value={state.value}
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}
@@ -35,8 +35,7 @@ storiesOf("DatePicker", module)
                     timeZone={TimeUtils.TimeZones.Moscow}
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}
@@ -50,8 +49,7 @@ storiesOf("DatePicker", module)
                     disabled
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}
@@ -65,8 +63,7 @@ storiesOf("DatePicker", module)
                     error
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}

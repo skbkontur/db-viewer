@@ -9,9 +9,9 @@ import Modal from "@skbkontur/react-ui/Modal";
 import Tooltip from "@skbkontur/react-ui/Tooltip";
 import _ from "lodash";
 import React from "react";
+
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
-import { Object } from "Domain/Api/Object";
 import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
 import { Property } from "Domain/BusinessObjects/Property";
 
@@ -31,7 +31,7 @@ interface BusinessObjectTableLayoutHeaderProps {
     downloading: boolean;
     showModalFilter: boolean;
     showDownloadModal: boolean;
-    downloadCount?: SearchResult<Object>;
+    downloadCount?: SearchResult<object>;
 }
 
 interface BusinessObjectTableLayoutHeaderState {
@@ -145,35 +145,29 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
                         Выгрузить всё в Excel
                     </Link>
                 </Fit>
-                {showFilterModal &&
-                    properties != null && (
-                        <FilterModal
-                            onClose={this.hanldeCloseFilterModal}
-                            modalEditingConditions={modalEditingConditions}
-                            tableColumns={properties.filter(x => x.indexed)}
-                            onChangeFilter={x => this.setState({ modalEditingConditions: x })}
-                            onApplyFilter={this.handleApplyFilter}
-                        />
-                    )}
-                {showDownloadModal &&
-                    downloadCount && (
-                        <Modal
-                            width={500}
-                            onClose={onDownloadAbort}
-                            ignoreBackgroundClick
-                            data-tid="DownloadLimitModal">
-                            <Modal.Header data-tid="Header">Слишком большой список</Modal.Header>
-                            <Modal.Body data-tid="Body">
-                                Мы умеем выгружать не более {downloadCount.countLimit} объектов из этой таблицы.
-                                Уточните запрос с помощью фильтров, чтобы записей стало меньше.
-                            </Modal.Body>
-                            <Modal.Footer panel>
-                                <Button data-tid="Cancel" onClick={onDownloadAbort}>
-                                    Понятно
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-                    )}
+                {showFilterModal && properties != null && (
+                    <FilterModal
+                        onClose={this.hanldeCloseFilterModal}
+                        modalEditingConditions={modalEditingConditions}
+                        tableColumns={properties.filter(x => x.indexed)}
+                        onChangeFilter={x => this.setState({ modalEditingConditions: x })}
+                        onApplyFilter={this.handleApplyFilter}
+                    />
+                )}
+                {showDownloadModal && downloadCount && (
+                    <Modal width={500} onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
+                        <Modal.Header data-tid="Header">Слишком большой список</Modal.Header>
+                        <Modal.Body data-tid="Body">
+                            Мы умеем выгружать не более {downloadCount.countLimit} объектов из этой таблицы. Уточните
+                            запрос с помощью фильтров, чтобы записей стало меньше.
+                        </Modal.Body>
+                        <Modal.Footer panel>
+                            <Button data-tid="Cancel" onClick={onDownloadAbort}>
+                                Понятно
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                )}
             </RowStack>
         );
     }
