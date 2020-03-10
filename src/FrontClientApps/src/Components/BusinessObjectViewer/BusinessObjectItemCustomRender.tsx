@@ -27,7 +27,7 @@ export function customRender(target: any, path: string[], objectType?: string): 
                 return (
                     <Link
                         data-tid="GoToLink"
-                        to={`/AdminTools/BusinessObjects/${getBaseOnObjectType(objectType)}/${boxId}/${entityId}`}>
+                        to={`/BusinessObjects/${getBaseOnObjectType(objectType)}/${boxId}/${entityId}`}>
                         {entityId}
                     </Link>
                 );
@@ -40,7 +40,7 @@ export function customRender(target: any, path: string[], objectType?: string): 
         const orderId = getByPath(target, ["orderId"]);
         if (orderId != null) {
             return (
-                <Link data-tid="GoToLink" to={`/AdminTools/BusinessObjects/Order_Web/${scopeId}/${orderId}`}>
+                <Link data-tid="GoToLink" to={`/BusinessObjects/Order_Web/${scopeId}/${orderId}`}>
                     {orderId}
                 </Link>
             );
@@ -59,9 +59,7 @@ export function customRender(target: any, path: string[], objectType?: string): 
             const objectId = id.objectId;
             if (typeof webObjectName === "string" && typeof scopeId === "string" && typeof objectId === "string") {
                 return (
-                    <Link
-                        data-tid="GoToLink"
-                        to={`/AdminTools/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
+                    <Link data-tid="GoToLink" to={`/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
                         {objectId}
                     </Link>
                 );
@@ -77,9 +75,7 @@ export function customRender(target: any, path: string[], objectType?: string): 
             const objectId = id.objectId;
             if (typeof webObjectName === "string" && typeof scopeId === "string" && typeof objectId === "string") {
                 return (
-                    <Link
-                        data-tid="GoToLink"
-                        to={`/AdminTools/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
+                    <Link data-tid="GoToLink" to={`/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
                         {objectId}
                     </Link>
                 );

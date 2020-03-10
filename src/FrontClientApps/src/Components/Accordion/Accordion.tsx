@@ -2,10 +2,11 @@ import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
+import classNames from "classnames";
 import _ from "lodash";
 import React from "react";
 
-import cn from "./Accordion.less";
+import styles from "./Accordion.less";
 
 type CustomRenderer = (target: { [key: string]: any }, path: string[]) => JSX.Element | null;
 
@@ -88,25 +89,25 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         const isToggleLinkVisible = showToggleAll && this.isThereItemsToToggleAtFirstLevel();
         const showTitleBlock = title != null || isToggleLinkVisible;
         return (
-            <div className={cn({ "value-wrapper": title != null })}>
+            <div className={classNames({ [styles.valueWrapper]: title != null })}>
                 {showTitleBlock && (
                     <RowStack
-                        className={cn({ "title-block": true, ["has-title"]: title })}
+                        className={classNames(styles.titleBlock, { [styles.hasTitle]: title })}
                         inline
                         verticalAlign="baseline">
                         {title && (
                             <button
                                 data-tid="ToggleButton"
-                                className={cn("toggle-button")}
+                                className={styles.toggleButton}
                                 onClick={this.toggleCollapseManual}>
                                 {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
-                                <span data-tid="ToggleButtonText" className={cn("toggle-button-text")}>
+                                <span data-tid="ToggleButtonText" className={styles.toggleButtonText}>
                                     {title}
                                 </span>
                             </button>
                         )}
                         {isToggleLinkVisible && (
-                            <span className={cn("toggle-all-link")}>
+                            <span className={styles.toggleAllLink}>
                                 <Link
                                     data-tid="ToggleAllLink"
                                     onClick={this.toggleCollapseAll}
@@ -181,12 +182,12 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                     block
                     baseline
                     key={key}
-                    className={cn("string-wrapper")}
+                    className={styles.stringWrapper}
                     data-tid={this.getPath(pathPrefix, key)}>
-                    <Fit data-tid="Key" className={cn("title")}>
+                    <Fit data-tid="Key" className={styles.title}>
                         {key}:
                     </Fit>
-                    <Fill data-tid="Value" className={cn("value")}>
+                    <Fill data-tid="Value" className={styles.value}>
                         {(customRender && customRender(value, [key])) ||
                             (Array.isArray(value[key]) ? value[key].join(", ") : String(value[key]))}
                     </Fill>

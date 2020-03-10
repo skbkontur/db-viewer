@@ -92,7 +92,7 @@ export class BusinessObjectModal extends React.Component<BusinessObjectModalProp
                                 Перейти
                             </Button>
                         </Fit>
-                        <Link to="/AdminTools/BusinessObjects" data-tid="GoBackToList">
+                        <Link to="/BusinessObjects" data-tid="GoBackToList">
                             Вернуться к списку видов бизнес объектов
                         </Link>
                     </RowStack>

@@ -3,8 +3,19 @@
 @secondary-panel-background: #dddddd;
 
 :local {
-    .user-message {
-        .error-message-from-server {
+    .header {
+        margin: 0;
+        font-size: 18px;
+        line-height: 25px;
+        font-weight: 500;
+    }
+
+    .content > p {
+        margin: 0;
+    }
+
+    .userMessage {
+        .errorMessageFromServer {
             hr {
                 background-color: @primary-divider-color;
                 border: 0;
@@ -17,16 +28,16 @@
         }
     }
 
-    .error-message-wrap {
+    .errorMessageWrap {
         min-width: 100%;
         width: 0;
     }
 
-    .stack-trace-container {
+    .stackTraceContainer {
         margin-bottom: @base-size * 4;
     }
 
-    .stack-trace {
+    .stackTrace {
         font-family: 'Consolas', monospace;
         font-size: 12px;
         padding: @base-size @base-size * 2;
@@ -38,7 +49,7 @@
         overflow-y: auto;
     }
 
-    .stack-traces {
+    .stackTraces {
         margin: @base-size * 6 0;
         max-width: 800px;
     }

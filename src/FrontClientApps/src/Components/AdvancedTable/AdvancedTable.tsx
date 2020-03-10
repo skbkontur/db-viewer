@@ -1,6 +1,6 @@
 import React from "react";
 
-import cn from "./AdvancedTable.less";
+import styles from "./AdvancedTable.less";
 
 interface AdvancedTableHeadProps {
     children?: React.ReactNode;
@@ -80,8 +80,8 @@ export class AdvancedTable extends React.Component<AdvancedTableProps> {
         const { className, children, fullWidth, ...props } = this.props;
         const containerStyle = fullWidth ? { width: "100%" } : {};
         return (
-            <div className={cn("container")} style={containerStyle}>
-                <table className={cn(className)} {...props}>
+            <div className={styles.container} style={containerStyle}>
+                <table className={className || undefined} {...props}>
                     {children}
                 </table>
             </div>

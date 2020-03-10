@@ -1,12 +1,8 @@
 @import '../../styles/variables.less';
 
 :local {
-    .table-wrapper {
+    .tableWrapper {
         white-space: nowrap;
-    }
-
-    .table {
-        display: inline-block;
     }
 
     .cell {
@@ -14,7 +10,8 @@
         background-color: @primary-background;
     }
 
-    .header-cell {
+    .headerCell {
+        font: inherit;
         text-align: left;
     }
 
@@ -22,16 +19,12 @@
         border-bottom: @table-cell-border;
     }
 
-    .table-header {
+    .tableHeader {
         background-color: @primary-background;
 
         .row {
             border-bottom: @table-header-border;
             background-color: @primary-background;
         }
-    }
-
-    .link:hover {
-        text-decoration: underline;
     }
 }

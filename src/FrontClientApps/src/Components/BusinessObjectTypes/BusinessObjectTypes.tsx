@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { StringUtils } from "Domain/Utils/StringUtils";
 
-import cn from "./BusinessObjectTypes.less";
+import styles from "./BusinessObjectTypes.less";
 
 interface BusinessObjectTypesProps {
     objects: BusinessObjectDescription[];
@@ -32,7 +32,7 @@ export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProp
             return (
                 <span>
                     {splitByKeyword[0]}
-                    <span className={cn("muted-keyword")}>StorageElement</span>
+                    <span className={styles.mutedKeyword}>StorageElement</span>
                     {splitByKeyword[1]}
                 </span>
             );
@@ -44,11 +44,11 @@ export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProp
         const { getPath } = this.props;
         return (
             <div key={item.identifier} data-tid="BusinessObjectItem">
-                <Link className={cn("link")} to={getPath(item.identifier)} data-tid="BusinessObjectLink">
+                <Link className={styles.routerLink} to={getPath(item.identifier)} data-tid="BusinessObjectLink">
                     {this.renderIdentifier(item.identifier)}
                 </Link>{" "}
                 {item.mySqlTableName && (
-                    <span className={cn("indexed")} data-tid="IndexedLabel">
+                    <span className={styles.indexed} data-tid="IndexedLabel">
                         indexed
                     </span>
                 )}
@@ -60,13 +60,13 @@ export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProp
         const { objects, filter } = this.props;
         if (!StringUtils.isNullOrWhitespace(filter)) {
             const filteredObjects = this.getFiltered(objects, filter);
-            return <div className={cn("root")}>{filteredObjects.map(item => this.renderItem(item))}</div>;
+            return <div className={styles.root}>{filteredObjects.map(item => this.renderItem(item))}</div>;
         }
         const groupedObjects = this.getGrouped(objects);
         return (
-            <div className={cn("root")}>
+            <div className={styles.root}>
                 {groupedObjects.map(([firstLetter, identifiers], key) => [
-                    <div className={cn("first-letter")} data-tid="FirstLetter" key={key}>
+                    <div className={styles.firstLetter} data-tid="FirstLetter" key={key}>
                         {firstLetter}
                     </div>,
                     identifiers.map(item => this.renderItem(item)),

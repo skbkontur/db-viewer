@@ -112,7 +112,7 @@ class BusinessObjectContainerInternal extends React.Component<
         if (objectMeta != null) {
             if (objectMeta.storageType === BusinessObjectStorageType.SingleObjectPerRow) {
                 await businessObjectsApi.deleteBusinessObjects(objectMeta.identifier, objectInfo as any);
-                window.location.href = `/AdminTools/BusinessObjects/${this.props.objectId}`;
+                window.location.href = `/BusinessObjects/${this.props.objectId}`;
                 return;
             }
         }
@@ -141,18 +141,12 @@ class BusinessObjectContainerInternal extends React.Component<
         const { objectInfo, objectMeta, loading } = this.state;
         const allowEdit = true;
         if (this.state.objectNotFound) {
-            return (
-                <BusinessObjectNotFoundPage
-                    parentLocation={{ pathname: "/AdminTools/BusinessObjects" + `/${objectId}` }}
-                />
-            );
+            return <BusinessObjectNotFoundPage parentLocation={`/BusinessObjects/${objectId}`} />;
         }
         return (
             <CommonLayout>
                 <ErrorHandlingContainer />
-                <CommonLayout.GoBack
-                    to={{ pathname: "/AdminTools/BusinessObjects" + `/${objectId}` }}
-                    data-tid="GoBack">
+                <CommonLayout.GoBack to={`/BusinessObjects/${objectId}`} data-tid="GoBack">
                     Вернуться к списку бизнес объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.ContentLoader active={loading}>

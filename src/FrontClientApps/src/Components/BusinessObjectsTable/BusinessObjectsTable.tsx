@@ -1,6 +1,7 @@
 import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
+import classNames from "classnames";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -13,7 +14,7 @@ import { customRender } from "../BusinessObjectViewer/BusinessObjectItemCustomRe
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 
-import cn from "./BusinessObjectsTable.less";
+import styles from "./BusinessObjectsTable.less";
 
 interface BusinessObjectsTableProps {
     items: null | undefined | object[];
@@ -67,21 +68,21 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
         const { items, properties, allowDelete } = this.props;
 
         return (
-            <ScrollableContainer className={cn("table-wrapper")}>
+            <ScrollableContainer className={styles.tableWrapper}>
                 {this.state.showConfirmModal && (
                     <ConfirmDeleteObjectModal onDelete={this.handleDeleteItem} onCancel={this.handleCancelDelete} />
                 )}
                 {properties && properties.length && items && items.length ? (
                     <AdvancedTable>
-                        <AdvancedTable.Head data-tid="TableHeader" className={cn("table-header")}>
-                            <AdvancedTable.Row className={cn("row")}>
+                        <AdvancedTable.Head data-tid="TableHeader" className={styles.tableHeader}>
+                            <AdvancedTable.Row className={styles.row}>
                                 {this.renderEmpty(allowDelete ? 2 : 1)}
                                 {properties.map((item, key) => this.renderTableHeader(item, key))}
                             </AdvancedTable.Row>
                         </AdvancedTable.Head>
                         <AdvancedTable.Body data-tid="Body">
                             {items.map((item, index) => (
-                                <AdvancedTable.Row key={index} className={cn("row")} data-tid="Row">
+                                <AdvancedTable.Row key={index} className={styles.row} data-tid="Row">
                                     {this.renderControls(item, index)}
                                     {properties.map(key => this.renderCell(item, key.name))}
                                 </AdvancedTable.Row>
@@ -99,7 +100,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
         const arr: JSX.Element[] = [];
         for (let i = 0; i < count; i++) {
             arr.push(
-                <AdvancedTable.HeadCell key={i} className={cn("cell")}>
+                <AdvancedTable.HeadCell key={i} className={styles.cell}>
                     &nbsp;
                 </AdvancedTable.HeadCell>
             );
@@ -133,7 +134,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
         );
 
         return (
-            <AdvancedTable.HeadCell className={cn("cell", "header-cell")} key={key}>
+            <AdvancedTable.HeadCell className={classNames(styles.cell, styles.headerCell)} key={key}>
                 {content}
             </AdvancedTable.HeadCell>
         );
@@ -147,15 +148,15 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
             pathToItem = this.props.onDetailsClick(item);
         }
         arr.push(
-            <td key={++key} className={cn("cell")}>
-                <RouterLink className={cn("link")} to={pathToItem} data-tid="Details">
+            <td key={++key} className={styles.cell}>
+                <RouterLink className={styles.routerLink} to={pathToItem} data-tid="Details">
                     Подробности
                 </RouterLink>
             </td>
         );
         if (this.props.allowDelete) {
             arr.push(
-                <td key={++key} className={cn("cell")}>
+                <td key={++key} className={styles.cell}>
                     <Link onClick={() => this.handleConfirmDeletion(index)} use="danger" data-tid="Delete">
                         Удалить
                     </Link>
@@ -167,7 +168,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
 
     public renderCell(item: any, key: string): JSX.Element {
         return (
-            <td key={key} className={cn("cell")} data-tid={key}>
+            <td key={key} className={styles.cell} data-tid={key}>
                 {customRender(item, [
                     key
                         .split(".")

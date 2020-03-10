@@ -7,7 +7,7 @@ import { DateUtils } from "Domain/Utils/DateUtils";
 import { TimeUtils } from "Domain/Utils/TimeUtils";
 
 import { DatePicker } from "./DatePicker";
-import cn from "./DateTimePicker.less";
+import styles from "./DateTimePicker.less";
 import { TimePicker } from "./TimePicker";
 
 interface DateTimePickerProps {
@@ -72,7 +72,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
         const { time } = this.state;
         return (
             <span>
-                <span className={cn("date-range-item")}>
+                <span className={styles.dateRangeItem}>
                     <DatePicker
                         ref={el => (this.datePicker = el)}
                         data-tid="Date"
@@ -85,7 +85,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
                         width={110}
                     />
                 </span>
-                <span className={cn("date-range-item")}>
+                <span className={styles.dateRangeItem}>
                     <TimePicker
                         data-tid="Time"
                         value={time === defaultTime ? null : time}

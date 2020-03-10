@@ -17,7 +17,7 @@ import { Property } from "Domain/BusinessObjects/Property";
 
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
-import cn from "./BusinessObjectTableLayoutHeader.less";
+import styles from "./BusinessObjectTableLayoutHeader.less";
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { FilterModal } from "./FilterModal";
 import { Spinner } from "./Spinner";
@@ -116,12 +116,12 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
         return (
             <RowStack baseline block gap={2}>
                 <Fill />
-                <Fit className={cn("filter")}>
+                <Fit className={styles.filter}>
                     <Link icon={<FilterIcon />} onClick={this.handleOpenFilterModal} data-tid="OpenFilter">
                         Фильтрация
                     </Link>
                 </Fit>
-                <Fit className={cn("count-selector")}>
+                <Fit className={styles.countSelector}>
                     <CountOfRecordsSelector count={query.count} onChange={value => onChange({ count: value })} />
                 </Fit>
                 <Fit>

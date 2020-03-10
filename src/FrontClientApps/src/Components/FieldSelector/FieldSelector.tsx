@@ -7,7 +7,7 @@ import React from "react";
 
 import { StringUtils } from "Domain/Utils/StringUtils";
 
-import cn from "./FieldSelector.less";
+import styles from "./FieldSelector.less";
 
 const MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS = 30;
 
@@ -78,12 +78,12 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         const { hiddenFields } = this.props;
 
         return (
-            <div className={cn("field")} key={fieldDefinition.name + fieldDefinition.caption}>
+            <div className={styles.field} key={fieldDefinition.name + fieldDefinition.caption}>
                 <Checkbox
                     data-tid={StringUtils.capitalizeFirstLetter(fieldDefinition.name.replace(".", "_"))}
                     checked={!hiddenFields.includes(fieldDefinition.name)}
                     onChange={(e, checked) => this.handleToogle(checked, fieldDefinition.name)}>
-                    <div className={cn("content")}>{fieldDefinition.caption}</div>
+                    <div className={styles.content}>{fieldDefinition.caption}</div>
                 </Checkbox>
             </div>
         );
@@ -102,10 +102,10 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
             this.state.searchText
         );
 
-        const nothingToDisplay = <span className={cn("nothing-to-display")}>Ничего не найдено</span>;
+        const nothingToDisplay = <span className={styles.nothingToDisplay}>Ничего не найдено</span>;
         const allFieldsSelected = this.isAllFieldSelected(fieldDefinitionsFiltered);
         return (
-            <div className={cn("root")}>
+            <div className={styles.root}>
                 <Input
                     data-tid="FilterInput"
                     leftIcon={<SearchIcon />}
@@ -117,11 +117,11 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                     <div
                         data-tid={"TypesSelectAll"}
                         onClick={() => this.handleSelectAll(fieldDefinitionsFiltered)}
-                        className={cn("select-all")}>
+                        className={styles.selectAll}>
                         {allFieldsSelected ? "Снять выбор с найденных" : "Выбрать все найденные"}
                     </div>
                 )}
-                <RowStack data-tid="ColumnCheckboxes" className={cn("field-list")} block gap={4}>
+                <RowStack data-tid="ColumnCheckboxes" className={styles.fieldList} block gap={4}>
                     {fieldDefinitionsFiltered.length === 0 ? <Fit>{nothingToDisplay}</Fit> : null}
 
                     {fieldDefinitionsFiltered

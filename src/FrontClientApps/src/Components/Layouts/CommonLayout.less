@@ -6,7 +6,14 @@
 @common-layout-padding: @global-vertical-padding @global-horizontal-padding 0 @global-horizontal-padding;
 
 :local {
-    .common-layout {
+    .headerTitle {
+        margin: 0;
+        font-weight: 300;
+        font-size: 29px;
+        line-height: 40px;
+    }
+
+    .commonLayout {
         position: relative;
         flex: 1 1 auto;
         display: flex;
@@ -15,7 +22,7 @@
         padding: @common-layout-padding;
     }
 
-    .top-right-tools {
+    .topRightTools {
         position: absolute;
         top: @base-size;
         right: @base-size;
@@ -27,21 +34,9 @@
         flex-direction: column;
         flex: 1 1 auto;
         padding-bottom: @global-vertical-padding;
-
-        &.padding-3 {
-            margin: 0 -2 * @base-size;
-        }
-
-        &.padding-5 {
-            margin: 0;
-        }
-
-        &.padding-0 {
-            margin: 0 -5 * @base-size;
-        }
     }
 
-    .grey-line-header {
+    .greyLineHeader {
         padding: 2 * @base-size @global-horizontal-padding;
         margin-left: -@global-horizontal-padding;
         margin-right: -@global-horizontal-padding;
@@ -58,21 +53,9 @@
         margin-bottom: 3 * @base-size;
     }
 
-    .back-link-container {
+    .backLinkContainer {
         margin-bottom: 3 * @base-size;
         margin-left: -4px;
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    }
-
-    .footer {
-        &.panel {
-            padding: 3 * @base-size @global-horizontal-padding;
-            margin: 0 -@global-horizontal-padding 0 -@global-horizontal-padding;
-            background-color: @panel-background;
-        }
     }
 
     .loader {

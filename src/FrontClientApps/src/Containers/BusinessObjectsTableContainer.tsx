@@ -115,7 +115,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return (
             <CommonLayout>
                 <ErrorHandlingContainer />
-                <CommonLayout.GoBack to={{ pathname: "/AdminTools/BusinessObjects" }} data-tid="GoToObjectsList">
+                <CommonLayout.GoBack to="/BusinessObjects" data-tid="GoToObjectsList">
                     Вернуться к списку видов бизнес объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.Header

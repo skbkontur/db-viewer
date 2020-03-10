@@ -52,7 +52,7 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
 
         return (
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Вернуться к инструментам администратора</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/">Вернуться к инструментам администратора</CommonLayout.GoBack>
                 <CommonLayout.Header title="Список Бизнес Объектов" />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>

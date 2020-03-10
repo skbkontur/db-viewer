@@ -7,7 +7,7 @@ import React from "react";
 
 import { CopyToClipboardToast } from "../AllowCopyToClipboard";
 
-import cn from "./ErrorHandlingContainer.less";
+import styles from "./ErrorHandlingContainer.less";
 
 interface ErrorHandlingContainerModalState {
     showStack: boolean;
@@ -61,10 +61,10 @@ export class ErrorHandlingContainerModal extends React.Component<
             <Modal data-tid="ErrorHandlingContainerModal" onClose={canClose ? onClose : undefined} noClose={!canClose}>
                 <Modal.Header data-tid="Header">{errorModalTitle}</Modal.Header>
                 <Modal.Body>
-                    <div className={cn("user-message")}>
+                    <div className={styles.userMessage}>
                         {showMessageFromServerByDefault && (
-                            <div className={cn("error-message-from-server")}>
-                                <div className={cn("error-message-wrap")} data-tid="ErrorMessage">
+                            <div className={styles.errorMessageFromServer}>
+                                <div className={styles.errorMessageWrap} data-tid="ErrorMessage">
                                     {message}
                                 </div>
                                 <hr />
@@ -75,17 +75,17 @@ export class ErrorHandlingContainerModal extends React.Component<
                     {showStack && !showMessageFromServerByDefault && (
                         <div>
                             <hr />
-                            <div className={cn("error-message-wrap")} data-tid="ErrorMessage">
+                            <div className={styles.errorMessageWrap} data-tid="ErrorMessage">
                                 {message}
                             </div>
                         </div>
                     )}
                     {showStack && (
-                        <div className={cn("stack-traces")}>
+                        <div className={styles.stackTraces}>
                             {stack && (
                                 <RowStack baseline block gap={2}>
                                     <Fit>
-                                        <h4>Client stack trace</h4>
+                                        <h4 className={styles.header}>Client stack trace</h4>
                                     </Fit>
                                     <Fit>
                                         <Link icon={<CopyIcon />} onClick={() => this.copyData(stack)}>
@@ -95,8 +95,8 @@ export class ErrorHandlingContainerModal extends React.Component<
                                 </RowStack>
                             )}
                             {stack && (
-                                <div className={cn("stack-trace-container")}>
-                                    <pre data-tid="ClientErrorStack" className={cn("stack-trace")}>
+                                <div className={styles.stackTraceContainer}>
+                                    <pre data-tid="ClientErrorStack" className={styles.stackTrace}>
                                         {stack}
                                     </pre>
                                 </div>
@@ -104,7 +104,7 @@ export class ErrorHandlingContainerModal extends React.Component<
                             {serverStack && (
                                 <RowStack baseline block gap={2}>
                                     <Fit>
-                                        <h4>Server stack trace</h4>
+                                        <h4 className={styles.header}>Server stack trace</h4>
                                     </Fit>
                                     <Fit>
                                         <Link icon={<CopyIcon />} onClick={() => this.copyData(serverStack)}>
@@ -114,8 +114,8 @@ export class ErrorHandlingContainerModal extends React.Component<
                                 </RowStack>
                             )}
                             {serverStack && (
-                                <div className={cn("stack-trace-container")}>
-                                    <pre data-tid="ServerErrorStack" className={cn("stack-trace")}>
+                                <div className={styles.stackTraceContainer}>
+                                    <pre data-tid="ServerErrorStack" className={styles.stackTrace}>
                                         {serverStack}
                                     </pre>
                                 </div>

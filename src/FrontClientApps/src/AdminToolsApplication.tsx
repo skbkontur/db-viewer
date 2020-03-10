@@ -8,24 +8,20 @@ import { ObjectTableContainer } from "./Containers/BusinessObjectsTableContainer
 export function AdminToolsApplication({ match }: RouteComponentProps): JSX.Element {
     return (
         <Switch>
+            <Route exact path={`${match.url}/`} render={() => <BusinessObjectTypesContainer path={`${match.url}`} />} />
             <Route
                 exact
-                path={`${match.url}/BusinessObjects`}
-                render={() => <BusinessObjectTypesContainer path={`${match.url}/BusinessObjects`} />}
-            />
-            <Route
-                exact
-                path={`${match.url}/BusinessObjects/:objectId`}
+                path={`${match.url}/:objectId`}
                 render={({ location, match: { params } }) => (
                     <ObjectTableContainer
                         urlQuery={location.search || ""}
-                        path={`/AdminTools/BusinessObjects/${params.objectId}`}
+                        path={`${match.url}/${params.objectId}`}
                         objectId={params.objectId || ""}
                     />
                 )}
             />
             <Route
-                path={`${match.url}/BusinessObjects/:objectId/details`}
+                path={`${match.url}/:objectId/details`}
                 render={({ location, match: { params } }) => (
                     <BusinessObjectContainer objectId={params.objectId || ""} objectQuery={location.search || ""} />
                 )}

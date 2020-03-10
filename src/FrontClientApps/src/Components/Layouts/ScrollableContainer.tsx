@@ -1,7 +1,8 @@
+import classNames from "classnames";
 import _ from "lodash";
 import React from "react";
 
-import cn from "./ScrollableContainer.less";
+import styles from "./ScrollableContainer.less";
 
 interface ScrollableContainerProps {
     className?: string;
@@ -68,14 +69,14 @@ export class ScrollableContainer extends React.Component<ScrollableContainerProp
             return;
         }
         if (container.scrollLeft > 5) {
-            root.classList.add(cn("left-shadow"));
+            root.classList.add(styles.leftShadow);
         } else {
-            root.classList.remove(cn("left-shadow"));
+            root.classList.remove(styles.leftShadow);
         }
         if (container.scrollLeft < container.scrollWidth - container.offsetWidth - 5) {
-            root.classList.add(cn("right-shadow"));
+            root.classList.add(styles.rightShadow);
         } else {
-            root.classList.remove(cn("right-shadow"));
+            root.classList.remove(styles.rightShadow);
         }
     }
 
@@ -151,8 +152,8 @@ export class ScrollableContainer extends React.Component<ScrollableContainerProp
     public render(): JSX.Element {
         const { children, className, style, scrollStyle = {} } = this.props;
         return (
-            <div ref={el => (this.root = el)} className={cn("container", className)} style={style}>
-                <div className={cn("root", className)} style={style} ref={el => (this.container = el)}>
+            <div ref={el => (this.root = el)} className={classNames(styles.container, className)} style={style}>
+                <div className={classNames(styles.root, className)} style={style} ref={el => (this.container = el)}>
                     {children}
                     {
                         <div

@@ -1,7 +1,9 @@
 {
-  "extends": "stylelint-config-standard",
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules"
+  ],
   "rules": {
-    "indentation": 4,
-    "selector-pseudo-class-no-unknown": [true, { "ignorePseudoClasses": ["/^(local|global)$/", "string"] }]
+    "indentation": 4
   }
 }

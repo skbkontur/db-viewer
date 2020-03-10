@@ -1,30 +1,27 @@
 @base-size: 5px;
 
-// ============== FONTS ============
-
 @base-font-family: 'Segoe UI', 'Helvetica', 'Arial', 'Tahoma', sans-serif;
 @base-font-size: 14px;
 @base-line-height: @base-size * 4;
 
-// ============== COLORS ================
-// ============== TEXT   ================
+@link-color: #3072c4;
+@muted-text: #666666;
+@double-muted-text: #a0a0a0;
 
-@primary-text: #333333; // Главный текст
-@edi-product-text: #ffffff; // Текст на фирменном цвете
-
-@link-color: #3072c4; // Цвет ссылки
-@muted-text: #666666; // Серый текст
-@double-muted-text: #a0a0a0; // Более серый текст
-
-// ============== BACKGROUND ============
-
-@primary-background: #ffffff; // Главный фон
-@primary-divider-color: rgba(0, 0, 0, 0.2); // Разделитель
-@secondary-divider-color: rgba(0, 0, 0, 0.08); // Тусклый разделитель
-
-// **********************
-// TABLES
-// **********************
+@primary-background: #ffffff;
+@primary-divider-color: rgba(0, 0, 0, 0.2);
+@secondary-divider-color: rgba(0, 0, 0, 0.08);
 
 @table-header-border: 1px solid  @primary-divider-color;
 @table-cell-border: 1px solid @secondary-divider-color;
+
+:local {
+    .routerLink {
+        &:hover {
+            text-decoration: underline;
+        }
+
+        color: @link-color;
+        text-decoration: none;
+    }
+}

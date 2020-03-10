@@ -26,7 +26,6 @@ module.exports = function(env) {
                 {
                     test: /\.(c|le)ss$/,
                     use: [
-                        "classnames-loader",
                         "style-loader",
                         {
                             loader: "css-loader",

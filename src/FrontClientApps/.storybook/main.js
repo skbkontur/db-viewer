@@ -19,7 +19,6 @@ module.exports = {
             {
                 test: /\.(c|le)ss$/,
                 loaders: [
-                    "classnames-loader",
                     "style-loader",
                     {
                         loader: "css-loader",

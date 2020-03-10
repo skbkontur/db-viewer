@@ -1,45 +1,12 @@
 @import '../../styles/variables.less';
 
 :local {
-    .date-range {
-        &-item {
-            margin-right: @base-size * 2;
-            line-height: 32px;
+    .dateRangeItem {
+        margin-right: @base-size * 2;
+        line-height: 32px;
 
-            &:last-child {
-                margin-right: 0;
-            }
-        }
-
-        .templates {
-            margin: @base-size 0;
-            color: @double-muted-text;
-
-            span {
-                margin-right: @base-size * 4;
-            }
-
-            span:hover {
-                text-decoration: underline;
-                cursor: pointer;
-            }
-
-            &.small-gap {
-                span {
-                    margin-right: 3 * @base-size;
-                }
-
-                span:last-child {
-                    margin-right: 0;
-                }
-            }
-
-            &.disabled {
-                span:hover {
-                    text-decoration: none;
-                    cursor: default;
-                }
-            }
+        &:last-child {
+            margin-right: 0;
         }
     }
 }
