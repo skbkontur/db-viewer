@@ -232,7 +232,14 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         // noop
     }
 
-    public async downloadBusinessObjects(businessObjectIdentifier: string, exportationId: Guid): Promise<FileResponse> {
-        return { isInlineAttachment: false };
+    public async downloadBusinessObjects(
+        businessObjectIdentifier: string,
+        query: BusinessObjectSearchRequest
+    ): Promise<FileResponse> {
+        return {
+            isInlineAttachment: false,
+            content: "aHV5bnlhMg==",
+            name: "file",
+        };
     }
 }

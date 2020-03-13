@@ -8,7 +8,7 @@ import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { BusinessObjectsApiUrls, withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
+import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
@@ -383,30 +383,24 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             const { businessObjectsApi } = this.props;
             const { conditions, sort, hiddenColumns } = this.state.query;
 
-            const exportationId = await businessObjectsApi.startDownloadBusinessObjects(
-                metaInformation.identifier,
-                { conditions: conditions, sort: sort },
-                hiddenColumns
-            );
-            // eslint-disable-next-line no-constant-condition
-            while (true) {
-                const downloadStatus = await businessObjectsApi.getBusinessObjectsDownloadStatus(
-                    metaInformation.identifier,
-                    exportationId
-                );
-                if (downloadStatus) {
-                    window.location.href = BusinessObjectsApiUrls.getUrlForDownloadBusinessObjects(
-                        metaInformation.identifier,
-                        exportationId
-                    );
-                    return;
-                }
-                await new Promise(f => setTimeout(f, 500));
-            }
+            const fileInfo = await businessObjectsApi.downloadBusinessObjects(metaInformation.identifier, {
+                conditions: conditions,
+                sort: sort,
+                excludedFields: hiddenColumns,
+            });
+
+            this.createDownloadableCsvFile(fileInfo.name, fileInfo.content);
         } finally {
             this.setState({ downloading: false });
         }
     };
+
+    private createDownloadableCsvFile(fileName: string, content: string) {
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = `data:application/octet-stream;base64,${content}`;
+        link.click();
+    }
 
     private async handleDeleteObject(index: number): Promise<void> {
         const { objects, metaInformation } = this.state;

@@ -41,24 +41,10 @@ namespace Kontur.DBViewer.SampleApi.Controllers
 
         [HttpPost]
         [Route("{businessObjectIdentifier}/download")]
-        public Guid StartDownloadBusinessObjects(string businessObjectIdentifier,
-            [FromBody] BusinessObjectSearchRequest query, /* [FromBody] */ string[] excludedFields)
+        public FileResponse DownloadBusinessObjects(string businessObjectIdentifier,
+            [FromBody] BusinessObjectSearchRequest query)
         {
-            return impl.StartDownloadBusinessObjects(businessObjectIdentifier, query, excludedFields);
-        }
-
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/download/status/{exportationId}")]
-        public bool GetBusinessObjectsDownloadStatus(string businessObjectIdentifier, Guid exportationId)
-        {
-            return impl.GetBusinessObjectsDownloadStatus(businessObjectIdentifier, exportationId);
-        }
-
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/download/{exportationId}")]
-        public FileResponse DownloadBusinessObjects(string businessObjectIdentifier, Guid exportationId)
-        {
-            return impl.DownloadBusinessObjects(businessObjectIdentifier, exportationId);
+            return impl.DownloadBusinessObjects(businessObjectIdentifier, query);
         }
 
         [HttpPost]

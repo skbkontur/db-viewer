@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Kontur.DBViewer.Core.Attributes;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
+using Kontur.DBViewer.Core.GenericHelpers;
 using Kontur.DBViewer.Core.Schemas;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Core.VNext.DataTypes;
@@ -66,29 +68,37 @@ namespace Kontur.DBViewer.Core.VNext
             };
         }
 
+        [NotNull]
         [HttpPost]
         [Route("{businessObjectIdentifier}/download")]
-        public Guid StartDownloadBusinessObjects(
+        public FileResponse DownloadBusinessObjects(
             [NotNull] string businessObjectIdentifier,
-            [NotNull] [FromBody] BusinessObjectSearchRequest query,
-            [NotNull, ItemNotNull] /* [FromBody] */ string[] excludedFields)
+            [NotNull] [FromBody] BusinessObjectSearchRequest query)
         {
-            throw new NotImplementedException();
-        }
+            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
+            var results = schemaRegistry.GetConnector(businessObjectIdentifier)
+                .Search(query.GetFilters(), query.GetSorts(), 0, 100000).GetAwaiter().GetResult();
 
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/download/status/{exportationId}")]
-        public bool GetBusinessObjectsDownloadStatus([NotNull] string businessObjectIdentifier, Guid exportationId)
-        {
-            throw new NotImplementedException();
-        }
+            var properties = new List<string>();
+            var getters = new List<Func<object, object>>();
 
-        [NotNull]
-        [HttpGet]
-        [Route("{businessObjectIdentifier}/download/{exportationId}")]
-        public FileResponse DownloadBusinessObjects([NotNull] string businessObjectIdentifier, Guid exportationId)
-        {
-            throw new NotImplementedException();
+            PropertyHelpers.BuildGettersForProperties(type, "", x => x, properties, getters);
+
+            var excludedIndices = properties.Select((x, i) => (x, i)).Where(x => query.ExcludedFields.Contains(x.x))
+                .Select(x => x.i).ToArray();
+            var filteredProperties = properties.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
+            var filteredGetters = getters.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
+
+            var csvWriter = new CsvWriter(filteredProperties);
+            foreach (var item in results)
+                csvWriter.AddRow(filteredGetters.Select(f => PropertyHelpers.ToString(f, item)).ToArray());
+
+            return new FileResponse
+            {
+                Content = csvWriter.GetBytes(),
+                ContentType = "text/csv",
+                Name = $"{businessObjectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
+            };
         }
 
         [NotNull]

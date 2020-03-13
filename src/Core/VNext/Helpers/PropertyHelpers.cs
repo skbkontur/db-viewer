@@ -8,7 +8,7 @@ using Kontur.DBViewer.Core.VNext.DataTypes;
 
 namespace Kontur.DBViewer.Core.VNext.Helpers
 {
-    public class PropertyHelpers
+    public static class PropertyHelpers
     {
         public static void BuildGettersForProperties([NotNull] Type type, [NotNull] string currentName,
             [NotNull] Func<object, object> currentGetter,
