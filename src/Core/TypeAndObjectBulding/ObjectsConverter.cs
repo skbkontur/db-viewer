@@ -34,7 +34,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
                         customPropertyConfiguration.ApiToStored(value);
                 }
 
-                if(propertyInfo.CanWrite)
+                if(propertyInfo.SetMethod != null)
                     propertyInfo.SetValue(result, value);
             }
 
