@@ -46,32 +46,60 @@ export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProp
             <div key={item.identifier} data-tid="BusinessObjectItem">
                 <Link className={styles.routerLink} to={getPath(item.identifier)} data-tid="BusinessObjectLink">
                     {this.renderIdentifier(item.identifier)}
-                </Link>{" "}
-                {item.mySqlTableName && (
-                    <span className={styles.indexed} data-tid="IndexedLabel">
-                        indexed
-                    </span>
-                )}
+                </Link>
             </div>
         );
     }
 
-    public render(): JSX.Element {
-        const { objects, filter } = this.props;
-        if (!StringUtils.isNullOrWhitespace(filter)) {
-            const filteredObjects = this.getFiltered(objects, filter);
-            return <div className={styles.root}>{filteredObjects.map(item => this.renderItem(item))}</div>;
+    public renderTypes(objects: BusinessObjectDescription[], displayGroups: boolean): JSX.Element {
+        if (!displayGroups) {
+            return <div className={styles.root}>{objects.map(item => this.renderItem(item))}</div>;
         }
+
         const groupedObjects = this.getGrouped(objects);
         return (
             <div className={styles.root}>
-                {groupedObjects.map(([firstLetter, identifiers], key) => [
-                    <div className={styles.firstLetter} data-tid="FirstLetter" key={key}>
-                        {firstLetter}
-                    </div>,
-                    identifiers.map(item => this.renderItem(item)),
-                ])}
+                {groupedObjects.map(([firstLetter, identifiers], key) => (
+                    <div className={styles.typeGroup} key={key}>
+                        <div className={styles.firstLetter} data-tid="FirstLetter">
+                            {firstLetter}
+                        </div>
+                        {identifiers.map(item => this.renderItem(item))}
+                    </div>
+                ))}
             </div>
+        );
+    }
+
+    public renderSchema(schemaName: string, objects: BusinessObjectDescription[]) {
+        const { filter } = this.props;
+        const schema = objects[0]?.schemaDescription;
+        let filteredObjects = objects;
+        const emptyFilter = StringUtils.isNullOrWhitespace(filter);
+        if (!emptyFilter) {
+            filteredObjects = this.getFiltered(objects, filter);
+        }
+        return (
+            filteredObjects.length !== 0 && (
+                <>
+                    <div className={styles.schema}>
+                        {schemaName}{" "}
+                        {schema.allowReadAll && (
+                            <span className={styles.indexed} data-tid="IndexedLabel">
+                                indexed
+                            </span>
+                        )}
+                    </div>
+                    <div>{this.renderTypes(filteredObjects, emptyFilter)}</div>
+                </>
+            )
+        );
+    }
+
+    public render(): JSX.Element {
+        const categorized = _.groupBy(this.props.objects, x => x.schemaDescription.schemaName);
+        return (
+            <>{Object.keys(categorized).map(schemaName => this.renderSchema(schemaName, categorized[schemaName]))}</>
         );
     }
 }

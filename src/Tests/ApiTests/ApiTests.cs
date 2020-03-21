@@ -10,6 +10,7 @@ using GroBuf.DataMembersExtracters;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.Schemas;
+using Kontur.DBViewer.Core.VNext.DataTypes;
 using Kontur.DBViewer.Recipes.CQL.CustomPropertyConfigurations;
 using Kontur.DBViewer.SampleApi;
 using Kontur.DBViewer.SampleApi.Controllers;
@@ -47,11 +48,10 @@ namespace Kontur.DBViewer.Tests.ApiTests
                 {
                     Description = new SchemaDescription
                     {
-                        Countable = true,
                         SchemaName = "SampleSchema",
-                        MaxCountLimit = 10_000,
-                        DefaultCountLimit = 100,
-                        EnableDefaultSearch = false,
+                        DownloadLimit = 10_000,
+                        CountLimit = 100,
+                        AllowReadAll = false,
                     },
                     Types = new[]
                     {
@@ -299,7 +299,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                                 Name = "Id",
                                 IsIdentity = true,
                                 IsSearchable = true,
-                                AvailableFilters = new[] {FilterType.No, FilterType.Equals, FilterType.NotEquals},
+                                AvailableFilters = new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual},
                             },
                         },
                         new Property
@@ -409,7 +409,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
             {
                 new Filter
                 {
-                    Type = FilterType.Equals,
+                    Type = BusinessObjectFieldFilterOperator.Equals,
                     Field = "Id",
                     Value = @object.Id,
                 }
@@ -481,11 +481,10 @@ namespace Kontur.DBViewer.Tests.ApiTests
             var result = await client.GetTypesDescription();
             var schemaDescription = new SchemaDescription
             {
-                Countable = true,
                 SchemaName = "SampleSchema",
-                MaxCountLimit = 10_000,
-                DefaultCountLimit = 100,
-                EnableDefaultSearch = false,
+                DownloadLimit = 10_000,
+                CountLimit = 100,
+                AllowReadAll = false,
             };
             result.Should().BeEquivalentTo(new TypesListModel
             {

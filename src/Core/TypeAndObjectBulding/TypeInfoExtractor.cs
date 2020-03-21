@@ -102,7 +102,7 @@ namespace Kontur.DBViewer.Core.TypeAndObjectBulding
             return new Property
             {
                 TypeInfo = typeInfo,
-                Description = propertyDescriptionBuilder.Build(propertyInfo, typeInfo),
+                Description = propertyDescriptionBuilder.Build(propertyInfo, configuration?.ResolvedType ?? propertyInfo.PropertyType),
             };
         }
     }

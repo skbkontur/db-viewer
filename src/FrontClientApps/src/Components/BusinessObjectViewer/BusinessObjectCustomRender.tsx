@@ -6,6 +6,8 @@ import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import React from "react";
 
+import { Property } from "Domain/BusinessObjects/Property";
+
 import { customRender, customRenderForEdit } from "./BusinessObjectItemCustomRender";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
@@ -16,7 +18,7 @@ interface BusinessObjectCustomRenderProps {
     // eslint-disable-next-line
     target: Object;
     path: string[];
-    type: Nullable<string>;
+    property: Nullable<Property>;
     objectType: string;
     allowEdit: boolean;
     onChange: (value: any, path: string[]) => void;
@@ -65,19 +67,13 @@ export class BusinessObjectCustomRender extends React.Component<
     };
 
     public canEditProperty = () => {
-        const { path, type, allowEdit } = this.props;
-        return (
-            type != null &&
-            !type.includes("[]") &&
-            !_.isEqual(path, ["id"]) &&
-            !_.isEqual(path, ["scopeId"]) &&
-            !_.isEqual(path, ["lastModificationDateTime"]) &&
-            allowEdit
-        );
+        const { property, allowEdit } = this.props;
+        const type = property?.type;
+        return type != null && !type.includes("[]") && !property?.isIdentity && allowEdit;
     };
 
     public render(): JSX.Element {
-        const { path, target, type, objectType } = this.props;
+        const { path, target, property, objectType } = this.props;
         const value = this.state.value != null ? this.state.value : getByPath(target, path);
         const { editableMode } = this.state;
         const canEdit = this.canEditProperty();
@@ -85,7 +81,7 @@ export class BusinessObjectCustomRender extends React.Component<
             <RowStack gap={2} baseline block data-tid="FieldRow">
                 <Fit data-tid="FieldValue">
                     {editableMode
-                        ? customRenderForEdit(value, type, this.handleChange)
+                        ? customRenderForEdit(value, property, this.handleChange)
                         : customRender(target, path, objectType)}
                 </Fit>
                 <Fill />

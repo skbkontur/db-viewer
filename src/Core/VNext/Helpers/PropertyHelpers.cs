@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Kontur.DBViewer.Core.TypeAndObjectBulding;
 using Kontur.DBViewer.Core.VNext.DataTypes;
 
 namespace Kontur.DBViewer.Core.VNext.Helpers
@@ -54,9 +55,21 @@ namespace Kontur.DBViewer.Core.VNext.Helpers
             return ToString(property);
         }
 
-        [CanBeNull]
         public static TypeMetaInformation BuildTypeMetaInformation([NotNull] Type type,
-            [CanBeNull, ItemNotNull] Type[] usedTypes = null)
+            IPropertyDescriptionBuilder propertyDescriptionBuilder,
+            ICustomPropertyConfigurationProvider propertyConfigurationProvider,
+            [CanBeNull] [ItemNotNull] Type[] usedTypes = null)
+        {
+            return BuildTypeMetaInformation(@object: null, type, propertyDescriptionBuilder,
+                propertyConfigurationProvider,
+                usedTypes);
+        }
+
+        [CanBeNull]
+        public static TypeMetaInformation BuildTypeMetaInformation(object @object, [NotNull] Type type,
+            IPropertyDescriptionBuilder propertyDescriptionBuilder,
+            ICustomPropertyConfigurationProvider propertyConfigurationProvider,
+            [CanBeNull] [ItemNotNull] Type[] usedTypes = null)
         {
             usedTypes = (usedTypes ?? new Type[0]).ToArray();
             if (usedTypes.Contains(type))
@@ -68,7 +81,8 @@ namespace Kontur.DBViewer.Core.VNext.Helpers
                 {
                     TypeName = type.Name,
                     IsArray = true,
-                    ItemType = BuildTypeMetaInformation(type.GetElementType(), usedTypes),
+                    ItemType = BuildTypeMetaInformation(type.GetElementType(), propertyDescriptionBuilder,
+                        propertyConfigurationProvider, usedTypes),
                 };
             }
 
@@ -79,7 +93,9 @@ namespace Kontur.DBViewer.Core.VNext.Helpers
                     TypeName = new Regex(@"`.*").Replace(type.GetGenericTypeDefinition().Name, ""),
                     IsArray = true,
                     GenericTypeArguments = type.GetGenericArguments()
-                        .Select(x => BuildTypeMetaInformation(x, usedTypes)).ToArray(),
+                        .Select(x => BuildTypeMetaInformation(x, propertyDescriptionBuilder,
+                            propertyConfigurationProvider, usedTypes))
+                        .ToArray(),
                 };
             }
 
@@ -88,7 +104,10 @@ namespace Kontur.DBViewer.Core.VNext.Helpers
                 TypeName = type.Name,
                 Properties = IsSimpleType(type)
                     ? null
-                    : type.GetProperties().Select(x => BuildPropertyInfo(x, usedTypes)).ToArray(),
+                    : type.GetProperties()
+                        .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder,
+                            propertyConfigurationProvider, usedTypes))
+                        .ToArray(),
             };
         }
 
@@ -106,14 +125,29 @@ namespace Kontur.DBViewer.Core.VNext.Helpers
         }
 
         [NotNull]
-        private static PropertyMetaInformation BuildPropertyInfo([NotNull] PropertyInfo propertyInfo,
+        private static PropertyMetaInformation BuildPropertyInfo(object @object, [NotNull] PropertyInfo propertyInfo,
+            IPropertyDescriptionBuilder propertyDescriptionBuilder,
+            ICustomPropertyConfigurationProvider propertyConfigurationProvider,
             [NotNull, ItemNotNull] Type[] types)
         {
+            var customConfiguration = @object == null
+                ? propertyConfigurationProvider.TryGetConfiguration(propertyInfo)
+                : propertyConfigurationProvider.TryGetConfiguration(@object, propertyInfo);
+
+            var propertyType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
+            var propertyDescription = propertyDescriptionBuilder.Build(propertyInfo, propertyType);
             return new PropertyMetaInformation
             {
                 Name = propertyInfo.Name,
-                Indexed = false,
-                Type = BuildTypeMetaInformation(propertyInfo.PropertyType, types),
+                AvailableFilters = propertyDescription.AvailableFilters,
+                IsIdentity = propertyDescription.IsIdentity,
+                IsRequired = propertyDescription.IsRequired,
+                IsSearchable = propertyDescription.IsSearchable,
+                IsSortable = propertyDescription.IsSortable,
+                Type = BuildTypeMetaInformation(propertyType,
+                    propertyDescriptionBuilder,
+                    propertyConfigurationProvider,
+                    types),
             };
         }
 

@@ -2,11 +2,19 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import StoryRouter from "storybook-react-router";
 
-import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
+import { SchemaDescription } from "Domain/Api/SchemaDescription";
 
 import { BusinessObjectTypes } from "../../src/Components/BusinessObjectTypes/BusinessObjectTypes";
 
 import objects from "./Responses/business-objects.json";
+
+const schema: SchemaDescription = {
+    allowReadAll: true,
+    schemaName: "ab",
+    downloadLimit: 100,
+    countLimit: 10,
+    allowDownload: true,
+};
 
 storiesOf("BusinessObjectTypes", module)
     .addDecorator(StoryRouter())
@@ -17,20 +25,17 @@ storiesOf("BusinessObjectTypes", module)
             objects={[
                 {
                     identifier: "table 1",
-                    mySqlTableName: null,
-                    storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                    schemaDescription: schema,
                     typeMetaInformation: null,
                 },
                 {
                     identifier: "Table 3",
-                    mySqlTableName: null,
-                    storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                    schemaDescription: schema,
                     typeMetaInformation: null,
                 },
                 {
                     identifier: "table 2",
-                    mySqlTableName: null,
-                    storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                    schemaDescription: schema,
                     typeMetaInformation: null,
                 },
             ]}

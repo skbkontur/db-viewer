@@ -1,55 +1,54 @@
-import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { Guid } from "Domain/DataTypes/Guid";
 
 import { IBusinessObjectsApi } from "./BusinessObjectsApi";
 import { BusinessObjectDescription } from "./DataTypes/BusinessObjectDescription";
 import { BusinessObjectSearchRequest } from "./DataTypes/BusinessObjectSearchRequest";
-import { FileResponse } from "./DataTypes/FileResponse";
+import { FileInfo } from "./DataTypes/FileInfo";
 
 export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectNames(): Promise<BusinessObjectDescription[]> {
+        const schema = {
+            schemaName: "schema",
+            allowReadAll: true,
+            countLimit: 10000,
+            allowDownload: true,
+            downloadLimit: 100000,
+        };
         return [
             {
                 identifier: "FileMetaInformation2",
-                mySqlTableName: null,
-                storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
                 identifier: "Party2",
-                mySqlTableName: "Party2",
-                storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
                 identifier: "UserBusinessObject",
-                mySqlTableName: "UserBusinessObject",
-                storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
                 identifier: "UserLastLoginRecordBusinessObject",
-                mySqlTableName: "UserLastLoginRecordBusinessObject",
-                storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
                 identifier: "FtpUser",
-                mySqlTableName: "FtpUser",
-                storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
                 identifier: "PartySettings",
-                mySqlTableName: "PartySettings",
-                storageType: BusinessObjectStorageType.SingleObjectPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
                 identifier: "DiadocEventStorageElement",
-                mySqlTableName: null,
-                storageType: BusinessObjectStorageType.ArrayOfObjectsPerRow,
+                schemaDescription: schema,
                 typeMetaInformation: null,
             },
         ];
@@ -83,9 +82,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
 
     public async findBusinessObjects(
         businessObjectIdentifier: string,
-        query: BusinessObjectSearchRequest,
-        offset: number,
-        count: number
+        query: BusinessObjectSearchRequest
     ): Promise<SearchResult<object>> {
         return {
             items: [
@@ -163,15 +160,23 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectMeta(businessObjectIdentifier: string): Promise<BusinessObjectDescription> {
         return {
             identifier: "StatusReportDocumentSubscription",
-            mySqlTableName: "StatusReportDocumentSubscription",
-            storageType: BusinessObjectStorageType.SingleObjectPerRow,
+            schemaDescription: {
+                allowReadAll: true,
+                countLimit: 10,
+                downloadLimit: 100,
+                schemaName: "Schema",
+            },
             typeMetaInformation: {
                 typeName: "StatusReportDocumentSubscriptionBusinessObject",
                 isArray: false,
                 properties: [
                     {
                         name: "Id",
-                        indexed: true,
+                        isIdentity: true,
+                        isRequired: true,
+                        isSearchable: true,
+                        isSortable: false,
+                        availableFilters: [],
                         type: {
                             typeName: "String",
                             isArray: false,
@@ -182,7 +187,11 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
                     },
                     {
                         name: "ScopeId",
-                        indexed: true,
+                        isIdentity: true,
+                        isRequired: true,
+                        isSearchable: true,
+                        isSortable: false,
+                        availableFilters: [],
                         type: {
                             typeName: "String",
                             isArray: false,
@@ -193,7 +202,11 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
                     },
                     {
                         name: "LastModificationDateTime",
-                        indexed: true,
+                        isIdentity: true,
+                        isRequired: true,
+                        isSearchable: true,
+                        isSortable: false,
+                        availableFilters: [],
                         type: {
                             typeName: "Nullable",
                             isArray: true,
@@ -228,17 +241,17 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         // noop
     }
 
-    public async updateBusinessObjects(businessObjectIdentifier: string, obj: object): Promise<void> {
-        // noop
+    public async updateBusinessObjects(businessObjectIdentifier: string, obj: object): Promise<object> {
+        return {};
     }
 
     public async downloadBusinessObjects(
         businessObjectIdentifier: string,
         query: BusinessObjectSearchRequest
-    ): Promise<FileResponse> {
+    ): Promise<FileInfo> {
         return {
-            isInlineAttachment: false,
             content: "aHV5bnlhMg==",
+            contentType: "text/csv",
             name: "file",
         };
     }

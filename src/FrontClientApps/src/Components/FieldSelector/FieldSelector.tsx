@@ -5,8 +5,6 @@ import Input from "@skbkontur/react-ui/Input";
 import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
 import React from "react";
 
-import { StringUtils } from "Domain/Utils/StringUtils";
-
 import styles from "./FieldSelector.less";
 
 const MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS = 30;
@@ -80,7 +78,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         return (
             <div className={styles.field} key={fieldDefinition.name + fieldDefinition.caption}>
                 <Checkbox
-                    data-tid={StringUtils.capitalizeFirstLetter(fieldDefinition.name.replace(".", "_"))}
+                    data-tid={fieldDefinition.name.replace(".", "_")}
                     checked={!hiddenFields.includes(fieldDefinition.name)}
                     onChange={(e, checked) => this.handleToogle(checked, fieldDefinition.name)}>
                     <div className={styles.content}>{fieldDefinition.caption}</div>

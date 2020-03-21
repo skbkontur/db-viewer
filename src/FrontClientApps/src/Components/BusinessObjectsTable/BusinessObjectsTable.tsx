@@ -7,7 +7,6 @@ import { Link as RouterLink } from "react-router-dom";
 
 import { Sort } from "Domain/Api/DataTypes/Sort";
 import { Property } from "Domain/BusinessObjects/Property";
-import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { customRender } from "../BusinessObjectViewer/BusinessObjectItemCustomRender";
@@ -121,8 +120,8 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
     }
 
     public renderTableHeader(item: Property, key: number): JSX.Element {
-        const name = StringUtils.capitalizeFirstLetter(item.name);
-        const content = item.indexed ? (
+        const name = item.name;
+        const content = item.isSortable ? (
             <Link
                 data-tid={`Header_${name}`}
                 icon={this.getIcon(name, this.props.currentSort)}
@@ -169,12 +168,7 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
     public renderCell(item: any, key: string): JSX.Element {
         return (
             <td key={key} className={styles.cell} data-tid={key}>
-                {customRender(item, [
-                    key
-                        .split(".")
-                        .map(x => x[0].toLowerCase() + x.slice(1))
-                        .join("."),
-                ])}
+                {customRender(item, [key])}
             </td>
         );
     }

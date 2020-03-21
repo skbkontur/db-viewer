@@ -7,6 +7,7 @@ using System.Reflection;
 using Cassandra.Mapping.Attributes;
 
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.VNext.DataTypes;
 using Kontur.DBViewer.Recipes.CQL.Utils.ObjectsParser;
 
 namespace Kontur.DBViewer.Recipes.CQL.Utils
@@ -32,6 +33,10 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
                                                       Filter[] filters)
         {
             var parameter = Expression.Parameter(type);
+            
+            if (!filters.Any())
+                return Expression.Lambda(Expression.Constant(true), parameter);
+            
             var filterExpression = filters
                                    .Select(filter =>
                                        {
@@ -40,10 +45,10 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
                                            var expression = CreateFilterExpression(memberExpression.Type, filter.Type, memberExpression, valueExpression);
                                            if(Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
-                                               if(filter.Type == FilterType.NotEquals && !string.IsNullOrEmpty(filter.Value))
+                                               if(filter.Type == BusinessObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
                                                    expression = Expression.OrElse(
                                                        expression,
-                                                       CreateFilterExpression(memberExpression.Type, FilterType.Equals, memberExpression,
+                                                       CreateFilterExpression(memberExpression.Type, BusinessObjectFieldFilterOperator.Equals, memberExpression,
                                                                               Expression.Constant(null))
                                                    );
                                            }
@@ -67,7 +72,7 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
             return valueExpression;
         }
 
-        private static BinaryExpression CreateFilterExpression(Type propertyType, FilterType @operator,
+        private static BinaryExpression CreateFilterExpression(Type propertyType, BusinessObjectFieldFilterOperator @operator,
                                                                Expression leftExpression, Expression rightExpression)
         {
             if(propertyType == typeof(string))
@@ -78,16 +83,16 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);
         }
 
-        private static readonly Dictionary<FilterType, Func<Expression, Expression, BinaryExpression>>
+        private static readonly Dictionary<BusinessObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
             makeBinaryExpressionByOperator =
-                new Dictionary<FilterType, Func<Expression, Expression, BinaryExpression>>
+                new Dictionary<BusinessObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
                     {
-                        {FilterType.Equals, Expression.Equal},
-                        {FilterType.Less, Expression.LessThan},
-                        {FilterType.Greater, Expression.GreaterThan},
-                        {FilterType.LessOrEqual, Expression.LessThanOrEqual},
-                        {FilterType.GreaterOrEqual, Expression.GreaterThanOrEqual},
-                        {FilterType.NotEquals, Expression.NotEqual},
+                        {BusinessObjectFieldFilterOperator.Equals, Expression.Equal},
+                        {BusinessObjectFieldFilterOperator.LessThan, Expression.LessThan},
+                        {BusinessObjectFieldFilterOperator.GreaterThan, Expression.GreaterThan},
+                        {BusinessObjectFieldFilterOperator.LessThanOrEquals, Expression.LessThanOrEqual},
+                        {BusinessObjectFieldFilterOperator.GreaterThanOrEquals, Expression.GreaterThanOrEqual},
+                        {BusinessObjectFieldFilterOperator.DoesNotEqual, Expression.NotEqual},
                     };
     }
 }

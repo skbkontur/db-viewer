@@ -5,6 +5,8 @@ import _ from "lodash";
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { Property } from "Domain/BusinessObjects/Property";
+
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
@@ -93,9 +95,10 @@ export function customRender(target: any, path: string[], objectType?: string): 
 
 export function customRenderForEdit(
     value: any,
-    type: Nullable<string>,
+    property: Nullable<Property>,
     onChange: (x0: any) => void
 ): string | JSX.Element {
+    const type = property?.type;
     switch (type) {
         case "Boolean":
             return <Checkbox checked={!!value} onChange={(e, nextValue) => onChange(nextValue)} />;

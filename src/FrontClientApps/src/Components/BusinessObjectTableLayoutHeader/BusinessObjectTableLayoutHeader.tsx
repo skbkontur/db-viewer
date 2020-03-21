@@ -11,6 +11,8 @@ import _ from "lodash";
 import React from "react";
 
 import { Condition } from "Domain/Api/DataTypes/Condition";
+import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
+import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
 import { Property } from "Domain/BusinessObjects/Property";
@@ -24,6 +26,7 @@ import { Spinner } from "./Spinner";
 
 interface BusinessObjectTableLayoutHeaderProps {
     query: BusinessObjectSearchQuery;
+    allowReadAll: boolean;
     properties: null | undefined | Property[];
     onChange: (x0: null | Partial<BusinessObjectSearchQuery>) => void;
     onDownloadClick: () => void;
@@ -31,7 +34,7 @@ interface BusinessObjectTableLayoutHeaderProps {
     downloading: boolean;
     showModalFilter: boolean;
     showDownloadModal: boolean;
-    downloadCount?: SearchResult<object>;
+    downloadCount?: DownloadResult;
 }
 
 interface BusinessObjectTableLayoutHeaderState {
@@ -95,15 +98,13 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
         this.props.onChange({
             conditions: this.state.modalEditingConditions.filter(x => x.value != null && x.value.trim() !== ""),
         });
-        this.setState({
-            showFilterModal: false,
-            modalEditingConditions: [],
-        });
+        this.setState({ showFilterModal: false });
     };
 
     public render(): JSX.Element {
         const {
             query,
+            allowReadAll,
             properties,
             onChange,
             onDownloadClick,
@@ -113,6 +114,9 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
             downloadCount,
         } = this.props;
         const { showFilterModal, modalEditingConditions } = this.state;
+        const allowCloseModal =
+            allowReadAll ||
+            PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties || []);
         return (
             <RowStack baseline block gap={2}>
                 <Fill />
@@ -147,9 +151,10 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
                 </Fit>
                 {showFilterModal && properties != null && (
                     <FilterModal
+                        allowClose={allowCloseModal}
                         onClose={this.hanldeCloseFilterModal}
                         modalEditingConditions={modalEditingConditions}
-                        tableColumns={properties.filter(x => x.indexed)}
+                        tableColumns={properties.filter(x => x.isSearchable)}
                         onChangeFilter={x => this.setState({ modalEditingConditions: x })}
                         onApplyFilter={this.handleApplyFilter}
                     />

@@ -1,15 +1,16 @@
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
+import _ from "lodash";
 import qs from "qs";
 import React from "react";
 
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
 import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
+import { BusinessObjectDetails } from "Domain/Api/DataTypes/BusinessObjectDetails";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectSearchRequest } from "Domain/Api/DataTypes/BusinessObjectSearchRequest";
-import { BusinessObjectStorageType } from "Domain/Api/DataTypes/BusinessObjectStorageType";
 import { ApiError } from "Domain/ApiBase/ApiError";
 
 import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";
@@ -22,12 +23,13 @@ import { CommonLayout } from "../Components/Layouts/CommonLayout";
 interface BusinessObjectContainerProps {
     objectId: string;
     objectQuery: string;
+    allowEdit: boolean;
     businessObjectsApi: IBusinessObjectsApi;
 }
 
 interface BusinessObjectContainerState {
     objectInfo: Nullable<{}>;
-    objectMeta: Nullable<BusinessObjectDescription>;
+    objectMeta: null | BusinessObjectDescription;
     loading: boolean;
     showConfirmModal: boolean;
     objectNotFound: boolean;
@@ -57,21 +59,21 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 
     public async load(): Promise<void> {
-        const { businessObjectsApi, objectId } = this.props;
         this.setState({ loading: true });
         try {
             const objectInfo = await this.loadObject();
-            const objectMeta = await businessObjectsApi.getBusinessObjectMeta(objectId);
-            this.setState({
-                objectInfo: objectInfo,
-                objectMeta: objectMeta,
-            });
+            if (objectInfo) {
+                this.setState({
+                    objectInfo: objectInfo.object,
+                    objectMeta: objectInfo.meta,
+                });
+            }
         } finally {
             this.setState({ loading: false });
         }
     }
 
-    public async loadObject(): Promise<Nullable<{}>> {
+    public async loadObject(): Promise<null | BusinessObjectDetails> {
         const { businessObjectsApi, objectId, objectQuery } = this.props;
         const query = qs.parse(objectQuery.replace(/^\?/, ""));
         const searchQuery: BusinessObjectSearchRequest = {
@@ -85,50 +87,51 @@ class BusinessObjectContainerInternal extends React.Component<
             return await businessObjectsApi.getBusinessObjects(objectId, searchQuery);
         } catch (e) {
             if (e instanceof ApiError && e.statusCode === 404) {
-                this.setState({
-                    objectNotFound: true,
-                });
+                this.setState({ objectNotFound: true });
+                return null;
             } else {
                 throw new Error(e.message);
             }
         }
-        return null;
     }
 
-    public async handleChange(value: object): Promise<void> {
-        const { objectMeta } = this.state;
-        if (objectMeta != null) {
-            await this.props.businessObjectsApi.updateBusinessObjects(objectMeta.identifier, value);
+    public handleChange = async (value: object, path: string[]): Promise<void> => {
+        const { objectMeta, objectInfo } = this.state;
+        if (objectMeta == null || objectInfo == null) {
+            return;
         }
-        const objectInfo = await this.loadObject();
-        this.setState({
-            objectInfo: objectInfo,
-        });
-    }
+
+        try {
+            const updatedObject = _.set(objectInfo, path, value);
+            const savedInfo = await this.props.businessObjectsApi.updateBusinessObjects(
+                objectMeta.identifier,
+                updatedObject
+            );
+            this.setState({ objectInfo: savedInfo });
+        } catch (e) {
+            const obj = await this.loadObject();
+            this.setState({ objectInfo: obj });
+            throw e;
+        }
+    };
 
     public async handleDelete(): Promise<void> {
         const { objectMeta, objectInfo } = this.state;
         const { businessObjectsApi } = this.props;
         if (objectMeta != null) {
-            if (objectMeta.storageType === BusinessObjectStorageType.SingleObjectPerRow) {
-                await businessObjectsApi.deleteBusinessObjects(objectMeta.identifier, objectInfo as any);
-                window.location.href = `/BusinessObjects/${this.props.objectId}`;
-                return;
-            }
+            await businessObjectsApi.deleteBusinessObjects(objectMeta.identifier, objectInfo as any);
+            window.location.href = `/BusinessObjects/${this.props.objectId}`;
+            return;
         }
         throw new Error("Пытаемся удалить объект с типом массив");
     }
 
     public handleTryDeleteObject() {
-        this.setState({
-            showConfirmModal: true,
-        });
+        this.setState({ showConfirmModal: true });
     }
 
     public handleCancelDelete = () => {
-        this.setState({
-            showConfirmModal: false,
-        });
+        this.setState({ showConfirmModal: false });
     };
 
     public handleConfirmDelete = () => {
@@ -136,11 +139,9 @@ class BusinessObjectContainerInternal extends React.Component<
     };
 
     public render(): JSX.Element {
-        const { objectId } = this.props;
-        const scopeId = "scopeId";
-        const { objectInfo, objectMeta, loading } = this.state;
-        const allowEdit = true;
-        if (this.state.objectNotFound) {
+        const { objectId, allowEdit } = this.props;
+        const { objectInfo, objectNotFound, objectMeta, loading } = this.state;
+        if (objectNotFound || objectInfo == null) {
             return <BusinessObjectNotFoundPage parentLocation={`/BusinessObjects/${objectId}`} />;
         }
         return (
@@ -165,23 +166,21 @@ class BusinessObjectContainerInternal extends React.Component<
                             </div>
                         }>
                         <ColumnStack block gap={2}>
-                            <Fit>
-                                <RowStack gap={2}>
-                                    <Fit>ScopeId:</Fit>
-                                    <Fit>
-                                        <AllowCopyToClipboard data-tid={"ScopeId"}>{scopeId}</AllowCopyToClipboard>
-                                    </Fit>
-                                </RowStack>
-                            </Fit>
-                            <Fit>
-                                <RowStack gap={2}>
-                                    <Fit>Id:</Fit>
-                                    <Fit>
-                                        <AllowCopyToClipboard data-tid={"ObjectId"}>{objectId}</AllowCopyToClipboard>
-                                    </Fit>
-                                    <Fit />
-                                </RowStack>
-                            </Fit>
+                            {objectMeta?.typeMetaInformation?.properties?.map(
+                                x =>
+                                    x.isIdentity && (
+                                        <Fit>
+                                            <RowStack gap={2}>
+                                                <Fit>{x.name}:</Fit>
+                                                <Fit>
+                                                    <AllowCopyToClipboard data-tid={x.name}>
+                                                        {objectInfo[x.name]}
+                                                    </AllowCopyToClipboard>
+                                                </Fit>
+                                            </RowStack>
+                                        </Fit>
+                                    )
+                            )}
                         </ColumnStack>
                     </CommonLayout.GreyLineHeader>
                     <CommonLayout.Content>
@@ -192,7 +191,7 @@ class BusinessObjectContainerInternal extends React.Component<
                                         objectInfo={objectInfo}
                                         objectMeta={objectMeta}
                                         allowEdit={allowEdit}
-                                        onChange={value => this.handleChange(value)}
+                                        onChange={this.handleChange}
                                     />
                                 )}
                             </Fit>

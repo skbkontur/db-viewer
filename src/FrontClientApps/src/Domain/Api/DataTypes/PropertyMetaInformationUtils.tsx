@@ -1,6 +1,7 @@
 import _ from "lodash";
 
-import { Property } from "Domain/BusinessObjects/Property";
+import { Condition } from "Domain/Api/DataTypes/Condition";
+import { Property, PropertyInfo } from "Domain/BusinessObjects/Property";
 import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { PropertyMetaInformation } from "./PropertyMetaInformation";
@@ -11,6 +12,17 @@ function getTypeName(prevName: string, currentName: string, isArray = false): st
 }
 
 export class PropertyMetaInformationUtils {
+    public static hasFilledRequiredFields(conditions: Condition[], properties: PropertyInfo[]) {
+        const required = properties.filter(x => x.isRequired).map(x => x.name);
+        for (const property of required) {
+            const condition = conditions.filter(x => x.path === property)[0];
+            if (StringUtils.isNullOrWhitespace(condition?.value)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static getType(type: Nullable<TypeMetaInformation>): Nullable<string> {
         if (type == null) {
             return null;
@@ -33,9 +45,9 @@ export class PropertyMetaInformationUtils {
                 );
             } else {
                 props.push({
+                    ...item,
                     name: prevName ? `${prevName}.${item.name}` : item.name,
                     type: this.getType(item.type),
-                    indexed: item.indexed,
                 });
             }
         });
@@ -67,13 +79,13 @@ export class PropertyMetaInformationUtils {
                 }
             } else {
                 props.push({
+                    ...item,
                     name: getTypeName(
                         prevName,
                         item.name,
                         item.type != null && item.type.itemType != null && item.type.itemType.isArray
                     ),
                     type: this.getType(item.type),
-                    indexed: item.indexed,
                 });
             }
         });
@@ -84,9 +96,9 @@ export class PropertyMetaInformationUtils {
     public static getPropertyTypeByPath(
         properties: Nullable<PropertyMetaInformation[]>,
         path: string[]
-    ): Nullable<string> {
+    ): Nullable<Property> {
         const arrOfTypes = this.getTypes(properties);
-        let typeObj: any | null | Property = null;
+        let typeObj: Nullable<Property> = null;
         if (arrOfTypes != null) {
             const fullPath = path
                 .map(StringUtils.capitalizeFirstLetter)
@@ -94,6 +106,6 @@ export class PropertyMetaInformationUtils {
                 .replace(/[\d+]/g, "");
             typeObj = arrOfTypes.find(x => x.name === fullPath);
         }
-        return typeObj ? typeObj.type : null;
+        return typeObj;
     }
 }

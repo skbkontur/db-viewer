@@ -2,7 +2,6 @@ import React from "react";
 
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
-import { StringUtils } from "Domain/Utils/StringUtils";
 
 import { Accordion } from "../Accordion/Accordion";
 
@@ -11,7 +10,7 @@ import { BusinessObjectCustomRender } from "./BusinessObjectCustomRender";
 interface BusinessObjectViewerProps {
     objectInfo: object;
     objectMeta: BusinessObjectDescription;
-    onChange: (x0: object) => Promise<void>;
+    onChange: (value: object, path: string[]) => Promise<void>;
     allowEdit: boolean;
 }
 
@@ -23,23 +22,13 @@ export class BusinessObjectViewer extends React.Component<BusinessObjectViewerPr
                 serverValue = value.toISOString();
             }
 
-            const lastModificationDateTime: string = this.props.objectInfo["lastModificationDateTime"] || "";
-            this.props.onChange({
-                value: serverValue,
-                path: path
-                    .map(StringUtils.capitalizeFirstLetter)
-                    .map(x => x.replace(/\[|\]/g, ""))
-                    .join("."),
-                lastModificationDateTime: lastModificationDateTime,
-            });
+            this.props.onChange(serverValue as any, path);
         }
     };
 
     public render(): JSX.Element {
         const { objectMeta, objectInfo, allowEdit } = this.props;
-
-        const objectProperties =
-            objectMeta && objectMeta.typeMetaInformation && objectMeta.typeMetaInformation.properties;
+        const objectProperties = objectMeta?.typeMetaInformation?.properties;
         return (
             <div>
                 <Accordion
@@ -48,7 +37,7 @@ export class BusinessObjectViewer extends React.Component<BusinessObjectViewerPr
                         <BusinessObjectCustomRender
                             target={target}
                             path={path}
-                            type={PropertyMetaInformationUtils.getPropertyTypeByPath(objectProperties, path)}
+                            property={PropertyMetaInformationUtils.getPropertyTypeByPath(objectProperties, path)}
                             objectType={objectMeta.identifier}
                             allowEdit={allowEdit}
                             onChange={this.handleChange}

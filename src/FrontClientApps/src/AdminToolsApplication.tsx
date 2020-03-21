@@ -14,6 +14,7 @@ export function AdminToolsApplication({ match }: RouteComponentProps): JSX.Eleme
                 path={`${match.url}/:objectId`}
                 render={({ location, match: { params } }) => (
                     <ObjectTableContainer
+                        allowEdit
                         urlQuery={location.search || ""}
                         path={`${match.url}/${params.objectId}`}
                         objectId={params.objectId || ""}
@@ -23,7 +24,11 @@ export function AdminToolsApplication({ match }: RouteComponentProps): JSX.Eleme
             <Route
                 path={`${match.url}/:objectId/details`}
                 render={({ location, match: { params } }) => (
-                    <BusinessObjectContainer objectId={params.objectId || ""} objectQuery={location.search || ""} />
+                    <BusinessObjectContainer
+                        allowEdit
+                        objectId={params.objectId || ""}
+                        objectQuery={location.search || ""}
+                    />
                 )}
             />
         </Switch>

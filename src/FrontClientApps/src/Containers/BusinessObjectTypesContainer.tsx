@@ -56,7 +56,7 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
                 <CommonLayout.Header title="Список Бизнес Объектов" />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>
-                        <ColumnStack block stretch gap={4}>
+                        <ColumnStack block stretch>
                             <Fit>
                                 <Input
                                     data-tid="FilterInput"

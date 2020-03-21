@@ -3,7 +3,15 @@
 :local {
     .root {
         min-width: 800px;
-        column-count: 3; /* stylelint-disable-line */
+        column-count: 3;
+    }
+
+    .schema {
+        font-size: 20px;
+        padding-top: 20px;
+        border-bottom: @table-header-border;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
     }
 
     .firstLetter {
@@ -16,6 +24,11 @@
         &:first-child {
             margin-top: 0;
         }
+    }
+
+    .typeGroup {
+        break-inside: avoid;
+        page-break-inside: avoid;
     }
 
     .indexed {

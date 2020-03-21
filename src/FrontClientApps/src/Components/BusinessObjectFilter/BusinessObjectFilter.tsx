@@ -1,5 +1,5 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { tooltip, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
+import { tooltip, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import React from "react";
@@ -8,6 +8,7 @@ import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/Business
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { Property } from "Domain/BusinessObjects/Property";
 import { ticksToTimestamp, timestampToTicks } from "Domain/Utils/ConvertTimeUtil";
+import { StringUtils } from "Domain/Utils/StringUtils";
 import { TimeUtils } from "Domain/Utils/TimeUtils";
 import { validateBusinessObjectField } from "Domain/Utils/ValidationUtils";
 
@@ -50,14 +51,6 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
         }
     }
 
-    public isTypeComparable(type: Nullable<string>): boolean {
-        if (type == null) {
-            return false;
-        }
-        const comparableTypes = ["DateTime", "Decimal"];
-        return comparableTypes.indexOf(type) !== -1;
-    }
-
     public renderProperty(property: Property, value: Nullable<string>): JSX.Element {
         if (property.type === "DateTime") {
             return (
@@ -77,11 +70,16 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
                         />
                     </Fit>
                     <Fit>
-                        <Input
-                            data-tid={"DateTimeInTicks"}
-                            onChange={(e, nextValue) => this.updateItem(property, { value: nextValue })}
-                            value={value ? value : ""}
-                        />
+                        <ValidationWrapperV1
+                            data-tid="InputValidation"
+                            renderMessage={tooltip("right middle")}
+                            validationInfo={this.getValidation(property, value)}>
+                            <Input
+                                data-tid={"DateTimeInTicks"}
+                                onChange={(e, nextValue) => this.updateItem(property, { value: nextValue })}
+                                value={value ? value : ""}
+                            />
+                        </ValidationWrapperV1>
                     </Fit>
                 </ColumnStack>
             );
@@ -98,7 +96,7 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
             <ValidationWrapperV1
                 data-tid="InputValidation"
                 renderMessage={tooltip("right middle")}
-                validationInfo={validateBusinessObjectField(value)}>
+                validationInfo={this.getValidation(property, value)}>
                 <Input
                     data-tid={"Input"}
                     onChange={(e, nextValue) => this.updateItem(property, { value: nextValue })}
@@ -106,6 +104,13 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
                 />
             </ValidationWrapperV1>
         );
+    }
+
+    public getValidation(property: Property, value: string | null | undefined): ValidationInfo | null {
+        if (property.isRequired && StringUtils.isNullOrWhitespace(value)) {
+            return { message: "Поле должно быть заполнено", type: "submit" };
+        }
+        return validateBusinessObjectField(value);
     }
 
     public render(): JSX.Element {
@@ -123,14 +128,7 @@ export class BusinessObjectFilter extends React.Component<BusinessObjectFilterPr
                                         value={condition.operator}
                                         onChange={value => this.updateItem(property, { operator: value })}
                                         availableValues={
-                                            this.isTypeComparable(property.type)
-                                                ? (Object.keys(
-                                                      BusinessObjectFieldFilterOperator
-                                                  ) as BusinessObjectFieldFilterOperator[])
-                                                : [
-                                                      BusinessObjectFieldFilterOperator.Equals,
-                                                      BusinessObjectFieldFilterOperator.DoesNotEqual,
-                                                  ]
+                                            property.availableFilters || [BusinessObjectFieldFilterOperator.Equals]
                                         }
                                     />
                                 </Fit>

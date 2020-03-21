@@ -34,15 +34,14 @@ namespace Kontur.DBViewer.SampleApi
                     {
                         SerializerSettings = new JsonSerializerSettings
                         {
-                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
                             Converters = new JsonConverter[]
                             {
-                                //new CqlObjectPropertyToStringConverter(),
-                                //new StringEnumConverter(),
-                                //new IsoDateTimeConverter
-                                //{
-                                //    DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"
-                                //}
+                                new CqlObjectPropertyToStringConverter(),
+                                new StringEnumConverter(),
+                                new IsoDateTimeConverter
+                                {
+                                DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"
+                                }
                             }
                         },
                     });

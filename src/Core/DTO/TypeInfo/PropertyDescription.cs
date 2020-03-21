@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kontur.DBViewer.Core.VNext.DataTypes;
+using Newtonsoft.Json;
 
 namespace Kontur.DBViewer.Core.DTO.TypeInfo
 {
@@ -20,6 +21,6 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
         public bool IsRequired { get; set; }
         
         [JsonProperty("availableFilters")]
-        public FilterType[] AvailableFilters { get; set; }
+        public BusinessObjectFieldFilterOperator[] AvailableFilters { get; set; }
     }
 }
