@@ -1,10 +1,10 @@
 {
   "name": "@skbkontur/db-viewer-ui",
   "version": "0.2.0",
-  "main": "index.js",
+  "main": "./dist/AdminToolsApplication.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc && copyfiles -u 1 -e **/*.stories.* src/**/*.js src/**/*.less src/**/*.png dist",
+    "build": "tsc --project tsconfig.prod.json && copyfiles --up 1 src/**/*.js src/**/*.less src/**/*.png dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server --hot --env.api=fake",
     "start:prod": "cross-env NODE_ENV=development webpack-dev-server --hot --env.api=real",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006 -s .",

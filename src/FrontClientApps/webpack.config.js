@@ -10,7 +10,7 @@ module.exports = function(env) {
 
     return {
         context: __dirname,
-        entry: { root: "./src/index" },
+        entry: { root: "./index" },
         output: {
             path: path.resolve(__dirname, "dist"),
             publicPath: "/dist/",

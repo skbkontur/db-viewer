@@ -2,15 +2,16 @@ import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
 import Input from "@skbkontur/react-ui/Input";
 import Loader from "@skbkontur/react-ui/Loader";
 import React from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
+import { RouteUtils } from "Domain/Utils/RouteUtils";
 
 import { BusinessObjectTypes } from "../Components/BusinessObjectTypes/BusinessObjectTypes";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
-interface BusinessObjectsProps {
+interface BusinessObjectsProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;
     path: string;
 }
@@ -45,14 +46,16 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
         }
     }
 
-    public getPath = (id: string): string => this.props.path + `/${id}`;
+    public getPath = (id: string): string => RouteUtils.goTo(this.props.path, id);
 
     public render(): JSX.Element {
         const { loading, objects, filter } = this.state;
 
         return (
             <CommonLayout>
-                <CommonLayout.GoBack to="/">Вернуться к инструментам администратора</CommonLayout.GoBack>
+                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)}>
+                    Вернуться к инструментам администратора
+                </CommonLayout.GoBack>
                 <CommonLayout.Header title="Список Бизнес Объектов" />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>
@@ -85,4 +88,4 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
     }
 }
 
-export const BusinessObjectTypesContainer = withBusinessObjectsApi(BusinessObjectTypesContainerInternal);
+export const BusinessObjectTypesContainer = withRouter(BusinessObjectTypesContainerInternal);

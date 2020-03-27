@@ -69,22 +69,6 @@ export function customRender(target: any, path: string[], objectType?: string): 
         }
     }
 
-    if (pathTop === "objectId" && path.some(x => x.endsWith("References")) && typeof target === "object") {
-        const id = getByPath(target, [...path].slice(0, -1));
-        if (target != null && id != null && typeof id === "object") {
-            const webObjectName = id.webObjectName;
-            const scopeId = target.scopeId;
-            const objectId = id.objectId;
-            if (typeof webObjectName === "string" && typeof scopeId === "string" && typeof objectId === "string") {
-                return (
-                    <Link data-tid="GoToLink" to={`/BusinessObjects/${webObjectName}/${scopeId}/${objectId}`}>
-                        {objectId}
-                    </Link>
-                );
-            }
-        }
-    }
-
     const result = typeof target === "object" ? getByPath(target, path) : null;
     return result == null || result === false ? (
         <span style={{ color: "#a0a0a0" }}>{String(result)}</span>

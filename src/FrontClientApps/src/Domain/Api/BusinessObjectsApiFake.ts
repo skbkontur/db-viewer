@@ -1,10 +1,11 @@
+import { BusinessObjectDetails } from "Domain/Api/DataTypes/BusinessObjectDetails";
+import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
 import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { Guid } from "Domain/DataTypes/Guid";
 
 import { IBusinessObjectsApi } from "./BusinessObjectsApi";
 import { BusinessObjectDescription } from "./DataTypes/BusinessObjectDescription";
 import { BusinessObjectSearchRequest } from "./DataTypes/BusinessObjectSearchRequest";
-import { FileInfo } from "./DataTypes/FileInfo";
 
 export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectNames(): Promise<BusinessObjectDescription[]> {
@@ -140,11 +141,21 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjects(
         businessObjectIdentifier: string,
         query: BusinessObjectSearchRequest
-    ): Promise<object> {
+    ): Promise<BusinessObjectDetails> {
         return {
-            id: "3821a146-bf0d-4ca4-b69e-ebc6365582da",
-            scopeId: "0ba4bc7f-1137-44ab-b4e7-9a6181b964f4",
-            lastModificationDateTime: "2015-06-23T09:28:39.1870521Z",
+            meta: {
+                identifier: "",
+                schemaDescription: {
+                    downloadLimit: 1000,
+                    countLimit: 100,
+                    allowReadAll: true,
+                },
+            },
+            object: {
+                id: "3821a146-bf0d-4ca4-b69e-ebc6365582da",
+                scopeId: "0ba4bc7f-1137-44ab-b4e7-9a6181b964f4",
+                lastModificationDateTime: "2015-06-23T09:28:39.1870521Z",
+            },
         };
     }
 
@@ -248,11 +259,15 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async downloadBusinessObjects(
         businessObjectIdentifier: string,
         query: BusinessObjectSearchRequest
-    ): Promise<FileInfo> {
+    ): Promise<DownloadResult> {
         return {
-            content: "aHV5bnlhMg==",
-            contentType: "text/csv",
-            name: "file",
+            count: 100,
+            countLimit: 1000,
+            file: {
+                content: "aHV5bnlhMg==",
+                contentType: "text/csv",
+                name: "file",
+            },
         };
     }
 }

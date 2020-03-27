@@ -8,7 +8,6 @@ import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
@@ -20,6 +19,7 @@ import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObj
 import { Property } from "Domain/BusinessObjects/Property";
 import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
+import { RouteUtils } from "Domain/Utils/RouteUtils";
 
 import { BusinessObjectTableLayoutHeader } from "../Components/BusinessObjectTableLayoutHeader/BusinessObjectTableLayoutHeader";
 import { BusinessObjectsTable } from "../Components/BusinessObjectsTable/BusinessObjectsTable";
@@ -112,7 +112,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return (
             <CommonLayout>
                 <ErrorHandlingContainer />
-                <CommonLayout.GoBack to="/BusinessObjects" data-tid="GoToObjectsList">
+                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoToObjectsList">
                     Вернуться к списку видов бизнес объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.Header
@@ -285,7 +285,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 query[prop.name] = item[prop.name];
             }
         }
-        return `${this.props.path}/details?${qs.stringify(query)}`;
+        return RouteUtils.goTo(this.props.path, `details?${qs.stringify(query)}`);
     };
 
     private readonly handleOpenFilter = () => {
@@ -405,4 +405,4 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 }
 
-export const ObjectTableContainer = withBusinessObjectsApi(withRouter(ObjectTableContainerInternal));
+export const ObjectTableContainer = withRouter(ObjectTableContainerInternal);

@@ -13,7 +13,6 @@ import React from "react";
 import { Condition } from "Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
 import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
-import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
 import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
 import { Property } from "Domain/BusinessObjects/Property";
 

@@ -4,14 +4,15 @@ import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import qs from "qs";
 import React from "react";
+import { RouteComponentProps, withRouter } from "react-router";
 
 import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { withBusinessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
 import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
 import { BusinessObjectDetails } from "Domain/Api/DataTypes/BusinessObjectDetails";
 import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectSearchRequest } from "Domain/Api/DataTypes/BusinessObjectSearchRequest";
 import { ApiError } from "Domain/ApiBase/ApiError";
+import { RouteUtils } from "Domain/Utils/RouteUtils";
 
 import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";
 import { BusinessObjectNotFoundPage } from "../Components/BusinessObjectNotFoundPage/BusinessObjectNotFoundPage";
@@ -20,7 +21,7 @@ import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 
-interface BusinessObjectContainerProps {
+interface BusinessObjectContainerProps extends RouteComponentProps {
     objectId: string;
     objectQuery: string;
     allowEdit: boolean;
@@ -120,7 +121,7 @@ class BusinessObjectContainerInternal extends React.Component<
         const { businessObjectsApi } = this.props;
         if (objectMeta != null) {
             await businessObjectsApi.deleteBusinessObjects(objectMeta.identifier, objectInfo as any);
-            window.location.href = `/BusinessObjects/${this.props.objectId}`;
+            this.props.history.push(RouteUtils.backUrl(this.props));
             return;
         }
         throw new Error("Пытаемся удалить объект с типом массив");
@@ -142,12 +143,12 @@ class BusinessObjectContainerInternal extends React.Component<
         const { objectId, allowEdit } = this.props;
         const { objectInfo, objectNotFound, objectMeta, loading } = this.state;
         if (objectNotFound || objectInfo == null) {
-            return <BusinessObjectNotFoundPage parentLocation={`/BusinessObjects/${objectId}`} />;
+            return <BusinessObjectNotFoundPage />;
         }
         return (
             <CommonLayout>
                 <ErrorHandlingContainer />
-                <CommonLayout.GoBack to={`/BusinessObjects/${objectId}`} data-tid="GoBack">
+                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoBack">
                     Вернуться к списку бизнес объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.ContentLoader active={loading}>
@@ -209,4 +210,4 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 }
 
-export const BusinessObjectContainer = withBusinessObjectsApi(BusinessObjectContainerInternal);
+export const BusinessObjectContainer = withRouter(BusinessObjectContainerInternal);

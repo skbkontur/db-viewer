@@ -13,7 +13,6 @@ const schema: SchemaDescription = {
     schemaName: "ab",
     downloadLimit: 100,
     countLimit: 10,
-    allowDownload: true,
 };
 
 storiesOf("BusinessObjectTypes", module)
