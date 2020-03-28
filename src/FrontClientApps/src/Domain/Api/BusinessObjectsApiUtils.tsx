@@ -1,4 +1,4 @@
-import { BusinessObjectsApiImpl } from "Domain/Api/BusinessObjectsApi";
+import { BusinessObjectsApiImpl } from "./BusinessObjectsApi";
 
 const businessObjectsApiPrefix = "/business-objects/";
 

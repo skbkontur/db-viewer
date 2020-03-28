@@ -10,12 +10,11 @@ import Tooltip from "@skbkontur/react-ui/Tooltip";
 import _ from "lodash";
 import React from "react";
 
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
-import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
-import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
-import { Property } from "Domain/BusinessObjects/Property";
-
+import { Condition } from "../../Domain/Api/DataTypes/Condition";
+import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
+import { PropertyMetaInformationUtils } from "../../Domain/Api/DataTypes/PropertyMetaInformationUtils";
+import { BusinessObjectSearchQuery } from "../../Domain/BusinessObjects/BusinessObjectSearchQuery";
+import { Property } from "../../Domain/BusinessObjects/Property";
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
 import styles from "./BusinessObjectTableLayoutHeader.less";

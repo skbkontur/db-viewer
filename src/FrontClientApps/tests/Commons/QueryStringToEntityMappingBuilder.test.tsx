@@ -1,9 +1,9 @@
 import { expect } from "chai";
 
-import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
-import { StringSimpleExpression } from "Domain/QueryStringMapping/Mappers";
-import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
-import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
+import { DateTimeRange } from "../../src/Domain/DataTypes/DateTimeRange";
+import { StringSimpleExpression } from "../../src/Domain/QueryStringMapping/Mappers";
+import { QueryStringMapping } from "../../src/Domain/QueryStringMapping/QueryStringMapping";
+import { QueryStringMappingBuilder } from "../../src/Domain/QueryStringMapping/QueryStringMappingBuilder";
 
 type Enum1 = 1 | 2 | 3;
 type Enum2 = "enum1" | "enum2" | "enum3" | "enum4" | "enum5";

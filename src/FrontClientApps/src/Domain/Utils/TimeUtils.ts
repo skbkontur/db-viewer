@@ -1,4 +1,4 @@
-import { TimeZone } from "Domain/DataTypes/Time";
+import { TimeZone } from "../DataTypes/Time";
 
 export class TimeUtils {
     public static TimeZones: { [x: string]: TimeZone } = {

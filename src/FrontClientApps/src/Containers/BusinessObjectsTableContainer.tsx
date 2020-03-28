@@ -7,24 +7,23 @@ import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
-import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
-import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
-import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
-import { FileInfo } from "Domain/Api/DataTypes/FileInfo";
-import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
-import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
-import { BusinessObjectSearchQuery } from "Domain/BusinessObjects/BusinessObjectSearchQuery";
-import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
-import { Property } from "Domain/BusinessObjects/Property";
-import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
-import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
-import { RouteUtils } from "Domain/Utils/RouteUtils";
-
 import { BusinessObjectTableLayoutHeader } from "../Components/BusinessObjectTableLayoutHeader/BusinessObjectTableLayoutHeader";
 import { BusinessObjectsTable } from "../Components/BusinessObjectsTable/BusinessObjectsTable";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
+import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
+import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
+import { BusinessObjectFilterSortOrder } from "../Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
+import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
+import { FileInfo } from "../Domain/Api/DataTypes/FileInfo";
+import { PropertyMetaInformationUtils } from "../Domain/Api/DataTypes/PropertyMetaInformationUtils";
+import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
+import { BusinessObjectSearchQuery } from "../Domain/BusinessObjects/BusinessObjectSearchQuery";
+import { ConditionsMapper, SortMapper } from "../Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
+import { Property } from "../Domain/BusinessObjects/Property";
+import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
+import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
+import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTableProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;

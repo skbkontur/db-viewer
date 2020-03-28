@@ -6,9 +6,8 @@ import Modal from "@skbkontur/react-ui/Modal";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { Property } from "Domain/BusinessObjects/Property";
-
+import { Condition } from "../../Domain/Api/DataTypes/Condition";
+import { Property } from "../../Domain/BusinessObjects/Property";
 import { BusinessObjectFilter } from "../BusinessObjectFilter/BusinessObjectFilter";
 
 import styles from "./BusinessObjectTableLayoutHeader.less";

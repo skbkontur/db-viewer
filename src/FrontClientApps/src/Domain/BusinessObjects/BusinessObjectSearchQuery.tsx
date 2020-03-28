@@ -1,5 +1,5 @@
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { Sort } from "Domain/Api/DataTypes/Sort";
+import { Condition } from "../Api/DataTypes/Condition";
+import { Sort } from "../Api/DataTypes/Sort";
 
 export interface BusinessObjectSearchQuery {
     conditions: Nullable<Condition[]>;

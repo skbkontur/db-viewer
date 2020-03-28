@@ -1,11 +1,11 @@
-import { BusinessObjectDetails } from "Domain/Api/DataTypes/BusinessObjectDetails";
-import { DownloadResult } from "Domain/Api/DataTypes/DownloadResult";
-import { SearchResult } from "Domain/Api/DataTypes/SearchResult";
-import { Guid } from "Domain/DataTypes/Guid";
+import { Guid } from "../DataTypes/Guid";
 
 import { IBusinessObjectsApi } from "./BusinessObjectsApi";
 import { BusinessObjectDescription } from "./DataTypes/BusinessObjectDescription";
+import { BusinessObjectDetails } from "./DataTypes/BusinessObjectDetails";
 import { BusinessObjectSearchRequest } from "./DataTypes/BusinessObjectSearchRequest";
+import { DownloadResult } from "./DataTypes/DownloadResult";
+import { SearchResult } from "./DataTypes/SearchResult";
 
 export class BusinessObjectsApiFake implements IBusinessObjectsApi {
     public async getBusinessObjectNames(): Promise<BusinessObjectDescription[]> {

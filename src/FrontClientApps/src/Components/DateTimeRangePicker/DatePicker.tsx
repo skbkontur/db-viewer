@@ -2,11 +2,11 @@ import DefaultDatePicker from "@skbkontur/react-ui/DatePicker";
 import moment from "moment";
 import React from "react";
 
-import { ICanBeValidated, RussianDateFormat } from "Domain/DataTypes/DateTimeRange";
-import { Time, TimeZone } from "Domain/DataTypes/Time";
-import { DateUtils } from "Domain/Utils/DateUtils";
-import { StringUtils } from "Domain/Utils/StringUtils";
-import { TimeUtils } from "Domain/Utils/TimeUtils";
+import { ICanBeValidated, RussianDateFormat } from "../../Domain/DataTypes/DateTimeRange";
+import { Time, TimeZone } from "../../Domain/DataTypes/Time";
+import { DateUtils } from "../../Domain/Utils/DateUtils";
+import { StringUtils } from "../../Domain/Utils/StringUtils";
+import { TimeUtils } from "../../Domain/Utils/TimeUtils";
 
 interface DatePickerProps {
     value: Nullable<Date>;

@@ -1,5 +1,5 @@
-import { DateTimeRange } from "Domain/DataTypes/DateTimeRange";
-import { Lens, pathLens, PropertyPicker } from "Domain/lens";
+import { DateTimeRange } from "../DataTypes/DateTimeRange";
+import { Lens, pathLens, PropertyPicker } from "../lens";
 
 import {
     BooleanMapper,

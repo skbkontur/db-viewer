@@ -2,9 +2,8 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import StoryRouter from "storybook-react-router";
 
-import { SchemaDescription } from "Domain/Api/SchemaDescription";
-
 import { BusinessObjectTypes } from "../../src/Components/BusinessObjectTypes/BusinessObjectTypes";
+import { SchemaDescription } from "../../src/Domain/Api/SchemaDescription";
 
 import objects from "./Responses/business-objects.json";
 

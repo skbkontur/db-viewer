@@ -5,9 +5,8 @@ import classNames from "classnames";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
-import { Sort } from "Domain/Api/DataTypes/Sort";
-import { Property } from "Domain/BusinessObjects/Property";
-
+import { Sort } from "../../Domain/Api/DataTypes/Sort";
+import { Property } from "../../Domain/BusinessObjects/Property";
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { customRender } from "../BusinessObjectViewer/BusinessObjectItemCustomRender";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";

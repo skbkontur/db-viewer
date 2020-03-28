@@ -4,12 +4,11 @@ import Loader from "@skbkontur/react-ui/Loader";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
-import { RouteUtils } from "Domain/Utils/RouteUtils";
-
 import { BusinessObjectTypes } from "../Components/BusinessObjectTypes/BusinessObjectTypes";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
+import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
+import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
+import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface BusinessObjectsProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;

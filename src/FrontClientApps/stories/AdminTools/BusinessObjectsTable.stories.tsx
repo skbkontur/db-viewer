@@ -2,11 +2,10 @@ import { storiesOf } from "@storybook/react";
 import React from "react";
 import StoryRouter from "storybook-react-router";
 
-import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
-import { PropertyMetaInformation } from "Domain/Api/DataTypes/PropertyMetaInformation";
-
 import { BusinessObjectsTable } from "../../src/Components/BusinessObjectsTable/BusinessObjectsTable";
+import { BusinessObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
+import { PropertyMetaInformation } from "../../src/Domain/Api/DataTypes/PropertyMetaInformation";
 
 async function deleteObject(_index: number): Promise<void> {
     // Ничего не делаем

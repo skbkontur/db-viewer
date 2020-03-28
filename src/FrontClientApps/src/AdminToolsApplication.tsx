@@ -1,11 +1,10 @@
 import React from "react";
 import { Route, RouteComponentProps, Switch } from "react-router-dom";
 
-import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-
 import { BusinessObjectContainer } from "./Containers/BusinessObjectContainer";
 import { BusinessObjectTypesContainer } from "./Containers/BusinessObjectTypesContainer";
 import { ObjectTableContainer } from "./Containers/BusinessObjectsTableContainer";
+import { IBusinessObjectsApi } from "./Domain/Api/BusinessObjectsApi";
 
 interface AdminToolsApplicationProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;

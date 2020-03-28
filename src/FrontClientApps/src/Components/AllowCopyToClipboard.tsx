@@ -4,7 +4,7 @@ import Toast from "@skbkontur/react-ui/Toast";
 import copy from "copy-to-clipboard";
 import React from "react";
 
-import { StringUtils } from "Domain/Utils/StringUtils";
+import { StringUtils } from "../Domain/Utils/StringUtils";
 
 export class CopyToClipboardToast {
     public static copyText(value: string) {

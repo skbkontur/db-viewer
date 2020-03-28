@@ -1,8 +1,7 @@
 import React from "react";
 
-import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
-import { PropertyMetaInformationUtils } from "Domain/Api/DataTypes/PropertyMetaInformationUtils";
-
+import { BusinessObjectDescription } from "../../Domain/Api/DataTypes/BusinessObjectDescription";
+import { PropertyMetaInformationUtils } from "../../Domain/Api/DataTypes/PropertyMetaInformationUtils";
 import { Accordion } from "../Accordion/Accordion";
 
 import { BusinessObjectCustomRender } from "./BusinessObjectCustomRender";

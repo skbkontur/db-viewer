@@ -4,14 +4,13 @@ import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import React from "react";
 
-import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { Property } from "Domain/BusinessObjects/Property";
-import { ticksToTimestamp, timestampToTicks } from "Domain/Utils/ConvertTimeUtil";
-import { StringUtils } from "Domain/Utils/StringUtils";
-import { TimeUtils } from "Domain/Utils/TimeUtils";
-import { validateBusinessObjectField } from "Domain/Utils/ValidationUtils";
-
+import { BusinessObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { Condition } from "../../Domain/Api/DataTypes/Condition";
+import { Property } from "../../Domain/BusinessObjects/Property";
+import { ticksToTimestamp, timestampToTicks } from "../../Domain/Utils/ConvertTimeUtil";
+import { StringUtils } from "../../Domain/Utils/StringUtils";
+import { TimeUtils } from "../../Domain/Utils/TimeUtils";
+import { validateBusinessObjectField } from "../../Domain/Utils/ValidationUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 import { FormRow } from "../FormRow/FormRow";
 

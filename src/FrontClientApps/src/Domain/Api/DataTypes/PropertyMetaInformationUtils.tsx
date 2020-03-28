@@ -1,9 +1,9 @@
 import _ from "lodash";
 
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { Property, PropertyInfo } from "Domain/BusinessObjects/Property";
-import { StringUtils } from "Domain/Utils/StringUtils";
+import { Property, PropertyInfo } from "../../BusinessObjects/Property";
+import { StringUtils } from "../../Utils/StringUtils";
 
+import { Condition } from "./Condition";
 import { PropertyMetaInformation } from "./PropertyMetaInformation";
 import { TypeMetaInformation } from "./TypeMetaInformation";
 

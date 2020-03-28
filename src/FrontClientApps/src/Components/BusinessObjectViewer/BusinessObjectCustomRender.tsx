@@ -6,7 +6,7 @@ import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import React from "react";
 
-import { Property } from "Domain/BusinessObjects/Property";
+import { Property } from "../../Domain/BusinessObjects/Property";
 
 import { customRender, customRenderForEdit } from "./BusinessObjectItemCustomRender";
 

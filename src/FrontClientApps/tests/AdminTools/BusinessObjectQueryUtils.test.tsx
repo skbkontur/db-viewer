@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import { suite, test } from "mocha-typescript";
 
-import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { Sort } from "Domain/Api/DataTypes/Sort";
-import { ConditionsMapper, SortMapper } from "Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
-import { QueryStringMapping } from "Domain/QueryStringMapping/QueryStringMapping";
-import { QueryStringMappingBuilder } from "Domain/QueryStringMapping/QueryStringMappingBuilder";
+import { BusinessObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
+import { Condition } from "../../src/Domain/Api/DataTypes/Condition";
+import { Sort } from "../../src/Domain/Api/DataTypes/Sort";
+import { ConditionsMapper, SortMapper } from "../../src/Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
+import { QueryStringMapping } from "../../src/Domain/QueryStringMapping/QueryStringMapping";
+import { QueryStringMappingBuilder } from "../../src/Domain/QueryStringMapping/QueryStringMappingBuilder";
 
 interface BusinessObjectSearchQuery {
     conditions: Nullable<Condition[]>;

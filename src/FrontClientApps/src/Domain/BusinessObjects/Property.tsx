@@ -1,4 +1,4 @@
-import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectFieldFilterOperator } from "../Api/DataTypes/BusinessObjectFieldFilterOperator";
 
 export interface PropertyInfo {
     name: string;

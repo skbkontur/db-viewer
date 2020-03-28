@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { RussianDateFormat } from "Domain/DataTypes/DateTimeRange";
+import { RussianDateFormat } from "../DataTypes/DateTimeRange";
 
 export class DateUtils {
     private static readonly datePickerFormat: RussianDateFormat = "DD.MM.YYYY";

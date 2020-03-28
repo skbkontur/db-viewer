@@ -1,8 +1,7 @@
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { RouteUtils } from "Domain/Utils/RouteUtils";
-
+import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { CommonLayout } from "../Layouts/CommonLayout";
 
 import SorryImage from "./Sorry.png";

@@ -1,8 +1,8 @@
-import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
-import { Condition } from "Domain/Api/DataTypes/Condition";
-import { Sort } from "Domain/Api/DataTypes/Sort";
-import { PlainValueMapper, QueryObject } from "Domain/QueryStringMapping/Mappers";
+import { BusinessObjectFieldFilterOperator } from "../Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectFilterSortOrder } from "../Api/DataTypes/BusinessObjectFilterSortOrder";
+import { Condition } from "../Api/DataTypes/Condition";
+import { Sort } from "../Api/DataTypes/Sort";
+import { PlainValueMapper, QueryObject } from "../QueryStringMapping/Mappers";
 
 import { convertOperationToString, convertStringToOperation } from "./OperationsConverter";
 

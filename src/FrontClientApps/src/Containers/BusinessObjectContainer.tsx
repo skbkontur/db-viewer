@@ -6,20 +6,19 @@ import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { IBusinessObjectsApi } from "Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "Domain/Api/DataTypes/BusinessObjectDescription";
-import { BusinessObjectDetails } from "Domain/Api/DataTypes/BusinessObjectDetails";
-import { BusinessObjectFieldFilterOperator } from "Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectSearchRequest } from "Domain/Api/DataTypes/BusinessObjectSearchRequest";
-import { ApiError } from "Domain/ApiBase/ApiError";
-import { RouteUtils } from "Domain/Utils/RouteUtils";
-
 import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";
 import { BusinessObjectNotFoundPage } from "../Components/BusinessObjectNotFoundPage/BusinessObjectNotFoundPage";
 import { BusinessObjectViewer } from "../Components/BusinessObjectViewer/BusinessObjectViewer";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
+import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
+import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
+import { BusinessObjectDetails } from "../Domain/Api/DataTypes/BusinessObjectDetails";
+import { BusinessObjectFieldFilterOperator } from "../Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { BusinessObjectSearchRequest } from "../Domain/Api/DataTypes/BusinessObjectSearchRequest";
+import { ApiError } from "../Domain/ApiBase/ApiError";
+import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface BusinessObjectContainerProps extends RouteComponentProps {
     objectId: string;

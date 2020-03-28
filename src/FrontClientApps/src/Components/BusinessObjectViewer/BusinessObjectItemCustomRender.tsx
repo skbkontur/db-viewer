@@ -5,8 +5,7 @@ import _ from "lodash";
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Property } from "Domain/BusinessObjects/Property";
-
+import { Property } from "../../Domain/BusinessObjects/Property";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {

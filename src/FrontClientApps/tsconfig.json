@@ -23,9 +23,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "lib": ["es2015", "dom", "esnext", "dom.iterable"],
     "paths": {
-      "Components/*": ["src/Components/*"],
-      "Containers/*": ["src/Containers/*"],
-      "Domain/*": ["src/Domain/*"],
       "*": ["typings/*"]
     }
   },
