@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import _ from "lodash";
+import * as _ from "lodash";
 
 export function pathLens(propertyPicker) {
     const fieldsString = /return [^\{\}\(\)]*?\.([^\{\}\(\)]*?)\s*[;\}]/.exec(propertyPicker.toString())[1];

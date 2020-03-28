@@ -1,5 +1,5 @@
 import Input from "@skbkontur/react-ui/Input";
-import React from "react";
+import * as React from "react";
 
 import { Time } from "../../Domain/DataTypes/Time";
 import { DateUtils } from "../../Domain/Utils/DateUtils";

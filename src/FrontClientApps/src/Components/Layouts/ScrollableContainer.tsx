@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import _ from "lodash";
-import React from "react";
+import * as _ from "lodash";
+import * as React from "react";
 
-import styles from "./ScrollableContainer.less";
+import * as styles from "./ScrollableContainer.less";
 
 interface ScrollableContainerProps {
     className?: string;

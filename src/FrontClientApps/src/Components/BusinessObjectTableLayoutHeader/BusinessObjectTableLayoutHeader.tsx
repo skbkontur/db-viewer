@@ -7,8 +7,8 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import Tooltip from "@skbkontur/react-ui/Tooltip";
-import _ from "lodash";
-import React from "react";
+import * as _ from "lodash";
+import * as React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
@@ -17,7 +17,7 @@ import { BusinessObjectSearchQuery } from "../../Domain/BusinessObjects/Business
 import { Property } from "../../Domain/BusinessObjects/Property";
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
-import styles from "./BusinessObjectTableLayoutHeader.less";
+import * as styles from "./BusinessObjectTableLayoutHeader.less";
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { FilterModal } from "./FilterModal";
 import { Spinner } from "./Spinner";

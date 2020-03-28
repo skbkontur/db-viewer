@@ -3,10 +3,10 @@ import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import classNames from "classnames";
-import _ from "lodash";
-import React from "react";
+import * as _ from "lodash";
+import * as React from "react";
 
-import styles from "./Accordion.less";
+import * as styles from "./Accordion.less";
 
 type CustomRenderer = (target: { [key: string]: any }, path: string[]) => JSX.Element | null;
 

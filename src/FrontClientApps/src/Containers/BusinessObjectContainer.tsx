@@ -1,9 +1,9 @@
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
-import _ from "lodash";
-import qs from "qs";
-import React from "react";
+import * as _ from "lodash";
+import * as qs from "qs";
+import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";

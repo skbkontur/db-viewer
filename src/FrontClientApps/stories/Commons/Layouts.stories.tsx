@@ -6,7 +6,7 @@ import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
-import React from "react";
+import * as React from "react";
 import StoryRouter from "storybook-react-router";
 
 import { CommonLayout } from "../../src/Components/Layouts/CommonLayout";

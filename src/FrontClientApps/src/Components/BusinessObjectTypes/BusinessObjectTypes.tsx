@@ -1,11 +1,11 @@
-import _ from "lodash";
-import React from "react";
+import * as _ from "lodash";
+import * as React from "react";
 import { Link } from "react-router-dom";
 
 import { BusinessObjectDescription } from "../../Domain/Api/DataTypes/BusinessObjectDescription";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 
-import styles from "./BusinessObjectTypes.less";
+import * as styles from "./BusinessObjectTypes.less";
 
 interface BusinessObjectTypesProps {
     objects: BusinessObjectDescription[];

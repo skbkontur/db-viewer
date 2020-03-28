@@ -2,7 +2,7 @@ import { ColumnStack } from "@skbkontur/react-stack-layout";
 import Input from "@skbkontur/react-ui/Input";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
-import React from "react";
+import * as React from "react";
 
 import { FormRow } from "../../src/Components/FormRow/FormRow";
 

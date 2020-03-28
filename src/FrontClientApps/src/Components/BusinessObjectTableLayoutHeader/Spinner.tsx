@@ -1,7 +1,7 @@
 import UiSpinner from "@skbkontur/react-ui/Spinner";
-import React from "react";
+import * as React from "react";
 
-import styles from "./Spinner.less";
+import * as styles from "./Spinner.less";
 
 interface SpinnerProps {
     caption?: string;

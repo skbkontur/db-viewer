@@ -3,14 +3,14 @@ import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
-import React from "react";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { Property } from "../../Domain/BusinessObjects/Property";
 import { BusinessObjectFilter } from "../BusinessObjectFilter/BusinessObjectFilter";
 
-import styles from "./BusinessObjectTableLayoutHeader.less";
+import * as styles from "./BusinessObjectTableLayoutHeader.less";
 
 interface FilterModalProps {
     onClose: () => void;

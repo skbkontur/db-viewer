@@ -2,7 +2,7 @@ import CopyIcon from "@skbkontur/react-icons/Copy";
 import Link from "@skbkontur/react-ui/Link";
 import Toast from "@skbkontur/react-ui/Toast";
 import copy from "copy-to-clipboard";
-import React from "react";
+import * as React from "react";
 
 import { StringUtils } from "../Domain/Utils/StringUtils";
 

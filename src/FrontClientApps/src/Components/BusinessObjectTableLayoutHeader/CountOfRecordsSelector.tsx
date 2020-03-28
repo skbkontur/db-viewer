@@ -3,7 +3,7 @@ import CellsEqualHeightIcon from "@skbkontur/react-icons/CellsEqualHeight";
 import DropdownMenu from "@skbkontur/react-ui/DropdownMenu";
 import Link from "@skbkontur/react-ui/Link";
 import MenuItem from "@skbkontur/react-ui/MenuItem";
-import React from "react";
+import * as React from "react";
 
 interface CountOfRecordsSelectorProps {
     count: number;

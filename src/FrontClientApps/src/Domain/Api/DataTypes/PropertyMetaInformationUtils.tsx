@@ -1,4 +1,4 @@
-import _ from "lodash";
+import * as _ from "lodash";
 
 import { Property, PropertyInfo } from "../../BusinessObjects/Property";
 import { StringUtils } from "../../Utils/StringUtils";

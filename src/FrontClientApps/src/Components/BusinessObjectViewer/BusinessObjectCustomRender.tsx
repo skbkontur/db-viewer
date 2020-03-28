@@ -3,8 +3,8 @@ import OkIcon from "@skbkontur/react-icons/Ok";
 import UndoIcon from "@skbkontur/react-icons/Undo";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
-import _ from "lodash";
-import React from "react";
+import * as _ from "lodash";
+import * as React from "react";
 
 import { Property } from "../../Domain/BusinessObjects/Property";
 

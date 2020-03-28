@@ -19,7 +19,6 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "import/no-namespace": "error",
     "import/newline-after-import": "error",
     "import/order": [
       "error",

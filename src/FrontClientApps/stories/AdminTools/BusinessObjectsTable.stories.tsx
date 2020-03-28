@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react";
-import React from "react";
+import * as React from "react";
 import StoryRouter from "storybook-react-router";
 
 import { BusinessObjectsTable } from "../../src/Components/BusinessObjectsTable/BusinessObjectsTable";

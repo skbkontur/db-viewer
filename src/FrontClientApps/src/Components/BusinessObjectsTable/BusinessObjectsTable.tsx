@@ -2,7 +2,7 @@ import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
 import classNames from "classnames";
-import React from "react";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
@@ -12,7 +12,7 @@ import { customRender } from "../BusinessObjectViewer/BusinessObjectItemCustomRe
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 
-import styles from "./BusinessObjectsTable.less";
+import * as styles from "./BusinessObjectsTable.less";
 
 interface BusinessObjectsTableProps {
     items: null | undefined | object[];
