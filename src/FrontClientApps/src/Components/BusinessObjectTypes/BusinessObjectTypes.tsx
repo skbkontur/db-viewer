@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
@@ -10,42 +10,60 @@ import * as styles from "./BusinessObjectTypes.less";
 interface BusinessObjectTypesProps {
     objects: BusinessObjectDescription[];
     filter: string;
+    identifierKeywords: string[];
     getPath: (id: string) => string;
 }
 
 export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProps> {
     public getGrouped(objects: BusinessObjectDescription[]): Array<[string, BusinessObjectDescription[]]> {
         return _(objects)
-            .orderBy(item => item.identifier.toUpperCase())
-            .groupBy(item => item.identifier[0].toUpperCase())
+            .orderBy(item => this.getIdentifierWithoutKeywords(item.identifier).toUpperCase())
+            .groupBy(item => this.getIdentifierWithoutKeywords(item.identifier)[0].toUpperCase())
             .toPairs()
             .value();
+    }
+
+    public getIdentifierWithoutKeywords(identifier: string): string {
+        const { identifierKeywords } = this.props;
+        let result = identifier;
+        for (const keyword of identifierKeywords) {
+            result = result.replace(keyword, "");
+        }
+        return result;
     }
 
     public getFiltered(objects: BusinessObjectDescription[], filter: string): BusinessObjectDescription[] {
         return objects.filter(item => StringUtils.checkWordByCase(item.identifier, filter));
     }
 
-    public renderIdentifier(identifier: string): string | JSX.Element {
-        if (identifier.includes("StorageElement")) {
-            const splitByKeyword = identifier.split("StorageElement");
+    public renderIdentifier(identifier: string, identifierKeywords: string[]): string | JSX.Element {
+        if (identifierKeywords.length === 0) {
+            return identifier;
+        }
+
+        const [first, ...rest] = identifierKeywords;
+        if (identifier.includes(first)) {
+            const splitByKeyword = identifier.split(first);
             return (
-                <span>
-                    {splitByKeyword[0]}
-                    <span className={styles.mutedKeyword}>StorageElement</span>
-                    {splitByKeyword[1]}
-                </span>
+                <>
+                    {splitByKeyword.map((item, i) => (
+                        <>
+                            {this.renderIdentifier(item, rest)}
+                            {i < splitByKeyword.length - 1 && <span className={styles.mutedKeyword}>{first}</span>}
+                        </>
+                    ))}
+                </>
             );
         }
-        return identifier;
+        return this.renderIdentifier(identifier, rest);
     }
 
     public renderItem(item: BusinessObjectDescription): JSX.Element {
-        const { getPath } = this.props;
+        const { getPath, identifierKeywords } = this.props;
         return (
             <div key={item.identifier} data-tid="BusinessObjectItem">
                 <Link className={styles.routerLink} to={getPath(item.identifier)} data-tid="BusinessObjectLink">
-                    {this.renderIdentifier(item.identifier)}
+                    {this.renderIdentifier(item.identifier, identifierKeywords)}
                 </Link>
             </div>
         );

@@ -8,12 +8,15 @@ import { IBusinessObjectsApi } from "./Domain/Api/BusinessObjectsApi";
 
 interface AdminToolsApplicationProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;
+    customRenderers: object[];
+    identifierKeywords: string[];
     allowEdit: boolean;
 }
 
 export function AdminToolsApplication({
     businessObjectsApi,
     allowEdit,
+    identifierKeywords,
     match,
 }: AdminToolsApplicationProps): JSX.Element {
     return (
@@ -22,7 +25,11 @@ export function AdminToolsApplication({
                 exact
                 path={`${match.url}/`}
                 render={() => (
-                    <BusinessObjectTypesContainer businessObjectsApi={businessObjectsApi} path={`${match.url}`} />
+                    <BusinessObjectTypesContainer
+                        identifierKeywords={identifierKeywords}
+                        businessObjectsApi={businessObjectsApi}
+                        path={`${match.url}`}
+                    />
                 )}
             />
             <Route

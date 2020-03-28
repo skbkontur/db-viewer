@@ -33,6 +33,7 @@ namespace Kontur.DBViewer.Recipes.CQL
             {
                 result.IsSearchable = true;
                 result.IsIdentity = true;
+                result.IsSortable = true;
                 result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType) ? availableFilters[propertyInfo.PropertyType] : new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual};
             }
 

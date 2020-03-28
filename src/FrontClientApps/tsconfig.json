@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "rootDir": "./",

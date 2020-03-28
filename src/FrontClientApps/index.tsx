@@ -4,9 +4,8 @@ import { hot } from "react-hot-loader";
 import { Switch, Redirect } from "react-router";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { businessObjectsApi } from "Domain/Api/BusinessObjectsApiUtils";
-
 import { AdminToolsApplication } from "./src/AdminToolsApplication";
+import { businessObjectsApi } from "./src/Domain/Api/BusinessObjectsApiUtils";
 
 function AdminToolsEntryPoint() {
     return (
@@ -15,7 +14,13 @@ function AdminToolsEntryPoint() {
                 <Route
                     path="/BusinessObjects"
                     render={props => (
-                        <AdminToolsApplication allowEdit businessObjectsApi={businessObjectsApi} {...props} />
+                        <AdminToolsApplication
+                            identifierKeywords={["Diadoc", "StorageElement", "Party", "User"]}
+                            customRenderers={[]}
+                            allowEdit
+                            businessObjectsApi={businessObjectsApi}
+                            {...props}
+                        />
                     )}
                 />
                 <Route exact path="/">

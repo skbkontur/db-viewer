@@ -12,6 +12,7 @@ import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface BusinessObjectsProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;
+    identifierKeywords: string[];
     path: string;
 }
 
@@ -76,6 +77,7 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
                                         getPath={this.getPath}
                                         objects={objects}
                                         filter={filter}
+                                        identifierKeywords={this.props.identifierKeywords}
                                     />
                                 )}
                             </Fit>

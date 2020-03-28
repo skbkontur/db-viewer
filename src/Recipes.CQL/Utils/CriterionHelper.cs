@@ -14,6 +14,13 @@ namespace Kontur.DBViewer.Recipes.CQL.Utils
 {
     public static class CriterionHelper
     {
+        public static LambdaExpression BuildSortExpression(Type type, string propertyPath)
+        {
+            var parameterExpression = Expression.Parameter(type);
+            var memberExpression = CreateMemberAccessExpression(propertyPath, parameterExpression);
+            return Expression.Lambda(memberExpression, parameterExpression);
+        }
+        
         public static LambdaExpression BuildSameIdentitiesPredicate(Type type, object @object)
         {
             var parameter = Expression.Parameter(type);
