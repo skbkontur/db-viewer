@@ -6,8 +6,8 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
-import { ICustomRenderer } from "../../Domain/BusinessObjects/CustomRenderer";
-import { Property } from "../../Domain/BusinessObjects/Property";
+import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
+import { Property } from "../../Domain/Objects/Property";
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";

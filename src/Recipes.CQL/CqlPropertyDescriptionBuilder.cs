@@ -26,7 +26,7 @@ namespace Kontur.DBViewer.Recipes.CQL
                 result.IsSearchable = true;
                 result.IsIdentity = true;
                 result.IsRequired = true;
-                result.AvailableFilters = new[] {BusinessObjectFieldFilterOperator.Equals};
+                result.AvailableFilters = new[] {ObjectFieldFilterOperator.Equals};
             }
 
             if(propertyInfo.CustomAttributes.Any(x => x.AttributeType == typeof(ClusteringKeyAttribute)))
@@ -34,23 +34,23 @@ namespace Kontur.DBViewer.Recipes.CQL
                 result.IsSearchable = true;
                 result.IsIdentity = true;
                 result.IsSortable = true;
-                result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType) ? availableFilters[propertyInfo.PropertyType] : new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual};
+                result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType) ? availableFilters[propertyInfo.PropertyType] : new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual};
             }
 
             return result;
         }
 
-        private static readonly Dictionary<Type, BusinessObjectFieldFilterOperator[]> availableFilters = new Dictionary<Type, BusinessObjectFieldFilterOperator[]>
+        private static readonly Dictionary<Type, ObjectFieldFilterOperator[]> availableFilters = new Dictionary<Type, ObjectFieldFilterOperator[]>
         {
             {
                 typeof(string), new[]
                 {
-                    BusinessObjectFieldFilterOperator.LessThan,
-                    BusinessObjectFieldFilterOperator.Equals,
-                    BusinessObjectFieldFilterOperator.GreaterThan,
-                    BusinessObjectFieldFilterOperator.DoesNotEqual,
-                    BusinessObjectFieldFilterOperator.LessThanOrEquals,
-                    BusinessObjectFieldFilterOperator.GreaterThanOrEquals,
+                    ObjectFieldFilterOperator.LessThan,
+                    ObjectFieldFilterOperator.Equals,
+                    ObjectFieldFilterOperator.GreaterThan,
+                    ObjectFieldFilterOperator.DoesNotEqual,
+                    ObjectFieldFilterOperator.LessThanOrEquals,
+                    ObjectFieldFilterOperator.GreaterThanOrEquals,
                 }
             }
         };

@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 namespace Kontur.DBViewer.Core.VNext.DataTypes
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum BusinessObjectFieldFilterOperator
+    public enum ObjectFieldFilterOperator
     {
         Equals,
         LessThan,

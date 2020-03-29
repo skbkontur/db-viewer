@@ -2,20 +2,20 @@ import _ from "lodash";
 import * as React from "react";
 import { Link } from "react-router-dom";
 
-import { BusinessObjectDescription } from "../../Domain/Api/DataTypes/BusinessObjectDescription";
+import { ObjectDescription } from "../../Domain/Api/DataTypes/ObjectDescription";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 
 import * as styles from "./ObjectTypes.less";
 
 interface ObjectTypesProps {
-    objects: BusinessObjectDescription[];
+    objects: ObjectDescription[];
     filter: string;
     identifierKeywords: string[];
     getPath: (id: string) => string;
 }
 
 export class ObjectTypes extends React.Component<ObjectTypesProps> {
-    public getGrouped(objects: BusinessObjectDescription[]): Array<[string, BusinessObjectDescription[]]> {
+    public getGrouped(objects: ObjectDescription[]): Array<[string, ObjectDescription[]]> {
         return _(objects)
             .orderBy(item => this.getIdentifierWithoutKeywords(item.identifier).toUpperCase())
             .groupBy(item => this.getIdentifierWithoutKeywords(item.identifier)[0].toUpperCase())
@@ -32,7 +32,7 @@ export class ObjectTypes extends React.Component<ObjectTypesProps> {
         return result;
     }
 
-    public getFiltered(objects: BusinessObjectDescription[], filter: string): BusinessObjectDescription[] {
+    public getFiltered(objects: ObjectDescription[], filter: string): ObjectDescription[] {
         return objects.filter(item => StringUtils.checkWordByCase(item.identifier, filter));
     }
 
@@ -58,18 +58,18 @@ export class ObjectTypes extends React.Component<ObjectTypesProps> {
         return this.renderIdentifier(identifier, rest);
     }
 
-    public renderItem(item: BusinessObjectDescription): JSX.Element {
+    public renderItem(item: ObjectDescription): JSX.Element {
         const { getPath, identifierKeywords } = this.props;
         return (
-            <div key={item.identifier} data-tid="BusinessObjectItem">
-                <Link className={styles.routerLink} to={getPath(item.identifier)} data-tid="BusinessObjectLink">
+            <div key={item.identifier} data-tid="ObjectItem">
+                <Link className={styles.routerLink} to={getPath(item.identifier)} data-tid="ObjectLink">
                     {this.renderIdentifier(item.identifier, identifierKeywords)}
                 </Link>
             </div>
         );
     }
 
-    public renderTypes(objects: BusinessObjectDescription[], displayGroups: boolean): JSX.Element {
+    public renderTypes(objects: ObjectDescription[], displayGroups: boolean): JSX.Element {
         if (!displayGroups) {
             return <div className={styles.root}>{objects.map(item => this.renderItem(item))}</div>;
         }
@@ -89,7 +89,7 @@ export class ObjectTypes extends React.Component<ObjectTypesProps> {
         );
     }
 
-    public renderSchema(schemaName: string, objects: BusinessObjectDescription[]) {
+    public renderSchema(schemaName: string, objects: ObjectDescription[]) {
         const { filter } = this.props;
         const schema = objects[0]?.schemaDescription;
         let filteredObjects = objects;

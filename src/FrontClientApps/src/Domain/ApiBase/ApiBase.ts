@@ -58,20 +58,6 @@ export default class ApiBase {
         return undefined;
     }
 
-    public async put(url: string, body: null | undefined | {} | any[]): Promise<any> {
-        const response = await fetch(this.prefix + url, {
-            ...ApiBase.additionalHeaders,
-            method: "PUT",
-            body: JSON.stringify(body),
-        });
-        await this.checkStatus(response);
-        const textResult = await response.text();
-        if (textResult !== "") {
-            return JSON.parse(textResult);
-        }
-        return undefined;
-    }
-
     public createQueryString(params: null | undefined | ParamsMap): string {
         if (params == null) {
             return "";
@@ -118,10 +104,6 @@ export default class ApiBase {
         return result;
     }
 
-    public getUrl(url: string, params?: ParamsMap): string {
-        return this.prefix + url + this.createQueryString(params);
-    }
-
     public async delete(url: string, body: {}): Promise<any> {
         const response = await fetch(this.prefix + url, {
             ...ApiBase.additionalHeaders,
@@ -134,42 +116,5 @@ export default class ApiBase {
             return JSON.parse(textResult);
         }
         return undefined;
-    }
-
-    public async head(url: string, params?: ParamsMap): Promise<any> {
-        const response = await fetch(this.prefix + url + this.createQueryString(params), {
-            ...ApiBase.additionalHeaders,
-            method: "HEAD",
-        });
-        return response.status >= 200 && response.status < 300;
-    }
-
-    public async download(url: string, params?: ParamsMap): Promise<any> {
-        const headResult = await this.head(url, params);
-        if (headResult) {
-            location.href = this.prefix + url + this.createQueryString(params);
-        } else {
-            return await this.get(url, params);
-        }
-    }
-
-    public async toApiResponse(requestFunc: () => Promise<any>): Promise<any> {
-        try {
-            const res = await requestFunc();
-            return {
-                success: true,
-                response: res,
-            };
-        } catch (e) {
-            if (e instanceof ApiError) {
-                if (e.statusCode == 400) {
-                    return {
-                        success: false,
-                        error: JSON.parse(e.responseAsText),
-                    };
-                }
-            }
-            throw e;
-        }
     }
 }

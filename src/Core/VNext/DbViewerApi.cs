@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Kontur.DBViewer.Core.Attributes;
@@ -11,9 +10,9 @@ using Kontur.DBViewer.Core.VNext.Helpers;
 
 namespace Kontur.DBViewer.Core.VNext
 {
-    public class BusinessObjectsApi
+    public class DbViewerApi
     {
-        public BusinessObjectsApi(ISchemaRegistry schemaRegistry)
+        public DbViewerApi(ISchemaRegistry schemaRegistry)
         {
             this.schemaRegistry = schemaRegistry;
         }
@@ -21,10 +20,10 @@ namespace Kontur.DBViewer.Core.VNext
         [HttpGet]
         [Route("names")]
         [NotNull, ItemNotNull]
-        public BusinessObjectDescription[] GetBusinessObjectNames()
+        public ObjectDescription[] GetNames()
         {
             return schemaRegistry.GetAllSchemas().SelectMany(s => s.Types
-                    .Select(x => new BusinessObjectDescription
+                    .Select(x => new ObjectDescription
                     {
                         Identifier = x.Type.Name,
                         SchemaDescription = s.Description
@@ -34,16 +33,16 @@ namespace Kontur.DBViewer.Core.VNext
 
         [NotNull]
         [HttpGet]
-        [Route("{businessObjectIdentifier}/meta")]
-        public BusinessObjectDescription GetBusinessObjectMeta([NotNull] string businessObjectIdentifier)
+        [Route("{objectIdentifier}/meta")]
+        public ObjectDescription GetMeta([NotNull] string objectIdentifier)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
-            return new BusinessObjectDescription
+            return new ObjectDescription
             {
-                Identifier = businessObjectIdentifier,
+                Identifier = objectIdentifier,
                 SchemaDescription = schema.Description,
                 TypeMetaInformation = typeMeta,
             };
@@ -51,15 +50,14 @@ namespace Kontur.DBViewer.Core.VNext
 
         [HttpPost]
         [NotNull, ItemNotNull]
-        [Route("{businessObjectIdentifier}/search")]
-        public async Task<SearchResult<object>> FindBusinessObjects(
-            [NotNull] string businessObjectIdentifier,
-            [NotNull] [FromBody] BusinessObjectSearchRequest query)
+        [Route("{objectIdentifier}/search")]
+        public async Task<SearchResult<object>> SearchObjects([NotNull] string objectIdentifier,
+            [NotNull] [FromBody] ObjectSearchRequest query)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var countLimit = schema.Description.CountLimit;
-            var connector = schemaRegistry.GetConnector(businessObjectIdentifier);
+            var connector = schemaRegistry.GetConnector(objectIdentifier);
             var counts = await connector.Count(query.GetFilters(), countLimit + 1).ConfigureAwait(false);
             var results = await connector
                 .Search(query.GetFilters(), query.GetSorts(), query.Offset ?? 0, query.Count ?? 20)
@@ -81,15 +79,14 @@ namespace Kontur.DBViewer.Core.VNext
 
         [HttpPost]
         [NotNull, ItemNotNull]
-        [Route("{businessObjectIdentifier}/download")]
-        public async Task<DownloadResult> DownloadBusinessObjects(
-            [NotNull] string businessObjectIdentifier,
-            [NotNull] [FromBody] BusinessObjectSearchRequest query)
+        [Route("{objectIdentifier}/download")]
+        public async Task<DownloadResult> DownloadObjects([NotNull] string objectIdentifier,
+            [NotNull] [FromBody] ObjectSearchRequest query)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var downloadLimit = schema.Description.DownloadLimit;
-            var count = await schemaRegistry.GetConnector(businessObjectIdentifier)
+            var count = await schemaRegistry.GetConnector(objectIdentifier)
                 .Count(query.GetFilters(), downloadLimit + 1)
                 .ConfigureAwait(false);
             if (count > downloadLimit)
@@ -100,7 +97,7 @@ namespace Kontur.DBViewer.Core.VNext
                     CountLimit = downloadLimit,
                 };
 
-            var results = await schemaRegistry.GetConnector(businessObjectIdentifier)
+            var results = await schemaRegistry.GetConnector(objectIdentifier)
                 .Search(query.GetFilters(), query.GetSorts(), 0, downloadLimit).ConfigureAwait(false);
 
             var properties = new List<string>();
@@ -125,32 +122,32 @@ namespace Kontur.DBViewer.Core.VNext
                 {
                     Content = csvWriter.GetBytes(),
                     ContentType = "text/csv",
-                    Name = $"{businessObjectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
+                    Name = $"{objectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
                 }
             };
         }
 
         [HttpPost]
         [NotNull, ItemNotNull]
-        [Route("{businessObjectIdentifier}/details")]
-        public async Task<BusinessObjectDetails> GetBusinessObjects([NotNull] string businessObjectIdentifier,
-            [NotNull] [FromBody] BusinessObjectSearchRequest query)
+        [Route("{objectIdentifier}/details")]
+        public async Task<ObjectDetails> ReadObject([NotNull] string objectIdentifier,
+            [NotNull] [FromBody] ObjectSearchRequest query)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
-            var result = await schemaRegistry.GetConnector(businessObjectIdentifier).Read(query.GetFilters())
+            var result = await schemaRegistry.GetConnector(objectIdentifier).Read(query.GetFilters())
                 .ConfigureAwait(false);
             var typeInfo = TypeInfoExtractor.Extract(result, type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
             var obj = ObjectsConverter.StoredToApi(typeInfo, type, result, schema.CustomPropertyConfigurationProvider);
-            return new BusinessObjectDetails
+            return new ObjectDetails
             {
                 Object = obj,
-                Meta = new BusinessObjectDescription
+                Meta = new ObjectDescription
                 {
-                    Identifier = businessObjectIdentifier,
+                    Identifier = objectIdentifier,
                     SchemaDescription = schema.Description,
                     TypeMetaInformation = typeMeta,
                 }
@@ -159,29 +156,29 @@ namespace Kontur.DBViewer.Core.VNext
 
         [NotNull]
         [HttpDelete]
-        [Route("{businessObjectIdentifier}/delete")]
-        public Task DeleteBusinessObjects([NotNull] string businessObjectIdentifier, [NotNull] [FromBody] object obj)
+        [Route("{objectIdentifier}/delete")]
+        public Task DeleteObject([NotNull] string objectIdentifier, [NotNull] [FromBody] object obj)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var typeInfo = TypeInfoExtractor.Extract(type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
             var x = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
-            return schemaRegistry.GetConnector(businessObjectIdentifier).Delete(x);
+            return schemaRegistry.GetConnector(objectIdentifier).Delete(x);
         }
 
         [HttpPost]
         [NotNull, ItemCanBeNull]
-        [Route("{businessObjectIdentifier}/update")]
-        public async Task<object> UpdateBusinessObjects([NotNull] string businessObjectIdentifier,
+        [Route("{objectIdentifier}/update")]
+        public async Task<object> UpdateObject([NotNull] string objectIdentifier,
             [NotNull] [FromBody] object obj)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(businessObjectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(businessObjectIdentifier);
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var typeInfo = TypeInfoExtractor.Extract(obj, type, schema.PropertyDescriptionBuilder,
                 schema.CustomPropertyConfigurationProvider);
             var stored = ObjectsConverter.ApiToStored(typeInfo, type, obj, schema.CustomPropertyConfigurationProvider);
-            var newObject = await schemaRegistry.GetConnector(businessObjectIdentifier).Write(stored)
+            var newObject = await schemaRegistry.GetConnector(objectIdentifier).Write(stored)
                 .ConfigureAwait(false);
             return ObjectsConverter.StoredToApi(typeInfo, type, newObject, schema.CustomPropertyConfigurationProvider);
         }

@@ -1,15 +1,15 @@
 import Select from "@skbkontur/react-ui/Select";
 import * as React from "react";
 
-import { BusinessObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 
 interface OperatorSelectProps {
-    value: Nullable<BusinessObjectFieldFilterOperator>;
-    onChange: (x0: BusinessObjectFieldFilterOperator) => void;
-    availableValues: BusinessObjectFieldFilterOperator[];
+    value: Nullable<ObjectFieldFilterOperator>;
+    onChange: (x0: ObjectFieldFilterOperator) => void;
+    availableValues: ObjectFieldFilterOperator[];
 }
 
-function operatorToString(operation: BusinessObjectFieldFilterOperator): string {
+function operatorToString(operation: ObjectFieldFilterOperator): string {
     const filterOperators = {
         GreaterThanOrEquals: ">=",
         LessThanOrEquals: "<=",
@@ -31,7 +31,7 @@ export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
         <Select
             width={70}
             data-tid="OperatorSelect"
-            items={availableValues.map(x => [x, operatorToString(x)] as [BusinessObjectFieldFilterOperator, string])}
+            items={availableValues.map(x => [x, operatorToString(x)] as [ObjectFieldFilterOperator, string])}
             onChange={(e: any, nextValue: any) => {
                 if (nextValue != null) {
                     onChange(nextValue);

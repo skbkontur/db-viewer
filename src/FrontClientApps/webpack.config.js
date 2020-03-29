@@ -67,7 +67,7 @@ module.exports = function(env) {
         mode: "development",
         devServer: {
             proxy: {
-                "/business-objects/**": {
+                "/db-viewer/**": {
                     target: "http://localhost:5555/",
                 },
                 "*": {

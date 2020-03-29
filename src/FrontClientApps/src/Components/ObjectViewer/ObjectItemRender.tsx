@@ -4,8 +4,8 @@ import Input from "@skbkontur/react-ui/Input";
 import * as _ from "lodash";
 import * as React from "react";
 
-import { ICustomRenderer } from "../../Domain/BusinessObjects/CustomRenderer";
-import { Property } from "../../Domain/BusinessObjects/Property";
+import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
+import { Property } from "../../Domain/Objects/Property";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {

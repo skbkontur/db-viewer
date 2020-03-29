@@ -11,7 +11,7 @@ namespace Kontur.DBViewer.Core.DTO
         
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty("type")]
-        public BusinessObjectFieldFilterOperator Type { get; set; }
+        public ObjectFieldFilterOperator Type { get; set; }
         
         [JsonProperty("value")]
         public string Value { get; set; }

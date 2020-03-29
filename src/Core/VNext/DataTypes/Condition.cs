@@ -11,6 +11,6 @@ namespace Kontur.DBViewer.Core.VNext.DataTypes
         public string Value { get; set; }
         
         [JsonProperty("operator")]
-        public BusinessObjectFieldFilterOperator Operator { get; set; }
+        public ObjectFieldFilterOperator Operator { get; set; }
     }
 }

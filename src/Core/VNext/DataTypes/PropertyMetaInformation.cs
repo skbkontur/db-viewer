@@ -22,7 +22,7 @@ namespace Kontur.DBViewer.Core.VNext.DataTypes
         
         [NotNull]
         [JsonProperty("availableFilters")]
-        public BusinessObjectFieldFilterOperator[] AvailableFilters { get; set; }
+        public ObjectFieldFilterOperator[] AvailableFilters { get; set; }
 
         [JsonProperty("type")]
         public TypeMetaInformation Type { get; set; }

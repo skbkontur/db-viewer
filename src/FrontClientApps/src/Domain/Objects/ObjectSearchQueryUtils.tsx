@@ -1,6 +1,6 @@
-import { BusinessObjectFieldFilterOperator } from "../Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "../Api/DataTypes/BusinessObjectFilterSortOrder";
 import { Condition } from "../Api/DataTypes/Condition";
+import { ObjectFieldFilterOperator } from "../Api/DataTypes/ObjectFieldFilterOperator";
+import { ObjectFilterSortOrder } from "../Api/DataTypes/ObjectFilterSortOrder";
 import { Sort } from "../Api/DataTypes/Sort";
 import { PlainValueMapper, QueryObject } from "../QueryStringMapping/Mappers";
 
@@ -34,7 +34,7 @@ export class ConditionsMapper {
                 return {
                     path: key,
                     value: parsedQueryString[key],
-                    operator: BusinessObjectFieldFilterOperator.Equals,
+                    operator: ObjectFieldFilterOperator.Equals,
                 };
             }
         );
@@ -68,10 +68,7 @@ export class SortMapper extends PlainValueMapper<Sort> {
             }
             return {
                 path: sortInfo[0],
-                sortOrder:
-                    sortInfo[1] === "asc"
-                        ? BusinessObjectFilterSortOrder.Ascending
-                        : BusinessObjectFilterSortOrder.Descending,
+                sortOrder: sortInfo[1] === "asc" ? ObjectFilterSortOrder.Ascending : ObjectFilterSortOrder.Descending,
             };
         }
         return null;
@@ -84,6 +81,6 @@ export class SortMapper extends PlainValueMapper<Sort> {
         if (value.path == null || value.path === "") {
             return null;
         }
-        return `${value.path}:${value.sortOrder === BusinessObjectFilterSortOrder.Ascending ? "asc" : "desc"}`;
+        return `${value.path}:${value.sortOrder === ObjectFilterSortOrder.Ascending ? "asc" : "desc"}`;
     }
 }

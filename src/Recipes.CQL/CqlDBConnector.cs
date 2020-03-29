@@ -31,7 +31,7 @@ namespace Kontur.DBViewer.Recipes.CQL
 
             foreach (var sort in sorts)
             {
-                query = sort.Direction == BusinessObjectFilterSortOrder.Ascending
+                query = sort.Direction == ObjectFilterSortOrder.Ascending
                     ? query.OrderBy(BuildSort(sort))
                     : query.OrderByDescending(BuildSort(sort));
             }

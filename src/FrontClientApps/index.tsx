@@ -4,14 +4,14 @@ import { hot } from "react-hot-loader";
 import { Switch, Redirect } from "react-router";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { DbViewerApplication, BusinessObjectsApiImpl, NullCustomRenderer } from "./src";
+import { DbViewerApplication, DbViewerApiImpl, NullCustomRenderer } from "./src";
 
-const businessObjectsApiPrefix = "/business-objects/";
+const dbViewerApiPrefix = "/db-viewer/";
 
-export const businessObjectsApi =
+export const dbViewerApi =
     process.env.API === "fake"
-        ? new (require("./BusinessObjectsApiFake").BusinessObjectsApiFake)()
-        : new BusinessObjectsApiImpl(businessObjectsApiPrefix);
+        ? new (require("./DbViewerApiFake").DbViewerApiFake)()
+        : new DbViewerApiImpl(dbViewerApiPrefix);
 
 function AdminToolsEntryPoint() {
     return (
@@ -24,7 +24,7 @@ function AdminToolsEntryPoint() {
                             identifierKeywords={["Diadoc", "StorageElement", "Party", "User"]}
                             customRenderer={new NullCustomRenderer()}
                             allowEdit
-                            businessObjectsApi={businessObjectsApi}
+                            dbViewerApi={dbViewerApi}
                             {...props}
                         />
                     )}

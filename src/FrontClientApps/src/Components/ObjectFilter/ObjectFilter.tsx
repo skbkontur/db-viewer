@@ -4,13 +4,13 @@ import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import * as React from "react";
 
-import { BusinessObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
-import { Property } from "../../Domain/BusinessObjects/Property";
+import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
+import { Property } from "../../Domain/Objects/Property";
 import { ticksToTimestamp, timestampToTicks } from "../../Domain/Utils/ConvertTimeUtil";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 import { TimeUtils } from "../../Domain/Utils/TimeUtils";
-import { validateBusinessObjectField } from "../../Domain/Utils/ValidationUtils";
+import { validateObjectField } from "../../Domain/Utils/ValidationUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 import { FormRow } from "../FormRow/FormRow";
 
@@ -29,7 +29,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         if (result == null) {
             return {
                 path: property.name,
-                operator: BusinessObjectFieldFilterOperator.Equals,
+                operator: ObjectFieldFilterOperator.Equals,
                 value: null,
             };
         }
@@ -109,14 +109,14 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         if (property.isRequired && StringUtils.isNullOrWhitespace(value)) {
             return { message: "Поле должно быть заполнено", type: "submit" };
         }
-        return validateBusinessObjectField(value);
+        return validateObjectField(value);
     }
 
     public render(): JSX.Element {
         const { tableColumns } = this.props;
 
         return (
-            <ColumnStack gap={2} data-tid="BusinessObjectFilters">
+            <ColumnStack gap={2} data-tid="ObjectFilters">
                 {tableColumns
                     .map(x => [x, this.getCondition(x)] as [Property, Condition])
                     .map(([property, condition]) => (
@@ -127,7 +127,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                                         value={condition.operator}
                                         onChange={value => this.updateItem(property, { operator: value })}
                                         availableValues={
-                                            property.availableFilters || [BusinessObjectFieldFilterOperator.Equals]
+                                            property.availableFilters || [ObjectFieldFilterOperator.Equals]
                                         }
                                     />
                                 </Fit>

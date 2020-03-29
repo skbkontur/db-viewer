@@ -120,7 +120,7 @@ namespace Kontur.DBViewer.Tests.CQLConnector
                             new Filter
                                 {
                                     Field = "ClusteringKey2",
-                                    Type = BusinessObjectFieldFilterOperator.GreaterThanOrEquals,
+                                    Type = ObjectFieldFilterOperator.GreaterThanOrEquals,
                                     Value = objects[4].ClusteringKey2,
                                 }, 
                         }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Skip(4));
@@ -135,7 +135,7 @@ namespace Kontur.DBViewer.Tests.CQLConnector
                             new Filter
                                 {
                                     Field = "ClusteringKey2",
-                                    Type = BusinessObjectFieldFilterOperator.GreaterThan,
+                                    Type = ObjectFieldFilterOperator.GreaterThan,
                                     Value = objects[4].ClusteringKey2,
                                 }, 
                         }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Skip(5));
@@ -150,7 +150,7 @@ namespace Kontur.DBViewer.Tests.CQLConnector
                             new Filter
                                 {
                                     Field = "ClusteringKey2",
-                                    Type = BusinessObjectFieldFilterOperator.LessThanOrEquals,
+                                    Type = ObjectFieldFilterOperator.LessThanOrEquals,
                                     Value = objects[4].ClusteringKey2,
                                 }, 
                         }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Take(5));
@@ -163,7 +163,7 @@ namespace Kontur.DBViewer.Tests.CQLConnector
                             new Filter
                                 {
                                     Field = "ClusteringKey2",
-                                    Type = BusinessObjectFieldFilterOperator.LessThan,
+                                    Type = ObjectFieldFilterOperator.LessThan,
                                     Value = objects[4].ClusteringKey2,
                                 }, 
                         }, null, 0, 0) as TestDBSearcherObject[]).Should().BeEquivalentTo(objects.Take(4));
@@ -249,7 +249,7 @@ namespace Kontur.DBViewer.Tests.CQLConnector
             return new Filter
                 {
                     Field = field,
-                    Type = BusinessObjectFieldFilterOperator.Equals,
+                    Type = ObjectFieldFilterOperator.Equals,
                     Value = value.ToString(),
                 };
         }

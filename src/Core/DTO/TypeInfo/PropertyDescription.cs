@@ -21,6 +21,6 @@ namespace Kontur.DBViewer.Core.DTO.TypeInfo
         public bool IsRequired { get; set; }
         
         [JsonProperty("availableFilters")]
-        public BusinessObjectFieldFilterOperator[] AvailableFilters { get; set; }
+        public ObjectFieldFilterOperator[] AvailableFilters { get; set; }
     }
 }

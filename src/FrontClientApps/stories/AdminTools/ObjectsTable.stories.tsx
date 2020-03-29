@@ -3,10 +3,10 @@ import * as React from "react";
 import StoryRouter from "storybook-react-router";
 
 import { ObjectTable } from "../../src/Components/ObjectTable/ObjectTable";
-import { BusinessObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
+import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
+import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { PropertyMetaInformation } from "../../src/Domain/Api/DataTypes/PropertyMetaInformation";
-import { NullCustomRenderer } from "../../src/Domain/BusinessObjects/CustomRenderer";
+import { NullCustomRenderer } from "../../src/Domain/Objects/CustomRenderer";
 
 async function deleteObject(_index: number): Promise<void> {
     // Ничего не делаем
@@ -33,7 +33,7 @@ const indexed: PropertyMetaInformation = {
     isSearchable: false,
     isRequired: false,
     isIdentity: false,
-    availableFilters: [BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual],
+    availableFilters: [ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual],
 };
 
 storiesOf("ObjectTable", module)
@@ -50,7 +50,7 @@ storiesOf("ObjectTable", module)
             onChangeSortClick={emptyMethod}
             customRenderer={new NullCustomRenderer()}
             onDeleteClick={deleteObject}
-            currentSort={{ path: "BoxId", sortOrder: BusinessObjectFilterSortOrder.Descending }}
+            currentSort={{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }}
             allowDelete
         />
     ))
@@ -66,7 +66,7 @@ storiesOf("ObjectTable", module)
             onChangeSortClick={emptyMethod}
             onDeleteClick={deleteObject}
             customRenderer={new NullCustomRenderer()}
-            currentSort={{ path: "BoxId", sortOrder: BusinessObjectFilterSortOrder.Descending }}
+            currentSort={{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }}
             allowDelete={false}
         />
     ));

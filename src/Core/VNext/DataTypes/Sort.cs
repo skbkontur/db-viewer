@@ -8,6 +8,6 @@ namespace Kontur.DBViewer.Core.VNext.DataTypes
         public string Path { get; set; }
 
         [JsonProperty("sortOrder")]
-        public BusinessObjectFilterSortOrder SortOrder { get; set; }
+        public ObjectFilterSortOrder SortOrder { get; set; }
     }
 }

@@ -7,7 +7,7 @@ import * as React from "react";
 import { Link as RouterLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
-import { Property } from "../../Domain/BusinessObjects/Property";
+import { Property } from "../../Domain/Objects/Property";
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { ObjectFilter } from "../ObjectFilter/ObjectFilter";
 
@@ -74,7 +74,7 @@ class FilterModalInternal extends React.Component<FilterModalProps> {
                                     className={styles.routerLink}
                                     to={RouteUtils.backUrl(this.props)}
                                     data-tid="GoBackToList">
-                                    Вернуться к списку видов бизнес объектов
+                                    Вернуться к списку видов объектов
                                 </RouterLink>
                             )}
                         </Fit>

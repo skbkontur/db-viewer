@@ -11,6 +11,6 @@ namespace Kontur.DBViewer.Core.DTO
         
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty("direction")]
-        public BusinessObjectFilterSortOrder Direction { get; set; }
+        public ObjectFilterSortOrder Direction { get; set; }
     }
 }

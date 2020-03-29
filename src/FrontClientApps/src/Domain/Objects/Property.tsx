@@ -1,4 +1,4 @@
-import { BusinessObjectFieldFilterOperator } from "../Api/DataTypes/BusinessObjectFieldFilterOperator";
+import { ObjectFieldFilterOperator } from "../Api/DataTypes/ObjectFieldFilterOperator";
 
 export interface PropertyInfo {
     name: string;
@@ -6,7 +6,7 @@ export interface PropertyInfo {
     isSearchable: boolean;
     isSortable: boolean;
     isRequired: boolean;
-    availableFilters?: null | BusinessObjectFieldFilterOperator[];
+    availableFilters?: null | ObjectFieldFilterOperator[];
 }
 
 export interface Property {
@@ -16,5 +16,5 @@ export interface Property {
     isSearchable: boolean;
     isSortable: boolean;
     isRequired: boolean;
-    availableFilters?: null | BusinessObjectFieldFilterOperator[];
+    availableFilters?: null | ObjectFieldFilterOperator[];
 }

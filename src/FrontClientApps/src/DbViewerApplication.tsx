@@ -4,18 +4,18 @@ import { Route, RouteComponentProps, Switch, withRouter } from "react-router-dom
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
 import { ObjectTableContainer } from "./Containers/ObjectTableContainer";
 import { ObjectTypesContainer } from "./Containers/ObjectTypesContainer";
-import { IBusinessObjectsApi } from "./Domain/Api/BusinessObjectsApi";
-import { ICustomRenderer } from "./Domain/BusinessObjects/CustomRenderer";
+import { IDbViewerApi } from "./Domain/Api/DbViewerApi";
+import { ICustomRenderer } from "./Domain/Objects/CustomRenderer";
 
 interface DbViewerApplicationProps extends RouteComponentProps {
-    businessObjectsApi: IBusinessObjectsApi;
+    dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     identifierKeywords: string[];
     allowEdit: boolean;
 }
 
 function DbViewerApplicationInternal({
-    businessObjectsApi,
+    dbViewerApi,
     customRenderer,
     allowEdit,
     identifierKeywords,
@@ -29,7 +29,7 @@ function DbViewerApplicationInternal({
                 render={() => (
                     <ObjectTypesContainer
                         identifierKeywords={identifierKeywords}
-                        businessObjectsApi={businessObjectsApi}
+                        dbViewerApi={dbViewerApi}
                         path={`${match.url}`}
                     />
                 )}
@@ -40,7 +40,7 @@ function DbViewerApplicationInternal({
                 render={({ location, match: { params } }) => (
                     <ObjectTableContainer
                         allowEdit={allowEdit}
-                        businessObjectsApi={businessObjectsApi}
+                        dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         urlQuery={location.search || ""}
                         path={`${match.url}/${params.objectId}`}
@@ -53,7 +53,7 @@ function DbViewerApplicationInternal({
                 render={({ location, match: { params } }) => (
                     <ObjectDetailsContainer
                         allowEdit={allowEdit}
-                        businessObjectsApi={businessObjectsApi}
+                        dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         objectId={params.objectId || ""}
                         objectQuery={location.search || ""}

@@ -2,13 +2,13 @@
 
 namespace Kontur.DBViewer.Core.VNext.DataTypes
 {
-    public class BusinessObjectDetails
+    public class ObjectDetails
     {
         [JsonProperty("object")]
         public object Object { get; set; }
         
         [NotNull]
         [JsonProperty("meta")]
-        public BusinessObjectDescription Meta { get; set; }
+        public ObjectDescription Meta { get; set; }
     }
 }

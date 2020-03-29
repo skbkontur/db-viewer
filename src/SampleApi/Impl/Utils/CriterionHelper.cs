@@ -24,10 +24,10 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
                     var expression = CreateFilterExpression(filter.Type, memberExpression, valueExpression);
                     if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                     {
-                        if (filter.Type == BusinessObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
+                        if (filter.Type == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
                             expression = Expression.OrElse(
                                 expression,
-                                CreateFilterExpression(BusinessObjectFieldFilterOperator.Equals, memberExpression,
+                                CreateFilterExpression(ObjectFieldFilterOperator.Equals, memberExpression,
                                     Expression.Constant(null))
                             );
                     }
@@ -52,7 +52,7 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
             return valueExpression;
         }
 
-        private static BinaryExpression CreateFilterExpression(BusinessObjectFieldFilterOperator @operator,
+        private static BinaryExpression CreateFilterExpression(ObjectFieldFilterOperator @operator,
             Expression leftExpression, Expression rightExpression)
         {
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);
@@ -65,16 +65,16 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
             return stringValue;
         }
 
-        private static readonly Dictionary<BusinessObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
+        private static readonly Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
             makeBinaryExpressionByOperator =
-                new Dictionary<BusinessObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
+                new Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
                 {
-                    {BusinessObjectFieldFilterOperator.Equals, Expression.Equal},
-                    {BusinessObjectFieldFilterOperator.LessThan, Expression.LessThan},
-                    {BusinessObjectFieldFilterOperator.GreaterThan, Expression.GreaterThan},
-                    {BusinessObjectFieldFilterOperator.LessThanOrEquals, Expression.LessThanOrEqual},
-                    {BusinessObjectFieldFilterOperator.GreaterThanOrEquals, Expression.GreaterThanOrEqual},
-                    {BusinessObjectFieldFilterOperator.DoesNotEqual, Expression.NotEqual},
+                    {ObjectFieldFilterOperator.Equals, Expression.Equal},
+                    {ObjectFieldFilterOperator.LessThan, Expression.LessThan},
+                    {ObjectFieldFilterOperator.GreaterThan, Expression.GreaterThan},
+                    {ObjectFieldFilterOperator.LessThanOrEquals, Expression.LessThanOrEqual},
+                    {ObjectFieldFilterOperator.GreaterThanOrEquals, Expression.GreaterThanOrEqual},
+                    {ObjectFieldFilterOperator.DoesNotEqual, Expression.NotEqual},
                 };
     }
 }

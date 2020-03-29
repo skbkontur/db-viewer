@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Kontur.DBViewer.Core.VNext.DataTypes
 {
-    public class BusinessObjectSearchRequest
+    public class ObjectSearchRequest
     {
         [CanBeNull, ItemNotNull]
         [JsonProperty("conditions")]

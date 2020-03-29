@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.VNext.DataTypes;
@@ -6,9 +5,9 @@ using Sort = Kontur.DBViewer.Core.DTO.Sort;
 
 namespace Kontur.DBViewer.Core.VNext
 {
-    public static class BusinessObjectsAdapter
+    public static class VNextAdapter
     {
-        public static Filter[] GetFilters(this BusinessObjectSearchRequest query)
+        public static Filter[] GetFilters(this ObjectSearchRequest query)
         {
             return query.Conditions == null
                 ? new Filter[0]
@@ -20,7 +19,7 @@ namespace Kontur.DBViewer.Core.VNext
                 }).ToArray();
         }
 
-        public static Sort[] GetSorts(this BusinessObjectSearchRequest query)
+        public static Sort[] GetSorts(this ObjectSearchRequest query)
         {
             return query.Sort == null
                 ? new Sort[0]

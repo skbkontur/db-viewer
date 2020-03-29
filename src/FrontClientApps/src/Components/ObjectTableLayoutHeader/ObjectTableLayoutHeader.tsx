@@ -12,9 +12,9 @@ import * as React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
-import { BusinessObjectSearchQuery } from "../../Domain/BusinessObjects/BusinessObjectSearchQuery";
-import { Property } from "../../Domain/BusinessObjects/Property";
-import { PropertyMetaInformationUtils } from "../../Domain/BusinessObjects/PropertyMetaInformationUtils";
+import { ObjectSearchQuery } from "../../Domain/Objects/ObjectSearchQuery";
+import { Property } from "../../Domain/Objects/Property";
+import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaInformationUtils";
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
@@ -23,10 +23,10 @@ import * as styles from "./ObjectTableLayoutHeader.less";
 import { Spinner } from "./Spinner";
 
 interface ObjectTableLayoutHeaderProps {
-    query: BusinessObjectSearchQuery;
+    query: ObjectSearchQuery;
     allowReadAll: boolean;
     properties: null | undefined | Property[];
-    onChange: (x0: null | Partial<BusinessObjectSearchQuery>) => void;
+    onChange: (x0: null | Partial<ObjectSearchQuery>) => void;
     onDownloadClick: () => void;
     onDownloadAbort: () => void;
     downloading: boolean;

@@ -6,19 +6,19 @@ import { RouteComponentProps, withRouter } from "react-router";
 
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
-import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
+import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
+import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTypesProps extends RouteComponentProps {
-    businessObjectsApi: IBusinessObjectsApi;
+    dbViewerApi: IDbViewerApi;
     identifierKeywords: string[];
     path: string;
 }
 
 interface ObjectTypesState {
     loading: boolean;
-    objects: Nullable<BusinessObjectDescription[]>;
+    objects: Nullable<ObjectDescription[]>;
     filter: string;
 }
 
@@ -34,10 +34,10 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
     }
 
     public async load(): Promise<void> {
-        const { businessObjectsApi } = this.props;
+        const { dbViewerApi } = this.props;
         this.setState({ loading: true });
         try {
-            const objects = await businessObjectsApi.getBusinessObjectNames();
+            const objects = await dbViewerApi.getNames();
             this.setState({
                 objects: objects,
             });
@@ -56,7 +56,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                 <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)}>
                     Вернуться к инструментам администратора
                 </CommonLayout.GoBack>
-                <CommonLayout.Header title="Список Бизнес Объектов" />
+                <CommonLayout.Header title="Список Объектов" />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>
                         <ColumnStack block stretch>
@@ -73,7 +73,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                             <Fit>
                                 {objects && (
                                     <ObjectTypes
-                                        data-tid="BusinessObjectTypes"
+                                        data-tid="ObjectTypes"
                                         getPath={this.getPath}
                                         objects={objects}
                                         filter={filter}

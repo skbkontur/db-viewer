@@ -11,23 +11,23 @@ import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlin
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
-import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
-import { BusinessObjectFilterSortOrder } from "../Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
 import { FileInfo } from "../Domain/Api/DataTypes/FileInfo";
+import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
+import { ObjectFilterSortOrder } from "../Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
-import { BusinessObjectSearchQuery } from "../Domain/BusinessObjects/BusinessObjectSearchQuery";
-import { ConditionsMapper, SortMapper } from "../Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
-import { ICustomRenderer } from "../Domain/BusinessObjects/CustomRenderer";
-import { Property } from "../Domain/BusinessObjects/Property";
-import { PropertyMetaInformationUtils } from "../Domain/BusinessObjects/PropertyMetaInformationUtils";
+import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
+import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
+import { ObjectSearchQuery } from "../Domain/Objects/ObjectSearchQuery";
+import { ConditionsMapper, SortMapper } from "../Domain/Objects/ObjectSearchQueryUtils";
+import { Property } from "../Domain/Objects/Property";
+import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTableProps extends RouteComponentProps {
-    businessObjectsApi: IBusinessObjectsApi;
+    dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     objectId: string;
     urlQuery: string;
@@ -39,18 +39,16 @@ interface ObjectTableState {
     objects: Nullable<SearchResult<object>>;
     loading: boolean;
     showModalFilter: boolean;
-    metaInformation: Nullable<BusinessObjectDescription>;
+    metaInformation: Nullable<ObjectDescription>;
     displaySearchFilter: boolean;
     displayShowFilter: boolean;
-    query: BusinessObjectSearchQuery;
+    query: ObjectSearchQuery;
     downloading: boolean;
     showDownloadModal: boolean;
     downloadCount?: DownloadResult;
 }
 
-const businessObjectsQueryMapping: QueryStringMapping<BusinessObjectSearchQuery> = new QueryStringMappingBuilder<
-    BusinessObjectSearchQuery
->()
+const objectsQueryMapping: QueryStringMapping<ObjectSearchQuery> = new QueryStringMappingBuilder<ObjectSearchQuery>()
     .mapToInteger(x => x.count, "count", 20)
     .mapToInteger(x => x.offset, "offset", 0)
     .mapToStringArray(x => x.hiddenColumns, "hiddenColumns", [])
@@ -58,7 +56,7 @@ const businessObjectsQueryMapping: QueryStringMapping<BusinessObjectSearchQuery>
     .mapTo(x => x.conditions, new ConditionsMapper(["sort", "count", "offset", "hiddenColumns", "countLimit"]))
     .build();
 
-function getDefaultQuery(): BusinessObjectSearchQuery {
+function getDefaultQuery(): ObjectSearchQuery {
     return {
         conditions: [],
         offset: 0,
@@ -83,15 +81,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
     public componentDidMount() {
         const { urlQuery } = this.props;
-        this.setState({ query: businessObjectsQueryMapping.parse(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
+        this.setState({ query: objectsQueryMapping.parse(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
     }
 
     public componentDidUpdate(prevProps: ObjectTableProps) {
         if (this.checkForNecessityLoad(prevProps.urlQuery)) {
-            this.setState(
-                { query: businessObjectsQueryMapping.parse(this.props.urlQuery) },
-                this.loadObjectsWithLoader
-            );
+            this.setState({ query: objectsQueryMapping.parse(this.props.urlQuery) }, this.loadObjectsWithLoader);
         }
     }
 
@@ -114,7 +109,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             <CommonLayout>
                 <ErrorHandlingContainer />
                 <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoToObjectsList">
-                    Вернуться к списку видов бизнес объектов
+                    Вернуться к списку видов объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.Header
                     title={<div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>}
@@ -187,8 +182,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private checkForNecessityLoad(prevQuery: string): boolean {
         const { urlQuery } = this.props;
         if (prevQuery !== urlQuery) {
-            const prevState = businessObjectsQueryMapping.parse(prevQuery);
-            const nextState = businessObjectsQueryMapping.parse(urlQuery);
+            const prevState = objectsQueryMapping.parse(prevQuery);
+            const nextState = objectsQueryMapping.parse(urlQuery);
             const hiddenColumnsChanged = prevState.hiddenColumns.length !== nextState.hiddenColumns.length;
             const restUnchanged = _.isEqual({ ...nextState, hiddenColumns: [] }, { ...prevState, hiddenColumns: [] });
             if (hiddenColumnsChanged && restUnchanged) {
@@ -200,10 +195,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     private async loadMetaAndObjectsIfNecessary(): Promise<void> {
-        const { businessObjectsApi, objectId } = this.props;
+        const { dbViewerApi, objectId } = this.props;
         this.setState({ loading: true });
         try {
-            const metaInformation = await businessObjectsApi.getBusinessObjectMeta(objectId);
+            const metaInformation = await dbViewerApi.getMeta(objectId);
             this.setState({ metaInformation: metaInformation });
             await this.loadObjectsIfAllowed(metaInformation);
         } finally {
@@ -225,7 +220,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         }
     }
 
-    private async loadObjectsIfAllowed(meta: BusinessObjectDescription) {
+    private async loadObjectsIfAllowed(meta: ObjectDescription) {
         const allowReadAll = meta.schemaDescription.allowReadAll;
         const props = meta.typeMetaInformation?.properties || [];
         const conditions = this.state.query.conditions || [];
@@ -237,9 +232,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     private async loadObjects(): Promise<void> {
-        const { businessObjectsApi, objectId } = this.props;
+        const { dbViewerApi, objectId } = this.props;
         const { offset, count, conditions, sort } = this.state.query;
-        const objects = await businessObjectsApi.findBusinessObjects(objectId, {
+        const objects = await dbViewerApi.searchObjects(objectId, {
             conditions: conditions,
             sort: sort,
             offset: offset,
@@ -250,21 +245,21 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         });
     }
 
-    private getSortOrder(columnName: string): BusinessObjectFilterSortOrder {
+    private getSortOrder(columnName: string): ObjectFilterSortOrder {
         const { sort } = this.state.query;
         if (sort && sort.path === columnName) {
-            return sort.sortOrder === BusinessObjectFilterSortOrder.Descending
-                ? BusinessObjectFilterSortOrder.Ascending
-                : BusinessObjectFilterSortOrder.Descending;
+            return sort.sortOrder === ObjectFilterSortOrder.Descending
+                ? ObjectFilterSortOrder.Ascending
+                : ObjectFilterSortOrder.Descending;
         }
-        return BusinessObjectFilterSortOrder.Ascending;
+        return ObjectFilterSortOrder.Ascending;
     }
 
     private getVisibleProperties(properties: Property[]): Property[] {
         return properties.filter(item => !this.state.query.hiddenColumns.includes(item.name));
     }
 
-    private readonly updateQuery = (queryUpdate: Partial<BusinessObjectSearchQuery>) => {
+    private readonly updateQuery = (queryUpdate: Partial<ObjectSearchQuery>) => {
         this.setState(
             {
                 showModalFilter: false,
@@ -333,7 +328,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     }
 
-    private readonly handleChangeModalFilter = (value: Nullable<Partial<BusinessObjectSearchQuery>>) => {
+    private readonly handleChangeModalFilter = (value: Nullable<Partial<ObjectSearchQuery>>) => {
         if (value == null) {
             this.updateQuery(getDefaultQuery());
         } else {
@@ -353,10 +348,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
         this.setState({ downloading: true });
         try {
-            const { businessObjectsApi } = this.props;
+            const { dbViewerApi } = this.props;
             const { conditions, sort, hiddenColumns } = this.state.query;
 
-            const downloadResult = await businessObjectsApi.downloadBusinessObjects(metaInformation.identifier, {
+            const downloadResult = await dbViewerApi.downloadObjects(metaInformation.identifier, {
                 conditions: conditions,
                 sort: sort,
                 excludedFields: hiddenColumns,
@@ -384,10 +379,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
     private async handleDeleteObject(index: number): Promise<void> {
         const { objects, metaInformation } = this.state;
-        const { businessObjectsApi } = this.props;
+        const { dbViewerApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
             const deletedObject = objects.items[index];
-            await businessObjectsApi.deleteBusinessObjects(metaInformation.identifier, deletedObject);
+            await dbViewerApi.deleteObject(metaInformation.identifier, deletedObject);
             await this.loadObjects();
         }
     }
@@ -396,10 +391,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         this.props.history.push(this.getQuery());
     }
 
-    private getQuery(overrides: Partial<BusinessObjectSearchQuery> = {}): string {
+    private getQuery(overrides: Partial<ObjectSearchQuery> = {}): string {
         const { query } = this.state;
         const { path } = this.props;
-        return path + businessObjectsQueryMapping.stringify({ ...query, ...overrides });
+        return path + objectsQueryMapping.stringify({ ...query, ...overrides });
     }
 
     private readonly goToPage = (page: number) => {

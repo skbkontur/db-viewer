@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
 import { renderForEdit } from "../../src/Components/ObjectViewer/ObjectItemRender";
-import { NullCustomRenderer } from "../../src/Domain/BusinessObjects/CustomRenderer";
+import { NullCustomRenderer } from "../../src/Domain/Objects/CustomRenderer";
 
 const prop = {
     name: "",
@@ -14,7 +14,7 @@ const prop = {
 };
 
 const renderer = new NullCustomRenderer();
-storiesOf("BusinessObjectEditableCustomRender", module)
+storiesOf("ObjectEditableCustomRender", module)
     .add("String", () => <div>{renderForEdit("value", { ...prop, type: "String" }, action("change"), renderer)}</div>)
     .add("String with null value", () => (
         <div>{renderForEdit(null, { ...prop, type: "String" }, action("change"), renderer)}</div>

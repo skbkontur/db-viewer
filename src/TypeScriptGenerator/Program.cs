@@ -51,7 +51,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator
                     EnumGenerationMode = EnumGenerationMode.TypeScriptEnum,
                 },
                 customTypeGenerator,
-                new RootTypesProvider(typeof(BusinessObjectsApi))
+                new RootTypesProvider(typeof(DbViewerApi))
             );
             typeScriptCodeGenerator.GenerateFiles(targetPath, JavaScriptTypeChecker.TypeScript);
         }

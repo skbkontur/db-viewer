@@ -1,15 +1,15 @@
 import { expect } from "chai";
 import { suite, test } from "mocha-typescript";
 
-import { BusinessObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { Condition } from "../../src/Domain/Api/DataTypes/Condition";
+import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
+import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { Sort } from "../../src/Domain/Api/DataTypes/Sort";
-import { ConditionsMapper, SortMapper } from "../../src/Domain/BusinessObjects/BusinessObjectSearchQueryUtils";
+import { ConditionsMapper, SortMapper } from "../../src/Domain/Objects/ObjectSearchQueryUtils";
 import { QueryStringMapping } from "../../src/Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../../src/Domain/QueryStringMapping/QueryStringMappingBuilder";
 
-interface BusinessObjectSearchQuery {
+interface ObjectSearchQuery {
     conditions: Nullable<Condition[]>;
     sort: Nullable<Sort>;
     count: Nullable<number>;
@@ -18,7 +18,7 @@ interface BusinessObjectSearchQuery {
     hiddenColumns: Nullable<string[]>;
 }
 
-const mapper: QueryStringMapping<BusinessObjectSearchQuery> = new QueryStringMappingBuilder<BusinessObjectSearchQuery>()
+const mapper: QueryStringMapping<ObjectSearchQuery> = new QueryStringMappingBuilder<ObjectSearchQuery>()
     .mapToInteger(x => x.count, "count")
     .mapToInteger(x => x.offset, "offset")
     .mapToInteger(x => x.countLimit, "countLimit")
@@ -27,12 +27,12 @@ const mapper: QueryStringMapping<BusinessObjectSearchQuery> = new QueryStringMap
     .mapTo(x => x.conditions, new ConditionsMapper(["sort", "count", "offset", "hiddenColumns", "countLimit"]))
     .build();
 
-class BusinessObjectSearchQueryUtils {
-    public static parse(search: Nullable<string>): BusinessObjectSearchQuery {
+class ObjectSearchQueryUtils {
+    public static parse(search: Nullable<string>): ObjectSearchQuery {
         return mapper.parse(search);
     }
 
-    public static stringify(query: Partial<BusinessObjectSearchQuery>): Nullable<string> {
+    public static stringify(query: Partial<ObjectSearchQuery>): Nullable<string> {
         return mapper.stringify({
             conditions: null,
             sort: null,
@@ -46,10 +46,10 @@ class BusinessObjectSearchQueryUtils {
 }
 
 @suite
-export class BusinessObjectSearchQueryUtilsTest {
+export class ObjectSearchQueryUtilsTest {
     @test
     public "должен парсить сортировку в простых случаях"() {
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=path.to.object:asc")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=path.to.object:asc")).to.eql({
             conditions: null,
             count: null,
             countLimit: null,
@@ -60,7 +60,7 @@ export class BusinessObjectSearchQueryUtilsTest {
                 sortOrder: "Ascending",
             },
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=path.to.object%3Aasc")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=path.to.object%3Aasc")).to.eql({
             conditions: null,
             count: null,
             countLimit: null,
@@ -71,7 +71,7 @@ export class BusinessObjectSearchQueryUtilsTest {
                 sortOrder: "Ascending",
             },
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=path.to.object")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=path.to.object")).to.eql({
             conditions: null,
             count: null,
             countLimit: null,
@@ -82,7 +82,7 @@ export class BusinessObjectSearchQueryUtilsTest {
                 sortOrder: "Descending",
             },
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=")).to.eql({
             conditions: null,
             count: null,
             countLimit: null,
@@ -90,7 +90,7 @@ export class BusinessObjectSearchQueryUtilsTest {
             hiddenColumns: null,
             sort: null,
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=  &a=1")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=  &a=1")).to.eql({
             conditions: [
                 {
                     operator: "Equals",
@@ -104,7 +104,7 @@ export class BusinessObjectSearchQueryUtilsTest {
             hiddenColumns: null,
             sort: null,
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=x:1")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=x:1")).to.eql({
             conditions: null,
             count: null,
             countLimit: null,
@@ -115,7 +115,7 @@ export class BusinessObjectSearchQueryUtilsTest {
                 sortOrder: "Descending",
             },
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?sort=:asc")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?sort=:asc")).to.eql({
             conditions: null,
             count: null,
             countLimit: null,
@@ -128,25 +128,25 @@ export class BusinessObjectSearchQueryUtilsTest {
     @test
     public "должен переводить в строку"() {
         expect(
-            BusinessObjectSearchQueryUtils.stringify({
+            ObjectSearchQueryUtils.stringify({
                 sort: {
                     path: "path.to.object",
-                    sortOrder: BusinessObjectFilterSortOrder.Ascending,
+                    sortOrder: ObjectFilterSortOrder.Ascending,
                 },
                 conditions: null,
             })
         ).to.eql("?sort=path.to.object%3Aasc");
         expect(
-            BusinessObjectSearchQueryUtils.stringify({
+            ObjectSearchQueryUtils.stringify({
                 sort: null,
                 conditions: null,
             })
         ).to.eql("");
         expect(
-            BusinessObjectSearchQueryUtils.stringify({
+            ObjectSearchQueryUtils.stringify({
                 sort: {
                     path: null,
-                    sortOrder: BusinessObjectFilterSortOrder.Ascending,
+                    sortOrder: ObjectFilterSortOrder.Ascending,
                 },
                 conditions: null,
             })
@@ -155,12 +155,12 @@ export class BusinessObjectSearchQueryUtilsTest {
 
     @test
     public "должен парсить массив значений"() {
-        expect(BusinessObjectSearchQueryUtils.parse("?Box.Id=%3E123")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?Box.Id=%3E123")).to.eql({
             conditions: [
                 {
                     path: "Box.Id",
                     value: "123",
-                    operator: BusinessObjectFieldFilterOperator.GreaterThan,
+                    operator: ObjectFieldFilterOperator.GreaterThan,
                 },
             ],
             count: null,
@@ -169,17 +169,17 @@ export class BusinessObjectSearchQueryUtilsTest {
             hiddenColumns: null,
             sort: null,
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?Box.Id=%3D123&Box.Gln=%3D456")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?Box.Id=%3D123&Box.Gln=%3D456")).to.eql({
             conditions: [
                 {
                     path: "Box.Id",
                     value: "123",
-                    operator: BusinessObjectFieldFilterOperator.Equals,
+                    operator: ObjectFieldFilterOperator.Equals,
                 },
                 {
                     path: "Box.Gln",
                     value: "456",
-                    operator: BusinessObjectFieldFilterOperator.Equals,
+                    operator: ObjectFieldFilterOperator.Equals,
                 },
             ],
             count: null,
@@ -188,17 +188,17 @@ export class BusinessObjectSearchQueryUtilsTest {
             hiddenColumns: null,
             sort: null,
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?Box.Id=%3E123&Box.Gln=%3C321")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?Box.Id=%3E123&Box.Gln=%3C321")).to.eql({
             conditions: [
                 {
                     path: "Box.Id",
                     value: "123",
-                    operator: BusinessObjectFieldFilterOperator.GreaterThan,
+                    operator: ObjectFieldFilterOperator.GreaterThan,
                 },
                 {
                     path: "Box.Gln",
                     value: "321",
-                    operator: BusinessObjectFieldFilterOperator.LessThan,
+                    operator: ObjectFieldFilterOperator.LessThan,
                 },
             ],
             sort: null,
@@ -207,7 +207,7 @@ export class BusinessObjectSearchQueryUtilsTest {
             offset: null,
             hiddenColumns: null,
         });
-        expect(BusinessObjectSearchQueryUtils.parse("?offset=20")).to.eql({
+        expect(ObjectSearchQueryUtils.parse("?offset=20")).to.eql({
             count: null,
             countLimit: null,
             offset: 20,
@@ -216,7 +216,7 @@ export class BusinessObjectSearchQueryUtilsTest {
             conditions: null,
         });
         expect(
-            BusinessObjectSearchQueryUtils.parse(
+            ObjectSearchQueryUtils.parse(
                 "?offset=20&count=100&sort=Box.Id:asc&Box.Id=%3E10&LastModificationDateTime=%3E%3D10"
             )
         ).to.eql({
@@ -246,41 +246,41 @@ export class BusinessObjectSearchQueryUtilsTest {
     @test
     public "должен переводить в строку объект"() {
         expect(
-            BusinessObjectSearchQueryUtils.stringify({
+            ObjectSearchQueryUtils.stringify({
                 count: 100,
                 offset: 20,
                 sort: {
                     path: "Box.Id",
-                    sortOrder: BusinessObjectFilterSortOrder.Ascending,
+                    sortOrder: ObjectFilterSortOrder.Ascending,
                 },
                 conditions: [
                     {
                         path: "Box.Id",
                         value: "10",
-                        operator: BusinessObjectFieldFilterOperator.GreaterThan,
+                        operator: ObjectFieldFilterOperator.GreaterThan,
                     },
                     {
                         path: "LastModificationDateTime",
                         value: "10",
-                        operator: BusinessObjectFieldFilterOperator.GreaterThanOrEquals,
+                        operator: ObjectFieldFilterOperator.GreaterThanOrEquals,
                     },
                 ],
             })
         ).to.eql("?count=100&offset=20&sort=Box.Id%3Aasc&Box.Id=%3E10&LastModificationDateTime=%3E%3D10");
         expect(
-            BusinessObjectSearchQueryUtils.stringify({
+            ObjectSearchQueryUtils.stringify({
                 count: 20,
                 offset: 1580,
                 conditions: [
                     {
                         path: "Box.Gln",
                         value: "10",
-                        operator: BusinessObjectFieldFilterOperator.LessThan,
+                        operator: ObjectFieldFilterOperator.LessThan,
                     },
                     {
                         path: "LastModificationDateTime",
                         value: "13263165",
-                        operator: BusinessObjectFieldFilterOperator.LessThanOrEquals,
+                        operator: ObjectFieldFilterOperator.LessThanOrEquals,
                     },
                 ],
             })

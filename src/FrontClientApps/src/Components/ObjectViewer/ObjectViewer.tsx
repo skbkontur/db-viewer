@@ -1,15 +1,15 @@
 import * as React from "react";
 
-import { BusinessObjectDescription } from "../../Domain/Api/DataTypes/BusinessObjectDescription";
-import { ICustomRenderer } from "../../Domain/BusinessObjects/CustomRenderer";
-import { PropertyMetaInformationUtils } from "../../Domain/BusinessObjects/PropertyMetaInformationUtils";
+import { ObjectDescription } from "../../Domain/Api/DataTypes/ObjectDescription";
+import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
+import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaInformationUtils";
 import { Accordion } from "../Accordion/Accordion";
 
 import { ObjectRenderer } from "./ObjectRenderer";
 
 interface ObjectViewerProps {
     objectInfo: object;
-    objectMeta: BusinessObjectDescription;
+    objectMeta: ObjectDescription;
     onChange: (value: object, path: string[]) => Promise<void>;
     customRenderer: ICustomRenderer;
     allowEdit: boolean;

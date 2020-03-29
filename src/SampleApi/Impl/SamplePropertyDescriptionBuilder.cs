@@ -11,35 +11,35 @@ namespace Kontur.DBViewer.SampleApi.Impl
 {
     public class SamplePropertyDescriptionBuilder : IPropertyDescriptionBuilder
     {
-        private static readonly Dictionary<Type, BusinessObjectFieldFilterOperator[]> availableFilters =
-            new Dictionary<Type, BusinessObjectFieldFilterOperator[]>
+        private static readonly Dictionary<Type, ObjectFieldFilterOperator[]> availableFilters =
+            new Dictionary<Type, ObjectFieldFilterOperator[]>
             {
                 {
                     typeof(bool),
-                    new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual}
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
                 },
                 {
                     typeof(string),
-                    new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual}
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
                 },
                 {
                     typeof(DateTime),
-                    new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual}
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
                 },
                 {
                     typeof(TestEnum),
-                    new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual}
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
                 },
                 {
                     typeof(int),
                     new[]
                     {
-                        BusinessObjectFieldFilterOperator.Equals,
-                        BusinessObjectFieldFilterOperator.DoesNotEqual,
-                        BusinessObjectFieldFilterOperator.LessThan,
-                        BusinessObjectFieldFilterOperator.LessThanOrEquals,
-                        BusinessObjectFieldFilterOperator.GreaterThan,
-                        BusinessObjectFieldFilterOperator.GreaterThanOrEquals
+                        ObjectFieldFilterOperator.Equals,
+                        ObjectFieldFilterOperator.DoesNotEqual,
+                        ObjectFieldFilterOperator.LessThan,
+                        ObjectFieldFilterOperator.LessThanOrEquals,
+                        ObjectFieldFilterOperator.GreaterThan,
+                        ObjectFieldFilterOperator.GreaterThanOrEquals
                     }
                 }
             };

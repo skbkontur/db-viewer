@@ -1,860 +1,749 @@
 [
     {
         "identifier": "FileMetaInformation2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Party2",
-        "mySqlTableName": "Party2",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "PartySynonym",
-        "mySqlTableName": "PartySynonym",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "UserBusinessObject",
-        "mySqlTableName": "UserBusinessObject",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "EmployeeBusinessObject",
-        "mySqlTableName": "EmployeeBusinessObject",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "UserLastLoginRecordBusinessObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "FtpUser",
-        "mySqlTableName": "FtpUser",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "PartySettings",
-        "mySqlTableName": "PartySettings",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "AS2SubjectStorageItem",
-        "mySqlTableName": "AS2SubjectStorageItem",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "SentAs2MessageInfoStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ThumbprintPartyLink",
-        "mySqlTableName": "ThumbprintPartyLink",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "POrders",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Orders2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Ordrsp2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Desadv2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Recadv2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Invoic2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Coinvoic",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Retann",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Retins",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DesadvViaInvoic",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Retdes",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Retrec",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Retinv",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "MessageAndEntityBinding",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DiadocEventStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "DiadocInvoicInfo2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DiadocInvoicId",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DiadocPackagePostedEvent2",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "WebObjectToEntityBinding",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "TaskChainEventStorageElement4",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "TimeBasedTaskChainEventArrayStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "SentMessageLogRecordStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "TradingPartnersSettings",
-        "mySqlTableName": "TradingPartnersSettings",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "StatusReportStorageElement",
-        "mySqlTableName": "StatusReportStorageElement",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "MonitoringSearchRequest",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "StatusReportData",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "StatusReportBinding",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "IncomingReportCirculationBindingStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "DocumentCirculationBindingStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "SentEmailBinding",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "SentKonturAgentNotificationBusinessObject",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "IncomingStatusReportStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "MdnStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "UnknownEntityWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "POrdersWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "POrdersWebObjectReference",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrdersWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DraftOrdrspWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "OrdrspWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DraftDesadvWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DesadvWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "RecadvWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DraftInvoicWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "InvoicWebObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ProvisionalApplicationsWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "NewApplicationsWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ProcessedApplicationsWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ReadyToDespatchWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "WaitingRecadvWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ReceivedByClientWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ProcessedDespatchesWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DraftDocumentsWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "SentOnlyInvoicWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "SentInvoicAndDocumentsWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "SignedByBuyerWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ProcessedDocumentsWebFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "PostedIntoDiadocDraftInfo",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "BoxEventProcessingExceptionInfo",
-        "mySqlTableName": "BoxEventProcessingExceptionInfo",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "OrderUniqueIdentifierStorageElement_Web",
-        "mySqlTableName": "OrderUniqueIdentifierStorageElement_Web",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Order_Web",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "SearchRequest",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "PriceListAgreementFilter",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "AppliedListFilterParameters",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "PriceAgreementWebObject",
-        "mySqlTableName": "PriceAgreementWebObjectMeta",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "LastGeneratedSerialShippingContainerCode",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "StatusReportDocumentSubscription",
-        "mySqlTableName": "StatusReportDocumentSubscription",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "NotificationSubscription",
-        "mySqlTableName": "NotificationSubscription",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "EdiRoute",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "OrganizationBusinessObject",
-        "mySqlTableName": "OrganizationBusinessObject",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "OrganizationList",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Pricat",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "PriceList",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Delfor",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Iftmbf",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Iftmbc",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Coacsu",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Invrpt",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Slsrpt",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "MetaContent",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "Alcrpt",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DiadocFilesPackage",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ActiveDiadocMessage",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ActiveDiadocParty",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ActiveDiadocOrganizationState",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "CustomsValidationsLogEntry",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "CustomsConvertationsLogEntry",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "CustomsCalculationLogEntry",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "CustomsCalculationMessageLogEntry",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "CustomFieldsConvertationLogEntry",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ValidationsCheckBusinessObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "VlangCheckServiceLastEventInfoBusinessObject",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ValidationsCheckProcessingNowBusinessObject",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "RecentValidationsCheckBusinessObject",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "LastInboxDocumentRecordBusinessObject",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "ExportationStatusByPartyStorageObject",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "MonitoringExportInfoStorageElement",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "ChainTypesReference",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "ContractorsReference",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "StatusReference",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "ChainCommonStateReference",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReport",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReportRecipients",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReportLastGeneratedFileId",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReportSubscription",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReportSubscriptionLastProcessedDate",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReportSchedulerTaskIds",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "OrvisReportTypeFavorites",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "PriceListMonitoringInfo",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "LastBillingBoxEventId",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "LastSendTransactionEventInfo",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "TransactionSendAttempt",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "HoldedTransactionSendTask",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "GroupIdExcludedFromSending",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "GroupIdExclusionRemovements",
-        "mySqlTableName": null,
+        "schemaDescription": { "schemaName": "Business Objects" },
         "storageType": "ArrayOfObjectsPerRow",
         "typeMetaInformation": null
     },
     {
         "identifier": "TradingPartnersToSubscriptionBinding",
-        "mySqlTableName": "TradingPartnersToSubscriptionBinding",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "SubscriptionActivationProcess",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "InnerDiadocPackageIdentifiersStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "OrganizationStorageElement",
-        "mySqlTableName": null,
-        "storageType": "ArrayOfObjectsPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DocumentToWebObjectBindingStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "TransportBoxStorageElement",
-        "mySqlTableName": "TransportBoxStorageElement",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "BoxStorageElement",
-        "mySqlTableName": "BoxStorageElement",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "BoxSettingsStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "RawMessageMetaInformation",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "EntityMetaInformation_Boxes",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "DeliveryRouteStorageElement",
-        "mySqlTableName": null,
-        "storageType": "ArrayOfObjectsPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "BoxGeneratingProcessInfo",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ConnectorMessageMetaStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ConnectorBoxStorageElement",
-        "mySqlTableName": "ConnectorBoxStorageElement",
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ConnectorsSettingsStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ConnectorInteractionContextStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ConnectorDeliveryContextStorageElement",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     },
     {
         "identifier": "ApiClient",
-        "mySqlTableName": null,
-        "storageType": "SingleObjectPerRow",
+        "schemaDescription": { "schemaName": "Business Objects" },
         "typeMetaInformation": null
     }
 ]

@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Kontur.DBViewer.Core.VNext.DataTypes
 {
-    public class BusinessObjectDescription
+    public class ObjectDescription
     {
         [NotNull]
         [JsonProperty("identifier")]

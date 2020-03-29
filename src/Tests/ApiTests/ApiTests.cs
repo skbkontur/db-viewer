@@ -299,7 +299,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
                                 Name = "Id",
                                 IsIdentity = true,
                                 IsSearchable = true,
-                                AvailableFilters = new[] {BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual},
+                                AvailableFilters = new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual},
                             },
                         },
                         new Property
@@ -409,7 +409,7 @@ namespace Kontur.DBViewer.Tests.ApiTests
             {
                 new Filter
                 {
-                    Type = BusinessObjectFieldFilterOperator.Equals,
+                    Type = ObjectFieldFilterOperator.Equals,
                     Field = "Id",
                     Value = @object.Id,
                 }

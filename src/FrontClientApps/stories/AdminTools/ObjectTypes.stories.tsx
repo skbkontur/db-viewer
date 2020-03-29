@@ -5,7 +5,7 @@ import StoryRouter from "storybook-react-router";
 import { ObjectTypes } from "../../src/Components/ObjectTypes/ObjectTypes";
 import { SchemaDescription } from "../../src/Domain/Api/SchemaDescription";
 
-import objects from "./Responses/business-objects.json";
+import objects from "./Responses/objects.json";
 
 const schema: SchemaDescription = {
     allowReadAll: true,

@@ -1,3 +1,3 @@
 export { DbViewerApplication } from "./DbViewerApplication";
-export { IBusinessObjectsApi, BusinessObjectsApiImpl } from "./Domain/Api/BusinessObjectsApi";
-export { ICustomRenderer, NullCustomRenderer } from "./Domain/BusinessObjects/CustomRenderer";
+export { IDbViewerApi, DbViewerApiImpl } from "./Domain/Api/DbViewerApi";
+export { ICustomRenderer, NullCustomRenderer } from "./Domain/Objects/CustomRenderer";

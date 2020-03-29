@@ -1,13 +1,12 @@
-import { IBusinessObjectsApi } from "./src/Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "./src/Domain/Api/DataTypes/BusinessObjectDescription";
-import { BusinessObjectDetails } from "./src/Domain/Api/DataTypes/BusinessObjectDetails";
-import { BusinessObjectSearchRequest } from "./src/Domain/Api/DataTypes/BusinessObjectSearchRequest";
 import { DownloadResult } from "./src/Domain/Api/DataTypes/DownloadResult";
+import { ObjectDescription } from "./src/Domain/Api/DataTypes/ObjectDescription";
+import { ObjectDetails } from "./src/Domain/Api/DataTypes/ObjectDetails";
+import { ObjectSearchRequest } from "./src/Domain/Api/DataTypes/ObjectSearchRequest";
 import { SearchResult } from "./src/Domain/Api/DataTypes/SearchResult";
-import { Guid } from "./src/Domain/DataTypes/Guid";
+import { IDbViewerApi } from "./src/Domain/Api/DbViewerApi";
 
-export class BusinessObjectsApiFake implements IBusinessObjectsApi {
-    public async getBusinessObjectNames(): Promise<BusinessObjectDescription[]> {
+export class DbViewerApiFake implements IDbViewerApi {
+    public async getNames(): Promise<ObjectDescription[]> {
         const schema = {
             schemaName: "schema",
             allowReadAll: true,
@@ -27,12 +26,12 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
                 typeMetaInformation: null,
             },
             {
-                identifier: "UserBusinessObject",
+                identifier: "UserObject",
                 schemaDescription: schema,
                 typeMetaInformation: null,
             },
             {
-                identifier: "UserLastLoginRecordBusinessObject",
+                identifier: "UserLastLoginRecordObject",
                 schemaDescription: schema,
                 typeMetaInformation: null,
             },
@@ -54,36 +53,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         ];
     }
 
-    public async getBusinessObjectsCount(
-        businessObjectIdentifier: string,
-        query: BusinessObjectSearchRequest
-    ): Promise<SearchResult<object>> {
-        return {
-            countLimit: 100000,
-            count: 0,
-            items: [],
-        };
-    }
-
-    public async startDownloadBusinessObjects(
-        businessObjectIdentifier: string,
-        query: BusinessObjectSearchRequest,
-        excludedFields: string[]
-    ): Promise<Guid> {
-        return "00000000-0000-0000-0000-000000000000";
-    }
-
-    public async getBusinessObjectsDownloadStatus(
-        businessObjectIdentifier: string,
-        exportationId: Guid
-    ): Promise<boolean> {
-        throw new Error();
-    }
-
-    public async findBusinessObjects(
-        businessObjectIdentifier: string,
-        query: BusinessObjectSearchRequest
-    ): Promise<SearchResult<object>> {
+    public async searchObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<SearchResult<object>> {
         return {
             items: [
                 {
@@ -137,10 +107,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         };
     }
 
-    public async getBusinessObjects(
-        businessObjectIdentifier: string,
-        query: BusinessObjectSearchRequest
-    ): Promise<BusinessObjectDetails> {
+    public async readObject(objectIdentifier: string, query: ObjectSearchRequest): Promise<ObjectDetails> {
         return {
             meta: {
                 identifier: "",
@@ -158,16 +125,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         };
     }
 
-    public async getBusinessArrayObject(
-        businessObjectIdentifier: string,
-        scopeId: string,
-        id: string,
-        arrayIndex: string
-    ): Promise<object> {
-        return {};
-    }
-
-    public async getBusinessObjectMeta(businessObjectIdentifier: string): Promise<BusinessObjectDescription> {
+    public async getMeta(objectIdentifier: string): Promise<ObjectDescription> {
         return {
             identifier: "StatusReportDocumentSubscription",
             schemaDescription: {
@@ -177,7 +135,7 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
                 schemaName: "Schema",
             },
             typeMetaInformation: {
-                typeName: "StatusReportDocumentSubscriptionBusinessObject",
+                typeName: "StatusReportDocumentSubscriptionObject",
                 isArray: false,
                 properties: [
                     {
@@ -238,27 +196,15 @@ export class BusinessObjectsApiFake implements IBusinessObjectsApi {
         };
     }
 
-    public async deleteBusinessObjects(businessObjectIdentifier: string, obj: object): Promise<void> {
+    public async deleteObject(objectIdentifier: string, obj: object): Promise<void> {
         // noop
     }
 
-    public async deleteBusinessArrayObject(
-        businessObjectIdentifier: string,
-        scopeId: string,
-        id: string,
-        arrayIndex: string
-    ): Promise<void> {
-        // noop
-    }
-
-    public async updateBusinessObjects(businessObjectIdentifier: string, obj: object): Promise<object> {
+    public async updateObject(objectIdentifier: string, obj: object): Promise<object> {
         return {};
     }
 
-    public async downloadBusinessObjects(
-        businessObjectIdentifier: string,
-        query: BusinessObjectSearchRequest
-    ): Promise<DownloadResult> {
+    public async downloadObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<DownloadResult> {
         return {
             count: 100,
             countLimit: 1000,

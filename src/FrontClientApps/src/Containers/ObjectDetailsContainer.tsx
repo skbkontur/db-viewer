@@ -12,26 +12,26 @@ import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlin
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
 import { ObjectViewer } from "../Components/ObjectViewer/ObjectViewer";
-import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
-import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
-import { BusinessObjectDetails } from "../Domain/Api/DataTypes/BusinessObjectDetails";
-import { BusinessObjectFieldFilterOperator } from "../Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
-import { BusinessObjectSearchRequest } from "../Domain/Api/DataTypes/BusinessObjectSearchRequest";
+import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
+import { ObjectDetails } from "../Domain/Api/DataTypes/ObjectDetails";
+import { ObjectFieldFilterOperator } from "../Domain/Api/DataTypes/ObjectFieldFilterOperator";
+import { ObjectSearchRequest } from "../Domain/Api/DataTypes/ObjectSearchRequest";
+import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { ApiError } from "../Domain/ApiBase/ApiError";
-import { ICustomRenderer } from "../Domain/BusinessObjects/CustomRenderer";
+import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectDetailsProps extends RouteComponentProps {
     objectId: string;
     objectQuery: string;
     allowEdit: boolean;
-    businessObjectsApi: IBusinessObjectsApi;
+    dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
 }
 
 interface ObjectDetailsState {
     objectInfo: Nullable<{}>;
-    objectMeta: null | BusinessObjectDescription;
+    objectMeta: null | ObjectDescription;
     loading: boolean;
     showConfirmModal: boolean;
     objectNotFound: boolean;
@@ -72,18 +72,18 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         }
     }
 
-    public async loadObject(): Promise<null | BusinessObjectDetails> {
-        const { businessObjectsApi, objectId, objectQuery } = this.props;
+    public async loadObject(): Promise<null | ObjectDetails> {
+        const { dbViewerApi, objectId, objectQuery } = this.props;
         const query = qs.parse(objectQuery.replace(/^\?/, ""));
-        const searchQuery: BusinessObjectSearchRequest = {
+        const searchQuery: ObjectSearchRequest = {
             conditions: Object.keys(query).map(x => ({
                 path: x,
                 value: query[x],
-                operator: BusinessObjectFieldFilterOperator.Equals,
+                operator: ObjectFieldFilterOperator.Equals,
             })),
         };
         try {
-            return await businessObjectsApi.getBusinessObjects(objectId, searchQuery);
+            return await dbViewerApi.readObject(objectId, searchQuery);
         } catch (e) {
             if (e instanceof ApiError && e.statusCode === 404) {
                 this.setState({ objectNotFound: true });
@@ -102,10 +102,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
 
         try {
             const updatedObject = _.set(objectInfo, path, value);
-            const savedInfo = await this.props.businessObjectsApi.updateBusinessObjects(
-                objectMeta.identifier,
-                updatedObject
-            );
+            const savedInfo = await this.props.dbViewerApi.updateObject(objectMeta.identifier, updatedObject);
             this.setState({ objectInfo: savedInfo });
         } catch (e) {
             const obj = await this.loadObject();
@@ -116,9 +113,9 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
 
     public async handleDelete(): Promise<void> {
         const { objectMeta, objectInfo } = this.state;
-        const { businessObjectsApi } = this.props;
+        const { dbViewerApi } = this.props;
         if (objectMeta != null) {
-            await businessObjectsApi.deleteBusinessObjects(objectMeta.identifier, objectInfo as any);
+            await dbViewerApi.deleteObject(objectMeta.identifier, objectInfo as any);
             this.props.history.push(RouteUtils.backUrl(this.props));
             return;
         }
@@ -147,7 +144,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
             <CommonLayout>
                 <ErrorHandlingContainer />
                 <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoBack">
-                    Вернуться к списку бизнес объектов
+                    Вернуться к списку объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.ContentLoader active={loading}>
                     <CommonLayout.GreyLineHeader
