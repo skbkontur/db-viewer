@@ -4,26 +4,26 @@ import Loader from "@skbkontur/react-ui/Loader";
 import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { BusinessObjectTypes } from "../Components/BusinessObjectTypes/BusinessObjectTypes";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
+import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
 import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
 import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
-interface BusinessObjectsProps extends RouteComponentProps {
+interface ObjectTypesProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;
     identifierKeywords: string[];
     path: string;
 }
 
-interface BusinessObjectsState {
+interface ObjectTypesState {
     loading: boolean;
     objects: Nullable<BusinessObjectDescription[]>;
     filter: string;
 }
 
-class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjectsProps, BusinessObjectsState> {
-    public state: BusinessObjectsState = {
+class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, ObjectTypesState> {
+    public state: ObjectTypesState = {
         loading: false,
         objects: null,
         filter: "",
@@ -72,7 +72,7 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
                             </Fit>
                             <Fit>
                                 {objects && (
-                                    <BusinessObjectTypes
+                                    <ObjectTypes
                                         data-tid="BusinessObjectTypes"
                                         getPath={this.getPath}
                                         objects={objects}
@@ -89,4 +89,4 @@ class BusinessObjectTypesContainerInternal extends React.Component<BusinessObjec
     }
 }
 
-export const BusinessObjectTypesContainer = withRouter(BusinessObjectTypesContainerInternal);
+export const ObjectTypesContainer = withRouter(ObjectTypesContainerInternal);

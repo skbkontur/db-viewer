@@ -1,7 +1,7 @@
 {
   "name": "@skbkontur/db-viewer-ui",
   "version": "0.2.0",
-  "main": "./dist/AdminToolsApplication.js",
+  "main": "./index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc --project tsconfig.prod.json && copyfiles --up 1 src/**/*.js src/**/*.less src/**/*.png dist",

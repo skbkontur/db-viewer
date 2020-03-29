@@ -6,34 +6,32 @@ import Link from "@skbkontur/react-ui/Link";
 import * as _ from "lodash";
 import * as React from "react";
 
+import { ICustomRenderer } from "../../Domain/BusinessObjects/CustomRenderer";
 import { Property } from "../../Domain/BusinessObjects/Property";
 
-import { customRender, customRenderForEdit } from "./BusinessObjectItemCustomRender";
+import { renderForEdit, renderForDetails } from "./ObjectItemRender";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
     return _.get(target, path.join("."));
 }
 
-interface BusinessObjectCustomRenderProps {
-    // eslint-disable-next-line
-    target: Object;
+interface ObjectRendererProps {
+    target: object;
     path: string[];
     property: Nullable<Property>;
     objectType: string;
     allowEdit: boolean;
     onChange: (value: any, path: string[]) => void;
+    customRenderer: ICustomRenderer;
 }
 
-interface BusinessObjectCustomRenderState {
+interface ObjectRendererState {
     editableMode: boolean;
     value: any;
 }
 
-export class BusinessObjectCustomRender extends React.Component<
-    BusinessObjectCustomRenderProps,
-    BusinessObjectCustomRenderState
-> {
-    public state: BusinessObjectCustomRenderState = {
+export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectRendererState> {
+    public state: ObjectRendererState = {
         editableMode: false,
         value: null,
     };
@@ -73,7 +71,7 @@ export class BusinessObjectCustomRender extends React.Component<
     };
 
     public render(): JSX.Element {
-        const { path, target, property, objectType } = this.props;
+        const { path, target, property, objectType, customRenderer } = this.props;
         const value = this.state.value != null ? this.state.value : getByPath(target, path);
         const { editableMode } = this.state;
         const canEdit = this.canEditProperty();
@@ -81,8 +79,8 @@ export class BusinessObjectCustomRender extends React.Component<
             <RowStack gap={2} baseline block data-tid="FieldRow">
                 <Fit data-tid="FieldValue">
                     {editableMode
-                        ? customRenderForEdit(value, property, this.handleChange)
-                        : customRender(target, path, objectType)}
+                        ? renderForEdit(value, property, this.handleChange, customRenderer)
+                        : renderForDetails(target, path, objectType, customRenderer)}
                 </Fit>
                 <Fill />
                 {canEdit && !editableMode && (

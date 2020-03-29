@@ -17,7 +17,6 @@ import {
 } from "./Mappers";
 import { Parser, QueryStringMapping, Stringifier } from "./QueryStringMapping";
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IPropertyConfigurator<T> {
     createParser(): Parser<T>;
     createStringifier(): Stringifier<T>;

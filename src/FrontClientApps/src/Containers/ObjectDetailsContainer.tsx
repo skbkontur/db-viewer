@@ -7,27 +7,29 @@ import * as React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";
-import { BusinessObjectNotFoundPage } from "../Components/BusinessObjectNotFoundPage/BusinessObjectNotFoundPage";
-import { BusinessObjectViewer } from "../Components/BusinessObjectViewer/BusinessObjectViewer";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
+import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
+import { ObjectViewer } from "../Components/ObjectViewer/ObjectViewer";
 import { IBusinessObjectsApi } from "../Domain/Api/BusinessObjectsApi";
 import { BusinessObjectDescription } from "../Domain/Api/DataTypes/BusinessObjectDescription";
 import { BusinessObjectDetails } from "../Domain/Api/DataTypes/BusinessObjectDetails";
 import { BusinessObjectFieldFilterOperator } from "../Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectSearchRequest } from "../Domain/Api/DataTypes/BusinessObjectSearchRequest";
 import { ApiError } from "../Domain/ApiBase/ApiError";
+import { ICustomRenderer } from "../Domain/BusinessObjects/CustomRenderer";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
-interface BusinessObjectContainerProps extends RouteComponentProps {
+interface ObjectDetailsProps extends RouteComponentProps {
     objectId: string;
     objectQuery: string;
     allowEdit: boolean;
     businessObjectsApi: IBusinessObjectsApi;
+    customRenderer: ICustomRenderer;
 }
 
-interface BusinessObjectContainerState {
+interface ObjectDetailsState {
     objectInfo: Nullable<{}>;
     objectMeta: null | BusinessObjectDescription;
     loading: boolean;
@@ -35,11 +37,8 @@ interface BusinessObjectContainerState {
     objectNotFound: boolean;
 }
 
-class BusinessObjectContainerInternal extends React.Component<
-    BusinessObjectContainerProps,
-    BusinessObjectContainerState
-> {
-    public state: BusinessObjectContainerState = {
+class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps, ObjectDetailsState> {
+    public state: ObjectDetailsState = {
         loading: false,
         objectInfo: {},
         objectMeta: null,
@@ -51,7 +50,7 @@ class BusinessObjectContainerInternal extends React.Component<
         this.load();
     }
 
-    public componentDidUpdate(prevProps: BusinessObjectContainerProps) {
+    public componentDidUpdate(prevProps: ObjectDetailsProps) {
         const { objectId, objectQuery } = this.props;
         if (objectId !== prevProps.objectId || objectQuery !== prevProps.objectQuery) {
             this.load();
@@ -139,10 +138,10 @@ class BusinessObjectContainerInternal extends React.Component<
     };
 
     public render(): JSX.Element {
-        const { objectId, allowEdit } = this.props;
+        const { objectId, allowEdit, customRenderer } = this.props;
         const { objectInfo, objectNotFound, objectMeta, loading } = this.state;
         if (objectNotFound || objectInfo == null) {
-            return <BusinessObjectNotFoundPage />;
+            return <ObjectNotFoundPage />;
         }
         return (
             <CommonLayout>
@@ -187,10 +186,11 @@ class BusinessObjectContainerInternal extends React.Component<
                         <ColumnStack gap={4} block>
                             <Fit style={{ maxWidth: "100%" }}>
                                 {objectInfo != null && objectMeta != null && (
-                                    <BusinessObjectViewer
+                                    <ObjectViewer
                                         objectInfo={objectInfo}
                                         objectMeta={objectMeta}
                                         allowEdit={allowEdit}
+                                        customRenderer={customRenderer}
                                         onChange={this.handleChange}
                                     />
                                 )}
@@ -209,4 +209,4 @@ class BusinessObjectContainerInternal extends React.Component<
     }
 }
 
-export const BusinessObjectContainer = withRouter(BusinessObjectContainerInternal);
+export const ObjectDetailsContainer = withRouter(ObjectDetailsContainerInternal);

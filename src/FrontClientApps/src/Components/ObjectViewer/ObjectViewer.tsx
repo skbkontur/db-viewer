@@ -1,19 +1,21 @@
 import * as React from "react";
 
 import { BusinessObjectDescription } from "../../Domain/Api/DataTypes/BusinessObjectDescription";
-import { PropertyMetaInformationUtils } from "../../Domain/Api/DataTypes/PropertyMetaInformationUtils";
+import { ICustomRenderer } from "../../Domain/BusinessObjects/CustomRenderer";
+import { PropertyMetaInformationUtils } from "../../Domain/BusinessObjects/PropertyMetaInformationUtils";
 import { Accordion } from "../Accordion/Accordion";
 
-import { BusinessObjectCustomRender } from "./BusinessObjectCustomRender";
+import { ObjectRenderer } from "./ObjectRenderer";
 
-interface BusinessObjectViewerProps {
+interface ObjectViewerProps {
     objectInfo: object;
     objectMeta: BusinessObjectDescription;
     onChange: (value: object, path: string[]) => Promise<void>;
+    customRenderer: ICustomRenderer;
     allowEdit: boolean;
 }
 
-export class BusinessObjectViewer extends React.Component<BusinessObjectViewerProps> {
+export class ObjectViewer extends React.Component<ObjectViewerProps> {
     public handleChange = (value: any, path: string[]) => {
         if (value != null) {
             let serverValue = String(value);
@@ -26,16 +28,17 @@ export class BusinessObjectViewer extends React.Component<BusinessObjectViewerPr
     };
 
     public render(): JSX.Element {
-        const { objectMeta, objectInfo, allowEdit } = this.props;
+        const { objectMeta, objectInfo, allowEdit, customRenderer } = this.props;
         const objectProperties = objectMeta?.typeMetaInformation?.properties;
         return (
             <div>
                 <Accordion
                     data-tid="RootAccordion"
                     customRender={(target, path) => (
-                        <BusinessObjectCustomRender
+                        <ObjectRenderer
                             target={target}
                             path={path}
+                            customRenderer={customRenderer}
                             property={PropertyMetaInformationUtils.getPropertyTypeByPath(objectProperties, path)}
                             objectType={objectMeta.identifier}
                             allowEdit={allowEdit}

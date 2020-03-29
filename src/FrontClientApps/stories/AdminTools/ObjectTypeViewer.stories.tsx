@@ -2,14 +2,16 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { BusinessObjectViewer } from "../../src/Components/BusinessObjectViewer/BusinessObjectViewer";
+import { ObjectViewer } from "../../src/Components/ObjectViewer/ObjectViewer";
+import { NullCustomRenderer } from "../../src/Domain/BusinessObjects/CustomRenderer";
 
 import Ordrsp2BusinessObject from "./Responses/Ordrsp2BusinessObject.json";
 import Ordrsp2MetaData from "./Responses/Ordrsp2MetaData.json";
 
 storiesOf("BusinessObjectTypeViewer", module)
     .add("Ordrsp2", () => (
-        <BusinessObjectViewer
+        <ObjectViewer
+            customRenderer={new NullCustomRenderer()}
             objectInfo={Ordrsp2BusinessObject}
             objectMeta={Ordrsp2MetaData}
             onChange={async () => {
@@ -19,7 +21,8 @@ storiesOf("BusinessObjectTypeViewer", module)
         />
     ))
     .add("Без редактирования", () => (
-        <BusinessObjectViewer
+        <ObjectViewer
+            customRenderer={new NullCustomRenderer()}
             objectInfo={Ordrsp2BusinessObject}
             objectMeta={Ordrsp2MetaData}
             onChange={async () => {

@@ -16,13 +16,13 @@ import { FormRow } from "../FormRow/FormRow";
 
 import { OperatorSelect } from "./OperatorSelect";
 
-interface BusinessObjectFilterProps {
+interface ObjectFilterProps {
     conditions: Condition[];
     onChange: (conditions: Condition[]) => void;
     tableColumns: Property[];
 }
 
-export class BusinessObjectFilter extends React.Component<BusinessObjectFilterProps> {
+export class ObjectFilter extends React.Component<ObjectFilterProps> {
     public getCondition(property: Property): Condition {
         const { conditions } = this.props;
         const result = conditions.find(x => x.path === property.name);

@@ -6,15 +6,17 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
+import { ICustomRenderer } from "../../Domain/BusinessObjects/CustomRenderer";
 import { Property } from "../../Domain/BusinessObjects/Property";
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
-import { customRender } from "../BusinessObjectViewer/BusinessObjectItemCustomRender";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
+import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
 
-import * as styles from "./BusinessObjectsTable.less";
+import * as styles from "./ObjectTable.less";
 
-interface BusinessObjectsTableProps {
+interface ObjectTableProps {
+    customRenderer: ICustomRenderer;
     items: null | undefined | object[];
     properties: Property[];
     onChangeSortClick: (name: string) => void;
@@ -24,18 +26,18 @@ interface BusinessObjectsTableProps {
     allowDelete: boolean;
 }
 
-interface BusinessObjectsTableState {
+interface ObjectTableState {
     showConfirmModal: boolean;
     deletedIndex: number | null;
 }
 
-export class BusinessObjectsTable extends React.Component<BusinessObjectsTableProps, BusinessObjectsTableState> {
-    public state: BusinessObjectsTableState = {
+export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableState> {
+    public state: ObjectTableState = {
         showConfirmModal: false,
         deletedIndex: null,
     };
 
-    public componentDidUpdate(prevProps: BusinessObjectsTableProps) {
+    public componentDidUpdate(prevProps: ObjectTableProps) {
         if (prevProps.items !== this.props.items) {
             window.scrollTo(0, 0);
         }
@@ -165,9 +167,10 @@ export class BusinessObjectsTable extends React.Component<BusinessObjectsTablePr
     }
 
     public renderCell(item: any, key: string): JSX.Element {
+        const { customRenderer } = this.props;
         return (
             <td key={key} className={styles.cell} data-tid={key}>
-                {customRender(item, [key])}
+                {renderForTableCell(item, [key], customRenderer)}
             </td>
         );
     }

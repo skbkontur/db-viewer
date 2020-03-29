@@ -19,6 +19,7 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
+    "@typescript-eslint/interface-name-prefix": "off",
     "import/newline-after-import": "error",
     "import/order": [
       "error",

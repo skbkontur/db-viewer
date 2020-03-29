@@ -12,17 +12,17 @@ import * as React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
-import { PropertyMetaInformationUtils } from "../../Domain/Api/DataTypes/PropertyMetaInformationUtils";
 import { BusinessObjectSearchQuery } from "../../Domain/BusinessObjects/BusinessObjectSearchQuery";
 import { Property } from "../../Domain/BusinessObjects/Property";
+import { PropertyMetaInformationUtils } from "../../Domain/BusinessObjects/PropertyMetaInformationUtils";
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
-import * as styles from "./BusinessObjectTableLayoutHeader.less";
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { FilterModal } from "./FilterModal";
+import * as styles from "./ObjectTableLayoutHeader.less";
 import { Spinner } from "./Spinner";
 
-interface BusinessObjectTableLayoutHeaderProps {
+interface ObjectTableLayoutHeaderProps {
     query: BusinessObjectSearchQuery;
     allowReadAll: boolean;
     properties: null | undefined | Property[];
@@ -35,16 +35,16 @@ interface BusinessObjectTableLayoutHeaderProps {
     downloadCount?: DownloadResult;
 }
 
-interface BusinessObjectTableLayoutHeaderState {
+interface ObjectTableLayoutHeaderState {
     showFilterModal: boolean;
     modalEditingConditions: Condition[];
 }
 
-export class BusinessObjectTableLayoutHeader extends React.Component<
-    BusinessObjectTableLayoutHeaderProps,
-    BusinessObjectTableLayoutHeaderState
+export class ObjectTableLayoutHeader extends React.Component<
+    ObjectTableLayoutHeaderProps,
+    ObjectTableLayoutHeaderState
 > {
-    public state: BusinessObjectTableLayoutHeaderState = {
+    public state: ObjectTableLayoutHeaderState = {
         showFilterModal: false,
         modalEditingConditions: [],
     };
@@ -55,7 +55,7 @@ export class BusinessObjectTableLayoutHeader extends React.Component<
         });
     }
 
-    public componentDidUpdate(prevProps: BusinessObjectTableLayoutHeaderProps) {
+    public componentDidUpdate(prevProps: ObjectTableLayoutHeaderProps) {
         const { query, showModalFilter } = this.props;
         if (query.conditions !== prevProps.query.conditions || showModalFilter !== prevProps.showModalFilter) {
             this.setState({

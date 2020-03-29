@@ -2,15 +2,15 @@ import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import * as React from "react";
 
-import { BusinessObjectFilter } from "../../src/Components/BusinessObjectFilter/BusinessObjectFilter";
+import { ObjectFilter } from "../../src/Components/ObjectFilter/ObjectFilter";
 import { ValidationContainerWithSubmitButton } from "../StoryDecorators";
 
 import Party2Metadata from "./Responses/Party2Metadata.json";
 
-storiesOf("BusinessObjectFilter", module)
+storiesOf("ObjectFilter", module)
     .addDecorator(ValidationContainerWithSubmitButton())
     .add("Default", () => (
-        <BusinessObjectFilter
+        <ObjectFilter
             conditions={[]}
             onChange={action("onChange")}
             tableColumns={Party2Metadata.typeMetaInformation.properties}

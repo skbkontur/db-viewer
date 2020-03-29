@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 import { BusinessObjectDescription } from "../../Domain/Api/DataTypes/BusinessObjectDescription";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 
-import * as styles from "./BusinessObjectTypes.less";
+import * as styles from "./ObjectTypes.less";
 
-interface BusinessObjectTypesProps {
+interface ObjectTypesProps {
     objects: BusinessObjectDescription[];
     filter: string;
     identifierKeywords: string[];
     getPath: (id: string) => string;
 }
 
-export class BusinessObjectTypes extends React.Component<BusinessObjectTypesProps> {
+export class ObjectTypes extends React.Component<ObjectTypesProps> {
     public getGrouped(objects: BusinessObjectDescription[]): Array<[string, BusinessObjectDescription[]]> {
         return _(objects)
             .orderBy(item => this.getIdentifierWithoutKeywords(item.identifier).toUpperCase())

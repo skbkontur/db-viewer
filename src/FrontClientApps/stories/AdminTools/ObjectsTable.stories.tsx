@@ -2,10 +2,11 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import StoryRouter from "storybook-react-router";
 
-import { BusinessObjectsTable } from "../../src/Components/BusinessObjectsTable/BusinessObjectsTable";
+import { ObjectTable } from "../../src/Components/ObjectTable/ObjectTable";
 import { BusinessObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/BusinessObjectFieldFilterOperator";
 import { BusinessObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/BusinessObjectFilterSortOrder";
 import { PropertyMetaInformation } from "../../src/Domain/Api/DataTypes/PropertyMetaInformation";
+import { NullCustomRenderer } from "../../src/Domain/BusinessObjects/CustomRenderer";
 
 async function deleteObject(_index: number): Promise<void> {
     // Ничего не делаем
@@ -35,10 +36,10 @@ const indexed: PropertyMetaInformation = {
     availableFilters: [BusinessObjectFieldFilterOperator.Equals, BusinessObjectFieldFilterOperator.DoesNotEqual],
 };
 
-storiesOf("BusinessObjectsTable", module)
+storiesOf("ObjectTable", module)
     .addDecorator(StoryRouter())
     .add("Default", () => (
-        <BusinessObjectsTable
+        <ObjectTable
             items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}
             properties={[
                 { ...nonIndexed, name: "id.gln", type: "String" },
@@ -47,13 +48,14 @@ storiesOf("BusinessObjectsTable", module)
             ]}
             onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}
+            customRenderer={new NullCustomRenderer()}
             onDeleteClick={deleteObject}
             currentSort={{ path: "BoxId", sortOrder: BusinessObjectFilterSortOrder.Descending }}
             allowDelete
         />
     ))
     .add("Без удаления", () => (
-        <BusinessObjectsTable
+        <ObjectTable
             items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}
             properties={[
                 { ...indexed, name: "id.gln", type: "String" },
@@ -63,6 +65,7 @@ storiesOf("BusinessObjectsTable", module)
             onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}
             onDeleteClick={deleteObject}
+            customRenderer={new NullCustomRenderer()}
             currentSort={{ path: "BoxId", sortOrder: BusinessObjectFilterSortOrder.Descending }}
             allowDelete={false}
         />

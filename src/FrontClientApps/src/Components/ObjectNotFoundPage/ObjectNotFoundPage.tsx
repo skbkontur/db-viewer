@@ -6,7 +6,7 @@ import { CommonLayout } from "../Layouts/CommonLayout";
 
 import SorryImage from "./Sorry.png";
 
-class BusinessObjectNotFoundPageInternal extends React.Component<RouteComponentProps> {
+class ObjectNotFoundPageInternal extends React.Component<RouteComponentProps> {
     public render(): JSX.Element {
         return (
             <CommonLayout data-tid="BusinessObjectNotFoundPage">
@@ -20,4 +20,4 @@ class BusinessObjectNotFoundPageInternal extends React.Component<RouteComponentP
     }
 }
 
-export const BusinessObjectNotFoundPage = withRouter(BusinessObjectNotFoundPageInternal);
+export const ObjectNotFoundPage = withRouter(ObjectNotFoundPageInternal);

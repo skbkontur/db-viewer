@@ -1,11 +1,11 @@
 import * as _ from "lodash";
 
-import { Property, PropertyInfo } from "../../BusinessObjects/Property";
-import { StringUtils } from "../../Utils/StringUtils";
+import { Condition } from "../Api/DataTypes/Condition";
+import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformation";
+import { TypeMetaInformation } from "../Api/DataTypes/TypeMetaInformation";
+import { StringUtils } from "../Utils/StringUtils";
 
-import { Condition } from "./Condition";
-import { PropertyMetaInformation } from "./PropertyMetaInformation";
-import { TypeMetaInformation } from "./TypeMetaInformation";
+import { Property, PropertyInfo } from "./Property";
 
 function getTypeName(prevName: string, currentName: string, isArray = false): string {
     return `${prevName !== "" ? prevName + "." : ""}${currentName}${isArray ? ".[]" : ""}`;

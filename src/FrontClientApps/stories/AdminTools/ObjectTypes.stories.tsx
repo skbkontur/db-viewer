@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import * as React from "react";
 import StoryRouter from "storybook-react-router";
 
-import { BusinessObjectTypes } from "../../src/Components/BusinessObjectTypes/BusinessObjectTypes";
+import { ObjectTypes } from "../../src/Components/ObjectTypes/ObjectTypes";
 import { SchemaDescription } from "../../src/Domain/Api/SchemaDescription";
 
 import objects from "./Responses/business-objects.json";
@@ -14,12 +14,13 @@ const schema: SchemaDescription = {
     countLimit: 10,
 };
 
-storiesOf("BusinessObjectTypes", module)
+storiesOf("ObjectTypes", module)
     .addDecorator(StoryRouter())
     .add("Default", () => (
-        <BusinessObjectTypes
+        <ObjectTypes
             filter=""
             getPath={x => x}
+            identifierKeywords={[]}
             objects={[
                 {
                     identifier: "table 1",
@@ -39,4 +40,4 @@ storiesOf("BusinessObjectTypes", module)
             ]}
         />
     ))
-    .add("EDI Objects", () => <BusinessObjectTypes filter="" getPath={x => x} objects={objects} />);
+    .add("EDI Objects", () => <ObjectTypes identifierKeywords={[]} filter="" getPath={x => x} objects={objects} />);

@@ -4,15 +4,16 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { Property } from "../../Domain/BusinessObjects/Property";
-import { BusinessObjectFilter } from "../BusinessObjectFilter/BusinessObjectFilter";
+import { RouteUtils } from "../../Domain/Utils/RouteUtils";
+import { ObjectFilter } from "../ObjectFilter/ObjectFilter";
 
-import * as styles from "./BusinessObjectTableLayoutHeader.less";
+import * as styles from "./ObjectTableLayoutHeader.less";
 
-interface FilterModalProps {
+interface FilterModalProps extends RouteComponentProps {
     onClose: () => void;
     allowClose: boolean;
     modalEditingConditions: Condition[];
@@ -21,7 +22,7 @@ interface FilterModalProps {
     onChangeFilter: (x0: Condition[]) => void;
 }
 
-export class FilterModal extends React.Component<FilterModalProps> {
+class FilterModalInternal extends React.Component<FilterModalProps> {
     public container: ValidationContainer | null = null;
 
     public handleApplyFilter = async () => {
@@ -42,7 +43,7 @@ export class FilterModal extends React.Component<FilterModalProps> {
                 <Modal.Header>Фильтр</Modal.Header>
                 <Modal.Body>
                     <ValidationContainer ref={el => (this.container = el)} scrollOffset={{ top: 100 }}>
-                        <BusinessObjectFilter
+                        <ObjectFilter
                             conditions={modalEditingConditions}
                             onChange={onChangeFilter}
                             tableColumns={tableColumns}
@@ -69,7 +70,10 @@ export class FilterModal extends React.Component<FilterModalProps> {
                                     Очистить фильтр
                                 </Link>
                             ) : (
-                                <RouterLink className={styles.routerLink} to="/BusinessObjects" data-tid="GoBackToList">
+                                <RouterLink
+                                    className={styles.routerLink}
+                                    to={RouteUtils.backUrl(this.props)}
+                                    data-tid="GoBackToList">
                                     Вернуться к списку видов бизнес объектов
                                 </RouterLink>
                             )}
@@ -80,3 +84,5 @@ export class FilterModal extends React.Component<FilterModalProps> {
         );
     }
 }
+
+export const FilterModal = withRouter(FilterModalInternal);

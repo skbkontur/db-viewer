@@ -1,31 +1,33 @@
 import * as React from "react";
-import { Route, RouteComponentProps, Switch } from "react-router-dom";
+import { Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
 
-import { BusinessObjectContainer } from "./Containers/BusinessObjectContainer";
-import { BusinessObjectTypesContainer } from "./Containers/BusinessObjectTypesContainer";
-import { ObjectTableContainer } from "./Containers/BusinessObjectsTableContainer";
+import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
+import { ObjectTableContainer } from "./Containers/ObjectTableContainer";
+import { ObjectTypesContainer } from "./Containers/ObjectTypesContainer";
 import { IBusinessObjectsApi } from "./Domain/Api/BusinessObjectsApi";
+import { ICustomRenderer } from "./Domain/BusinessObjects/CustomRenderer";
 
-interface AdminToolsApplicationProps extends RouteComponentProps {
+interface DbViewerApplicationProps extends RouteComponentProps {
     businessObjectsApi: IBusinessObjectsApi;
-    customRenderers: object[];
+    customRenderer: ICustomRenderer;
     identifierKeywords: string[];
     allowEdit: boolean;
 }
 
-export function AdminToolsApplication({
+function DbViewerApplicationInternal({
     businessObjectsApi,
+    customRenderer,
     allowEdit,
     identifierKeywords,
     match,
-}: AdminToolsApplicationProps): JSX.Element {
+}: DbViewerApplicationProps): JSX.Element {
     return (
         <Switch>
             <Route
                 exact
                 path={`${match.url}/`}
                 render={() => (
-                    <BusinessObjectTypesContainer
+                    <ObjectTypesContainer
                         identifierKeywords={identifierKeywords}
                         businessObjectsApi={businessObjectsApi}
                         path={`${match.url}`}
@@ -39,6 +41,7 @@ export function AdminToolsApplication({
                     <ObjectTableContainer
                         allowEdit={allowEdit}
                         businessObjectsApi={businessObjectsApi}
+                        customRenderer={customRenderer}
                         urlQuery={location.search || ""}
                         path={`${match.url}/${params.objectId}`}
                         objectId={params.objectId || ""}
@@ -48,9 +51,10 @@ export function AdminToolsApplication({
             <Route
                 path={`${match.url}/:objectId/details`}
                 render={({ location, match: { params } }) => (
-                    <BusinessObjectContainer
+                    <ObjectDetailsContainer
                         allowEdit={allowEdit}
                         businessObjectsApi={businessObjectsApi}
+                        customRenderer={customRenderer}
                         objectId={params.objectId || ""}
                         objectQuery={location.search || ""}
                     />
@@ -59,3 +63,5 @@ export function AdminToolsApplication({
         </Switch>
     );
 }
+
+export const DbViewerApplication = withRouter(DbViewerApplicationInternal);
