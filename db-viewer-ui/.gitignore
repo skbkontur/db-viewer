@@ -4,6 +4,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 coverage
+dist
 src/Domain/Api/**/*.ts
 !src/Domain/Api/**/*Utils.ts
 !src/Domain/Api/**/*ApiFake.ts

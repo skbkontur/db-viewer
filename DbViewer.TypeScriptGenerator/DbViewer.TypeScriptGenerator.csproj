@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="1.6.6-rc3" />
+    <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="1.10.2" />
   </ItemGroup>
 
   <ItemGroup>

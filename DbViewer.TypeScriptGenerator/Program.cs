@@ -5,7 +5,7 @@ using SkbKontur.DbViewer.VNext;
 using SkbKontur.TypeScript.ContractGenerator;
 using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 
-using CustomTypeGenerator = SkbKontur.DbViewer.TypeScriptGenerator.Customization.CustomTypeGenerator;
+using CustomTypeGenerator = SkbKontur.DbViewer.TypeScriptGenerator.CustomTypeGenerator;
 
 namespace SkbKontur.DbViewer.TypeScriptGenerator
 {
@@ -13,34 +13,14 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
     {
         public static void Main(string[] args)
         {
-            GenerateDbViewerTypes();
             GenerateEdiTypes();
-        }
-
-        private static void GenerateDbViewerTypes()
-        {
-            var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "..",
-                                          "..", "Front", "src", "api", "impl");
-
-            var customTypeGenerator = new CustomTypeGenerator();
-            var typeScriptCodeGenerator = new TypeScript.ContractGenerator.TypeScriptGenerator(
-                new TypeScriptGenerationOptions
-                    {
-                        EnableExplicitNullability = true,
-                        EnableOptionalProperties = false,
-                        EnumGenerationMode = EnumGenerationMode.TypeScriptEnum,
-                        UseGlobalNullable = true,
-                    },
-                customTypeGenerator,
-                new RootTypesProvider(typeof(DbViewerControllerImpl))
-            );
-            typeScriptCodeGenerator.GenerateFiles(targetPath, JavaScriptTypeChecker.TypeScript);
         }
 
         private static void GenerateEdiTypes()
         {
-            var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "..",
-                                          "..", @"FrontClientApps\src\Domain\Api");
+            var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "../../../../db-viewer-ui/src/Domain/Api");
+            if (!Directory.Exists(targetPath))
+                Directory.CreateDirectory(targetPath);
 
             var customTypeGenerator = new CustomTypeGenerator();
             var typeScriptCodeGenerator = new TypeScript.ContractGenerator.TypeScriptGenerator(
@@ -49,12 +29,20 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
                         EnableExplicitNullability = true,
                         EnableOptionalProperties = true,
                         UseGlobalNullable = false,
+                        LinterDisableMode = LinterDisableMode.EsLint,
                         EnumGenerationMode = EnumGenerationMode.TypeScriptEnum,
                     },
                 customTypeGenerator,
                 new RootTypesProvider(typeof(DbViewerApi))
             );
             typeScriptCodeGenerator.GenerateFiles(targetPath, JavaScriptTypeChecker.TypeScript);
+
+            foreach (var file in Directory.EnumerateFiles(targetPath, "*.ts", SearchOption.AllDirectories))
+            {
+                var code = File.ReadAllText(file);
+                if (code.StartsWith("// eslint-disable"))
+                    File.WriteAllText(file, code.Replace("// eslint-disable", "/* eslint-disable */"));
+            }
         }
     }
 }

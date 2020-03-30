@@ -28,6 +28,8 @@
     }
   },
   "include": [
+    "DbViewerApiFake.ts",
+    "index.tsx",
     "src/**/*",
     "stories/**/*",
     "tests/**/*",

@@ -4,14 +4,14 @@ import { hot } from "react-hot-loader";
 import { Switch, Redirect } from "react-router";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { DbViewerApplication, DbViewerApiImpl, NullCustomRenderer } from "./src";
+import { DbViewerApplication, DbViewerApi, NullCustomRenderer } from "./src";
 
 const dbViewerApiPrefix = "/db-viewer/";
 
 export const dbViewerApi =
     process.env.API === "fake"
         ? new (require("./DbViewerApiFake").DbViewerApiFake)()
-        : new DbViewerApiImpl(dbViewerApiPrefix);
+        : new DbViewerApi(dbViewerApiPrefix);
 
 function AdminToolsEntryPoint() {
     return (
