@@ -4,9 +4,9 @@ Database Viewer with custom configuration
 
 |              | Build Status
 |--------------|:--------------:
-| DbViewer | [![NuGet Status](https://img.shields.io/nuget/v/SkbKontur.DbViewer.svg)](https://www.nuget.org/packages/SkbKontur.DbViewer/)
-| DbViewer.Cql | [![NuGet Status](https://img.shields.io/nuget/v/SkbKontur.DbViewer.Cql.svg)](https://www.nuget.org/packages/SkbKontur.DbViewer.Cql/)
-| db-viewer-ui | Nothing
+| DbViewer | [![NuGet Status](https://img.shields.io/nuget/v/SkbKontur.DbViewer)](https://www.nuget.org/packages/SkbKontur.DbViewer/)
+| DbViewer.Cql | [![NuGet Status](https://img.shields.io/nuget/v/SkbKontur.DbViewer.Cql)](https://www.nuget.org/packages/SkbKontur.DbViewer.Cql/)
+| db-viewer-ui | [![npm](https://img.shields.io/npm/v/@skbkontur/db-viewer-ui)](https://www.npmjs.com/package/@skbkontur/db-viewer-ui/)
 | Build | [![Build status](https://ci.appveyor.com/api/projects/status/jedtsmk59s4oaivm/branch/master?svg=true)](https://ci.appveyor.com/project/skbkontur/db-viewer/branch/master)
 
 ## Release Notes
