@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alko.Configuration.Settings" Version="0.0.4" />
     <PackageReference Include="GroboContainer" Version="1.2.37" />
     <PackageReference Include="GroBuf" Version="1.4.6" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
@@ -29,6 +28,12 @@
   <ItemGroup>
     <ProjectReference Include="..\DbViewer.Cql\DbViewer.Cql.csproj" />
     <ProjectReference Include="..\DbViewer\DbViewer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Alko.Configuration.Settings">
+      <HintPath>..\Assemblies\Alko.Configuration.Settings.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

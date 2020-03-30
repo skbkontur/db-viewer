@@ -8,11 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Alko.Configuration.Settings" Version="0.0.4" />
     <PackageReference Include="AutoFixture" Version="4.8.0" />
     <PackageReference Include="CassandraCSharpDriver" Version="3.7.0" />
-    <PackageReference Include="CassandraUtils.Cassandra.Commons" Version="0.0.20" />
-    <PackageReference Include="CassandraUtils.SessionTableQueryExtending" Version="0.0.2" />
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="GroboContainer" Version="1.2.37" />
     <PackageReference Include="GroBuf" Version="1.4.6" />
@@ -37,8 +34,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\..\..\..\..\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Net.Http\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Net.Http.dll</HintPath>
+    <Reference Include="Alko.Configuration.Settings">
+      <HintPath>..\Assemblies\Alko.Configuration.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Catalogue.CassandraUtils.Cassandra.Commons">
+      <HintPath>..\Assemblies\Catalogue.CassandraUtils.Cassandra.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending">
+      <HintPath>..\Assemblies\Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending.dll</HintPath>
     </Reference>
   </ItemGroup>
 
