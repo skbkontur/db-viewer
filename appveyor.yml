@@ -26,28 +26,42 @@ nuget:
   disable_publish_on_pr: true
 
 environment:
-  nodejs_version: "10"
-  npm_auth_token:
+  NODEJS_VERSION: 12
+  NPM_TOKEN:
     secure: Gx5yyFrlELZY4DNW/uAuiXdhUADacNqi3LptQwldv8O61KpYyiDUniA8lBJ5jfne
+
+install:
+  - cmd: powershell Install-Product node $env:NODEJS_VERSION
 
 before_build:
   - cmd: dotnet --info
   - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
-  - cmd: node --version
-  - cmd: yarn --version
-  - cmd: yarn --cwd db-viewer-ui install --frozen-lockfile
+  - cmd: yarn install --frozen-lockfile
 
 build_script:
   - cmd: dotnet build --configuration Release ./DbViewer.sln
   - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
-  - cmd: yarn --cwd db-viewer-ui build
+  - cmd: DbViewer.TypeScriptGenerator\bin\Release\net472\SkbKontur.DbViewer.TypeScriptGenerator.exe
+  - cmd: yarn build
+  - cmd: cd db-viewer-ui/dist && npm pack
 
 test_script:
   - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
-  - cmd: yarn --cwd db-viewer-ui lint
+  - cmd: yarn lint
+
+after_test:
+  - ps: |
+      if ($env:SHOULD_PUBLISH_NUGET_PACKAGE -eq "true")
+      {
+        Write-Host "Will publish npm package" -ForegroundColor "Green"
+        Set-Location -Path 'db-viewer-ui/dist'
+        npm config set '//registry.npmjs.org/:_authToken' $env:NPM_TOKEN
+        npm publish
+      }
 
 artifacts:
   - path: './DbViewer*/bin/Release/*.nupkg'
+  - path: './db-viewer-ui/dist/*.tgz'
 
 deploy:
   - provider: NuGet
