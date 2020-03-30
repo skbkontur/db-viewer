@@ -25,6 +25,10 @@ init:
 nuget:
   disable_publish_on_pr: true
 
+environment:
+  npm_auth_token:
+    secure: Gx5yyFrlELZY4DNW/uAuiXdhUADacNqi3LptQwldv8O61KpYyiDUniA8lBJ5jfne
+
 before_build:
   - cmd: dotnet --info
   - cmd: dotnet restore ./DbViewer.sln --verbosity minimal

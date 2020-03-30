@@ -8,7 +8,7 @@
     "build:tsc": "tsc --project tsconfig.prod.json",
     "build:patch": "node ./patch-version",
     "build:copy:src": "copyfiles --up 1 src/**/*.js src/**/*.less src/**/*.png dist",
-    "build:copy:meta": "copyfiles --flat package.json ../*.md ../LICENSE dist",
+    "build:copy:meta": "copyfiles --flat .npmignore .npmrc package.json ../*.md ../LICENSE dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server --hot --env.api=fake",
     "start:prod": "cross-env NODE_ENV=development webpack-dev-server --hot --env.api=real",
     "storybook": "cross-env NODE_ENV=development start-storybook -p 6006 -s .",
