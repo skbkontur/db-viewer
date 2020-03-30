@@ -33,6 +33,8 @@ environment:
 before_build:
   - cmd: dotnet --info
   - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
+  - cmd: node --version
+  - cmd: yarn --version
   - cmd: yarn --cwd db-viewer-ui install --frozen-lockfile
 
 build_script:
