@@ -1,7 +1,0 @@
-{
-  "plugins": [
-    "transform-flow-comments",
-    "transform-proto-to-assign"
-  ],
-  "presets": ["es2015", "stage-0", "react"]
-}
