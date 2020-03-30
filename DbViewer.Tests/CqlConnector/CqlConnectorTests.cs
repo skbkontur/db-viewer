@@ -24,6 +24,7 @@ using SkbKontur.DbViewer.VNext.DataTypes;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
+    [Ignore("Unable to run integration tests")]
     public class CqlConnectorTests
     {
         [OneTimeSetUp]

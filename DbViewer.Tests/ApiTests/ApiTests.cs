@@ -28,7 +28,6 @@ using SkbKontur.DbViewer.VNext.DataTypes;
 
 namespace SkbKontur.DbViewer.Tests.ApiTests
 {
-    [TestFixture]
     public class ApiTests
     {
         [OneTimeSetUp]
