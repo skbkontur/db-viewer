@@ -32,13 +32,16 @@ environment:
 before_build:
   - cmd: dotnet --info
   - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
+  - cmd: yarn --cwd db-viewer-ui install --frozen-lockfile
 
 build_script:
   - cmd: dotnet build --configuration Release ./DbViewer.sln
   - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
+  - cmd: yarn --cwd db-viewer-ui build
 
 test_script:
   - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
+  - cmd: yarn --cwd db-viewer-ui lint
 
 artifacts:
   - path: './DbViewer*/bin/Release/*.nupkg'
