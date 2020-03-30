@@ -26,11 +26,10 @@ namespace Kontur.DBViewer.SampleApi
                     {
                         Description = new SchemaDescription
                         {
-                            Countable = true,
                             SchemaName = "SampleSchema",
-                            MaxCountLimit = 10_000,
-                            DefaultCountLimit = 100,
-                            EnableDefaultSearch = false,
+                            DownloadLimit = 100_000,
+                            CountLimit = 10_000,
+                            AllowReadAll = true,
                         },
                         Types = BuildTypeDescriptions(
                             typeof(TestClass)
@@ -45,6 +44,9 @@ namespace Kontur.DBViewer.SampleApi
                 {
                     Description = new SchemaDescription
                     {
+                        AllowReadAll = true,
+                        CountLimit = 10_000,
+                        DownloadLimit = 100_000,
                         SchemaName = "CQL",
                     },
                     Types = BuildTypeDescriptions(typeof(SimpleCqlObject), typeof(NestedCqlObject)),

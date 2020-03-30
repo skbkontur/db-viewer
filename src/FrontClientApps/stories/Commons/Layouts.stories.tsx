@@ -1,15 +1,16 @@
-import { action, storiesOf } from "@kadira/storybook";
-import * as React from "react";
-import { ButtonLink } from "ui";
-import { Fill, Fit, RowStack } from "ui/layout";
-import { CommonLayout } from "Commons/Layouts";
-
-import { ScrollableContainer } from "Commons/Layouts/ScrollableContainer/ScrollableContainer";
-
 import AddIcon from "@skbkontur/react-icons/Add";
 import MenuIcon from "@skbkontur/react-icons/Menu";
 import RubleIcon from "@skbkontur/react-icons/Ruble";
 import SearchIcon from "@skbkontur/react-icons/Search";
+import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import Link from "@skbkontur/react-ui/Link";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
+import React from "react";
+import StoryRouter from "storybook-react-router";
+
+import { CommonLayout } from "../../src/Components/Layouts/CommonLayout";
+import { ScrollableContainer } from "../../src/Components/Layouts/ScrollableContainer";
 
 function SpaceFiller(props: { width?: number | string; height?: number | string }): JSX.Element {
     return (
@@ -32,11 +33,12 @@ function SpaceFiller(props: { width?: number | string; height?: number | string 
         </div>
     );
 }
-storiesOf(module)
+storiesOf("Layouts", module)
+    .addDecorator(StoryRouter())
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
                 </CommonLayout.Content>
@@ -61,14 +63,14 @@ storiesOf(module)
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fit>
-                                <ButtonLink icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<AddIcon />} onClick={action("tool2")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                         </RowStack>
                     }
@@ -88,14 +90,14 @@ storiesOf(module)
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <ButtonLink icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<AddIcon />} onClick={action("tool2")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                         </RowStack>
                     }
@@ -109,7 +111,7 @@ storiesOf(module)
     .add("TitledWithBackToPrevious", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.Header title="Заголовок раздела" />
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
@@ -120,7 +122,7 @@ storiesOf(module)
     .add("GreyLineTitledWithBackToPrevious", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.GreyLineHeader title="Заголовок раздела" />
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
@@ -131,20 +133,20 @@ storiesOf(module)
     .add("GreyLineTitledWithBackToPreviousWithTools", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.GreyLineHeader
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fit>
-                                <ButtonLink icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<AddIcon />} onClick={action("tool2")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                         </RowStack>
                     }
@@ -158,21 +160,21 @@ storiesOf(module)
     .add("GreyLineTitledWithBackToPreviousWithRightAlignedTools", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.GreyLineHeader
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <ButtonLink icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<AddIcon />} onClick={action("tool2")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                         </RowStack>
                     }
@@ -186,21 +188,21 @@ storiesOf(module)
     .add("GreyLineTitledWithBackToPreviousWithRightAlignedToolsAndContent", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.GreyLineHeader
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <ButtonLink icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<AddIcon />} onClick={action("tool2")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                         </RowStack>
                     }>
@@ -219,7 +221,7 @@ storiesOf(module)
     .add("GreyLineTitledWithBackToPreviousWithRightAlignedToolsAndContentAndLongHeaderText", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack href="http://google.com">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
                 <CommonLayout.GreyLineHeader
                     title={
                         "Заголовок 636716756516841227_DdDoc_then_EdiDoc__04.09.2018" +
@@ -229,24 +231,24 @@ storiesOf(module)
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <ButtonLink icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
                                     Инструмент 1
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<AddIcon />} onClick={action("tool2")}>
                                     Инструмент 2
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<MenuIcon />} onClick={action("tool3")}>
+                                <Link icon={<MenuIcon />} onClick={action("tool3")}>
                                     Инструмент 3
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                             <Fit>
-                                <ButtonLink icon={<RubleIcon />} onClick={action("tool4")}>
+                                <Link icon={<RubleIcon />} onClick={action("tool4")}>
                                     Инструмент 4
-                                </ButtonLink>
+                                </Link>
                             </Fit>
                         </RowStack>
                     }>
@@ -260,19 +262,6 @@ storiesOf(module)
                     <SpaceFiller height="100%" />
                 </CommonLayout.Content>
             </CommonLayout>
-        </div>
-    ))
-    .add("SideMenu/SmallContent", () => (
-        <div style={{ height: 300 }}>
-            <CommonLayout.WithSideMenu>
-                <CommonLayout.WithSideMenu.Menu>Some menu content</CommonLayout.WithSideMenu.Menu>
-                <CommonLayout.WithSideMenu.Content>
-                    <CommonLayout.Header title="Заголовок раздела" />
-                    <CommonLayout.Content>
-                        <SpaceFiller height="100px" />
-                    </CommonLayout.Content>
-                </CommonLayout.WithSideMenu.Content>
-            </CommonLayout.WithSideMenu>
         </div>
     ))
     .add("Большой контент", () => (

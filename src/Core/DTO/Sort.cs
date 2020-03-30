@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kontur.DBViewer.Core.VNext.DataTypes;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 namespace Kontur.DBViewer.Core.DTO
@@ -10,6 +11,6 @@ namespace Kontur.DBViewer.Core.DTO
         
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty("direction")]
-        public SortDirection Direction { get; set; }
+        public ObjectFilterSortOrder Direction { get; set; }
     }
 }

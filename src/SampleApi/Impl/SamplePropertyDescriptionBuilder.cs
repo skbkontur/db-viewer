@@ -1,33 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
-using Kontur.DBViewer.Core.DTO;
 using Kontur.DBViewer.Core.DTO.TypeInfo;
 using Kontur.DBViewer.Core.TypeAndObjectBulding;
+using Kontur.DBViewer.Core.VNext.DataTypes;
 using Kontur.DBViewer.SampleApi.Impl.Attributes;
-using TypeInfo = Kontur.DBViewer.Core.DTO.TypeInfo.TypeInfo;
+using Kontur.DBViewer.SampleApi.Impl.Classes;
 
 namespace Kontur.DBViewer.SampleApi.Impl
 {
     public class SamplePropertyDescriptionBuilder : IPropertyDescriptionBuilder
     {
-        private static readonly Dictionary<PrimitiveType, FilterType[]> availableFilters =
-            new Dictionary<PrimitiveType, FilterType[]>
+        private static readonly Dictionary<Type, ObjectFieldFilterOperator[]> availableFilters =
+            new Dictionary<Type, ObjectFieldFilterOperator[]>
             {
-                {PrimitiveType.Bool, new[] {FilterType.No, FilterType.Equals, FilterType.NotEquals}},
-                {PrimitiveType.String, new[] {FilterType.No, FilterType.Equals, FilterType.NotEquals}},
-                {PrimitiveType.DateTime, new[] {FilterType.No, FilterType.Equals, FilterType.NotEquals}},
-                {PrimitiveType.Enum, new[] {FilterType.No, FilterType.Equals, FilterType.NotEquals}},
                 {
-                    PrimitiveType.Int,
+                    typeof(bool),
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
+                },
+                {
+                    typeof(string),
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
+                },
+                {
+                    typeof(DateTime),
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
+                },
+                {
+                    typeof(TestEnum),
+                    new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
+                },
+                {
+                    typeof(int),
                     new[]
                     {
-                        FilterType.No, FilterType.Equals, FilterType.NotEquals, FilterType.Less, FilterType.LessOrEqual,
-                        FilterType.Greater, FilterType.GreaterOrEqual
+                        ObjectFieldFilterOperator.Equals,
+                        ObjectFieldFilterOperator.DoesNotEqual,
+                        ObjectFieldFilterOperator.LessThan,
+                        ObjectFieldFilterOperator.LessThanOrEquals,
+                        ObjectFieldFilterOperator.GreaterThan,
+                        ObjectFieldFilterOperator.GreaterThanOrEquals
                     }
                 }
             };
 
-        public PropertyDescription Build(PropertyInfo propertyInfo, TypeInfo typeInfo)
+        public PropertyDescription Build(PropertyInfo propertyInfo, Type typeInfo)
         {
             var result = new PropertyDescription
             {
@@ -40,7 +57,7 @@ namespace Kontur.DBViewer.SampleApi.Impl
             if (indexed || required)
             {
                 result.IsSearchable = true;
-                result.AvailableFilters = availableFilters[typeInfo.Type];
+                result.AvailableFilters = availableFilters[typeInfo];
                 if (required)
                 {
                     result.IsRequired = true;

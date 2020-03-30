@@ -1,0 +1,43 @@
+@import '../../styles/variables.less';
+
+:local {
+    .root {
+        min-width: 800px;
+        column-count: 3;
+    }
+
+    .schema {
+        font-size: 20px;
+        padding-top: 20px;
+        border-bottom: @table-header-border;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .firstLetter {
+        margin-top: 20px;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        font-weight: 600;
+        border-bottom: @table-cell-border;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .typeGroup {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .indexed {
+        vertical-align: super;
+        font-size: 9px;
+        line-height: 14px;
+    }
+
+    .mutedKeyword {
+        color: @double-muted-text;
+    }
+}

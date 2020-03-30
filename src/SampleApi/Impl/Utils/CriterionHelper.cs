@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.VNext.DataTypes;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Utils
 {
@@ -23,10 +24,10 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
                     var expression = CreateFilterExpression(filter.Type, memberExpression, valueExpression);
                     if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                     {
-                        if (filter.Type == FilterType.NotEquals && !string.IsNullOrEmpty(filter.Value))
+                        if (filter.Type == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
                             expression = Expression.OrElse(
                                 expression,
-                                CreateFilterExpression(FilterType.Equals, memberExpression,
+                                CreateFilterExpression(ObjectFieldFilterOperator.Equals, memberExpression,
                                     Expression.Constant(null))
                             );
                     }
@@ -51,7 +52,7 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
             return valueExpression;
         }
 
-        private static BinaryExpression CreateFilterExpression(FilterType @operator,
+        private static BinaryExpression CreateFilterExpression(ObjectFieldFilterOperator @operator,
             Expression leftExpression, Expression rightExpression)
         {
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);
@@ -64,16 +65,16 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
             return stringValue;
         }
 
-        private static readonly Dictionary<FilterType, Func<Expression, Expression, BinaryExpression>>
+        private static readonly Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
             makeBinaryExpressionByOperator =
-                new Dictionary<FilterType, Func<Expression, Expression, BinaryExpression>>
+                new Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
                 {
-                    {FilterType.Equals, Expression.Equal},
-                    {FilterType.Less, Expression.LessThan},
-                    {FilterType.Greater, Expression.GreaterThan},
-                    {FilterType.LessOrEqual, Expression.LessThanOrEqual},
-                    {FilterType.GreaterOrEqual, Expression.GreaterThanOrEqual},
-                    {FilterType.NotEquals, Expression.NotEqual},
+                    {ObjectFieldFilterOperator.Equals, Expression.Equal},
+                    {ObjectFieldFilterOperator.LessThan, Expression.LessThan},
+                    {ObjectFieldFilterOperator.GreaterThan, Expression.GreaterThan},
+                    {ObjectFieldFilterOperator.LessThanOrEquals, Expression.LessThanOrEqual},
+                    {ObjectFieldFilterOperator.GreaterThanOrEquals, Expression.GreaterThanOrEqual},
+                    {ObjectFieldFilterOperator.DoesNotEqual, Expression.NotEqual},
                 };
     }
 }

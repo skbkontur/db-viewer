@@ -1,0 +1,749 @@
+[
+    {
+        "identifier": "FileMetaInformation2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Party2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PartySynonym",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "UserBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "EmployeeBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "UserLastLoginRecordBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "FtpUser",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PartySettings",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "AS2SubjectStorageItem",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SentAs2MessageInfoStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ThumbprintPartyLink",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "POrders",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Orders2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Ordrsp2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Desadv2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Recadv2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Invoic2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Coinvoic",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Retann",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Retins",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DesadvViaInvoic",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Retdes",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Retrec",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Retinv",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "MessageAndEntityBinding",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DiadocEventStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DiadocInvoicInfo2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DiadocInvoicId",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DiadocPackagePostedEvent2",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "WebObjectToEntityBinding",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "TaskChainEventStorageElement4",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "TimeBasedTaskChainEventArrayStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SentMessageLogRecordStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "TradingPartnersSettings",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "StatusReportStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "MonitoringSearchRequest",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "StatusReportData",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "StatusReportBinding",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "IncomingReportCirculationBindingStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DocumentCirculationBindingStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SentEmailBinding",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SentKonturAgentNotificationBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "IncomingStatusReportStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "MdnStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "UnknownEntityWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "POrdersWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "POrdersWebObjectReference",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrdersWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DraftOrdrspWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrdrspWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DraftDesadvWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DesadvWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "RecadvWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DraftInvoicWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "InvoicWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ProvisionalApplicationsWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "NewApplicationsWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ProcessedApplicationsWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ReadyToDespatchWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "WaitingRecadvWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ReceivedByClientWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ProcessedDespatchesWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DraftDocumentsWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SentOnlyInvoicWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SentInvoicAndDocumentsWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SignedByBuyerWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ProcessedDocumentsWebFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PostedIntoDiadocDraftInfo",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "BoxEventProcessingExceptionInfo",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrderUniqueIdentifierStorageElement_Web",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Order_Web",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SearchRequest",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PriceListAgreementFilter",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "AppliedListFilterParameters",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PriceAgreementWebObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "LastGeneratedSerialShippingContainerCode",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "StatusReportDocumentSubscription",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "NotificationSubscription",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "EdiRoute",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrganizationBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrganizationList",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Pricat",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PriceList",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Delfor",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Iftmbf",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Iftmbc",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Coacsu",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Invrpt",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Slsrpt",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "MetaContent",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "Alcrpt",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DiadocFilesPackage",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ActiveDiadocMessage",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ActiveDiadocParty",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ActiveDiadocOrganizationState",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "CustomsValidationsLogEntry",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "CustomsConvertationsLogEntry",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "CustomsCalculationLogEntry",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "CustomsCalculationMessageLogEntry",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "CustomFieldsConvertationLogEntry",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ValidationsCheckBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "VlangCheckServiceLastEventInfoBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ValidationsCheckProcessingNowBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "RecentValidationsCheckBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "LastInboxDocumentRecordBusinessObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ExportationStatusByPartyStorageObject",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "MonitoringExportInfoStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ChainTypesReference",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ContractorsReference",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "StatusReference",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ChainCommonStateReference",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReport",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReportRecipients",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReportLastGeneratedFileId",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReportSubscription",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReportSubscriptionLastProcessedDate",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReportSchedulerTaskIds",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrvisReportTypeFavorites",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "PriceListMonitoringInfo",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "LastBillingBoxEventId",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "LastSendTransactionEventInfo",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "TransactionSendAttempt",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "HoldedTransactionSendTask",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "GroupIdExcludedFromSending",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "GroupIdExclusionRemovements",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "storageType": "ArrayOfObjectsPerRow",
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "TradingPartnersToSubscriptionBinding",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "SubscriptionActivationProcess",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "InnerDiadocPackageIdentifiersStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "OrganizationStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DocumentToWebObjectBindingStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "TransportBoxStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "BoxStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "BoxSettingsStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "RawMessageMetaInformation",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "EntityMetaInformation_Boxes",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "DeliveryRouteStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "BoxGeneratingProcessInfo",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ConnectorMessageMetaStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ConnectorBoxStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ConnectorsSettingsStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ConnectorInteractionContextStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ConnectorDeliveryContextStorageElement",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    },
+    {
+        "identifier": "ApiClient",
+        "schemaDescription": { "schemaName": "Business Objects" },
+        "typeMetaInformation": null
+    }
+]

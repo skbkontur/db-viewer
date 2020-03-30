@@ -1,47 +1,14 @@
+import { RowStack } from "@skbkontur/react-stack-layout";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
-import * as React from "react";
-import { RowStack } from "ui/layout";
+import { DecoratorFunction } from "@storybook/addons";
+import React from "react";
 
-import cn from "./StoryDecorators.less";
-
-type StoryDecorator = (story: () => React.ReactNode) => React.ReactNode;
-
-export function FixedWithDecorator(width: number | string): StoryDecorator {
-    return story => (
-        <div className={cn("fixed-width-container-wrap")}>
-            <div className={cn("fixed-width-container")} style={{ width: width }}>
-                {story()}
-            </div>
-        </div>
-    );
-}
-
-export function NonFlexContainer(story: () => React.ReactNode): React.ReactNode {
-    return <div>{story()}</div>;
-}
-
-export function PaddingContainer(padding: number): StoryDecorator {
-    return function PaddingContainerDecorator(story: () => React.ReactNode): React.ReactNode {
-        return <div style={{ padding: padding }}>{story()}</div>;
-    };
-}
-
-export function MaxWidthContainer(maxWidth: number): StoryDecorator {
-    return function MaxWidthContainerDecorator(story: () => React.ReactNode): React.ReactNode {
-        return <div style={{ maxWidth: maxWidth }}>{story()}</div>;
-    };
-}
-
-export function ValidationContainerWithSubmitButton(): StoryDecorator {
-    return function ValidationContainerWithSubmitButtonDecorator(story: () => React.ReactNode): React.ReactNode {
+export function ValidationContainerWithSubmitButton(): DecoratorFunction<React.ReactElement<unknown>> {
+    return function ValidationContainerWithSubmitButtonDecorator(
+        story: () => React.ReactNode
+    ): React.ReactElement<unknown> {
         return <ValidationContainerWithSubmitButtonWrapper>{story()}</ValidationContainerWithSubmitButtonWrapper>;
-    };
-}
-
-export function ValidationContainerOnly(): StoryDecorator {
-    return function ValidationContainerDecorator(story: () => React.ReactNode): React.ReactNode {
-        return <ValidationContainer>{story()}</ValidationContainer>;
     };
 }
 

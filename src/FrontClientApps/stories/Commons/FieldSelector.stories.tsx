@@ -1,13 +1,17 @@
-import { action, storiesOf } from "@kadira/storybook";
-import * as React from "react";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
+import React from "react";
 
-import { FieldSelector } from "../../src/AdminTools/Components/FieldSelector/FieldSelector";
+import { FieldSelector } from "../../src/Components/FieldSelector/FieldSelector";
 
-storiesOf(module)
+storiesOf("FieldSelector", module)
     .add("Простой случай", () => (
         <FieldSelector
             hiddenFields={[]}
-            fieldDefinitions={[{ name: "name1", caption: "Name 1" }, { name: "name2", caption: "Name 2" }]}
+            fieldDefinitions={[
+                { name: "name1", caption: "Name 1" },
+                { name: "name2", caption: "Name 2" },
+            ]}
             onShowField={action("onShowField")}
             onHideField={action("onHideField")}
         />

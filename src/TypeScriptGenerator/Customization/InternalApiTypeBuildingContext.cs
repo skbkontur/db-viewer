@@ -24,7 +24,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
         public static bool Accept(Type type)
         {
             return typeof(DBViewerControllerImpl).IsAssignableFrom(type) ||
-                   typeof(BusinessObjectsApi).IsAssignableFrom(type);
+                   typeof(DbViewerApi).IsAssignableFrom(type);
         }
 
         public override void Initialize(ITypeGenerator typeGenerator)

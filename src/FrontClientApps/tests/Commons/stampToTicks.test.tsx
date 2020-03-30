@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import { ticksToTimestamp, timestampToTicks } from "Commons/ConvertTimeUtil";
+import { ticksToTimestamp, timestampToTicks } from "../../src/Domain/Utils/ConvertTimeUtil";
 
 describe("convert", () => {
     describe("common converts", () => {

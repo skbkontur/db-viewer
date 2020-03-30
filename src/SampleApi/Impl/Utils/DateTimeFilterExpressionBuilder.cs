@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 
 using GrEmit;
 using Kontur.DBViewer.Core.DTO;
+using Kontur.DBViewer.Core.VNext.DataTypes;
 
 namespace Kontur.DBViewer.SampleApi.Impl.Utils
 {
@@ -90,14 +91,14 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
         public static Expression Build(
             Expression memberAccess,
             string stringValue,
-            FilterType filterType
+            ObjectFieldFilterOperator filterType
         )
         {
             if(string.IsNullOrEmpty(stringValue))
             {
-                if(filterType == FilterType.Equals)
+                if(filterType == ObjectFieldFilterOperator.Equals)
                     return Expression.Equal(memberAccess, Expression.Constant(null));
-                if(filterType == FilterType.NotEquals)
+                if(filterType == ObjectFieldFilterOperator.DoesNotEqual)
                     return Expression.NotEqual(memberAccess, Expression.Constant(null));
                 throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null);
             }
@@ -109,35 +110,35 @@ namespace Kontur.DBViewer.SampleApi.Impl.Utils
             Expression result;
             switch(filterType)
             {
-            case FilterType.Equals:
+            case ObjectFieldFilterOperator.Equals:
                 result = Expression.AndAlso(
                     Expression.LessThanOrEqual(date, memberAccess),
                     Expression.LessThan(memberAccess, nextDate)
                 );
                 break;
-            case FilterType.NotEquals:
+            case ObjectFieldFilterOperator.DoesNotEqual:
                 result = Expression.OrElse(
                     Expression.LessThan(memberAccess, date),
                     Expression.LessThanOrEqual(nextDate, memberAccess)
                 );
                 break;
-            case FilterType.Less:
+            case ObjectFieldFilterOperator.LessThan:
                 result = Expression.LessThan(memberAccess, date);
                 break;
-            case FilterType.LessOrEqual:
+            case ObjectFieldFilterOperator.LessThanOrEquals:
                 result = Expression.LessThan(memberAccess, prevDate);
                 break;
-            case FilterType.Greater:
+            case ObjectFieldFilterOperator.GreaterThan:
                 result = Expression.GreaterThanOrEqual(memberAccess, nextDate);
                 break;
-            case FilterType.GreaterOrEqual:
+            case ObjectFieldFilterOperator.GreaterThanOrEquals:
                 result = Expression.GreaterThanOrEqual(memberAccess, date);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null);
             }
 
-            if(memberAccess.Type == typeof(DateTime?) && filterType == FilterType.NotEquals)
+            if(memberAccess.Type == typeof(DateTime?) && filterType == ObjectFieldFilterOperator.DoesNotEqual)
                 result = Expression.OrElse(result, Expression.Equal(memberAccess, Expression.Constant(null)));
             return result;
         }

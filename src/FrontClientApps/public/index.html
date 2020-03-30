@@ -4,29 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Unspecified header</title>
-    <script>
-        var reportsBillingInfo = { isReportsAvailable: true };
-        var authenticatedUser = { "userId": "64455c40-e263-4fb9-a440-2e4108895531", "email": "edi.master.user@yopmail.com", "userName": "", "superUserAccessLevel": "God" };
-        var employee = {
-            "userParties": [],
-            "additionalPartyInfo": {
-                isReportsAvailable: true,
-                isVipParty: true,
-            },
-            "supportContactInfo": { "phone": "8 800 500-33-51", "eMail": "edi@skbkontur.ru" },
-            "currentParty": {
-                "id": "7109c53a-8bfe-44ee-904a-40cb3fd93f41", "gln": "1111111111116", "partyName": "test", "partyTypeCode": "Supplier", "inn": "6699000000", "kpp": "888888888", "isDemo": false, "diadocOrgId": "", "testDiadocOrgId": null, "lastModificationDateTime": "2017-01-29T12:37:22.326637Z"
-            },
-            "blockedSections": []
-        };
-    </script>
+    <style>
+        @font-face {
+            font-family: 'Segoe UI';
+            font-weight: 300;
+            src: local('Segoe UI Semilight');
+        }
+
+        @font-face {
+            font-family: 'Segoe UI';
+            font-weight: 400;
+            src: local('Segoe UI');
+        }
+
+        @font-face {
+            font-family: 'Segoe UI';
+            font-weight: 600;
+            src: local('Segoe UI Semibold');
+        }
+
+        @font-face {
+            font-family: 'Segoe UI';
+            font-weight: 700;
+            src: local('Segoe UI Bold');
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica', 'Arial', 'Tahoma', sans-serif;
+            font-size: 14px;
+            line-height: 20px;
+            color: #333;
+            margin: 0;
+        }
+    </style>
 </head>
 
 <body>
     <div id="content"></div>
-    <script src="/dist/vendor.js"></script>
-    <script src="/dist/commons.js"></script>
-    <script src="/dist/commons-entry.js"></script>
     <script src="/dist/root.js"></script>
 </body>
 

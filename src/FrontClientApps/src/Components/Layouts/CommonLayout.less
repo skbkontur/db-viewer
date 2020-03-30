@@ -1,0 +1,67 @@
+@import '../../styles/variables.less';
+
+@panel-background: #f5f5f5;
+@global-horizontal-padding: 5 * @base-size;
+@global-vertical-padding: 3 * @base-size;
+@common-layout-padding: @global-vertical-padding @global-horizontal-padding 0 @global-horizontal-padding;
+
+:local {
+    .headerTitle {
+        margin: 0;
+        font-weight: 300;
+        font-size: 29px;
+        line-height: 40px;
+    }
+
+    .commonLayout {
+        position: relative;
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: @common-layout-padding;
+    }
+
+    .topRightTools {
+        position: absolute;
+        top: @base-size;
+        right: @base-size;
+        z-index: 1;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        padding-bottom: @global-vertical-padding;
+    }
+
+    .greyLineHeader {
+        padding: 2 * @base-size @global-horizontal-padding;
+        margin-left: -@global-horizontal-padding;
+        margin-right: -@global-horizontal-padding;
+        margin-bottom: 3 * @base-size;
+        background-color: @panel-background;
+        word-break: break-all;
+
+        .content {
+            margin-top: 2 * @base-size;
+        }
+    }
+
+    .header {
+        margin-bottom: 3 * @base-size;
+    }
+
+    .backLinkContainer {
+        margin-bottom: 3 * @base-size;
+        margin-left: -4px;
+    }
+
+    .loader {
+        // stylelint-disable-next-line declaration-no-important
+        display: flex !important;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
+}

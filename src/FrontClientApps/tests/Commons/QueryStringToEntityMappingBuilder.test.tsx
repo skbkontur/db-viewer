@@ -1,7 +1,9 @@
 import { expect } from "chai";
-import { DateTimeRange } from "Domain/EDI/DataTypes/DateTimeRange";
 
-import { queryStringMapping, QueryStringMapping, StringSimpleExpression } from "../../src/Commons/QueryStringMapping";
+import { DateTimeRange } from "../../src/Domain/DataTypes/DateTimeRange";
+import { StringSimpleExpression } from "../../src/Domain/QueryStringMapping/Mappers";
+import { QueryStringMapping } from "../../src/Domain/QueryStringMapping/QueryStringMapping";
+import { QueryStringMappingBuilder } from "../../src/Domain/QueryStringMapping/QueryStringMappingBuilder";
 
 type Enum1 = 1 | 2 | 3;
 type Enum2 = "enum1" | "enum2" | "enum3" | "enum4" | "enum5";
@@ -20,7 +22,7 @@ interface Entiry1 {
 describe("QueryStringMappingBuilder", () => {
     describe("for strings", () => {
         it("should parse", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToString(x => x.value, "str")
                 .build();
             expect(mapping.parse("?str=val")).to.eql({
@@ -35,7 +37,7 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should strigify", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToString(x => x.value, "str")
                 .build();
 
@@ -59,7 +61,7 @@ describe("QueryStringMappingBuilder", () => {
 
     describe("for time ranges", () => {
         it("should parse", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToDateTimeRange(x => x.timeRange, "timeRange")
                 .build();
             expect(mapping.parse("?timeRange.from=2010-01-01")).to.eql({
@@ -73,7 +75,7 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should stringify", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToDateTimeRange(x => x.timeRange, "timeRange")
                 .build();
             expect(mapping.stringify({ timeRange: { lowerBound: new Date("2010-01-01"), upperBound: null } })).to.eql(
@@ -89,7 +91,7 @@ describe("QueryStringMappingBuilder", () => {
         it("should parse empty query string to default value", () => {
             const lowerDate = new Date();
             const upperDate = new Date();
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToDateTimeRange(x => x.timeRange, "timeRange", { lowerBound: lowerDate, upperBound: upperDate })
                 .build();
             expect(mapping.parse("")).to.eql({ timeRange: { lowerBound: lowerDate, upperBound: upperDate } });
@@ -98,7 +100,7 @@ describe("QueryStringMappingBuilder", () => {
         it("should parse invalid query string to default value", () => {
             const lowerDate = new Date();
             const upperDate = new Date();
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToDateTimeRange(x => x.timeRange, "timeRange", { lowerBound: lowerDate, upperBound: upperDate })
                 .build();
             expect(mapping.parse("timeRange.from=zzzz")).to.eql({
@@ -109,7 +111,7 @@ describe("QueryStringMappingBuilder", () => {
         it("should not stringify default value", () => {
             const lowerDate = new Date();
             const upperDate = new Date();
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToDateTimeRange(x => x.timeRange, "timeRange", { lowerBound: lowerDate, upperBound: upperDate })
                 .build();
             expect(mapping.stringify({ timeRange: { lowerBound: lowerDate, upperBound: upperDate } })).to.eql("");
@@ -118,21 +120,21 @@ describe("QueryStringMappingBuilder", () => {
 
     describe("for number expression", () => {
         it("should parse number", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToInteger(x => x.numValue, "valueExpression")
                 .build();
             expect(mapping.parse("?valueExpression=1")).to.eql({ numValue: 1 });
         });
 
         it("should parse non valid number", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToInteger(x => x.numValue, "valueExpression")
                 .build();
             expect(mapping.parse("?valueExpression=wfaeswfawef")).to.eql({ numValue: null });
         });
 
         it("should parse empty value and fallback to defaut value", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToInteger(x => x.numValue, "valueExpression", 100)
                 .build();
             expect(mapping.parse("?valueExpression=")).to.eql({ numValue: 100 });
@@ -142,7 +144,7 @@ describe("QueryStringMappingBuilder", () => {
 
     describe("for boolean expression", () => {
         it("should parse boolean", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToBoolean(x => x.boolValue, "valueExpression")
                 .build();
             expect(mapping.parse("?valueExpression=true")).to.eql({ boolValue: true });
@@ -150,7 +152,7 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should parse numbers to false", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToBoolean(x => x.boolValue, "valueExpression")
                 .build();
             expect(mapping.parse("?valueExpression=0")).to.eql({ boolValue: null });
@@ -158,7 +160,7 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should parse non valid values", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToBoolean(x => x.boolValue, "valueExpression")
                 .build();
             expect(mapping.parse("?valueExpression=fwafwef")).to.eql({ boolValue: null });
@@ -166,21 +168,21 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should not stringify empty value", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToBoolean(x => x.boolValue, "valueExpression")
                 .build();
             expect(mapping.stringify({ boolValue: null })).to.eql("");
         });
 
         it("should not stringify default value", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToBoolean(x => x.boolValue, "valueExpression", false)
                 .build();
             expect(mapping.stringify({ boolValue: false })).to.eql("");
         });
 
         it("should parse empty string to default value", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToBoolean(x => x.boolValue, "valueExpression", false)
                 .build();
             expect(mapping.parse("")).to.eql({ boolValue: false });
@@ -189,7 +191,7 @@ describe("QueryStringMappingBuilder", () => {
 
     describe("for string expression", () => {
         it("should parse", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToStringSimpleExpression(x => x.valueExpression, "valueExpression")
                 .build();
             expect(mapping.parse("?valueExpression=Zzzz")).to.eql({ valueExpression: { value: "Zzzz", operator: 0 } });
@@ -200,7 +202,7 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should stringify", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToStringSimpleExpression(x => x.valueExpression, "valueExpression")
                 .build();
             expect(mapping.stringify({ valueExpression: { value: "Zzzz", operator: 0 } })).to.eql(
@@ -217,7 +219,7 @@ describe("QueryStringMappingBuilder", () => {
 
     describe("for string values", () => {
         it("should parse", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToString(x => x.value, "value")
                 .build();
             expect(mapping.parse("?value=123123")).to.eql({ value: "123123" });
@@ -229,7 +231,7 @@ describe("QueryStringMappingBuilder", () => {
         });
 
         it("should stringify", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToString(x => x.value, "value")
                 .build();
             expect(mapping.stringify({ value: "123123" })).to.eql("?value=123123");
@@ -241,7 +243,7 @@ describe("QueryStringMappingBuilder", () => {
 
     describe("for string enums", () => {
         it("should parse", () => {
-            const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+            const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
                 .mapToEnum(x => x.value, "value", { enum1: "enum1", enum2: "enum2" })
                 .build();
             expect(mapping.parse("?value=enum1")).to.eql({ value: "enum1" });
@@ -253,7 +255,7 @@ describe("QueryStringMappingBuilder", () => {
     });
 
     it("should allow skip values", () => {
-        const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+        const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
             .mapToDefault(x => x.value, null)
             .build();
         expect(mapping.parse("?value=enum1")).to.eql({ value: null });
@@ -263,7 +265,7 @@ describe("QueryStringMappingBuilder", () => {
     });
 
     it("should parse and stringify enums", () => {
-        const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+        const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
             .mapToEnum(x => x.enumValue, "value", { ["enum1"]: 1, ["enum2"]: 2, ["enum3"]: 3 })
             .build();
         expect(mapping.parse("?value=enum1")).to.eql({ enumValue: 1 });
@@ -275,7 +277,7 @@ describe("QueryStringMappingBuilder", () => {
     });
 
     it("should parse and stringify enum sets", () => {
-        const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+        const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
             .mapToSet(x => x.enumValues, "value", { ["enum1"]: 1, ["enum2"]: 2, ["enum3"]: 3 })
             .build();
         expect(mapping.parse("?value=enum1+enum2")).to.eql({ enumValues: [1, 2] });
@@ -289,7 +291,7 @@ describe("QueryStringMappingBuilder", () => {
     });
 
     it("should parse and stringify enum sets", () => {
-        const mapping: QueryStringMapping<Entiry1> = queryStringMapping<Entiry1>()
+        const mapping: QueryStringMapping<Entiry1> = new QueryStringMappingBuilder<Entiry1>()
             .mapToSet(
                 x => x.stringEnumValues,
                 "value",

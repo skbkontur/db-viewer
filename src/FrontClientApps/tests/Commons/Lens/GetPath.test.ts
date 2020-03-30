@@ -1,6 +1,7 @@
 import { expect } from "chai";
-import { getPath, idx } from "lens";
 import { suite, test } from "mocha-typescript";
+
+import { getPath, idx } from "../../../src/Domain/lens";
 
 interface X1 {
     p1: string;

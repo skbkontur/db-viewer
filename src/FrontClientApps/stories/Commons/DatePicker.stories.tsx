@@ -1,8 +1,9 @@
-import { action, storiesOf } from "@kadira/storybook";
-import * as React from "react";
-import { DatePicker } from "ui";
-import { TimeUtils } from "Commons/TimeUtils";
+import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
+import React from "react";
 
+import { DatePicker } from "../../src/Components/DateTimeRangePicker/DatePicker";
+import { TimeUtils } from "../../src/Domain/Utils/TimeUtils";
 import { WithState } from "../WithState";
 
 function getInitialValue(value: Date): { value: Date } {
@@ -11,7 +12,7 @@ function getInitialValue(value: Date): { value: Date } {
     };
 }
 
-storiesOf(module)
+storiesOf("DatePicker", module)
     .add("Default", () => (
         <WithState initial={getInitialValue(new Date())}>
             {(state, onChange) => (
@@ -19,8 +20,7 @@ storiesOf(module)
                     value={state.value}
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}
@@ -34,8 +34,7 @@ storiesOf(module)
                     timeZone={TimeUtils.TimeZones.Moscow}
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}
@@ -49,8 +48,7 @@ storiesOf(module)
                     disabled
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}
@@ -64,8 +62,7 @@ storiesOf(module)
                     error
                     onChange={(e, x) => {
                         action("onChange")(x);
-                        // @ts-ignore
-                        onChange({ value: x });
+                        onChange({ value: x || undefined });
                     }}
                 />
             )}

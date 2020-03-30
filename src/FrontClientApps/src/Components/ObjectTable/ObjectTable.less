@@ -1,0 +1,30 @@
+@import '../../styles/variables.less';
+
+:local {
+    .tableWrapper {
+        white-space: nowrap;
+    }
+
+    .cell {
+        padding: 10px;
+        background-color: @primary-background;
+    }
+
+    .headerCell {
+        font: inherit;
+        text-align: left;
+    }
+
+    .row {
+        border-bottom: @table-cell-border;
+    }
+
+    .tableHeader {
+        background-color: @primary-background;
+
+        .row {
+            border-bottom: @table-header-border;
+            background-color: @primary-background;
+        }
+    }
+}

@@ -23,8 +23,7 @@ namespace Kontur.DBViewer.TypeScriptGenerator.Customization
             const string dbViewerNamespace = "Kontur.DBViewer.Core.VNext.";
             if (type.FullName != null && type.FullName.StartsWith(dbViewerNamespace))
             {
-                var name = type.FullName.Replace(dbViewerNamespace, "Api.AdminTools.").Replace(".", "/")
-                    .Replace("BusinessObjectsApiController", "BusinessObjectsApi");
+                var name = type.FullName.Replace(dbViewerNamespace, "").Replace(".", "/");
                 return new Regex("`.*$").Replace(name, "");
             }
 

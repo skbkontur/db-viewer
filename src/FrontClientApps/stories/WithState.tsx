@@ -1,5 +1,4 @@
-import * as React from "react";
-import { spread } from "Commons/TypingUtils";
+import React from "react";
 
 interface WithStateProps<S> {
     initial: S;
@@ -22,7 +21,9 @@ export class WithState<S> extends React.Component<WithStateProps<S>, WithStateSt
         return this.props.children(
             this.state.state,
             (x: Partial<S>) => {
-                this.setState({ state: spread(this.state.state, x) });
+                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // @ts-ignore
+                this.setState({ state: { ...this.state.state, ...x } });
             },
             (x: S) => {
                 this.setState({ state: x });
