@@ -1,7 +1,7 @@
 import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
 import Input from "@skbkontur/react-ui/Input";
 import Loader from "@skbkontur/react-ui/Loader";
-import * as React from "react";
+import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { CommonLayout } from "../Components/Layouts/CommonLayout";

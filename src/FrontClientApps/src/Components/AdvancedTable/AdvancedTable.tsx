@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 
-import * as styles from "./AdvancedTable.less";
+import styles from "./AdvancedTable.less";
 
 interface AdvancedTableHeadProps {
     children?: React.ReactNode;

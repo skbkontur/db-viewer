@@ -20,6 +20,7 @@
   ],
   "rules": {
     "@typescript-eslint/interface-name-prefix": "off",
+    "import/no-namespace": "error",
     "import/newline-after-import": "error",
     "import/order": [
       "error",

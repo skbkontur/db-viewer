@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react";
-import * as React from "react";
+import React from "react";
 import StoryRouter from "storybook-react-router";
 
 import { ObjectTypes } from "../../src/Components/ObjectTypes/ObjectTypes";

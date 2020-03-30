@@ -2,9 +2,9 @@ import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
 import Paging from "@skbkontur/react-ui/Paging";
-import * as _ from "lodash";
-import * as qs from "qs";
-import * as React from "react";
+import _ from "lodash";
+import qs from "qs";
+import React from "react";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";

@@ -2,7 +2,7 @@ import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { tooltip, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
-import * as React from "react";
+import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";

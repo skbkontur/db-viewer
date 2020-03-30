@@ -3,9 +3,9 @@ import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
-import * as React from "react";
+import React from "react";
 
-import * as styles from "./FieldSelector.less";
+import styles from "./FieldSelector.less";
 
 const MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS = 30;
 

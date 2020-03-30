@@ -2,7 +2,7 @@ import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
 import classNames from "classnames";
-import * as React from "react";
+import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
@@ -13,7 +13,7 @@ import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDel
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
 
-import * as styles from "./ObjectTable.less";
+import styles from "./ObjectTable.less";
 
 interface ObjectTableProps {
     customRenderer: ICustomRenderer;

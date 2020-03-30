@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 
 import { Condition } from "../Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformation";

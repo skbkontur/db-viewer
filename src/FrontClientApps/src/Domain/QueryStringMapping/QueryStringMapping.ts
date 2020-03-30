@@ -1,4 +1,4 @@
-import * as qs from "qs";
+import qs from "qs";
 
 type QueryObject = any;
 

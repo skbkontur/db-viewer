@@ -1,8 +1,8 @@
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
-import * as _ from "lodash";
-import * as React from "react";
+import _ from "lodash";
+import React from "react";
 
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { Property } from "../../Domain/Objects/Property";

@@ -1,9 +1,9 @@
 import Link from "@skbkontur/react-ui/Link";
-import * as React from "react";
+import React from "react";
 
 import { ApiError } from "../../Domain/ApiBase/ApiError";
 
-import * as styles from "./ErrorHandlingContainer.less";
+import styles from "./ErrorHandlingContainer.less";
 import { ErrorHandlingContainerModal } from "./ErrorHandlingContainerModal";
 import { ErrorModalProps } from "./GenericErrorHandlingContainer";
 

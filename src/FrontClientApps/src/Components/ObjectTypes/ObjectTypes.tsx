@@ -1,11 +1,11 @@
 import _ from "lodash";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { ObjectDescription } from "../../Domain/Api/DataTypes/ObjectDescription";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 
-import * as styles from "./ObjectTypes.less";
+import styles from "./ObjectTypes.less";
 
 interface ObjectTypesProps {
     objects: ObjectDescription[];

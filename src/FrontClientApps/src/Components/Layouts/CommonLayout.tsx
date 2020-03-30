@@ -2,10 +2,10 @@ import ArrowChevronLeftIcon from "@skbkontur/react-icons/ArrowChevronLeft";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Loader from "@skbkontur/react-ui/Loader";
 import { LocationDescriptor } from "history";
-import * as React from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
-import * as styles from "./CommonLayout.less";
+import styles from "./CommonLayout.less";
 
 interface CommonLayoutProps {
     topRightTools?: Nullable<JSX.Element> | string;

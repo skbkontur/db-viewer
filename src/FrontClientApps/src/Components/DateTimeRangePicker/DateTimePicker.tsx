@@ -1,5 +1,5 @@
 import moment from "moment";
-import * as React from "react";
+import React from "react";
 
 import { ICanBeValidated } from "../../Domain/DataTypes/DateTimeRange";
 import { Time, TimeZone } from "../../Domain/DataTypes/Time";
@@ -7,7 +7,7 @@ import { DateUtils } from "../../Domain/Utils/DateUtils";
 import { TimeUtils } from "../../Domain/Utils/TimeUtils";
 
 import { DatePicker } from "./DatePicker";
-import * as styles from "./DateTimePicker.less";
+import styles from "./DateTimePicker.less";
 import { TimePicker } from "./TimePicker";
 
 interface DateTimePickerProps {

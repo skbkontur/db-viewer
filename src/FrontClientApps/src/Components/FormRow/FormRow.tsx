@@ -1,7 +1,7 @@
 import { Fit, Fixed, RowStack } from "@skbkontur/react-stack-layout";
-import * as React from "react";
+import React from "react";
 
-import * as styles from "./FormRow.less";
+import styles from "./FormRow.less";
 
 export interface FormRowProps {
     caption?: string | JSX.Element;

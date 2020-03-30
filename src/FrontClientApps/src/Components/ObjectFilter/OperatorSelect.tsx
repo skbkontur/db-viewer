@@ -1,5 +1,5 @@
 import Select from "@skbkontur/react-ui/Select";
-import * as React from "react";
+import React from "react";
 
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 

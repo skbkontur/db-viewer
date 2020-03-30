@@ -7,8 +7,8 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import Tooltip from "@skbkontur/react-ui/Tooltip";
-import * as _ from "lodash";
-import * as React from "react";
+import _ from "lodash";
+import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
@@ -19,7 +19,7 @@ import { FieldSelector } from "../FieldSelector/FieldSelector";
 
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { FilterModal } from "./FilterModal";
-import * as styles from "./ObjectTableLayoutHeader.less";
+import styles from "./ObjectTableLayoutHeader.less";
 import { Spinner } from "./Spinner";
 
 interface ObjectTableLayoutHeaderProps {

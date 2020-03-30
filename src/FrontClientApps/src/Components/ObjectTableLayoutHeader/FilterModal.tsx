@@ -3,7 +3,7 @@ import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
-import * as React from "react";
+import React from "react";
 import { Link as RouterLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
@@ -11,7 +11,7 @@ import { Property } from "../../Domain/Objects/Property";
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { ObjectFilter } from "../ObjectFilter/ObjectFilter";
 
-import * as styles from "./ObjectTableLayoutHeader.less";
+import styles from "./ObjectTableLayoutHeader.less";
 
 interface FilterModalProps extends RouteComponentProps {
     onClose: () => void;
