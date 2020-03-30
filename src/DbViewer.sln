@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer", "DbViewer\DbViewer.csproj", "{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypeScriptGenerator", "TypeScriptGenerator\TypeScriptGenerator.csproj", "{98533DBE-38DD-4B1F-8DDE-5E801D90405C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.TypeScriptGenerator", "DbViewer.TypeScriptGenerator\DbViewer.TypeScriptGenerator.csproj", "{98533DBE-38DD-4B1F-8DDE-5E801D90405C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.Tests", "DbViewer.Tests\DbViewer.Tests.csproj", "{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApi", "SampleApi\SampleApi.csproj", "{3646A699-60D3-4668-9E40-E49A8FBF8BC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.TestApi", "DbViewer.TestApi\DbViewer.TestApi.csproj", "{3646A699-60D3-4668-9E40-E49A8FBF8BC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recipes.CQL", "Recipes.CQL\Recipes.CQL.csproj", "{13DDD37F-3881-4BDE-AC38-B2A0F2F71912}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.Cql", "DbViewer.Cql\DbViewer.Cql.csproj", "{13DDD37F-3881-4BDE-AC38-B2A0F2F71912}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
