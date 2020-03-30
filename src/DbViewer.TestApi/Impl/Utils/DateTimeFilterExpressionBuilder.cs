@@ -45,7 +45,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
         private static readonly EnumParserDelegate enumParser = EmitEnumParser();
     }
 
-    public class DateTimeParseHelper
+    public static class DateTimeParseHelper
     {
         public static bool TryParse(string value, out DateTime result)
         {
@@ -70,8 +70,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
                     return true;
             }
 
-            long ticks;
-            if (long.TryParse(value, out ticks))
+            if (long.TryParse(value, out var ticks))
             {
                 result = new DateTime(ticks, DateTimeKind.Utc);
                 return true;
@@ -88,11 +87,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
 
     public class DateTimeFilterExpressionBuilder
     {
-        public static Expression Build(
-            Expression memberAccess,
-            string stringValue,
-            ObjectFieldFilterOperator filterType
-        )
+        public static Expression Build(Expression memberAccess, string stringValue, ObjectFieldFilterOperator filterType)
         {
             if (string.IsNullOrEmpty(stringValue))
             {
@@ -111,16 +106,10 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
             switch (filterType)
             {
             case ObjectFieldFilterOperator.Equals:
-                result = Expression.AndAlso(
-                    Expression.LessThanOrEqual(date, memberAccess),
-                    Expression.LessThan(memberAccess, nextDate)
-                );
+                result = Expression.AndAlso(Expression.LessThanOrEqual(date, memberAccess), Expression.LessThan(memberAccess, nextDate));
                 break;
             case ObjectFieldFilterOperator.DoesNotEqual:
-                result = Expression.OrElse(
-                    Expression.LessThan(memberAccess, date),
-                    Expression.LessThanOrEqual(nextDate, memberAccess)
-                );
+                result = Expression.OrElse(Expression.LessThan(memberAccess, date), Expression.LessThanOrEqual(nextDate, memberAccess));
                 break;
             case ObjectFieldFilterOperator.LessThan:
                 result = Expression.LessThan(memberAccess, date);

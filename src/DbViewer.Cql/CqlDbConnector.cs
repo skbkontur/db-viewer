@@ -76,17 +76,17 @@ namespace SkbKontur.DbViewer.Cql
                 .SingleOrDefault();
         }
 
-        private Expression<Func<T, object>> BuildSort(Sort sort)
+        private static Expression<Func<T, object>> BuildSort(Sort sort)
         {
             return (Expression<Func<T, object>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Field);
         }
 
-        private Expression<Func<T, bool>> BuildPredicate(Filter[] filters)
+        private static Expression<Func<T, bool>> BuildPredicate(Filter[] filters)
         {
             return (Expression<Func<T, bool>>)CriterionHelper.BuildPredicate(typeof(T), filters);
         }
 
-        private Expression<Func<T, bool>> BuildSameIdentitiesPredicate(object @object)
+        private static Expression<Func<T, bool>> BuildSameIdentitiesPredicate(object @object)
         {
             return (Expression<Func<T, bool>>)CriterionHelper.BuildSameIdentitiesPredicate(typeof(T), @object);
         }

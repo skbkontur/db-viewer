@@ -20,9 +20,7 @@ namespace SkbKontur.DbViewer.GenericHelpers
         {
         }
 
-        protected GenericMethodInvocationException(
-            SerializationInfo info,
-            StreamingContext context)
+        protected GenericMethodInvocationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }

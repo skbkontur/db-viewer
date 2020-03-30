@@ -19,10 +19,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
 
         public override void Initialize(ITypeGenerator typeGenerator)
         {
-            var types = Assembly
-                        .GetAssembly(type)
-                        .GetTypes()
-                        .Where(x => x.BaseType == type).ToArray();
+            var types = Assembly.GetAssembly(type).GetTypes().Where(x => x.BaseType == type).ToArray();
 
             Declaration = new TypeScriptTypeDeclaration
                 {

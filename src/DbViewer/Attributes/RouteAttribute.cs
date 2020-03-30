@@ -9,6 +9,6 @@ namespace SkbKontur.DbViewer.Attributes
             Template = template;
         }
 
-        public string Template { get; set; }
+        public string Template { get; }
     }
 }

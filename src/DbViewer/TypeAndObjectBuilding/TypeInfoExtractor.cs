@@ -15,19 +15,16 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
         public static TypeInfo Extract(Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                        ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
-            return typeInfos.GetOrAdd(type,
-                                      t => ResolveType(null, t, propertyDescriptionBuilder, customPropertyConfigurationProvider));
+            return typeInfos.GetOrAdd(type, t => ResolveType(null, t, propertyDescriptionBuilder, customPropertyConfigurationProvider));
         }
 
-        public static TypeInfo Extract(object @object, Type type,
-                                       IPropertyDescriptionBuilder propertyDescriptionBuilder,
+        public static TypeInfo Extract(object @object, Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                        ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             return ResolveType(@object, type, propertyDescriptionBuilder, customPropertyConfigurationProvider);
         }
 
-        private static TypeInfo ResolveType(object @object, Type type,
-                                            IPropertyDescriptionBuilder propertyDescriptionBuilder,
+        private static TypeInfo ResolveType(object @object, Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                             ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             var realType = Nullable.GetUnderlyingType(type) ?? type;
@@ -57,46 +54,34 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
             if (realType.IsEnum)
                 return new EnumTypeInfo(canBeNull, Enum.GetNames(realType));
             if (realType.IsArray)
-                return new EnumerableTypeInfo(ResolveType(null, realType.GetElementType(), propertyDescriptionBuilder,
-                                                          customPropertyConfigurationProvider));
+                return new EnumerableTypeInfo(ResolveType(null, realType.GetElementType(), propertyDescriptionBuilder, customPropertyConfigurationProvider));
             if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(List<>))
-                return new EnumerableTypeInfo(ResolveType(null, realType.GetGenericArguments()[0],
-                                                          propertyDescriptionBuilder,
-                                                          customPropertyConfigurationProvider));
+                return new EnumerableTypeInfo(ResolveType(null, realType.GetGenericArguments()[0], propertyDescriptionBuilder, customPropertyConfigurationProvider));
             if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
                 return new DictionaryTypeInfo(
-                    ResolveType(null, realType.GetGenericArguments()[0], propertyDescriptionBuilder,
-                                customPropertyConfigurationProvider),
-                    ResolveType(null, realType.GetGenericArguments()[1], propertyDescriptionBuilder,
-                                customPropertyConfigurationProvider));
+                    ResolveType(null, realType.GetGenericArguments()[0], propertyDescriptionBuilder, customPropertyConfigurationProvider),
+                    ResolveType(null, realType.GetGenericArguments()[1], propertyDescriptionBuilder, customPropertyConfigurationProvider));
             if (realType.IsGenericType && realType.GetGenericTypeDefinition() == typeof(HashSet<>))
-                return new HashSetTypeInfo(ResolveType(null, realType.GetGenericArguments()[0],
-                                                       propertyDescriptionBuilder,
-                                                       customPropertyConfigurationProvider));
+                return new HashSetTypeInfo(ResolveType(null, realType.GetGenericArguments()[0], propertyDescriptionBuilder, customPropertyConfigurationProvider));
             if (realType.IsClass)
                 return new ClassTypeInfo
                     {
-                        Properties = realType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(p =>
-                                                                                                                    ResolveProperty(@object, p, propertyDescriptionBuilder,
-                                                                                                                                    customPropertyConfigurationProvider))
+                        Properties = realType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                             .Select(p => ResolveProperty(@object, p, propertyDescriptionBuilder, customPropertyConfigurationProvider))
                                              .ToArray(),
                     };
 
             throw new NotSupportedException($"{type.FullName} не поддерживается");
         }
 
-        private static Property ResolveProperty(object @object, PropertyInfo propertyInfo,
-                                                IPropertyDescriptionBuilder propertyDescriptionBuilder,
+        private static Property ResolveProperty(object @object, PropertyInfo propertyInfo, IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                                 ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             var configuration = @object == null
                                     ? customPropertyConfigurationProvider?.TryGetConfiguration(propertyInfo)
                                     : customPropertyConfigurationProvider?.TryGetConfiguration(@object, propertyInfo);
-            var typeInfo = ResolveType(null,
-                                       configuration?.ResolvedType ?? propertyInfo.PropertyType,
-                                       propertyDescriptionBuilder,
-                                       customPropertyConfigurationProvider
-            );
+            var typeInfo = ResolveType(null, configuration?.ResolvedType ?? propertyInfo.PropertyType,
+                                       propertyDescriptionBuilder, customPropertyConfigurationProvider);
             return new Property
                 {
                     TypeInfo = typeInfo,
@@ -104,7 +89,6 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
                 };
         }
 
-        private static readonly ConcurrentDictionary<Type, TypeInfo> typeInfos =
-            new ConcurrentDictionary<Type, TypeInfo>();
+        private static readonly ConcurrentDictionary<Type, TypeInfo> typeInfos = new ConcurrentDictionary<Type, TypeInfo>();
     }
 }

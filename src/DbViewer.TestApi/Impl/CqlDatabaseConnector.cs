@@ -15,11 +15,11 @@ namespace SkbKontur.DbViewer.TestApi.Impl
 {
     public class CqlDatabaseConnector<T> : IDbConnector<T> where T : class
     {
-        public Task<object[]> Search(Filter[] filters, Sort[] sorts, int @from, int count)
+        public Task<object[]> Search(Filter[] filters, Sort[] sorts, int from, int count)
         {
             if (typeof(T) == typeof(SimpleCqlObject))
-                return Task.FromResult(Search(filters, simpleObjects, @from, count).Cast<object>().ToArray());
-            return Task.FromResult(Search(filters, nestedObjects, @from, count).Cast<object>().ToArray());
+                return Task.FromResult(Search(filters, simpleObjects, from, count).Cast<object>().ToArray());
+            return Task.FromResult(Search(filters, nestedObjects, from, count).Cast<object>().ToArray());
         }
 
         public Task<int?> Count(Filter[] filters, int? limit)
@@ -52,30 +52,25 @@ namespace SkbKontur.DbViewer.TestApi.Impl
 
         private static T1[] Search<T1>(Filter[] filters, T1[] arr, int from, int count)
         {
-            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildPredicate(typeof(T1),
-                                                                                  filters);
+            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildPredicate(typeof(T1), filters);
             return arr.AsQueryable().Where(expr).Skip(from).Take(count).ToArray();
         }
 
         private static int? Count<T1>(Filter[] filters, T1[] arr)
         {
-            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildPredicate(typeof(T1),
-                                                                                  filters);
+            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildPredicate(typeof(T1), filters);
             return arr.AsQueryable().Where(expr).Count();
         }
 
         private static T1 Read<T1>(Filter[] filters, T1[] arr)
         {
-            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildPredicate(typeof(T1),
-                                                                                  filters);
+            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildPredicate(typeof(T1), filters);
             return arr.AsQueryable().Where(expr).SingleOrDefault();
         }
 
         private static Task Delete<T1>(T1[] objects, Action<T1[]> setObjects, object @object)
         {
-            var expr =
-                (Expression<Func<T1, bool>>)CriterionHelper.BuildSameIdentitiesPredicate(typeof(T1),
-                                                                                         @object);
+            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildSameIdentitiesPredicate(typeof(T1), @object);
             if (objects.AsQueryable().SingleOrDefault(expr) == null)
                 throw new Exception();
             var fn = expr.Compile();
@@ -85,9 +80,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
 
         private static Task<object> Write<T1>(T1[] objects, Action<T1[]> setObjects, T1 @object)
         {
-            var expr =
-                (Expression<Func<T1, bool>>)CriterionHelper.BuildSameIdentitiesPredicate(typeof(T1),
-                                                                                         @object);
+            var expr = (Expression<Func<T1, bool>>)CriterionHelper.BuildSameIdentitiesPredicate(typeof(T1), @object);
             if (objects.AsQueryable().SingleOrDefault(expr) == null)
                 throw new Exception();
             var fn = expr.Compile();

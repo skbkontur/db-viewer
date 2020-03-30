@@ -47,7 +47,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.ParseHelpers
             value = value.Trim();
             result = DateTime.MinValue;
 
-            if (DateTime.TryParse(value, Provider, Style, out result))
+            if (DateTime.TryParse(value, provider, style, out result))
                 return true;
 
             if (!long.TryParse(value, out var ticks))
@@ -57,8 +57,8 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.ParseHelpers
             return true;
         }
 
-        private const DateTimeStyles Style = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
+        private const DateTimeStyles style = DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal;
 
-        private static readonly IFormatProvider Provider = new CultureInfo("RU");
+        private static readonly IFormatProvider provider = new CultureInfo("RU");
     }
 }

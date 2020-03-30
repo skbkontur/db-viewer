@@ -8,11 +8,7 @@ namespace SkbKontur.DbViewer.Schemas
         public static IDbConnector GetConnector(this ISchemaRegistry registry, string typeIdentifier)
         {
             var type = registry.GetTypeByTypeIdentifier(typeIdentifier);
-            return GenericMethod.Invoke(
-                () => registry.GetSchemaByTypeIdentifier(typeIdentifier).ConnectorsFactory.CreateConnector<object>(),
-                typeof(object),
-                type
-            );
+            return GenericMethod.Invoke(() => registry.GetSchemaByTypeIdentifier(typeIdentifier).ConnectorsFactory.CreateConnector<object>(), typeof(object), type);
         }
     }
 }

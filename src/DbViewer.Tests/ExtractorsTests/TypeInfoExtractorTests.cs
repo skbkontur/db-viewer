@@ -19,25 +19,19 @@ namespace SkbKontur.DbViewer.Tests.ExtractorsTests
         [TestCaseSource(nameof(EnumTestCasesProvider))]
         public void Test_Enum(Type type, TypeInfo expected)
         {
-            CheckResult(
-                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null),
-                expected);
+            CheckResult(TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null), expected);
         }
 
         [TestCaseSource(nameof(EnumerableTestCasesProvider))]
         public void Test_Enumerable(Type type, TypeInfo expected)
         {
-            CheckResult(
-                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null),
-                expected);
+            CheckResult(TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null), expected);
         }
 
         [TestCaseSource(nameof(PrimitivesTestCasesProvider))]
         public void Test_Primitives(Type type, TypeInfo expected)
         {
-            CheckResult(
-                TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null),
-                expected);
+            CheckResult(TypeInfoExtractor.Extract(type, new SamplePropertyDescriptionBuilder(), null), expected);
         }
 
         private static IEnumerable<ITestCaseData> EnumTestCasesProvider()
@@ -49,15 +43,11 @@ namespace SkbKontur.DbViewer.Tests.ExtractorsTests
 
         private static IEnumerable<ITestCaseData> EnumerableTestCasesProvider()
         {
-            yield return CreateTestCase(typeof(string[]), new EnumerableTypeInfo(new StringTypeInfo()),
-                                        "ArrayOfStrings");
-            yield return CreateTestCase(typeof(List<int?>), new EnumerableTypeInfo(new IntTypeInfo(true)),
-                                        "ArrayOfNullableInts");
-            yield return CreateTestCase(typeof(HashSet<Guid>), new HashSetTypeInfo(new StringTypeInfo()),
-                                        "HashSetOfStrings");
-            yield return CreateTestCase(
-                typeof(Dictionary<string, decimal>),
-                new DictionaryTypeInfo(new StringTypeInfo(), new DecimalTypeInfo(false)), "Dictionary<string, decimal>"
+            yield return CreateTestCase(typeof(string[]), new EnumerableTypeInfo(new StringTypeInfo()), "ArrayOfStrings");
+            yield return CreateTestCase(typeof(List<int?>), new EnumerableTypeInfo(new IntTypeInfo(true)), "ArrayOfNullableInts");
+            yield return CreateTestCase(typeof(HashSet<Guid>), new HashSetTypeInfo(new StringTypeInfo()), "HashSetOfStrings");
+            yield return CreateTestCase(typeof(Dictionary<string, decimal>),
+                                        new DictionaryTypeInfo(new StringTypeInfo(), new DecimalTypeInfo(false)), "Dictionary<string, decimal>"
             );
         }
 
@@ -89,10 +79,7 @@ namespace SkbKontur.DbViewer.Tests.ExtractorsTests
 
         private static TestCaseData CreateTestCase(Type type, TypeInfo expected, string testName)
         {
-            return new TestCaseData(type, expected)
-                {
-                    TestName = testName,
-                };
+            return new TestCaseData(type, expected) {TestName = testName};
         }
     }
 }

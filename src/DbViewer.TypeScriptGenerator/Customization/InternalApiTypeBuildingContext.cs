@@ -23,14 +23,12 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
 
         public static bool Accept(Type type)
         {
-            return typeof(DbViewerControllerImpl).IsAssignableFrom(type) ||
-                   typeof(DbViewerApi).IsAssignableFrom(type);
+            return typeof(DbViewerControllerImpl).IsAssignableFrom(type) || typeof(DbViewerApi).IsAssignableFrom(type);
         }
 
         public override void Initialize(ITypeGenerator typeGenerator)
         {
-            Declaration =
-                GenerateInternalApiController(Unit, Type, (x, y) => typeGenerator.BuildAndImportType(Unit, x, y));
+            Declaration = GenerateInternalApiController(Unit, Type, (x, y) => typeGenerator.BuildAndImportType(Unit, x, y));
             base.Initialize(typeGenerator);
         }
 
@@ -39,19 +37,13 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
         {
             var baseApiClassName = GetBaseApiClassName(type);
             var apiName = DoCreateApiName(type);
-            var TypeScriptClassDefinition = new TypeScriptClassDefinition
-                {
-                    BaseClass = new TypeScriptTypeReference(baseApiClassName),
-                };
-            var methodInfos = type
-                              .GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                              .Where(m => !m.IsSpecialName)
-                              .Where(x => x.DeclaringType == type)
-                              .ToArray();
+            var TypeScriptClassDefinition = new TypeScriptClassDefinition {BaseClass = new TypeScriptTypeReference(baseApiClassName)};
+            var methodInfos = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                                  .Where(m => !m.IsSpecialName)
+                                  .Where(x => x.DeclaringType == type)
+                                  .ToArray();
 
-            TypeScriptClassDefinition.Members.AddRange(
-                methodInfos
-                    .SelectMany(x => BuildApiImplMember(targetUnit, x, buildAndImportType, type)));
+            TypeScriptClassDefinition.Members.AddRange(methodInfos.SelectMany(x => BuildApiImplMember(targetUnit, x, buildAndImportType, type)));
 
             targetUnit.Body.Add(new TypeScriptExportStatement
                 {
@@ -62,8 +54,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
                         }
                 });
             var definition = new TypeScriptInterfaceDefinition();
-            definition.Members.AddRange(methodInfos
-                                            .SelectMany(x => BuildApiInterfaceMember(targetUnit, x, buildAndImportType)));
+            definition.Members.AddRange(methodInfos.SelectMany(x => BuildApiInterfaceMember(targetUnit, x, buildAndImportType)));
             targetUnit.AddDefaultSymbolImport(baseApiClassName, $"../apiBase/{baseApiClassName}");
 
             var interfaceDeclaration = new TypeScriptInterfaceDeclaration
@@ -85,9 +76,8 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
             return new Regex("ControllerImpl").Replace(type.Name, "Api");
         }
 
-        private IEnumerable<TypeScriptClassMemberDefinition> BuildApiImplMember(TypeScriptUnit targetUnit,
-                                                                                MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType,
-                                                                                Type controllerType)
+        private IEnumerable<TypeScriptClassMemberDefinition> BuildApiImplMember(TypeScriptUnit targetUnit, MethodInfo methodInfo,
+                                                                                Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType, Type controllerType)
         {
             var functionDefinition = new TypeScriptFunctionDefinition
                 {
@@ -102,12 +92,11 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
                         Type = buildAndImportType(x, x.ParameterType)
                     })
             );
-            yield return
-                new TypeScriptClassMemberDefinition
-                    {
-                        Name = methodInfo.Name.ToLowerCamelCase(),
-                        Definition = functionDefinition
-                    };
+            yield return new TypeScriptClassMemberDefinition
+                {
+                    Name = methodInfo.Name.ToLowerCamelCase(),
+                    Definition = functionDefinition
+                };
         }
 
         private static TypeScriptType GetMethodResult(TypeScriptUnit targetUnit, MethodInfo methodInfo,
@@ -118,16 +107,13 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
                 realType = realType.GetGenericArguments()[0];
             else if (realType == typeof(Task))
                 realType = typeof(void);
-            TypeScriptType methodResult;
-            methodResult = new TypeScriptPromiseOfType(buildAndImportType(methodInfo, realType));
 
-            return methodResult;
+            return new TypeScriptPromiseOfType(buildAndImportType(methodInfo, realType));
         }
 
         private static TypeScriptReturnStatement CreateCall(MethodInfo methodInfo, Type controllerType)
         {
-            var TypeScriptReturnStatement = CreateInnerCall(methodInfo, controllerType);
-            return TypeScriptReturnStatement;
+            return CreateInnerCall(methodInfo, controllerType);
         }
 
         private static TypeScriptReturnStatement CreateInnerCall(MethodInfo methodInfo, Type controllerType)
@@ -202,9 +188,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
             if (bodyParameters.Any(x => x.ParameterType.IsArray && x.GetCustomAttribute<FromBodyAttribute>() != null))
             {
                 if (bodyParameters.Length != 1)
-                {
                     throw new Exception("Only one array argument with Body attribute can appears in method signature");
-                }
 
                 return new TypeScriptVariableReference(bodyParameters[0].Name);
             }
@@ -215,9 +199,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
                     .Select<ParameterInfo, TypeScriptObjectLiteralInitializer>(parameter =>
                         {
                             if (parameter.GetCustomAttributes<FromBodyAttribute>().Any())
-                            {
                                 return new TypeScriptObjectLiteralSpread(new TypeScriptVariableReference(parameter.Name));
-                            }
 
                             if (IsParameterPassedViaUrl(parameter, routeTemplate))
                             {
@@ -243,37 +225,36 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
 
         private static TypeScriptExpression GenerateConstructGetParams(ParameterInfo[] parameters, string routeTemplate)
         {
-            var literalProperies = parameters
-                                   .Where(AcceptParameter)
-                                   .Select<ParameterInfo, TypeScriptObjectLiteralInitializer>(parameter =>
-                                       {
-                                           if (parameter.GetCustomAttributes<FromBodyAttribute>().Any())
-                                           {
-                                               throw new Exception(string.Format("Невозможно обработать параметр {0}: {1} для пути {2}",
-                                                                                 parameter.Name, parameter.ParameterType.Name, routeTemplate));
-                                           }
+            var literalProperties = parameters
+                                    .Where(AcceptParameter)
+                                    .Select<ParameterInfo, TypeScriptObjectLiteralInitializer>(parameter =>
+                                        {
+                                            if (parameter.GetCustomAttributes<FromBodyAttribute>().Any())
+                                            {
+                                                throw new Exception($"Невозможно обработать параметр {parameter.Name}: {parameter.ParameterType.Name} для пути {routeTemplate}");
+                                            }
 
-                                           if (routeTemplate.Contains("{" + parameter.Name + "}"))
-                                           {
-                                               return null;
-                                           }
+                                            if (routeTemplate.Contains("{" + parameter.Name + "}"))
+                                            {
+                                                return null;
+                                            }
 
-                                           return new TypeScriptObjectLiteralProperty
-                                               {
-                                                   Name = new TypeScriptStringLiteral(parameter.Name),
-                                                   Value = new TypeScriptVariableReference(parameter.Name),
-                                               };
-                                       })
-                                   .Where(x => x != null)
-                                   .ToArray();
-            if (!literalProperies.Any())
+                                            return new TypeScriptObjectLiteralProperty
+                                                {
+                                                    Name = new TypeScriptStringLiteral(parameter.Name),
+                                                    Value = new TypeScriptVariableReference(parameter.Name),
+                                                };
+                                        })
+                                    .Where(x => x != null)
+                                    .ToArray();
+            if (!literalProperties.Any())
                 return null;
-            var result = new TypeScriptObjectLiteral(literalProperies);
+            var result = new TypeScriptObjectLiteral(literalProperties);
             return result;
         }
 
-        private IEnumerable<TypeScriptInterfaceFunctionMember> BuildApiInterfaceMember(TypeScriptUnit targetUnit,
-                                                                                       MethodInfo methodInfo, Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType)
+        private IEnumerable<TypeScriptInterfaceFunctionMember> BuildApiInterfaceMember(TypeScriptUnit targetUnit, MethodInfo methodInfo,
+                                                                                       Func<ICustomAttributeProvider, Type, TypeScriptType> buildAndImportType)
         {
             var result = new TypeScriptInterfaceFunctionMember
                 {

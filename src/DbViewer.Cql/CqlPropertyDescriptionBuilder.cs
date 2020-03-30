@@ -33,7 +33,9 @@ namespace SkbKontur.DbViewer.Cql
                 result.IsSearchable = true;
                 result.IsIdentity = true;
                 result.IsSortable = true;
-                result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType) ? availableFilters[propertyInfo.PropertyType] : new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual};
+                result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType)
+                                              ? availableFilters[propertyInfo.PropertyType]
+                                              : new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual};
             }
 
             return result;

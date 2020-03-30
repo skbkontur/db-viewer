@@ -24,20 +24,16 @@ namespace SkbKontur.DbViewer.Cql.Utils
         public static LambdaExpression BuildSameIdentitiesPredicate(Type type, object @object)
         {
             var parameter = Expression.Parameter(type);
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(
-                x => x.GetCustomAttribute(typeof(ClusteringKeyAttribute)) != null
-                     || x.GetCustomAttribute(typeof(PartitionKeyAttribute)) != null
-            ).ToArray();
-            var filtersExpressions = properties
-                                     .Select(property => Expression.Equal(
-                                                 Expression.Property(parameter, property),
-                                                 Expression.Constant(property.GetMethod.Invoke(@object, null), property.PropertyType)
-                                             )).ToArray();
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                 .Where(x => x.GetCustomAttribute(typeof(ClusteringKeyAttribute)) != null || x.GetCustomAttribute(typeof(PartitionKeyAttribute)) != null)
+                                 .ToArray();
+            var filtersExpressions = properties.Select(property => Expression.Equal(Expression.Property(parameter, property),
+                                                                                    Expression.Constant(property.GetMethod.Invoke(@object, null), property.PropertyType)))
+                                               .ToArray();
             return Expression.Lambda(filtersExpressions.Skip(1).Aggregate(filtersExpressions[0], Expression.AndAlso), parameter);
         }
 
-        public static LambdaExpression BuildPredicate(Type type,
-                                                      Filter[] filters)
+        public static LambdaExpression BuildPredicate(Type type, Filter[] filters)
         {
             var parameter = Expression.Parameter(type);
 
@@ -53,11 +49,9 @@ namespace SkbKontur.DbViewer.Cql.Utils
                                            if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
                                                if (filter.Type == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
-                                                   expression = Expression.OrElse(
-                                                       expression,
-                                                       CreateFilterExpression(memberExpression.Type, ObjectFieldFilterOperator.Equals, memberExpression,
-                                                                              Expression.Constant(null))
-                                                   );
+                                                   expression = Expression.OrElse(expression,
+                                                                                  CreateFilterExpression(memberExpression.Type, ObjectFieldFilterOperator.Equals, memberExpression,
+                                                                                                         Expression.Constant(null)));
                                            }
 
                                            return expression;
@@ -71,21 +65,19 @@ namespace SkbKontur.DbViewer.Cql.Utils
             return path.Split('.').Aggregate(root, Expression.Property);
         }
 
-        private static ConstantExpression CreateValueExpression(string stringValue,
-                                                                Type targetType)
+        private static ConstantExpression CreateValueExpression(string stringValue, Type targetType)
         {
             var parsedValue = ObjectParser.Parse(targetType, stringValue);
             var valueExpression = Expression.Constant(parsedValue, targetType);
             return valueExpression;
         }
 
-        private static BinaryExpression CreateFilterExpression(Type propertyType, ObjectFieldFilterOperator @operator,
-                                                               Expression leftExpression, Expression rightExpression)
+        private static BinaryExpression CreateFilterExpression(Type propertyType, ObjectFieldFilterOperator @operator, Expression leftExpression, Expression rightExpression)
         {
             if (propertyType == typeof(string))
             {
-                var compareToInvokation = Expression.Call(leftExpression, typeof(string).GetMethod("CompareTo", new[] {typeof(string)}), rightExpression);
-                return makeBinaryExpressionByOperator[@operator](compareToInvokation, Expression.Constant(0, typeof(int)));
+                var compareToInvocation = Expression.Call(leftExpression, typeof(string).GetMethod("CompareTo", new[] {typeof(string)}), rightExpression);
+                return makeBinaryExpressionByOperator[@operator](compareToInvocation, Expression.Constant(0, typeof(int)));
             }
 
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);

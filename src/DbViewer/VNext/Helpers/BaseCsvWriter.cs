@@ -14,8 +14,7 @@ namespace SkbKontur.DbViewer.VNext.Helpers
         public void AddRow([NotNull] params string[] fields)
         {
             if (fields.Length != Header.Length)
-                throw new InvalidOperationException(
-                    $"Row contains {fields.Length} elements but csv header contains {Header.Length}");
+                throw new InvalidOperationException($"Row contains {fields.Length} elements but csv header contains {Header.Length}");
             InnerAddRow(fields);
         }
 

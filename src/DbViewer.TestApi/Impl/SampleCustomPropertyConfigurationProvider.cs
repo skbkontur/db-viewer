@@ -27,7 +27,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
         }
     }
 
-    public class CustomTypeConfiguration
+    public static class CustomTypeConfiguration
     {
         public static CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {

@@ -7,9 +7,9 @@ using SkbKontur.DbViewer.Cql;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector.Configuration
 {
-    public class TestTimetampProvider : ITimestampProvider
+    public class TestTimestampProvider : ITimestampProvider
     {
-        public TestTimetampProvider(ITimestampService timestampService)
+        public TestTimestampProvider(ITimestampService timestampService)
         {
             this.timestampService = timestampService;
         }

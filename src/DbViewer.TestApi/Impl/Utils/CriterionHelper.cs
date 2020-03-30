@@ -10,8 +10,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
 {
     public static class CriterionHelper
     {
-        public static LambdaExpression BuildCriterion(Type businessObjectType,
-                                                      Filter[] filters)
+        public static LambdaExpression BuildCriterion(Type businessObjectType, Filter[] filters)
         {
             var parameter = Expression.Parameter(businessObjectType);
             var filterExpression = filters
@@ -20,17 +19,15 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
                                            var memberExpression = CreateMemberAccessExpression(filter.Field, parameter);
                                            var valueExpression = CreateValueExpression(filter.Value, memberExpression.Type);
                                            if (memberExpression.Type == typeof(DateTime) || memberExpression.Type == typeof(DateTime?))
-                                               return DateTimeFilterExpressionBuilder.Build(memberExpression, filter.Value,
-                                                                                            filter.Type);
+                                               return DateTimeFilterExpressionBuilder.Build(memberExpression, filter.Value, filter.Type);
+
                                            var expression = CreateFilterExpression(filter.Type, memberExpression, valueExpression);
                                            if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
                                                if (filter.Type == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
-                                                   expression = Expression.OrElse(
-                                                       expression,
-                                                       CreateFilterExpression(ObjectFieldFilterOperator.Equals, memberExpression,
-                                                                              Expression.Constant(null))
-                                                   );
+                                                   expression = Expression.OrElse(expression,
+                                                                                  CreateFilterExpression(ObjectFieldFilterOperator.Equals, memberExpression,
+                                                                                                         Expression.Constant(null)));
                                            }
 
                                            return expression;
@@ -45,16 +42,14 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
             return path.Split('.').Aggregate(root, Expression.Property);
         }
 
-        private static ConstantExpression CreateValueExpression(string stringValue,
-                                                                Type targetType)
+        private static ConstantExpression CreateValueExpression(string stringValue, Type targetType)
         {
             var parsedValue = ParseValue(stringValue, targetType);
             var valueExpression = Expression.Constant(parsedValue, targetType);
             return valueExpression;
         }
 
-        private static BinaryExpression CreateFilterExpression(ObjectFieldFilterOperator @operator,
-                                                               Expression leftExpression, Expression rightExpression)
+        private static BinaryExpression CreateFilterExpression(ObjectFieldFilterOperator @operator, Expression leftExpression, Expression rightExpression)
         {
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);
         }
@@ -66,16 +61,15 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
             return stringValue;
         }
 
-        private static readonly Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
-            makeBinaryExpressionByOperator =
-                new Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
-                    {
-                        {ObjectFieldFilterOperator.Equals, Expression.Equal},
-                        {ObjectFieldFilterOperator.LessThan, Expression.LessThan},
-                        {ObjectFieldFilterOperator.GreaterThan, Expression.GreaterThan},
-                        {ObjectFieldFilterOperator.LessThanOrEquals, Expression.LessThanOrEqual},
-                        {ObjectFieldFilterOperator.GreaterThanOrEquals, Expression.GreaterThanOrEqual},
-                        {ObjectFieldFilterOperator.DoesNotEqual, Expression.NotEqual},
-                    };
+        private static readonly Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>> makeBinaryExpressionByOperator =
+            new Dictionary<ObjectFieldFilterOperator, Func<Expression, Expression, BinaryExpression>>
+                {
+                    {ObjectFieldFilterOperator.Equals, Expression.Equal},
+                    {ObjectFieldFilterOperator.LessThan, Expression.LessThan},
+                    {ObjectFieldFilterOperator.GreaterThan, Expression.GreaterThan},
+                    {ObjectFieldFilterOperator.LessThanOrEquals, Expression.LessThanOrEqual},
+                    {ObjectFieldFilterOperator.GreaterThanOrEquals, Expression.GreaterThanOrEqual},
+                    {ObjectFieldFilterOperator.DoesNotEqual, Expression.NotEqual},
+                };
     }
 }

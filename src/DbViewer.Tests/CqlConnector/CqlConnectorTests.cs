@@ -33,8 +33,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             container.Configure();
             var cassandraMapsFromAttributes = container.Get<IMappingsRetriever>().GetAttributeMappings();
             container.Get<ICassandraSchemaActualizer>().Actualize(cassandraMapsFromAttributes);
-            foreach (var x in container.Get<ICassandraStorageFactory>()
-                                       .GetSimpleCassandraStorages())
+            foreach (var x in container.Get<ICassandraStorageFactory>().GetSimpleCassandraStorages())
             {
                 container.Configurator.ForAbstraction(x.GetType()).UseInstances(x);
             }

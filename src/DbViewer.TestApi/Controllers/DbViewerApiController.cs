@@ -25,29 +25,23 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/search")]
-        public Task<SearchResult<object>>
-            SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) =>
-            impl.SearchObjects(objectIdentifier, query);
+        public Task<SearchResult<object>> SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.SearchObjects(objectIdentifier, query);
 
         [HttpPost]
         [Route("{objectIdentifier}/download")]
-        public Task<DownloadResult> DownloadObjects(string objectIdentifier,
-                                                    [FromBody] ObjectSearchRequest query) => impl.DownloadObjects(objectIdentifier, query);
+        public Task<DownloadResult> DownloadObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.DownloadObjects(objectIdentifier, query);
 
         [HttpPost]
         [Route("{objectIdentifier}/details")]
-        public Task<ObjectDetails> ReadObject(string objectIdentifier, [FromBody] ObjectSearchRequest query) =>
-            impl.ReadObject(objectIdentifier, query);
+        public Task<ObjectDetails> ReadObject(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.ReadObject(objectIdentifier, query);
 
         [HttpDelete]
         [Route("{objectIdentifier}/delete")]
-        public Task DeleteObject(string objectIdentifier, [FromBody] object obj) =>
-            impl.DeleteObject(objectIdentifier, obj);
+        public Task DeleteObject(string objectIdentifier, [FromBody] object obj) => impl.DeleteObject(objectIdentifier, obj);
 
         [HttpPost]
         [Route("{objectIdentifier}/update")]
-        public Task<object> UpdateObject(string objectIdentifier, [FromBody] object obj) =>
-            impl.UpdateObject(objectIdentifier, obj);
+        public Task<object> UpdateObject(string objectIdentifier, [FromBody] object obj) => impl.UpdateObject(objectIdentifier, obj);
 
         private readonly DbViewerApi impl;
     }

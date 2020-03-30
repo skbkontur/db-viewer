@@ -9,8 +9,7 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
 {
     public static class ObjectsConverter
     {
-        public static object ApiToStored(TypeInfo typeInfo, Type type, object o,
-                                         ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
+        public static object ApiToStored(TypeInfo typeInfo, Type type, object o, ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             var jObject = (JToken)o;
             if (jObject == null || jObject.ToString() == "")
@@ -22,19 +21,13 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
             foreach (var property in classTypeInfo.Properties)
             {
                 var propertyInfo = type.GetProperty(property.Description.Name);
-                var customPropertyConfiguration =
-                    customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
-                var value = ApiToStored(
-                    property.TypeInfo,
-                    customPropertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType,
-                    jObject.SelectToken(property.Description.Name),
-                    customPropertyConfigurationProvider
-                );
+                var customPropertyConfiguration = customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
+                var value = ApiToStored(property.TypeInfo,
+                                        customPropertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType,
+                                        jObject.SelectToken(property.Description.Name),
+                                        customPropertyConfigurationProvider);
                 if (customPropertyConfiguration != null)
-                {
-                    value =
-                        customPropertyConfiguration.ApiToStored(value);
-                }
+                    value = customPropertyConfiguration.ApiToStored(value);
 
                 if (propertyInfo.SetMethod != null)
                     propertyInfo.SetValue(result, value);
@@ -43,8 +36,7 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
             return result;
         }
 
-        public static object StoredToApi(TypeInfo typeInfo, Type type, object o,
-                                         ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
+        public static object StoredToApi(TypeInfo typeInfo, Type type, object o, ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
         {
             if (o == null)
                 return null;
@@ -56,27 +48,20 @@ namespace SkbKontur.DbViewer.TypeAndObjectBuilding
             {
                 var propertyInfo = type.GetProperty(property.Description.Name);
                 var propertyValue = propertyInfo.GetValue(o);
-                var customPropertyConfiguration =
-                    customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
+                var customPropertyConfiguration = customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
                 if (customPropertyConfiguration != null)
                 {
-                    result[property.Description.Name] =
-                        StoredToApi(
-                            property.TypeInfo,
-                            customPropertyConfiguration.ResolvedType,
-                            customPropertyConfiguration.StoredToApi(propertyValue),
-                            customPropertyConfigurationProvider
-                        );
+                    result[property.Description.Name] = StoredToApi(property.TypeInfo,
+                                                                    customPropertyConfiguration.ResolvedType,
+                                                                    customPropertyConfiguration.StoredToApi(propertyValue),
+                                                                    customPropertyConfigurationProvider);
                 }
                 else
                 {
-                    result[property.Description.Name] =
-                        StoredToApi(
-                            property.TypeInfo,
-                            propertyInfo.PropertyType,
-                            propertyValue,
-                            customPropertyConfigurationProvider
-                        );
+                    result[property.Description.Name] = StoredToApi(property.TypeInfo,
+                                                                    propertyInfo.PropertyType,
+                                                                    propertyValue,
+                                                                    customPropertyConfigurationProvider);
                 }
             }
 

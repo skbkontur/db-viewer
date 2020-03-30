@@ -8,10 +8,10 @@ using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
 {
-    public class SampleDBConnector<T> : IDbConnector<T>
+    public class SampleDbConnector<T> : IDbConnector<T>
         where T : class
     {
-        public async Task<object[]> Search(Filter[] filters, Sort[] sorts, int @from, int count)
+        public async Task<object[]> Search(Filter[] filters, Sort[] sorts, int from, int count)
         {
             // ReSharper disable once CoVariantArrayConversion
             return SampleDataBase.Instance.Find(filters, sorts, from, count);

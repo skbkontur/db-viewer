@@ -32,7 +32,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
 
         private readonly IObjectParserCollection innerCollection;
 
-        internal class NullableParser : IValueParser
+        private class NullableParser : IValueParser
         {
             public NullableParser(IValueParser parser)
             {

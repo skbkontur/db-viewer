@@ -13,7 +13,7 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 
         public static LocalTime ToLocalTime(this DateTime dateTime)
         {
-            return new LocalTime(dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond * NanosecondsInMilliseconds);
+            return new LocalTime(dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond * nanosecondsInMilliseconds);
         }
 
         public static LocalDate ToLocalDate(this DateTime? dateTime)
@@ -33,9 +33,9 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 
         public static DateTime? ToDateTime(this LocalTime localTime)
         {
-            return localTime == null ? (DateTime?)null : new DateTime(1, 1, 1, localTime.Hour, localTime.Minute, localTime.Second, localTime.Nanoseconds / NanosecondsInMilliseconds);
+            return localTime == null ? (DateTime?)null : new DateTime(1, 1, 1, localTime.Hour, localTime.Minute, localTime.Second, localTime.Nanoseconds / nanosecondsInMilliseconds);
         }
 
-        private const int NanosecondsInMilliseconds = 1000000;
+        private const int nanosecondsInMilliseconds = 1000000;
     }
 }

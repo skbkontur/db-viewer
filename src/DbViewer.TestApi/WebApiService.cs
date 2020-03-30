@@ -23,33 +23,28 @@ namespace SkbKontur.DbViewer.TestApi
     {
         public void Start(int port)
         {
-            service = WebApp.Start(
-                $"http://*:{port}",
-                appBuilder =>
-                    {
-                        var config = new HttpConfiguration();
-                        var cors = new EnableCorsAttribute("*", "*", "*");
-                        config.EnableCors(cors);
-                        config.MapHttpAttributeRoutes();
-                        config.Formatters.Clear();
-                        config.Formatters.Add(new JsonMediaTypeFormatter
-                            {
-                                SerializerSettings = new JsonSerializerSettings
-                                    {
-                                        Converters = new JsonConverter[]
-                                            {
-                                                new CqlObjectPropertyToStringConverter(),
-                                                new StringEnumConverter(),
-                                                new IsoDateTimeConverter
-                                                    {
-                                                        DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"
-                                                    }
-                                            }
-                                    },
-                            });
-                        config.EnsureInitialized();
-                        appBuilder.UseWebApi(config);
-                    });
+            service = WebApp.Start($"http://*:{port}", appBuilder =>
+                {
+                    var config = new HttpConfiguration();
+                    var cors = new EnableCorsAttribute("*", "*", "*");
+                    config.EnableCors(cors);
+                    config.MapHttpAttributeRoutes();
+                    config.Formatters.Clear();
+                    config.Formatters.Add(new JsonMediaTypeFormatter
+                        {
+                            SerializerSettings = new JsonSerializerSettings
+                                {
+                                    Converters = new JsonConverter[]
+                                        {
+                                            new CqlObjectPropertyToStringConverter(),
+                                            new StringEnumConverter(),
+                                            new IsoDateTimeConverter {DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"}
+                                        }
+                                },
+                        });
+                    config.EnsureInitialized();
+                    appBuilder.UseWebApi(config);
+                });
         }
 
         public void Stop()
@@ -90,9 +85,6 @@ namespace SkbKontur.DbViewer.TestApi
             return objectType.GetCustomAttributes<TableAttribute>().Any();
         }
 
-        private readonly JsonSerializer staticSerializer = new JsonSerializer
-            {
-                ContractResolver = new DefaultContractResolver(),
-            };
+        private readonly JsonSerializer staticSerializer = new JsonSerializer {ContractResolver = new DefaultContractResolver()};
     }
 }

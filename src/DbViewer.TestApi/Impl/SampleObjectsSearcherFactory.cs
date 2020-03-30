@@ -7,7 +7,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
         public IDbConnector CreateConnector<T>()
             where T : class
         {
-            return new SampleDBConnector<T>();
+            return new SampleDbConnector<T>();
         }
     }
 }

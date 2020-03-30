@@ -16,9 +16,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
         {
             var typeName = GetTypeName(type);
             if (type == typeof(DbViewerControllerImpl))
-            {
                 return "DBViewerApi";
-            }
 
             const string dbViewerNamespace = "Kontur.DBViewer.Core.VNext.";
             if (type.FullName != null && type.FullName.StartsWith(dbViewerNamespace))
@@ -93,11 +91,8 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
                         Name = property.Name.ToLowerCamelCase(),
                         Optional = false,
                         Type = new TypeScriptEnumValueType(
-                            typeGenerator.BuildAndImportType(unit, property, property.PropertyType), property.GetMethod
-                                                                                                             .Invoke(
-                                                                                                                 CreateDefaultNotNullObject(type),
-                                                                                                                 null
-                                                                                                             ).ToString()
+                            typeGenerator.BuildAndImportType(unit, property, property.PropertyType),
+                            property.GetMethod.Invoke(CreateDefaultNotNullObject(type), null).ToString()
                         ),
                     };
             }
@@ -111,10 +106,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
             if (ctor == null)
                 return Activator.CreateInstance(type);
             var parameters = ctor.GetParameters();
-            return Activator.CreateInstance(
-                type,
-                parameters.Select(x => GetDefault(x.ParameterType)).ToArray()
-            );
+            return Activator.CreateInstance(type, parameters.Select(x => GetDefault(x.ParameterType)).ToArray());
         }
 
         private static string GetTypeName(Type type)
@@ -125,9 +117,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator.Customization
         private static object GetDefault(Type type)
         {
             if (type.IsValueType)
-            {
                 return Activator.CreateInstance(type);
-            }
 
             return null;
         }

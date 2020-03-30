@@ -15,10 +15,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector.Configuration
         public IDbConnector CreateConnector<T>() where T : class
         {
             var storage = cassandraStorageFactory.Get<T>();
-            return new CqlDbConnector<T>(
-                storage.Table,
-                new TestTimetampProvider(storage.TimestampService)
-            );
+            return new CqlDbConnector<T>(storage.Table, new TestTimestampProvider(storage.TimestampService));
         }
 
         private readonly ICassandraStorageFactory cassandraStorageFactory;

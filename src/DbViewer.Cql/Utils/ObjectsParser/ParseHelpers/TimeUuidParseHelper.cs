@@ -8,7 +8,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.ParseHelpers
     {
         public static bool TryParse(string value, out TimeUuid result)
         {
-            result = default(TimeUuid);
+            result = default;
             if (!Guid.TryParse(value, out var guid))
                 return false;
             result = guid;

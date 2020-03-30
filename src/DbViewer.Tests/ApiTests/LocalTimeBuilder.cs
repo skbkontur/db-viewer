@@ -11,9 +11,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
     {
         public object Create(object request, ISpecimenContext context)
         {
-            if (!(request is ParameterInfo pi) ||
-                pi.Member.DeclaringType != typeof(LocalTime) ||
-                pi.ParameterType != typeof(int))
+            if (!(request is ParameterInfo pi) || pi.Member.DeclaringType != typeof(LocalTime) || pi.ParameterType != typeof(int))
                 return new NoSpecimen();
 
             switch (pi.Name)

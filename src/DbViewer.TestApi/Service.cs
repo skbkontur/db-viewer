@@ -32,9 +32,7 @@ namespace SkbKontur.DbViewer.TestApi
                                     CountLimit = 10_000,
                                     AllowReadAll = true,
                                 },
-                            Types = BuildTypeDescriptions(
-                                typeof(TestClass)
-                            ),
+                            Types = BuildTypeDescriptions(typeof(TestClass)),
                             PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                             ConnectorsFactory = new SampleIdbConnectorFactory(),
                             CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
@@ -68,13 +66,9 @@ namespace SkbKontur.DbViewer.TestApi
             }
         }
 
-        private TypeDescription[] BuildTypeDescriptions(params Type[] types)
+        private static TypeDescription[] BuildTypeDescriptions(params Type[] types)
         {
-            return types.Select(type => new TypeDescription
-                {
-                    Type = type,
-                    TypeIdentifier = type.Name,
-                }).ToArray();
+            return types.Select(type => new TypeDescription {Type = type, TypeIdentifier = type.Name,}).ToArray();
         }
 
         public bool Stop(HostControl hostControl)

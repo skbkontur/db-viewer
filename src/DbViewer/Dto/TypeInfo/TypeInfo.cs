@@ -35,11 +35,11 @@ namespace SkbKontur.DbViewer.Dto.TypeInfo
             var jObject = JObject.Load(reader);
             var primitiveType =
                 (PrimitiveType)Enum.Parse(typeof(PrimitiveType), jObject["type"].Value<string>(), true);
-            var inheritant = ResolveInheritant(primitiveType);
-            return JsonConvert.DeserializeObject(jObject.ToString(), inheritant, SpecifiedSubclassConversion);
+            var inheritor = ResolveInheritor(primitiveType);
+            return JsonConvert.DeserializeObject(jObject.ToString(), inheritor, specifiedSubclassConversion);
         }
 
-        private Type ResolveInheritant(PrimitiveType primitiveType)
+        private Type ResolveInheritor(PrimitiveType primitiveType)
         {
             switch (primitiveType)
             {
@@ -90,6 +90,6 @@ namespace SkbKontur.DbViewer.Dto.TypeInfo
             throw new NotImplementedException();
         }
 
-        static readonly JsonSerializerSettings SpecifiedSubclassConversion = new JsonSerializerSettings {ContractResolver = new TypeInfoResolver()};
+        private static readonly JsonSerializerSettings specifiedSubclassConversion = new JsonSerializerSettings {ContractResolver = new TypeInfoResolver()};
     }
 }

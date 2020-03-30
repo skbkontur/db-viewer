@@ -2,7 +2,7 @@
 
 namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers.InternalImplementations
 {
-    internal class ValueParser
+    internal static class ValueParser
     {
         public static ValueParser<string> CreateSimpleStringParser()
         {
@@ -30,8 +30,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers.InternalImplementat
                 return true;
             }
 
-            T temp;
-            var tryParseResult = tryParse(value, out temp);
+            var tryParseResult = tryParse(value, out var temp);
             result = temp;
             return tryParseResult;
         }
