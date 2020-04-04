@@ -37,9 +37,9 @@ namespace SkbKontur.DbViewer.TestApi.Cql
         public DateTimeOffset DocumentSendTime { get; set; }
 
         [Column("document_tags")]
-        public IEnumerable<string> DocumentTags { get; set; }
+        public string[] DocumentTags { get; set; }
 
         [Column("document_values")]
-        public IDictionary<string, string> DocumentValues { get; set; }
+        public Dictionary<string, string> DocumentValues { get; set; }
     }
 }
