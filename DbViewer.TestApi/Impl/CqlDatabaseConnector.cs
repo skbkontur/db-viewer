@@ -9,6 +9,7 @@ using Cassandra;
 using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Cql.Utils;
 using SkbKontur.DbViewer.Dto;
+using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
@@ -116,7 +117,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             {
                 new NestedCqlObject
                     {
-                        BindingType = BindingType.ByPriceList,
+                        BindingType = DocumentBindingType.ByPriceList,
                         DocumentCirculationId = TimeUuid.NewId(),
                         DocumentDate = new LocalDate(2018, 10, 10),
                         DocumentTime = new LocalTime(01, 10, 10, 100000000),

@@ -2,18 +2,17 @@
 
 using Cassandra.Mapping.Attributes;
 
-using SkbKontur.DbViewer.TestApi.Cql;
-
-namespace SkbKontur.DbViewer.TestApi.Impl.Classes
+namespace SkbKontur.DbViewer.TestApi.Cql
 {
-    [Table("document_printing_info", Keyspace = "EdiCoreKeyspace", CaseSensitive = true)]
-    public class SimpleCqlObject
+    [Table("document_printing_info", Keyspace = CqlDbConnectorFactory.Keyspace, CaseSensitive = true)]
+    public class DocumentPrintingInfo
     {
         [Column("id")]
         [PartitionKey(0)]
         public Guid Id { get; set; }
 
         [Column("party_id")]
+        [ClusteringKey(0)]
         public string PartyId { get; set; }
 
         [Column("file_name_without_extension")]

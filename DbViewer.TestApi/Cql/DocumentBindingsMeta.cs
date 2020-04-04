@@ -3,12 +3,10 @@
 using Cassandra;
 using Cassandra.Mapping.Attributes;
 
-using SkbKontur.DbViewer.TestApi.Cql;
-
-namespace SkbKontur.DbViewer.TestApi.Impl.Classes
+namespace SkbKontur.DbViewer.TestApi.Cql
 {
-    [Table("document_bindings_meta", Keyspace = "EdiCoreKeyspace", CaseSensitive = true)]
-    public class NestedCqlObject
+    [Table("document_bindings_meta", Keyspace = CqlDbConnectorFactory.Keyspace, CaseSensitive = true)]
+    public class DocumentBindingsMeta
     {
         [Column("binding_type", Type = typeof(sbyte))]
         [PartitionKey(0)]

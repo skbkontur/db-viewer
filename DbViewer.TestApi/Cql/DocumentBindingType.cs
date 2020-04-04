@@ -1,6 +1,6 @@
-﻿namespace SkbKontur.DbViewer.TestApi.Impl.Classes
+﻿namespace SkbKontur.DbViewer.TestApi.Cql
 {
-    public enum BindingType : sbyte
+    public enum DocumentBindingType : sbyte
     {
         ByDelfor = 1,
         ByPriceList = 2,
