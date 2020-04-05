@@ -15,6 +15,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
     public class CqlDbSchemaUpdater
     {
         [Test]
+        [Explicit]
         public void Test()
         {
             var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();

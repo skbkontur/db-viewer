@@ -45,6 +45,9 @@ build_script:
   - cmd: yarn build
   - cmd: cd db-viewer-ui/dist && npm pack
 
+before_test:
+  - cmd: docker-compose up -d
+
 test_script:
   - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
   - cmd: yarn lint

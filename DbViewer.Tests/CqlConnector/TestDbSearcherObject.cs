@@ -2,11 +2,11 @@
 
 using Cassandra.Mapping.Attributes;
 
-using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping.Declarative.AttributesDefinition;
+using SkbKontur.DbViewer.TestApi.Cql;
 
-namespace SkbKontur.DbViewer.Tests.CqlConnector.TestClasses
+namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
-    [CassandraTable(Keyspace = "dbviewer", Table = "TestObjectTable")]
+    [Table("TestObjectTable", Keyspace = CqlDbConnectorFactory.Keyspace)]
     public class TestDbSearcherObject
     {
         [PartitionKey(0)]

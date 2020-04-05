@@ -38,8 +38,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             serializer = new Serializer(new AllPropertiesExtractor());
             fixture = new Fixture();
             fixture.Register(TimeUuid.NewId);
-            fixture.Customizations.Add(new LocalTimeBuilder());
-            fixture.Customize<LocalTime>(c => c.FromFactory(new MethodInvoker(new GreedyConstructorQuery())));
+            fixture.Register((DateTime dt) => dt.ToLocalDate());
             var schemaRegistry = new SchemaRegistry();
             schemaRegistry.Add(
                 new Schema

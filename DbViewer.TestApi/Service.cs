@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 
-using Alko.Configuration.Settings;
-
 using SkbKontur.DbViewer.Cql;
 using SkbKontur.DbViewer.Schemas;
 using SkbKontur.DbViewer.TestApi.Controllers;
@@ -12,16 +10,12 @@ using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
 using Topshelf;
 
-using CqlDbConnectorFactory = SkbKontur.DbViewer.TestApi.Controllers.CqlDbConnectorFactory;
-
 namespace SkbKontur.DbViewer.TestApi
 {
     public class Service : ServiceControl
     {
         public bool Start(HostControl hostControl)
         {
-            var applicationSettings = ApplicationSettings.LoadDefault("sampleApi.csf");
-            var port = applicationSettings.GetInt("ListeningPort");
             var schemaRegistry = new SchemaRegistry();
             schemaRegistry.Add(
                 new Schema
@@ -47,21 +41,6 @@ namespace SkbKontur.DbViewer.TestApi
                             AllowReadAll = true,
                             CountLimit = 10_000,
                             DownloadLimit = 100_000,
-                            SchemaName = "CQL",
-                        },
-                    Types = BuildTypeDescriptions(typeof(SimpleCqlObject), typeof(NestedCqlObject)),
-                    ConnectorsFactory = new CqlDbConnectorFactory(),
-                    PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder(),
-                    CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider()
-                });
-
-            schemaRegistry.Add(new Schema
-                {
-                    Description = new SchemaDescription
-                        {
-                            AllowReadAll = true,
-                            CountLimit = 10_000,
-                            DownloadLimit = 100_000,
                             SchemaName = "CQL Objects"
                         },
                     Types = BuildTypeDescriptions(typeof(CqlDocumentMeta),
@@ -77,7 +56,7 @@ namespace SkbKontur.DbViewer.TestApi
 
             SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
             service = new WebApiService();
-            service.Start(port);
+            service.Start(5555);
             Console.WriteLine("Service started (for service runner)");
             return true;
         }

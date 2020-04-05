@@ -22,25 +22,4 @@
     <ProjectReference Include="..\DbViewer.TestApi\DbViewer.TestApi.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Settings\dependencies.csf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Settings\tests.csf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Alko.Configuration.Settings">
-      <HintPath>..\Assemblies\Alko.Configuration.Settings.dll</HintPath>
-    </Reference>
-    <Reference Include="Catalogue.CassandraUtils.Cassandra.Commons">
-      <HintPath>..\Assemblies\Catalogue.CassandraUtils.Cassandra.Commons.dll</HintPath>
-    </Reference>
-    <Reference Include="Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending">
-      <HintPath>..\Assemblies\Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
