@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +23,7 @@ using Sort = SkbKontur.DbViewer.Dto.Sort;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
+    [NUnit.Framework.Ignore("Unable to run integration tests")]
     public class CqlConnectorTests
     {
         private static void WaitForCassandra(int cqlPort, TimeSpan timeout)
