@@ -11,6 +11,7 @@ interface DbViewerApplicationProps extends RouteComponentProps {
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     identifierKeywords: string[];
+    useErrorHandlingContainer: boolean;
     allowEdit: boolean;
 }
 
@@ -19,6 +20,7 @@ function DbViewerApplicationInternal({
     customRenderer,
     allowEdit,
     identifierKeywords,
+    useErrorHandlingContainer,
     match,
 }: DbViewerApplicationProps): JSX.Element {
     return (
@@ -28,6 +30,7 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/`}
                 render={() => (
                     <ObjectTypesContainer
+                        useErrorHandlingContainer={useErrorHandlingContainer}
                         identifierKeywords={identifierKeywords}
                         dbViewerApi={dbViewerApi}
                         path={`${match.url}`}
@@ -42,6 +45,7 @@ function DbViewerApplicationInternal({
                         allowEdit={allowEdit}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
+                        useErrorHandlingContainer={useErrorHandlingContainer}
                         urlQuery={location.search || ""}
                         path={`${match.url}/${params.objectId}`}
                         objectId={params.objectId || ""}
@@ -55,6 +59,7 @@ function DbViewerApplicationInternal({
                         allowEdit={allowEdit}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
+                        useErrorHandlingContainer={useErrorHandlingContainer}
                         objectId={params.objectId || ""}
                         objectQuery={location.search || ""}
                     />

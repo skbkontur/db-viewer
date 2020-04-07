@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -29,7 +30,7 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/download")]
-        public Task<DownloadResult> DownloadObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.DownloadObjects(objectIdentifier, query);
+        public Task<DownloadResult> DownloadObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => throw new InvalidOperationException("abcd");
 
         [HttpPost]
         [Route("{objectIdentifier}/details")]

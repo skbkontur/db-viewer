@@ -1,3 +1,4 @@
+import CopyIcon from "@skbkontur/react-icons/Copy";
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
@@ -6,7 +7,7 @@ import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { AllowCopyToClipboard } from "../Components/AllowCopyToClipboard";
+import { AllowCopyToClipboard, CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
@@ -27,6 +28,7 @@ interface ObjectDetailsProps extends RouteComponentProps {
     allowEdit: boolean;
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
+    useErrorHandlingContainer: boolean;
 }
 
 interface ObjectDetailsState {
@@ -122,9 +124,13 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         throw new Error("Пытаемся удалить объект с типом массив");
     }
 
-    public handleTryDeleteObject() {
+    public handleCopyObject = () => {
+        CopyToClipboardToast.copyText(JSON.stringify(this.state.objectInfo, null, 4));
+    };
+
+    public handleTryDeleteObject = () => {
         this.setState({ showConfirmModal: true });
-    }
+    };
 
     public handleCancelDelete = () => {
         this.setState({ showConfirmModal: false });
@@ -135,14 +141,17 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     };
 
     public render(): JSX.Element {
-        const { objectId, allowEdit, customRenderer } = this.props;
+        const { objectId, allowEdit: allowEditForUser, customRenderer, useErrorHandlingContainer } = this.props;
         const { objectInfo, objectNotFound, objectMeta, loading } = this.state;
         if (objectNotFound || objectInfo == null) {
             return <ObjectNotFoundPage />;
         }
+
+        const { allowEdit, allowDelete } = objectMeta?.schemaDescription || { allowEdit: false, allowDelete: false };
+
         return (
             <CommonLayout>
-                <ErrorHandlingContainer />
+                {useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoBack">
                     Вернуться к списку объектов
                 </CommonLayout.GoBack>
@@ -150,16 +159,23 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                     <CommonLayout.GreyLineHeader
                         title={objectId}
                         tools={
-                            <div style={{ textAlign: "right" }}>
-                                {allowEdit && (
-                                    <Link
-                                        icon={<TrashIcon />}
-                                        onClick={() => this.handleTryDeleteObject()}
-                                        data-tid="Delete">
-                                        Удалить
+                            <RowStack baseline block gap={2}>
+                                <Fit>
+                                    <Link icon={<CopyIcon />} onClick={this.handleCopyObject} data-tid="Copy">
+                                        Скопировать
                                     </Link>
-                                )}
-                            </div>
+                                </Fit>
+                                <Fit>
+                                    {allowDelete && allowEditForUser && (
+                                        <Link
+                                            icon={<TrashIcon />}
+                                            onClick={this.handleTryDeleteObject}
+                                            data-tid="Delete">
+                                            Удалить
+                                        </Link>
+                                    )}
+                                </Fit>
+                            </RowStack>
                         }>
                         <ColumnStack block gap={2}>
                             {objectMeta?.typeMetaInformation?.properties?.map(
@@ -170,7 +186,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                                                 <Fit>{x.name}:</Fit>
                                                 <Fit>
                                                     <AllowCopyToClipboard data-tid={x.name}>
-                                                        {objectInfo[x.name]}
+                                                        {String(objectInfo[x.name])}
                                                     </AllowCopyToClipboard>
                                                 </Fit>
                                             </RowStack>
@@ -186,7 +202,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                                     <ObjectViewer
                                         objectInfo={objectInfo}
                                         objectMeta={objectMeta}
-                                        allowEdit={allowEdit}
+                                        allowEdit={allowEdit && allowEditForUser}
                                         customRenderer={customRenderer}
                                         onChange={this.handleChange}
                                     />
@@ -194,7 +210,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                             </Fit>
                         </ColumnStack>
                     </CommonLayout.Content>
-                    {this.state.showConfirmModal && allowEdit && (
+                    {this.state.showConfirmModal && allowDelete && allowEditForUser && (
                         <ConfirmDeleteObjectModal
                             onDelete={this.handleConfirmDelete}
                             onCancel={this.handleCancelDelete}

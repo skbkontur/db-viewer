@@ -23,6 +23,7 @@ function AdminToolsEntryPoint() {
                         <DbViewerApplication
                             identifierKeywords={["Cql", "StorageElement"]}
                             customRenderer={new NullCustomRenderer()}
+                            useErrorHandlingContainer
                             allowEdit
                             dbViewerApi={dbViewerApi}
                             {...props}

@@ -10,6 +10,12 @@ namespace SkbKontur.DbViewer.Schemas
         [JsonProperty("allowReadAll")]
         public bool AllowReadAll { get; set; }
 
+        [JsonProperty("allowDelete")]
+        public bool AllowDelete { get; set; }
+
+        [JsonProperty("allowEdit")]
+        public bool AllowEdit { get; set; }
+
         [JsonProperty("countLimit")]
         public int CountLimit { get; set; }
 

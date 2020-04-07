@@ -98,7 +98,7 @@ namespace SkbKontur.DbViewer.VNext.Helpers
                     TypeName = type.Name,
                     Properties = IsSimpleType(type)
                                      ? null
-                                     : type.GetProperties()
+                                     : type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                            .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
                                            .ToArray(),
                 };

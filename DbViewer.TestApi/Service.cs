@@ -41,7 +41,9 @@ namespace SkbKontur.DbViewer.TestApi
                             AllowReadAll = true,
                             CountLimit = 10_000,
                             DownloadLimit = 100_000,
-                            SchemaName = "CQL Objects"
+                            SchemaName = "CQL Objects",
+                            AllowDelete = true,
+                            AllowEdit = true,
                         },
                     Types = BuildTypeDescriptions(typeof(CqlDocumentMeta),
                                                   typeof(CqlOrganizationInfo),

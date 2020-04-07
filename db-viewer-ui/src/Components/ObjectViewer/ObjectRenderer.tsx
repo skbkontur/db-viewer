@@ -79,8 +79,8 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
             <RowStack gap={2} baseline block data-tid="FieldRow">
                 <Fit data-tid="FieldValue">
                     {editableMode
-                        ? renderForEdit(value, property, this.handleChange, customRenderer)
-                        : renderForDetails(target, path, objectType, customRenderer)}
+                        ? renderForEdit(value, property, objectType, this.handleChange, customRenderer)
+                        : renderForDetails(target, path, property, objectType, customRenderer)}
                 </Fit>
                 <Fill />
                 {canEdit && !editableMode && (
