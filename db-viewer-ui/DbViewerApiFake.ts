@@ -12,6 +12,8 @@ export class DbViewerApiFake implements IDbViewerApi {
             allowReadAll: true,
             countLimit: 10000,
             allowDownload: true,
+            allowDelete: true,
+            allowEdit: true,
             downloadLimit: 100000,
         };
         return [
@@ -115,6 +117,8 @@ export class DbViewerApiFake implements IDbViewerApi {
                     downloadLimit: 1000,
                     countLimit: 100,
                     allowReadAll: true,
+                    allowEdit: false,
+                    allowDelete: false,
                 },
             },
             object: {
@@ -130,6 +134,8 @@ export class DbViewerApiFake implements IDbViewerApi {
             identifier: "StatusReportDocumentSubscription",
             schemaDescription: {
                 allowReadAll: true,
+                allowEdit: false,
+                allowDelete: false,
                 countLimit: 10,
                 downloadLimit: 100,
                 schemaName: "Schema",
