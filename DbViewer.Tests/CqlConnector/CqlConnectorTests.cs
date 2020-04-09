@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,24 +25,31 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
     [NUnit.Framework.Ignore("Unable to run integration tests")]
     public class CqlConnectorTests
     {
-        private static void WaitForCassandra(int cqlPort, TimeSpan timeout)
+        private static ISession TryConnectToCassandra(TimeSpan timeout, TimeSpan interval)
         {
             var sw = Stopwatch.StartNew();
             while (sw.Elapsed < timeout)
             {
-                if (IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners().Any(x => x.Port == cqlPort))
-                    return;
-                Thread.Sleep(TimeSpan.FromMilliseconds(300));
+                try
+                {
+                    var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+                    Console.WriteLine($"Successfully connected to cassandra after {sw.Elapsed.TotalSeconds} seconds");
+                    return session;
+                }
+                catch (NoHostAvailableException)
+                {
+                }
+
+                Thread.Sleep(interval);
             }
 
-            throw new InvalidOperationException($"Failed to wait for local cassandra node to start in {timeout}");
+            throw new InvalidOperationException($"Failed to wait for local cassandra node to start in {timeout.TotalSeconds} seconds");
         }
 
         [OneTimeSetUp]
         public void SetUp()
         {
-            WaitForCassandra(cqlPort : 9042, timeout : TimeSpan.FromMinutes(3));
-            var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+            var session = TryConnectToCassandra(timeout : TimeSpan.FromMinutes(1), interval : TimeSpan.FromSeconds(1));
             session.CreateKeyspaceIfNotExists(CqlDbConnectorFactory.Keyspace);
             table = new Table<TestDbSearcherObject>(session);
             table.CreateIfNotExists();
