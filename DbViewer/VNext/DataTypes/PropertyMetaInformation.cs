@@ -28,6 +28,7 @@ namespace SkbKontur.DbViewer.VNext.DataTypes
         [JsonProperty("availableValues")]
         public string[] AvailableValues { get; set; }
 
+        [NotNull]
         [JsonProperty("type")]
         public TypeMetaInformation Type { get; set; }
     }

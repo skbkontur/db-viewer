@@ -1,12 +1,22 @@
 import { DownloadResult } from "./src/Domain/Api/DataTypes/DownloadResult";
 import { ObjectDescription } from "./src/Domain/Api/DataTypes/ObjectDescription";
 import { ObjectDetails } from "./src/Domain/Api/DataTypes/ObjectDetails";
+import { ObjectIdentifier } from "./src/Domain/Api/DataTypes/ObjectIdentifier";
 import { ObjectSearchRequest } from "./src/Domain/Api/DataTypes/ObjectSearchRequest";
 import { SearchResult } from "./src/Domain/Api/DataTypes/SearchResult";
+import { TypeMetaInformation } from "./src/Domain/Api/DataTypes/TypeMetaInformation";
 import { IDbViewerApi } from "./src/Domain/Api/DbViewerApi";
 
+const string: TypeMetaInformation = {
+    genericTypeArguments: [],
+    isNullable: false,
+    isArray: false,
+    properties: [],
+    typeName: "String",
+};
+
 export class DbViewerApiFake implements IDbViewerApi {
-    public async getNames(): Promise<ObjectDescription[]> {
+    public async getNames(): Promise<ObjectIdentifier[]> {
         const schema = {
             schemaName: "schema",
             allowReadAll: true,
@@ -20,37 +30,30 @@ export class DbViewerApiFake implements IDbViewerApi {
             {
                 identifier: "FileMetaInformation2",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
             {
                 identifier: "Party2",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
             {
                 identifier: "UserObject",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
             {
                 identifier: "UserLastLoginRecordObject",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
             {
                 identifier: "FtpUser",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
             {
                 identifier: "PartySettings",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
             {
                 identifier: "DiadocEventStorageElement",
                 schemaDescription: schema,
-                typeMetaInformation: null,
             },
         ];
     }
@@ -120,6 +123,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                     allowEdit: false,
                     allowDelete: false,
                 },
+                typeMetaInformation: string,
             },
             object: {
                 id: "3821a146-bf0d-4ca4-b69e-ebc6365582da",
@@ -143,6 +147,8 @@ export class DbViewerApiFake implements IDbViewerApi {
             typeMetaInformation: {
                 typeName: "StatusReportDocumentSubscriptionObject",
                 isArray: false,
+                isNullable: false,
+                genericTypeArguments: [],
                 properties: [
                     {
                         name: "Id",
@@ -155,9 +161,9 @@ export class DbViewerApiFake implements IDbViewerApi {
                         type: {
                             typeName: "String",
                             isArray: false,
-                            properties: null,
-                            itemType: null,
-                            genericTypeArguments: null,
+                            isNullable: false,
+                            properties: [],
+                            genericTypeArguments: [],
                         },
                     },
                     {
@@ -171,9 +177,9 @@ export class DbViewerApiFake implements IDbViewerApi {
                         type: {
                             typeName: "String",
                             isArray: false,
-                            properties: null,
-                            itemType: null,
-                            genericTypeArguments: null,
+                            isNullable: false,
+                            properties: [],
+                            genericTypeArguments: [],
                         },
                     },
                     {
@@ -187,15 +193,15 @@ export class DbViewerApiFake implements IDbViewerApi {
                         type: {
                             typeName: "Nullable",
                             isArray: true,
-                            properties: null,
-                            itemType: null,
+                            isNullable: false,
+                            properties: [],
                             genericTypeArguments: [
                                 {
                                     typeName: "DateTime",
                                     isArray: false,
-                                    properties: null,
-                                    itemType: null,
-                                    genericTypeArguments: null,
+                                    isNullable: false,
+                                    properties: [],
+                                    genericTypeArguments: [],
                                 },
                             ],
                         },

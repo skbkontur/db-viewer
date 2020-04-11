@@ -11,7 +11,7 @@ import styles from "./Accordion.less";
 type CustomRenderer = (target: { [key: string]: any }, path: string[]) => JSX.Element | null;
 
 export interface TaskAccordionProps {
-    customRender?: null | undefined | CustomRenderer;
+    customRender: null | CustomRenderer;
     value: { [key: string]: any };
     title?: string | JSX.Element;
     pathPrefix?: string[];
@@ -141,7 +141,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
 
         return keys.map(key => {
             const valueToRender = value[key];
-            if (_.isPlainObject(valueToRender)) {
+            if (_.isPlainObject(valueToRender) || _.isArray(valueToRender)) {
                 const newCustomRender: null | CustomRenderer =
                     customRender != null ? (target, path) => customRender(value, [key, ...path]) : null;
                 return (
@@ -151,25 +151,6 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                         customRender={newCustomRender}
                         key={key}
                         value={valueToRender}
-                        title={key}
-                        pathPrefix={[...pathPrefix, key]}
-                        _internalForceCollapsed={forceCollapsedValue}
-                    />
-                );
-            }
-            if (_.isArray(valueToRender)) {
-                const newCustomRender: null | CustomRenderer = customRender
-                    ? (target, path) => customRender(value, [key, ...path])
-                    : null;
-                return (
-                    <Accordion
-                        defaultCollapsed={defaultCollapsedValue}
-                        data-tid={this.getPath(pathPrefix, key)}
-                        customRender={newCustomRender}
-                        key={key}
-                        value={valueToRender
-                            .map((x, index) => ({ [`[${index}]`]: x }))
-                            .reduce((x, y) => ({ ...x, ...y }), {})}
                         title={key}
                         pathPrefix={[...pathPrefix, key]}
                         _internalForceCollapsed={forceCollapsedValue}

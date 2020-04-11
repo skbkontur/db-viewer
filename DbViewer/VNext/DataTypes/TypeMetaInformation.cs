@@ -11,15 +11,14 @@ namespace SkbKontur.DbViewer.VNext.DataTypes
         [JsonProperty("isArray")]
         public bool IsArray { get; set; }
 
-        [CanBeNull, ItemNotNull]
+        [JsonProperty("isNullable")]
+        public bool IsNullable { get; set; }
+
+        [NotNull, ItemNotNull]
         [JsonProperty("properties")]
         public PropertyMetaInformation[] Properties { get; set; }
 
-        [CanBeNull]
-        [JsonProperty("itemType")]
-        public TypeMetaInformation ItemType { get; set; }
-
-        [CanBeNull, ItemNotNull]
+        [NotNull, ItemNotNull]
         [JsonProperty("genericTypeArguments")]
         public TypeMetaInformation[] GenericTypeArguments { get; set; }
     }

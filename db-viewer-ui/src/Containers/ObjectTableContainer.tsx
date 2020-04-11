@@ -14,12 +14,12 @@ import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/O
 import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
 import { ObjectFilterSortOrder } from "../Domain/Api/DataTypes/ObjectFilterSortOrder";
+import { PropertyMetaInformation } from "../Domain/Api/DataTypes/PropertyMetaInformation";
 import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
 import { ObjectSearchQuery } from "../Domain/Objects/ObjectSearchQuery";
 import { ConditionsMapper, SortMapper } from "../Domain/Objects/ObjectSearchQueryUtils";
-import { Property } from "../Domain/Objects/Property";
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
@@ -37,10 +37,10 @@ interface ObjectTableProps extends RouteComponentProps {
 }
 
 interface ObjectTableState {
-    objects: Nullable<SearchResult<object>>;
+    objects: null | SearchResult<object>;
     loading: boolean;
     showModalFilter: boolean;
-    metaInformation: Nullable<ObjectDescription>;
+    metaInformation: null | ObjectDescription;
     displaySearchFilter: boolean;
     displayShowFilter: boolean;
     query: ObjectSearchQuery;
@@ -101,7 +101,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             showDownloadModal,
             downloadCount,
         } = this.state;
-        let properties: null | Property[] = null;
+        let properties: PropertyMetaInformation[] = [];
         if (metaInformation?.typeMetaInformation?.properties) {
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
@@ -262,7 +262,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return ObjectFilterSortOrder.Ascending;
     }
 
-    private getVisibleProperties(properties: Property[]): Property[] {
+    private getVisibleProperties(properties: PropertyMetaInformation[]): PropertyMetaInformation[] {
         return properties.filter(item => !this.state.query.hiddenColumns.includes(item.name));
     }
 

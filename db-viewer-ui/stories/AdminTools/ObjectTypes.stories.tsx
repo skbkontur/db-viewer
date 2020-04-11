@@ -27,17 +27,14 @@ storiesOf("ObjectTypes", module)
                 {
                     identifier: "table 1",
                     schemaDescription: schema,
-                    typeMetaInformation: null,
                 },
                 {
                     identifier: "Table 3",
                     schemaDescription: schema,
-                    typeMetaInformation: null,
                 },
                 {
                     identifier: "table 2",
                     schemaDescription: schema,
-                    typeMetaInformation: null,
                 },
             ]}
         />

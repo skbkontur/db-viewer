@@ -29,7 +29,7 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
 
     public render(): JSX.Element {
         const { objectMeta, objectInfo, allowEdit, customRenderer } = this.props;
-        const objectProperties = objectMeta?.typeMetaInformation?.properties;
+        const typeMeta = objectMeta.typeMetaInformation;
         return (
             <div>
                 <Accordion
@@ -39,7 +39,7 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
                             target={target}
                             path={path}
                             customRenderer={customRenderer}
-                            property={PropertyMetaInformationUtils.getPropertyTypeByPath(objectProperties, path)}
+                            property={PropertyMetaInformationUtils.getPropertyTypeByPath(typeMeta, path)}
                             objectType={objectMeta.identifier}
                             allowEdit={allowEdit}
                             onChange={this.handleChange}

@@ -1,13 +1,12 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { tooltip, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
-import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
 import Select from "@skbkontur/react-ui/Select";
 import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
-import { Property } from "../../Domain/Objects/Property";
+import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ticksToTimestamp, timestampToTicks } from "../../Domain/Utils/ConvertTimeUtil";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 import { TimeUtils } from "../../Domain/Utils/TimeUtils";
@@ -20,11 +19,11 @@ import { OperatorSelect } from "./OperatorSelect";
 interface ObjectFilterProps {
     conditions: Condition[];
     onChange: (conditions: Condition[]) => void;
-    tableColumns: Property[];
+    tableColumns: PropertyMetaInformation[];
 }
 
 export class ObjectFilter extends React.Component<ObjectFilterProps> {
-    public getCondition(property: Property): Condition {
+    public getCondition(property: PropertyMetaInformation): Condition {
         const { conditions } = this.props;
         const result = conditions.find(x => x.path === property.name);
         if (result == null) {
@@ -37,7 +36,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         return result;
     }
 
-    public updateItem(property: Property, conditionUpdate: Partial<Condition>) {
+    public updateItem(property: PropertyMetaInformation, conditionUpdate: Partial<Condition>) {
         const { conditions, onChange } = this.props;
         const conditionIndex = conditions.findIndex(x => x.path === property.name);
         if (conditionIndex >= 0) {
@@ -51,8 +50,9 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         }
     }
 
-    public renderProperty(property: Property, value: Nullable<string>): JSX.Element {
-        if (property.type === "DateTime" || property.type === "DateTimeOffset") {
+    public renderProperty(property: PropertyMetaInformation, value: Nullable<string>): JSX.Element {
+        const type = property.type.typeName;
+        if (type === "DateTime" || type === "DateTimeOffset") {
             return (
                 <ColumnStack gap={2}>
                     <Fit>
@@ -80,7 +80,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                 </ColumnStack>
             );
         }
-        if (property.type === "Boolean") {
+        if (type === "Boolean") {
             return (
                 <ValidationWrapperV1
                     data-tid="BooleanValidation"
@@ -128,7 +128,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         );
     }
 
-    public getValidation(property: Property, value: string | null | undefined): ValidationInfo | null {
+    public getValidation(property: PropertyMetaInformation, value: string | null | undefined): ValidationInfo | null {
         if (property.isRequired && StringUtils.isNullOrWhitespace(value)) {
             return { message: "Поле должно быть заполнено", type: "submit" };
         }
@@ -141,7 +141,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         return (
             <ColumnStack gap={2} data-tid="ObjectFilters">
                 {tableColumns
-                    .map(x => [x, this.getCondition(x)] as [Property, Condition])
+                    .map(x => [x, this.getCondition(x)] as [PropertyMetaInformation, Condition])
                     .map(([property, condition]) => (
                         <FormRow key={property.name} captionWidth={200} caption={property.name} data-tid="Filter">
                             <RowStack baseline block gap={5} data-tid={property.name}>

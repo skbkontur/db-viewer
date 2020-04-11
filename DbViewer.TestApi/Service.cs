@@ -26,6 +26,7 @@ namespace SkbKontur.DbViewer.TestApi
                                 DownloadLimit = 100_000,
                                 CountLimit = 10_000,
                                 AllowReadAll = true,
+                                AllowEdit = true,
                             },
                         Types = BuildTypeDescriptions(typeof(TestClass)),
                         PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),

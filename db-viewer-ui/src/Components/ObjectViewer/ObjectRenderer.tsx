@@ -6,8 +6,8 @@ import Link from "@skbkontur/react-ui/Link";
 import _ from "lodash";
 import React from "react";
 
+import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
-import { Property } from "../../Domain/Objects/Property";
 
 import { renderForEdit, renderForDetails } from "./ObjectItemRender";
 
@@ -18,7 +18,7 @@ function getByPath(target: Nullable<{}>, path: string[]): any {
 interface ObjectRendererProps {
     target: object;
     path: string[];
-    property: Nullable<Property>;
+    property: PropertyMetaInformation;
     objectType: string;
     allowEdit: boolean;
     onChange: (value: any, path: string[]) => void;
@@ -33,7 +33,7 @@ interface ObjectRendererState {
 export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectRendererState> {
     public state: ObjectRendererState = {
         editableMode: false,
-        value: null,
+        value: undefined,
     };
 
     public handleClick = () => {
@@ -44,35 +44,28 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
     };
 
     public handleChange = (value: any) => {
-        this.setState({
-            value: value,
-        });
+        this.setState({ value: value });
     };
-    public handleSaveChanges = () => {
-        this.props.onChange(this.state.value, this.props.path);
 
-        this.setState({
-            editableMode: false,
-            value: null,
-        });
+    public handleSaveChanges = () => {
+        console.info(this.state.value, this.props.path);
+        this.props.onChange(this.state.value, this.props.path);
+        this.setState({ editableMode: false, value: undefined });
     };
 
     public handleCancelChanges = () => {
-        this.setState({
-            editableMode: false,
-            value: null,
-        });
+        this.setState({ editableMode: false, value: undefined });
     };
 
     public canEditProperty = () => {
         const { property, allowEdit } = this.props;
-        const type = property?.type;
-        return type != null && !type.includes("[]") && !property?.isIdentity && allowEdit;
+        const type = property.type.typeName;
+        return type != null && !type.includes("[]") && !property.isIdentity && allowEdit;
     };
 
     public render(): JSX.Element {
         const { path, target, property, objectType, customRenderer } = this.props;
-        const value = this.state.value != null ? this.state.value : getByPath(target, path);
+        const value = this.state.editableMode ? this.state.value : getByPath(target, path);
         const { editableMode } = this.state;
         const canEdit = this.canEditProperty();
         return (

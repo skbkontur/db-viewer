@@ -63,7 +63,7 @@ namespace SkbKontur.DbViewer.VNext.Helpers
         }
 
         [CanBeNull]
-        private static TypeMetaInformation BuildTypeMetaInformation(object @object, [NotNull] Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
+        public static TypeMetaInformation BuildTypeMetaInformation(object @object, [NotNull] Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                                                     ICustomPropertyConfigurationProvider propertyConfigurationProvider,
                                                                     [CanBeNull] [ItemNotNull] Type[] usedTypes = null)
         {
@@ -77,16 +77,28 @@ namespace SkbKontur.DbViewer.VNext.Helpers
                     {
                         TypeName = type.Name,
                         IsArray = true,
-                        ItemType = BuildTypeMetaInformation(type.GetElementType(), propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes),
+                        Properties = new PropertyMetaInformation[0],
+                        GenericTypeArguments = new[] {BuildTypeMetaInformation(type.GetElementType(), propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes)},
                     };
             }
 
             if (type.IsGenericType)
             {
+                if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                    return new TypeMetaInformation
+                        {
+                            TypeName = type.GetGenericArguments()[0].Name,
+                            IsNullable = true,
+                            Properties = new PropertyMetaInformation[0],
+                            GenericTypeArguments = new TypeMetaInformation[0],
+                        };
+                
+
                 return new TypeMetaInformation
                     {
                         TypeName = new Regex(@"`.*").Replace(type.GetGenericTypeDefinition().Name, ""),
                         IsArray = true,
+                        Properties = new PropertyMetaInformation[0],
                         GenericTypeArguments = type.GetGenericArguments()
                                                    .Select(x => BuildTypeMetaInformation(x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
                                                    .ToArray(),
@@ -96,8 +108,9 @@ namespace SkbKontur.DbViewer.VNext.Helpers
             return new TypeMetaInformation
                 {
                     TypeName = type.Name,
+                    GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = IsSimpleType(type)
-                                     ? null
+                                     ? new PropertyMetaInformation[0]
                                      : type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                            .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
                                            .ToArray(),
@@ -128,12 +141,13 @@ namespace SkbKontur.DbViewer.VNext.Helpers
                                           : propertyConfigurationProvider.TryGetConfiguration(@object, propertyInfo);
 
             var propertyType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
+            var underlyingType = propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? propertyType.GetGenericArguments()[0] : propertyType;
             var propertyDescription = propertyDescriptionBuilder.Build(propertyInfo, propertyType);
             return new PropertyMetaInformation
                 {
                     Name = propertyInfo.Name,
                     AvailableFilters = propertyDescription.AvailableFilters,
-                    AvailableValues = propertyType.IsEnum ? Enum.GetNames(propertyType) : new string[0],
+                    AvailableValues = underlyingType.IsEnum ? Enum.GetNames(underlyingType) : new string[0],
                     IsIdentity = propertyDescription.IsIdentity,
                     IsRequired = propertyDescription.IsRequired,
                     IsSearchable = propertyDescription.IsSearchable,

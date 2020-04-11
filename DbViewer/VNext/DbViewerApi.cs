@@ -21,10 +21,10 @@ namespace SkbKontur.DbViewer.VNext
         [HttpGet]
         [Route("names")]
         [NotNull, ItemNotNull]
-        public ObjectDescription[] GetNames()
+        public ObjectIdentifier[] GetNames()
         {
             return schemaRegistry.GetAllSchemas()
-                                 .SelectMany(s => s.Types.Select(x => new ObjectDescription {Identifier = x.Type.Name, SchemaDescription = s.Description}))
+                                 .SelectMany(s => s.Types.Select(x => new ObjectIdentifier {Identifier = x.Type.Name, SchemaDescription = s.Description}))
                                  .ToArray();
         }
 
@@ -118,8 +118,8 @@ namespace SkbKontur.DbViewer.VNext
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var result = await schemaRegistry.GetConnector(objectIdentifier).Read(query.GetFilters()).ConfigureAwait(false);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(result, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var typeInfo = TypeInfoExtractor.Extract(result, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var obj = ObjectsConverter.StoredToApi(typeInfo, type, result, schema.CustomPropertyConfigurationProvider);
             return new ObjectDetails

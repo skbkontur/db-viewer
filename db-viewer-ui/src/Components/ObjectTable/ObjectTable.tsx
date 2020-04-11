@@ -5,9 +5,9 @@ import classNames from "classnames";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
+import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
-import { Property } from "../../Domain/Objects/Property";
 import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
@@ -17,9 +17,9 @@ import styles from "./ObjectTable.less";
 
 interface ObjectTableProps {
     customRenderer: ICustomRenderer;
-    items: null | undefined | object[];
+    items: object[];
     objectType: string;
-    properties: Property[];
+    properties: PropertyMetaInformation[];
     onChangeSortClick: (name: string) => void;
     onDetailsClick: (item: object) => string;
     onDeleteClick: (index: number) => Promise<void>;
@@ -73,7 +73,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
                 {this.state.showConfirmModal && (
                     <ConfirmDeleteObjectModal onDelete={this.handleDeleteItem} onCancel={this.handleCancelDelete} />
                 )}
-                {properties && properties.length && items && items.length ? (
+                {properties.length !== 0 && items.length !== 0 ? (
                     <AdvancedTable>
                         <AdvancedTable.Head data-tid="TableHeader" className={styles.tableHeader}>
                             <AdvancedTable.Row className={styles.row}>
@@ -121,7 +121,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         return <SortDownIcon />;
     }
 
-    public renderTableHeader(item: Property, key: number): JSX.Element {
+    public renderTableHeader(item: PropertyMetaInformation, key: number): JSX.Element {
         const name = item.name;
         const content = item.isSortable ? (
             <Link
@@ -167,7 +167,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         return arr;
     }
 
-    public renderCell(item: any, key: string, type: Property): JSX.Element {
+    public renderCell(item: any, key: string, type: PropertyMetaInformation): JSX.Element {
         const { customRenderer, objectType } = this.props;
         return (
             <td key={key} className={styles.cell} data-tid={key}>

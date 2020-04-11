@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -18,7 +17,7 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpGet]
         [Route("names")]
-        public ObjectDescription[] GetNames() => impl.GetNames();
+        public ObjectIdentifier[] GetNames() => impl.GetNames();
 
         [HttpGet]
         [Route("{objectIdentifier}/meta")]

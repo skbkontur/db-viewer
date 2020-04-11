@@ -2,11 +2,12 @@ import Checkbox from "@skbkontur/react-ui/Checkbox";
 import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
 import Link from "@skbkontur/react-ui/Link";
+import Select from "@skbkontur/react-ui/Select";
 import _ from "lodash";
 import React from "react";
 
+import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
-import { Property } from "../../Domain/Objects/Property";
 import { FileUtils } from "../../Domain/Utils/FileUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 
@@ -25,7 +26,7 @@ function download(objectType: string, path: string[], content: string) {
 function renderObject(
     target: any,
     path: string[],
-    property: Nullable<Property>,
+    property: PropertyMetaInformation,
     objectType: string
 ): string | JSX.Element {
     const result = typeof target === "object" ? getByPath(target, path) : null;
@@ -33,7 +34,7 @@ function renderObject(
         return <span style={{ color: "#a0a0a0" }}>{String(result)}</span>;
     }
 
-    if (property?.type === "Byte[]") {
+    if (property.type.typeName === "Byte[]") {
         return (
             <Link data-tid="DownloadLink" onClick={() => download(objectType, path, result)}>
                 Скачать
@@ -47,11 +48,11 @@ function renderObject(
 export function renderForTableCell(
     target: any,
     path: string[],
-    property: Nullable<Property>,
+    property: PropertyMetaInformation,
     objectType: string,
     customRenderer: ICustomRenderer
 ): string | JSX.Element {
-    const customRender = customRenderer.renderTableCell(target, path);
+    const customRender = customRenderer.renderTableCell(target, path, property, objectType);
     if (customRender) {
         return customRender;
     }
@@ -62,11 +63,11 @@ export function renderForTableCell(
 export function renderForDetails(
     target: any,
     path: string[],
-    property: Nullable<Property>,
+    property: PropertyMetaInformation,
     objectType: string,
     customRenderer: ICustomRenderer
 ): string | JSX.Element {
-    const customRender = customRenderer.renderDetails(target, path, objectType);
+    const customRender = customRenderer.renderDetails(target, path, property, objectType);
     if (customRender) {
         return customRender;
     }
@@ -76,21 +77,34 @@ export function renderForDetails(
 
 export function renderForEdit(
     value: any,
-    property: Nullable<Property>,
+    property: PropertyMetaInformation,
     objectType: string,
-    onChange: (x0: any) => void,
+    onChange: (value: any) => void,
     customRenderer: ICustomRenderer
 ): string | JSX.Element {
-    const customEdit = customRenderer.renderEdit(value, property, onChange);
+    const customEdit = customRenderer.renderEdit(value, property, objectType, onChange);
     if (customEdit) {
         return customEdit;
     }
 
-    const type = property?.type;
+    if (property != null && property.availableValues.length > 0) {
+        const values = property.type.isNullable ? ["null", ...property.availableValues] : property.availableValues;
+        return (
+            <Select
+                data-tid="EnumSelect"
+                items={values.map(x => [x, String(x)])}
+                onChange={(e: any, nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
+                value={value || "null"}
+            />
+        );
+    }
+
+    const type = property.type.typeName;
     switch (type) {
         case "Boolean":
             return <Checkbox checked={!!value} onChange={(e, nextValue) => onChange(nextValue)} />;
         case "DateTime":
+        case "DateTimeOffset":
             return (
                 <DateTimePicker
                     value={value != null ? new Date(String(value)) : null}
@@ -98,21 +112,40 @@ export function renderForEdit(
                     defaultTime={""}
                 />
             );
+        case "Float":
+        case "Double":
         case "Decimal":
             return (
                 <CurrencyInput
                     value={Number(value)}
                     onChange={(e, nextValue) => onChange(nextValue)}
-                    fractionDigits={2}
+                    fractionDigits={4}
                 />
             );
 
-        case "Int32":
+        case "Byte":
+        case "UInt16":
+        case "UInt32":
+        case "UInt64":
             return (
                 <CurrencyInput
+                    width={300}
                     value={Number(value)}
                     onChange={(e, nextValue) => onChange(nextValue)}
                     fractionDigits={0}
+                />
+            );
+        case "SByte":
+        case "Int16":
+        case "Int32":
+        case "Int64":
+            return (
+                <CurrencyInput
+                    width={300}
+                    value={Number(value)}
+                    onChange={(e, nextValue) => onChange(nextValue)}
+                    fractionDigits={0}
+                    signed
                 />
             );
         case null:
@@ -123,6 +156,6 @@ export function renderForEdit(
             if (type.indexOf("[]") !== -1) {
                 throw new Error("Пытаемся изменить массив");
             }
-            return <Input value={String(value || "")} onChange={(e, nextValue) => onChange(nextValue)} />;
+            return <Input width={300} value={String(value || "")} onChange={(e, nextValue) => onChange(nextValue)} />;
     }
 }
