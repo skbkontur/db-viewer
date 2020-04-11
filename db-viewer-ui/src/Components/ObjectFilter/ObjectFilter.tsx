@@ -2,6 +2,7 @@ import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { tooltip, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
 import Checkbox from "@skbkontur/react-ui/Checkbox";
 import Input from "@skbkontur/react-ui/Input";
+import Select from "@skbkontur/react-ui/Select";
 import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
@@ -51,7 +52,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
     }
 
     public renderProperty(property: Property, value: Nullable<string>): JSX.Element {
-        if (property.type === "DateTime") {
+        if (property.type === "DateTime" || property.type === "DateTimeOffset") {
             return (
                 <ColumnStack gap={2}>
                     <Fit>
@@ -60,17 +61,13 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             defaultTime={""}
                             error={false}
                             timeZone={TimeUtils.TimeZones.UTC}
-                            onChange={(e, date) =>
-                                this.updateItem(property, {
-                                    value: timestampToTicks(date),
-                                })
-                            }
+                            onChange={(e, date) => this.updateItem(property, { value: timestampToTicks(date) })}
                             value={value ? ticksToTimestamp(value) : null}
                         />
                     </Fit>
                     <Fit>
                         <ValidationWrapperV1
-                            data-tid="InputValidation"
+                            data-tid="DateTimeValidation"
                             renderMessage={tooltip("right middle")}
                             validationInfo={this.getValidation(property, value)}>
                             <Input
@@ -85,10 +82,36 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         }
         if (property.type === "Boolean") {
             return (
-                <Checkbox
-                    checked={value === "true"}
-                    onChange={(e, checked) => this.updateItem(property, { value: String(checked) })}
-                />
+                <ValidationWrapperV1
+                    data-tid="BooleanValidation"
+                    renderMessage={tooltip("right middle")}
+                    validationInfo={this.getValidation(property, value)}>
+                    <Select
+                        data-tid="BooleanSelect"
+                        items={[null, "true", "false"].map(x => [x, String(x)])}
+                        onChange={(e: any, nextValue: any) => {
+                            this.updateItem(property, { value: nextValue });
+                        }}
+                        value={value || undefined}
+                    />
+                </ValidationWrapperV1>
+            );
+        }
+        if (property.availableValues.length !== 0) {
+            return (
+                <ValidationWrapperV1
+                    data-tid="EnumValidation"
+                    renderMessage={tooltip("right middle")}
+                    validationInfo={this.getValidation(property, value)}>
+                    <Select
+                        data-tid="EnumSelect"
+                        items={[null, ...property.availableValues].map(x => [x, String(x)])}
+                        onChange={(e: any, nextValue: any) => {
+                            this.updateItem(property, { value: nextValue });
+                        }}
+                        value={value || undefined}
+                    />
+                </ValidationWrapperV1>
             );
         }
         return (
@@ -97,7 +120,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                 renderMessage={tooltip("right middle")}
                 validationInfo={this.getValidation(property, value)}>
                 <Input
-                    data-tid={"Input"}
+                    data-tid="Input"
                     onChange={(e, nextValue) => this.updateItem(property, { value: nextValue })}
                     value={value || ""}
                 />

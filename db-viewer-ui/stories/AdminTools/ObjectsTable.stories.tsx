@@ -24,6 +24,7 @@ const nonIndexed: PropertyMetaInformation = {
     isRequired: false,
     isIdentity: false,
     availableFilters: [],
+    availableValues: [],
 };
 
 const indexed: PropertyMetaInformation = {
@@ -34,6 +35,7 @@ const indexed: PropertyMetaInformation = {
     isRequired: false,
     isIdentity: false,
     availableFilters: [ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual],
+    availableValues: [],
 };
 
 storiesOf("ObjectTable", module)

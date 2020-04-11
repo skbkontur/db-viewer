@@ -6,7 +6,8 @@ export interface PropertyInfo {
     isSearchable: boolean;
     isSortable: boolean;
     isRequired: boolean;
-    availableFilters?: null | ObjectFieldFilterOperator[];
+    availableFilters: ObjectFieldFilterOperator[];
+    availableValues: string[];
 }
 
 export interface Property {
@@ -16,5 +17,6 @@ export interface Property {
     isSearchable: boolean;
     isSortable: boolean;
     isRequired: boolean;
-    availableFilters?: null | ObjectFieldFilterOperator[];
+    availableFilters: ObjectFieldFilterOperator[];
+    availableValues: string[];
 }

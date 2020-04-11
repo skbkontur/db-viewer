@@ -150,6 +150,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         isRequired: true,
                         isSearchable: true,
                         isSortable: false,
+                        availableValues: [],
                         availableFilters: [],
                         type: {
                             typeName: "String",
@@ -165,6 +166,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         isRequired: true,
                         isSearchable: true,
                         isSortable: false,
+                        availableValues: [],
                         availableFilters: [],
                         type: {
                             typeName: "String",
@@ -180,6 +182,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         isRequired: true,
                         isSearchable: true,
                         isSortable: false,
+                        availableValues: [],
                         availableFilters: [],
                         type: {
                             typeName: "Nullable",

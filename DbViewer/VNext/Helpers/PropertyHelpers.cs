@@ -133,6 +133,7 @@ namespace SkbKontur.DbViewer.VNext.Helpers
                 {
                     Name = propertyInfo.Name,
                     AvailableFilters = propertyDescription.AvailableFilters,
+                    AvailableValues = propertyType.IsEnum ? Enum.GetNames(propertyType) : new string[0],
                     IsIdentity = propertyDescription.IsIdentity,
                     IsRequired = propertyDescription.IsRequired,
                     IsSearchable = propertyDescription.IsSearchable,

@@ -24,6 +24,10 @@ namespace SkbKontur.DbViewer.VNext.DataTypes
         [JsonProperty("availableFilters")]
         public ObjectFieldFilterOperator[] AvailableFilters { get; set; }
 
+        [NotNull, ItemNotNull]
+        [JsonProperty("availableValues")]
+        public string[] AvailableValues { get; set; }
+
         [JsonProperty("type")]
         public TypeMetaInformation Type { get; set; }
     }

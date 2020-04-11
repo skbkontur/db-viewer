@@ -4,13 +4,16 @@ import React from "react";
 
 import { renderForEdit } from "../../src/Components/ObjectViewer/ObjectItemRender";
 import { NullCustomRenderer } from "../../src/Domain/Objects/CustomRenderer";
+import { PropertyInfo } from "../../src/Domain/Objects/Property";
 
-const prop = {
+const prop: PropertyInfo = {
     name: "",
     isIdentity: false,
     isSearchable: false,
     isSortable: false,
     isRequired: false,
+    availableFilters: [],
+    availableValues: [],
 };
 
 const renderer = new NullCustomRenderer();
