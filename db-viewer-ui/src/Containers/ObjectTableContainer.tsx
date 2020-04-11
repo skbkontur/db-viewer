@@ -12,7 +12,6 @@ import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
 import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
-import { FileInfo } from "../Domain/Api/DataTypes/FileInfo";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
 import { ObjectFilterSortOrder } from "../Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
@@ -24,11 +23,13 @@ import { Property } from "../Domain/Objects/Property";
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
+import { FileUtils } from "../Domain/Utils/FileUtils";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTableProps extends RouteComponentProps {
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
+    useErrorHandlingContainer: boolean;
     objectId: string;
     urlQuery: string;
     allowEdit: boolean;
@@ -105,9 +106,14 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
 
+        const { allowReadAll, allowDelete } = metaInformation?.schemaDescription || {
+            allowReadAll: false,
+            allowDelete: false,
+        };
+
         return (
             <CommonLayout>
-                <ErrorHandlingContainer />
+                {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoToObjectsList">
                     Вернуться к списку видов объектов
                 </CommonLayout.GoBack>
@@ -116,7 +122,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                     tools={
                         <ObjectTableLayoutHeader
                             query={this.state.query}
-                            allowReadAll={metaInformation?.schemaDescription.allowReadAll || false}
+                            allowReadAll={allowReadAll}
                             properties={properties}
                             onChange={this.handleChangeModalFilter}
                             onDownloadClick={this.handleCheckCount}
@@ -139,6 +145,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                     properties && (
                                         <ObjectTable
                                             properties={this.getVisibleProperties(properties)}
+                                            objectType={metaInformation?.identifier || ""}
                                             customRenderer={this.props.customRenderer}
                                             currentSort={sort}
                                             items={objects.items}
@@ -152,7 +159,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                                     },
                                                 })
                                             }
-                                            allowDelete={this.props.allowEdit}
+                                            allowDelete={this.props.allowEdit && allowDelete}
                                         />
                                     )
                                 ) : (
@@ -363,19 +370,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             }
 
             if (downloadResult.file) {
-                this.createDownloadableCsvFile(downloadResult.file);
+                FileUtils.downloadFile(downloadResult.file);
             }
         } finally {
             this.setState({ downloading: false });
         }
     };
-
-    private createDownloadableCsvFile(file: FileInfo) {
-        const link = document.createElement("a");
-        link.download = file.name;
-        link.href = `data:application/octet-stream;base64,${file.content}`;
-        link.click();
-    }
 
     private async handleDeleteObject(index: number): Promise<void> {
         const { objects, metaInformation } = this.state;

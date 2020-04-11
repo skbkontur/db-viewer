@@ -12,7 +12,7 @@ export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteOb
     return (
         <Modal ignoreBackgroundClick noClose data-tid="ConfirmDeleteObjectModal">
             <Modal.Header>Подтвердите удаление объекта</Modal.Header>
-            <Modal.Body>Все удаленные объекты логируются с тегом [BOS-HISTORY]</Modal.Body>
+            <Modal.Body>Данные об объекте будут удалены безвозвратно</Modal.Body>
             <Modal.Footer panel>
                 <RowStack gap={2} block>
                     <Fit>

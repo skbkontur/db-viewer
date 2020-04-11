@@ -20,20 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Settings\sampleApi.csf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DbViewer.Cql\DbViewer.Cql.csproj" />
     <ProjectReference Include="..\DbViewer\DbViewer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Alko.Configuration.Settings">
-      <HintPath>..\Assemblies\Alko.Configuration.Settings.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

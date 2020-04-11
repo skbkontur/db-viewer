@@ -9,6 +9,8 @@ import objects from "./Responses/objects.json";
 
 const schema: SchemaDescription = {
     allowReadAll: true,
+    allowDelete: true,
+    allowEdit: true,
     schemaName: "ab",
     downloadLimit: 100,
     countLimit: 10,

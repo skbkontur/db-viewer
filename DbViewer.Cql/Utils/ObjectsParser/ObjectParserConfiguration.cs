@@ -45,6 +45,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
                    .Configure<sbyte>(sbyte.TryParse)
                    .Configure<long>(long.TryParse)
                    .Configure<short>(short.TryParse)
+                   .Configure((string value, out decimal result) => decimal.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                    .Configure((string value, out double result) => double.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                    .Configure((string value, out float result) => float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
                    .Configure<bool>(bool.TryParse)

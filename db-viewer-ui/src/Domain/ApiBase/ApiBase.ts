@@ -5,6 +5,15 @@ interface ParamsMap {
     [key: string]: null | undefined | number | string | any[] | boolean;
 }
 
+function getExceptionInfo(exception: object, path: string): string {
+    return (
+        exception["Exception" + path] ||
+        exception["exception" + path] ||
+        exception[path] ||
+        exception[path[0].toLowerCase() + path.substr(1)]
+    );
+}
+
 export default class ApiBase {
     public static additionalHeaders: RequestInit = {
         headers: {
@@ -33,10 +42,10 @@ export default class ApiBase {
             if (serverResponse != null) {
                 throw new ApiError(
                     errorText,
-                    serverResponse.message,
+                    getExceptionInfo(serverResponse, "Message"),
                     response.status,
-                    serverResponse.type,
-                    serverResponse.stackTrace,
+                    getExceptionInfo(serverResponse, "Type"),
+                    serverResponse.stackTrace || serverResponse.StackTrace,
                     serverResponse.innerErrors
                 );
             }

@@ -16,8 +16,6 @@ interface ErrorHandlingContainerModalState {
 interface ErrorHandlingContainerModalProps {
     canClose: boolean;
     onClose: () => void;
-    errorModalTitle: string;
-    showMessageFromServerByDefault: boolean;
     message: string;
     stack: Nullable<string>;
     serverStack: Nullable<string>;
@@ -44,35 +42,22 @@ export class ErrorHandlingContainerModal extends React.Component<
     };
 
     public render() {
-        const {
-            canClose,
-            message,
-            errorModalTitle,
-            onClose,
-            serverStack,
-            showMessageFromServerByDefault,
-            stack,
-            children,
-        } = this.props;
+        const { canClose, message, onClose, serverStack, stack } = this.props;
 
         const { showStack } = this.state;
 
         return (
             <Modal data-tid="ErrorHandlingContainerModal" onClose={canClose ? onClose : undefined} noClose={!canClose}>
-                <Modal.Header data-tid="Header">{errorModalTitle}</Modal.Header>
+                <Modal.Header data-tid="Header">Произошла непредвиденная ошибка</Modal.Header>
                 <Modal.Body>
                     <div className={styles.userMessage}>
-                        {showMessageFromServerByDefault && (
-                            <div className={styles.errorMessageFromServer}>
-                                <div className={styles.errorMessageWrap} data-tid="ErrorMessage">
-                                    {message}
-                                </div>
-                                <hr />
+                        <div data-tid="CallToActionInErrorMessage">
+                            <div className={styles.content}>
+                                <p>Попробуйте повторить запрос или обновить страницу через некоторое время.</p>
                             </div>
-                        )}
-                        <div data-tid="CallToActionInErrorMessage">{children}</div>
+                        </div>
                     </div>
-                    {showStack && !showMessageFromServerByDefault && (
+                    {showStack && (
                         <div>
                             <hr />
                             <div className={styles.errorMessageWrap} data-tid="ErrorMessage">

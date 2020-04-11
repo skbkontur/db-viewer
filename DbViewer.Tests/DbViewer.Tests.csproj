@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="AutoFixture" Version="4.8.0" />
-    <PackageReference Include="CassandraCSharpDriver" Version="3.7.0" />
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="GroboContainer" Version="1.2.37" />
     <PackageReference Include="GroBuf" Version="1.4.6" />
@@ -21,28 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\DbViewer.Cql\DbViewer.Cql.csproj" />
     <ProjectReference Include="..\DbViewer.TestApi\DbViewer.TestApi.csproj" />
-    <ProjectReference Include="..\DbViewer\DbViewer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Settings\dependencies.csf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Settings\tests.csf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Alko.Configuration.Settings">
-      <HintPath>..\Assemblies\Alko.Configuration.Settings.dll</HintPath>
-    </Reference>
-    <Reference Include="Catalogue.CassandraUtils.Cassandra.Commons">
-      <HintPath>..\Assemblies\Catalogue.CassandraUtils.Cassandra.Commons.dll</HintPath>
-    </Reference>
-    <Reference Include="Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending">
-      <HintPath>..\Assemblies\Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

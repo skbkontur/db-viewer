@@ -1,4 +1,4 @@
-﻿namespace SkbKontur.DbViewer.TestApi.Impl.Classes
+﻿namespace SkbKontur.DbViewer.TestApi.Cql
 {
     public enum DocumentPrintingStatus
     {

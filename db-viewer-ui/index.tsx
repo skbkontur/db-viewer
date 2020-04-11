@@ -21,8 +21,9 @@ function AdminToolsEntryPoint() {
                     path="/BusinessObjects"
                     render={props => (
                         <DbViewerApplication
-                            identifierKeywords={["Diadoc", "StorageElement", "Party", "User"]}
+                            identifierKeywords={["Cql", "StorageElement"]}
                             customRenderer={new NullCustomRenderer()}
+                            useErrorHandlingContainer
                             allowEdit
                             dbViewerApi={dbViewerApi}
                             {...props}

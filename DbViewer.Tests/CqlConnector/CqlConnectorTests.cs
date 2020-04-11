@@ -1,46 +1,59 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using AutoFixture;
 
-using FluentAssertions;
+using Cassandra;
+using Cassandra.Data.Linq;
 
-using GroboContainer.Core;
-using GroboContainer.Impl;
+using FluentAssertions;
 
 using NUnit.Framework;
 
-using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Actualization;
-using SKBKontur.Catalogue.CassandraUtils.Cassandra.Commons.Mapping;
-using SKBKontur.Catalogue.CassandraUtils.Cassandra.SessionTableQueryExtending.PrimitiveStoring;
-
-using SkbKontur.DbViewer.Cql;
+using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Dto;
-using SkbKontur.DbViewer.Tests.CqlConnector.Configuration;
-using SkbKontur.DbViewer.Tests.CqlConnector.TestClasses;
-using SkbKontur.DbViewer.Tests.DI;
+using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.VNext.DataTypes;
+
+using Sort = SkbKontur.DbViewer.Dto.Sort;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
-    [Ignore("Unable to run integration tests")]
+    [NUnit.Framework.Ignore("Unable to run integration tests")]
     public class CqlConnectorTests
     {
+        private static ISession TryConnectToCassandra(TimeSpan timeout, TimeSpan interval)
+        {
+            var sw = Stopwatch.StartNew();
+            while (sw.Elapsed < timeout)
+            {
+                try
+                {
+                    var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+                    Console.WriteLine($"Successfully connected to cassandra after {sw.Elapsed.TotalSeconds} seconds");
+                    return session;
+                }
+                catch (NoHostAvailableException)
+                {
+                }
+
+                Thread.Sleep(interval);
+            }
+
+            throw new InvalidOperationException($"Failed to wait for local cassandra node to start in {timeout.TotalSeconds} seconds");
+        }
+
         [OneTimeSetUp]
         public void SetUp()
         {
-            container = new Container(new ContainerConfiguration(AssembliesLoader.Load()));
-            container.Configure();
-            var cassandraMapsFromAttributes = container.Get<IMappingsRetriever>().GetAttributeMappings();
-            container.Get<ICassandraSchemaActualizer>().Actualize(cassandraMapsFromAttributes);
-            foreach (var x in container.Get<ICassandraStorageFactory>().GetSimpleCassandraStorages())
-            {
-                container.Configurator.ForAbstraction(x.GetType()).UseInstances(x);
-            }
-
-            connector = (CqlDbConnector<TestDbSearcherObject>)container.Get<CqlDbConnectorFactory>().CreateConnector<TestDbSearcherObject>();
-            storage = container.Get<CassandraStorage<TestDbSearcherObject>>();
+            var session = TryConnectToCassandra(timeout : TimeSpan.FromMinutes(1), interval : TimeSpan.FromSeconds(1));
+            session.CreateKeyspaceIfNotExists(CqlDbConnectorFactory.Keyspace);
+            table = new Table<TestDbSearcherObject>(session);
+            table.CreateIfNotExists();
+            connector = new CqlDbConnectorFactory().CreateConnector<TestDbSearcherObject>();
         }
 
         [Test]
@@ -77,18 +90,23 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                                    .With(x => x.ClusteringKey1, ck2)
                                    .CreateMany(count)
                                    .ToArray();
-            await storage.WriteAsync(objects11.Concat(objects12).Concat(objects21).Concat(objects22));
-            (await connector.Search(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", pk1),
-                            CreateEqualsFilter("PartitionKey2", pk21),
-                        }, null, 0, 0) as TestDbSearcherObject[]).Should().BeEquivalentTo(objects11.Concat(objects12));
-            (await connector.Search(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", pk1),
-                            CreateEqualsFilter("PartitionKey2", pk21),
-                            CreateEqualsFilter("ClusteringKey1", ck1),
-                        }, null, 0, 0) as TestDbSearcherObject[]).Should().BeEquivalentTo(objects11);
+
+            Write(objects11.Concat(objects12).Concat(objects21).Concat(objects22).ToArray());
+
+            var foundByPartitionKey = await connector.Search(new[]
+                {
+                    CreateEqualsFilter("PartitionKey1", pk1),
+                    CreateEqualsFilter("PartitionKey2", pk21),
+                }, new Sort[0], 0, 100);
+            foundByPartitionKey.Should().BeEquivalentTo(objects11.Concat(objects12));
+
+            var foundWithClusteringKey = await connector.Search(new[]
+                {
+                    CreateEqualsFilter("PartitionKey1", pk1),
+                    CreateEqualsFilter("PartitionKey2", pk21),
+                    CreateEqualsFilter("ClusteringKey1", ck1),
+                }, new Sort[0], 0, 100);
+            foundWithClusteringKey.Should().BeEquivalentTo(objects11);
         }
 
         [Test]
@@ -106,7 +124,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                                  .OrderBy(x => x.ClusteringKey2)
                                  .ToArray();
 
-            await storage.WriteAsync(objects);
+            Write(objects);
 
             (await connector.Search(new[]
                         {
@@ -119,7 +137,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                                     Type = ObjectFieldFilterOperator.GreaterThanOrEquals,
                                     Value = objects[4].ClusteringKey2,
                                 },
-                        }, null, 0, 0) as TestDbSearcherObject[]).Should().BeEquivalentTo(objects.Skip(4));
+                        }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Skip(4));
 
             (await connector.Search(new[]
                         {
@@ -132,7 +150,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                                     Type = ObjectFieldFilterOperator.GreaterThan,
                                     Value = objects[4].ClusteringKey2,
                                 },
-                        }, null, 0, 0) as TestDbSearcherObject[]).Should().BeEquivalentTo(objects.Skip(5));
+                        }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Skip(5));
 
             (await connector.Search(new[]
                         {
@@ -145,7 +163,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                                     Type = ObjectFieldFilterOperator.LessThanOrEquals,
                                     Value = objects[4].ClusteringKey2,
                                 },
-                        }, null, 0, 0) as TestDbSearcherObject[]).Should().BeEquivalentTo(objects.Take(5));
+                        }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Take(5));
 
             (await connector.Search(new[]
                         {
@@ -158,7 +176,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                                     Type = ObjectFieldFilterOperator.LessThan,
                                     Value = objects[4].ClusteringKey2,
                                 },
-                        }, null, 0, 0) as TestDbSearcherObject[]).Should().BeEquivalentTo(objects.Take(4));
+                        }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Take(4));
         }
 
         [Test]
@@ -166,23 +184,23 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
         {
             var fixture = new Fixture();
             var testObject1 = fixture.Create<TestDbSearcherObject>();
-            await storage.WriteAsync(testObject1);
+            Write(testObject1);
             var testObject2 = fixture.Create<TestDbSearcherObject>();
-            await storage.WriteAsync(testObject2);
+            Write(testObject2);
             (await connector.Read(new[]
                         {
                             CreateEqualsFilter("PartitionKey1", testObject1.PartitionKey1),
                             CreateEqualsFilter("PartitionKey2", testObject1.PartitionKey2),
                             CreateEqualsFilter("ClusteringKey1", testObject1.ClusteringKey1),
                             CreateEqualsFilter("ClusteringKey2", testObject1.ClusteringKey2),
-                        }) as TestDbSearcherObject).Should().BeEquivalentTo(testObject1);
+                        })).Should().BeEquivalentTo(testObject1);
             (await connector.Read(new[]
                         {
                             CreateEqualsFilter("PartitionKey1", testObject2.PartitionKey1),
                             CreateEqualsFilter("PartitionKey2", testObject2.PartitionKey2),
                             CreateEqualsFilter("ClusteringKey1", testObject2.ClusteringKey1),
                             CreateEqualsFilter("ClusteringKey2", testObject2.ClusteringKey2),
-                        }) as TestDbSearcherObject).Should().BeEquivalentTo(testObject2);
+                        })).Should().BeEquivalentTo(testObject2);
         }
 
         [Test]
@@ -190,9 +208,9 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
         {
             var fixture = new Fixture();
             var testObject1 = fixture.Create<TestDbSearcherObject>();
-            await storage.WriteAsync(testObject1);
+            Write(testObject1);
             var testObject2 = fixture.Create<TestDbSearcherObject>();
-            await storage.WriteAsync(testObject2);
+            Write(testObject2);
             testObject1.Value = Guid.NewGuid().ToString();
             await connector.Write(testObject1);
             (await connector.Read(new[]
@@ -201,14 +219,14 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                             CreateEqualsFilter("PartitionKey2", testObject1.PartitionKey2),
                             CreateEqualsFilter("ClusteringKey1", testObject1.ClusteringKey1),
                             CreateEqualsFilter("ClusteringKey2", testObject1.ClusteringKey2),
-                        }) as TestDbSearcherObject).Should().BeEquivalentTo(testObject1);
+                        })).Should().BeEquivalentTo(testObject1);
             (await connector.Read(new[]
                         {
                             CreateEqualsFilter("PartitionKey1", testObject2.PartitionKey1),
                             CreateEqualsFilter("PartitionKey2", testObject2.PartitionKey2),
                             CreateEqualsFilter("ClusteringKey1", testObject2.ClusteringKey1),
                             CreateEqualsFilter("ClusteringKey2", testObject2.ClusteringKey2),
-                        }) as TestDbSearcherObject).Should().BeEquivalentTo(testObject2);
+                        })).Should().BeEquivalentTo(testObject2);
         }
 
         [Test]
@@ -216,9 +234,9 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
         {
             var fixture = new Fixture();
             var testObject1 = fixture.Create<TestDbSearcherObject>();
-            await storage.WriteAsync(testObject1);
+            Write(testObject1);
             var testObject2 = fixture.Create<TestDbSearcherObject>();
-            await storage.WriteAsync(testObject2);
+            Write(testObject2);
             await connector.Delete(testObject1);
             (await connector.Read(new[]
                         {
@@ -226,14 +244,14 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                             CreateEqualsFilter("PartitionKey2", testObject1.PartitionKey2),
                             CreateEqualsFilter("ClusteringKey1", testObject1.ClusteringKey1),
                             CreateEqualsFilter("ClusteringKey2", testObject1.ClusteringKey2),
-                        }) as TestDbSearcherObject).Should().BeEquivalentTo((TestDbSearcherObject)null);
+                        })).Should().Be(null);
             (await connector.Read(new[]
                         {
                             CreateEqualsFilter("PartitionKey1", testObject2.PartitionKey1),
                             CreateEqualsFilter("PartitionKey2", testObject2.PartitionKey2),
                             CreateEqualsFilter("ClusteringKey1", testObject2.ClusteringKey1),
                             CreateEqualsFilter("ClusteringKey2", testObject2.ClusteringKey2),
-                        }) as TestDbSearcherObject).Should().BeEquivalentTo(testObject2);
+                        })).Should().BeEquivalentTo(testObject2);
         }
 
         private Filter CreateEqualsFilter<T>(string field, T value)
@@ -246,8 +264,13 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                 };
         }
 
-        private Container container;
-        private CqlDbConnector<TestDbSearcherObject> connector;
-        private CassandraStorage<TestDbSearcherObject> storage;
+        private void Write(params TestDbSearcherObject[] objects)
+        {
+            foreach (var o in objects)
+                table.Insert(o).SetTimestamp(DateTimeOffset.UtcNow).Execute();
+        }
+
+        private IDbConnector connector;
+        private Table<TestDbSearcherObject> table;
     }
 }

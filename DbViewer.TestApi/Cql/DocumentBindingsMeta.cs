@@ -3,14 +3,14 @@
 using Cassandra;
 using Cassandra.Mapping.Attributes;
 
-namespace SkbKontur.DbViewer.TestApi.Impl.Classes
+namespace SkbKontur.DbViewer.TestApi.Cql
 {
-    [Table("document_bindings_meta", Keyspace = "EdiCoreKeyspace", CaseSensitive = true)]
-    public class NestedCqlObject
+    [Table("document_bindings_meta", Keyspace = CqlDbConnectorFactory.Keyspace, CaseSensitive = true)]
+    public class DocumentBindingsMeta
     {
         [Column("binding_type", Type = typeof(sbyte))]
         [PartitionKey(0)]
-        public BindingType BindingType { get; set; }
+        public DocumentBindingType BindingType { get; set; }
 
         [Column("first_partner_party_id")]
         [PartitionKey(1)]

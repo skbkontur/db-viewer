@@ -4,6 +4,7 @@ import Loader from "@skbkontur/react-ui/Loader";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
+import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
@@ -12,6 +13,7 @@ import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTypesProps extends RouteComponentProps {
     dbViewerApi: IDbViewerApi;
+    useErrorHandlingContainer: boolean;
     identifierKeywords: string[];
     path: string;
 }
@@ -53,6 +55,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
 
         return (
             <CommonLayout>
+                {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)}>
                     Вернуться к инструментам администратора
                 </CommonLayout.GoBack>

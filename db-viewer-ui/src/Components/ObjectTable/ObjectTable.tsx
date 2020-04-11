@@ -18,6 +18,7 @@ import styles from "./ObjectTable.less";
 interface ObjectTableProps {
     customRenderer: ICustomRenderer;
     items: null | undefined | object[];
+    objectType: string;
     properties: Property[];
     onChangeSortClick: (name: string) => void;
     onDetailsClick: (item: object) => string;
@@ -84,7 +85,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
                             {items.map((item, index) => (
                                 <AdvancedTable.Row key={index} className={styles.row} data-tid="Row">
                                     {this.renderControls(item, index)}
-                                    {properties.map(key => this.renderCell(item, key.name))}
+                                    {properties.map(key => this.renderCell(item, key.name, key))}
                                 </AdvancedTable.Row>
                             ))}
                         </AdvancedTable.Body>
@@ -166,11 +167,11 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         return arr;
     }
 
-    public renderCell(item: any, key: string): JSX.Element {
-        const { customRenderer } = this.props;
+    public renderCell(item: any, key: string, type: Property): JSX.Element {
+        const { customRenderer, objectType } = this.props;
         return (
             <td key={key} className={styles.cell} data-tid={key}>
-                {renderForTableCell(item, [key], customRenderer)}
+                {renderForTableCell(item, [key], type, objectType, customRenderer)}
             </td>
         );
     }
