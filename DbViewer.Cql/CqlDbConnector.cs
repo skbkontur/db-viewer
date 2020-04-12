@@ -7,10 +7,7 @@ using Cassandra.Data.Linq;
 
 using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Cql.Utils;
-using SkbKontur.DbViewer.Dto;
-using SkbKontur.DbViewer.VNext.DataTypes;
-
-using Sort = SkbKontur.DbViewer.Dto.Sort;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Cql
 {
@@ -23,7 +20,7 @@ namespace SkbKontur.DbViewer.Cql
             this.timestampProvider = timestampProvider;
         }
 
-        public async Task<object[]> Search(Filter[] filters, Sort[] sorts, int @from, int count)
+        public async Task<object[]> Search(Condition[] filters, Sort[] sorts, int @from, int count)
         {
             CqlQuery<T> query = table;
             if (filters.Any())
@@ -31,7 +28,7 @@ namespace SkbKontur.DbViewer.Cql
 
             foreach (var sort in sorts)
             {
-                query = sort.Direction == ObjectFilterSortOrder.Ascending
+                query = sort.SortOrder == ObjectFilterSortOrder.Ascending
                             ? query.OrderBy(BuildSort(sort))
                             : query.OrderByDescending(BuildSort(sort));
             }
@@ -41,7 +38,7 @@ namespace SkbKontur.DbViewer.Cql
             return results.Skip(from).Take(count).Cast<object>().ToArray();
         }
 
-        public async Task<int?> Count(Filter[] filters, int? limit)
+        public async Task<int?> Count(Condition[] filters, int? limit)
         {
             CqlQuery<T> query = table;
             if (filters.Any())
@@ -54,7 +51,7 @@ namespace SkbKontur.DbViewer.Cql
             return (int)count;
         }
 
-        public async Task<object> Read(Filter[] filters)
+        public async Task<object> Read(Condition[] filters)
         {
             var query = table.Where(BuildPredicate(filters));
             var results = await query.ExecuteAsync().ConfigureAwait(false);
@@ -78,10 +75,10 @@ namespace SkbKontur.DbViewer.Cql
 
         private static Expression<Func<T, object>> BuildSort(Sort sort)
         {
-            return (Expression<Func<T, object>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Field);
+            return (Expression<Func<T, object>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Path);
         }
 
-        private static Expression<Func<T, bool>> BuildPredicate(Filter[] filters)
+        private static Expression<Func<T, bool>> BuildPredicate(Condition[] filters)
         {
             return (Expression<Func<T, bool>>)CriterionHelper.BuildPredicate(typeof(T), filters);
         }

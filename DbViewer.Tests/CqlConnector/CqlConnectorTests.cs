@@ -14,11 +14,8 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.Connector;
-using SkbKontur.DbViewer.Dto;
+using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.TestApi.Cql;
-using SkbKontur.DbViewer.VNext.DataTypes;
-
-using Sort = SkbKontur.DbViewer.Dto.Sort;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
@@ -131,10 +128,10 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                             CreateEqualsFilter("PartitionKey1", pk1),
                             CreateEqualsFilter("PartitionKey2", pk2),
                             CreateEqualsFilter("ClusteringKey1", ck),
-                            new Filter
+                            new Condition
                                 {
-                                    Field = "ClusteringKey2",
-                                    Type = ObjectFieldFilterOperator.GreaterThanOrEquals,
+                                    Path = "ClusteringKey2",
+                                    Operator = ObjectFieldFilterOperator.GreaterThanOrEquals,
                                     Value = objects[4].ClusteringKey2,
                                 },
                         }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Skip(4));
@@ -144,10 +141,10 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                             CreateEqualsFilter("PartitionKey1", pk1),
                             CreateEqualsFilter("PartitionKey2", pk2),
                             CreateEqualsFilter("ClusteringKey1", ck),
-                            new Filter
+                            new Condition
                                 {
-                                    Field = "ClusteringKey2",
-                                    Type = ObjectFieldFilterOperator.GreaterThan,
+                                    Path = "ClusteringKey2",
+                                    Operator = ObjectFieldFilterOperator.GreaterThan,
                                     Value = objects[4].ClusteringKey2,
                                 },
                         }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Skip(5));
@@ -157,10 +154,10 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                             CreateEqualsFilter("PartitionKey1", pk1),
                             CreateEqualsFilter("PartitionKey2", pk2),
                             CreateEqualsFilter("ClusteringKey1", ck),
-                            new Filter
+                            new Condition
                                 {
-                                    Field = "ClusteringKey2",
-                                    Type = ObjectFieldFilterOperator.LessThanOrEquals,
+                                    Path = "ClusteringKey2",
+                                    Operator = ObjectFieldFilterOperator.LessThanOrEquals,
                                     Value = objects[4].ClusteringKey2,
                                 },
                         }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Take(5));
@@ -170,10 +167,10 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                             CreateEqualsFilter("PartitionKey1", pk1),
                             CreateEqualsFilter("PartitionKey2", pk2),
                             CreateEqualsFilter("ClusteringKey1", ck),
-                            new Filter
+                            new Condition
                                 {
-                                    Field = "ClusteringKey2",
-                                    Type = ObjectFieldFilterOperator.LessThan,
+                                    Path = "ClusteringKey2",
+                                    Operator = ObjectFieldFilterOperator.LessThan,
                                     Value = objects[4].ClusteringKey2,
                                 },
                         }, new Sort[0], 0, 100)).Should().BeEquivalentTo(objects.Take(4));
@@ -254,12 +251,12 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
                         })).Should().BeEquivalentTo(testObject2);
         }
 
-        private Filter CreateEqualsFilter<T>(string field, T value)
+        private Condition CreateEqualsFilter<T>(string field, T value)
         {
-            return new Filter
+            return new Condition
                 {
-                    Field = field,
-                    Type = ObjectFieldFilterOperator.Equals,
+                    Path = field,
+                    Operator = ObjectFieldFilterOperator.Equals,
                     Value = value.ToString(),
                 };
         }

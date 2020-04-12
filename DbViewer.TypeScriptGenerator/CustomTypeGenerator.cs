@@ -13,7 +13,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
         public string GetTypeLocation(Type type)
         {
             var typeName = type.Name;
-            const string dbViewerNamespace = "SkbKontur.DbViewer.VNext.";
+            const string dbViewerNamespace = "SkbKontur.DbViewer.";
             if (type.FullName != null && type.FullName.StartsWith(dbViewerNamespace))
             {
                 var name = type.FullName.Replace(dbViewerNamespace, "").Replace(".", "/");

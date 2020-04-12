@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using SkbKontur.DbViewer.VNext;
 using SkbKontur.TypeScript.ContractGenerator;
 using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 

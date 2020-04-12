@@ -82,12 +82,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
     public componentDidMount() {
         const { urlQuery } = this.props;
-        this.setState({ query: objectsQueryMapping.parse(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
+        this.setState({ query: this.parseQuery(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
     }
 
     public componentDidUpdate(prevProps: ObjectTableProps) {
         if (this.checkForNecessityLoad(prevProps.urlQuery)) {
-            this.setState({ query: objectsQueryMapping.parse(this.props.urlQuery) }, this.loadObjectsWithLoader);
+            this.setState({ query: this.parseQuery(this.props.urlQuery) }, this.loadObjectsWithLoader);
         }
     }
 
@@ -189,8 +189,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private checkForNecessityLoad(prevQuery: string): boolean {
         const { urlQuery } = this.props;
         if (prevQuery !== urlQuery) {
-            const prevState = objectsQueryMapping.parse(prevQuery);
-            const nextState = objectsQueryMapping.parse(urlQuery);
+            const prevState = this.parseQuery(prevQuery);
+            const nextState = this.parseQuery(urlQuery);
             const hiddenColumnsChanged = prevState.hiddenColumns.length !== nextState.hiddenColumns.length;
             const restUnchanged = _.isEqual({ ...nextState, hiddenColumns: [] }, { ...prevState, hiddenColumns: [] });
             if (hiddenColumnsChanged && restUnchanged) {
@@ -243,7 +243,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { offset, count, conditions, sort } = this.state.query;
         const objects = await dbViewerApi.searchObjects(objectId, {
             conditions: conditions,
-            sort: sort,
+            sorts: sort == null ? [] : [sort],
+            excludedFields: [],
             offset: offset,
             count: count,
         });
@@ -360,7 +361,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
             const downloadResult = await dbViewerApi.downloadObjects(metaInformation.identifier, {
                 conditions: conditions,
-                sort: sort,
+                sorts: sort == null ? [] : [sort],
                 excludedFields: hiddenColumns,
             });
 
@@ -395,6 +396,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { query } = this.state;
         const { path } = this.props;
         return path + objectsQueryMapping.stringify({ ...query, ...overrides });
+    }
+
+    private parseQuery(urlQuery: string): ObjectSearchQuery {
+        const query = objectsQueryMapping.parse(urlQuery);
+        query.conditions = query.conditions || [];
+        return query;
     }
 
     private readonly goToPage = (page: number) => {

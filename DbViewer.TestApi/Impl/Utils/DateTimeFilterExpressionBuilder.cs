@@ -6,7 +6,7 @@ using System.Reflection.Emit;
 
 using GrEmit;
 
-using SkbKontur.DbViewer.VNext.DataTypes;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.TestApi.Impl.Utils
 {

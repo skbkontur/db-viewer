@@ -78,6 +78,8 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         const { dbViewerApi, objectId, objectQuery } = this.props;
         const query = qs.parse(objectQuery.replace(/^\?/, ""));
         const searchQuery: ObjectSearchRequest = {
+            excludedFields: [],
+            sorts: [],
             conditions: Object.keys(query).map(x => ({
                 path: x,
                 value: query[x],

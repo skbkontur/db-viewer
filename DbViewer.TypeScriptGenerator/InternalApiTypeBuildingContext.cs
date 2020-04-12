@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using SkbKontur.DbViewer.Attributes;
-using SkbKontur.DbViewer.VNext;
 using SkbKontur.TypeScript.ContractGenerator;
 using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 using SkbKontur.TypeScript.ContractGenerator.Extensions;

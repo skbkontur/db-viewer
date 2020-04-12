@@ -1,8 +1,7 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using SkbKontur.DbViewer.VNext;
-using SkbKontur.DbViewer.VNext.DataTypes;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.TestApi.Controllers
 {

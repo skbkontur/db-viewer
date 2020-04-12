@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-using SkbKontur.DbViewer.Dto.TypeInfo;
+using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.TestApi.Impl.Attributes;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 using SkbKontur.DbViewer.TypeAndObjectBuilding;
-using SkbKontur.DbViewer.VNext.DataTypes;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
 {
     public class SamplePropertyDescriptionBuilder : IPropertyDescriptionBuilder
     {
-        public PropertyDescription Build(PropertyInfo propertyInfo, Type typeInfo)
+        public PropertyMetaInformation Build(PropertyInfo propertyInfo, Type typeInfo)
         {
-            var result = new PropertyDescription
+            var result = new PropertyMetaInformation
                 {
                     Name = propertyInfo.Name,
                 };

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Reflection;
 
-using SkbKontur.DbViewer.Dto.TypeInfo;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.TypeAndObjectBuilding
 {
     public interface IPropertyDescriptionBuilder
     {
-        PropertyDescription Build(PropertyInfo propertyInfo, Type typeInfo);
+        PropertyMetaInformation Build(PropertyInfo propertyInfo, Type typeInfo);
     }
 }
