@@ -91,7 +91,7 @@ namespace SkbKontur.DbViewer
             var properties = new List<string>();
             var getters = new List<Func<object, object>>();
 
-            PropertyHelpers.BuildGettersForProperties(type, "", x => x, properties, getters);
+            PropertyHelpers.BuildGettersForProperties(type, "", x => x, properties, getters, schema.CustomPropertyConfigurationProvider);
 
             var excludedIndices = properties.Select((x, i) => (x, i)).Where(x => query.ExcludedFields.Contains(x.x)).Select(x => x.i).ToArray();
             var filteredProperties = properties.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
@@ -159,10 +159,6 @@ namespace SkbKontur.DbViewer
             var stored = ObjectsConverter.ApiToStored(typeMeta, type, obj, schema.CustomPropertyConfigurationProvider);
             var newObject = await schemaRegistry.GetConnector(objectIdentifier).Write(stored).ConfigureAwait(false);
             return ObjectsConverter.StoredToApi(typeMeta, type, newObject, schema.CustomPropertyConfigurationProvider);
-        }
-
-        public static void F(object obj, string path, object value, ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
-        {
         }
 
         private readonly ISchemaRegistry schemaRegistry;

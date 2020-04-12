@@ -14,6 +14,7 @@ namespace SkbKontur.DbViewer.Helpers
     {
         public static void BuildGettersForProperties([NotNull] Type type, [NotNull] string currentName, [NotNull] Func<object, object> currentGetter,
                                                      [NotNull, ItemNotNull] List<string> properties, [NotNull, ItemNotNull] List<Func<object, object>> getters,
+                                                     ICustomPropertyConfigurationProvider propertyConfigurationProvider,
                                                      [CanBeNull] Type[] usedTypes = null)
         {
             usedTypes = (usedTypes ?? new Type[0]).ToArray();
@@ -27,6 +28,8 @@ namespace SkbKontur.DbViewer.Helpers
             usedTypes = usedTypes.Concat(new[] {type}).ToArray();
             foreach (var propertyInfo in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
+                var propertyConfiguration = propertyConfigurationProvider.TryGetConfiguration(propertyInfo);
+                var propertyType = propertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
                 var propertyName = propertyInfo.Name;
                 var propertyGetter = propertyInfo.GetGetMethod();
 
@@ -34,17 +37,21 @@ namespace SkbKontur.DbViewer.Helpers
                 Func<object, object> getter = x =>
                     {
                         var o = currentGetter(x);
-                        return o == null ? null : propertyGetter.Invoke(o, new object[0]);
+                        if (o == null)
+                            return null;
+
+                        var propertyValue = propertyGetter.Invoke(o, new object[0]);
+                        return propertyConfiguration == null ? propertyValue : propertyConfiguration.StoredToApi(propertyValue);
                     };
 
-                if (IsSimpleType(propertyInfo.PropertyType))
+                if (IsSimpleType(propertyType))
                 {
                     properties.Add(name);
                     getters.Add(getter);
                     continue;
                 }
 
-                BuildGettersForProperties(propertyInfo.PropertyType, name, getter, properties, getters, usedTypes);
+                BuildGettersForProperties(propertyType, name, getter, properties, getters, propertyConfigurationProvider, usedTypes);
             }
         }
 
@@ -64,8 +71,8 @@ namespace SkbKontur.DbViewer.Helpers
 
         [CanBeNull]
         public static TypeMetaInformation BuildTypeMetaInformation(object @object, [NotNull] Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
-                                                                    ICustomPropertyConfigurationProvider propertyConfigurationProvider,
-                                                                    [CanBeNull] [ItemNotNull] Type[] usedTypes = null)
+                                                                   ICustomPropertyConfigurationProvider propertyConfigurationProvider,
+                                                                   [CanBeNull] [ItemNotNull] Type[] usedTypes = null)
         {
             usedTypes = (usedTypes ?? new Type[0]).ToArray();
             if (usedTypes.Contains(type))
@@ -92,7 +99,6 @@ namespace SkbKontur.DbViewer.Helpers
                             Properties = new PropertyMetaInformation[0],
                             GenericTypeArguments = new TypeMetaInformation[0],
                         };
-                
 
                 return new TypeMetaInformation
                     {
