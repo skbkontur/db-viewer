@@ -10,21 +10,21 @@ import { ObjectRenderer } from "./ObjectRenderer";
 interface ObjectViewerProps {
     objectInfo: object;
     objectMeta: ObjectDescription;
-    onChange: (value: object, path: string[]) => Promise<void>;
+    onChange: (value: string, path: string[]) => Promise<void>;
     customRenderer: ICustomRenderer;
     allowEdit: boolean;
 }
 
 export class ObjectViewer extends React.Component<ObjectViewerProps> {
     public handleChange = (value: any, path: string[]) => {
+        let serverValue = value;
         if (value != null) {
-            let serverValue = String(value);
+            serverValue = String(value);
             if (value instanceof Date) {
                 serverValue = value.toISOString();
             }
-
-            this.props.onChange(serverValue as any, path);
         }
+        this.props.onChange(serverValue, path);
     };
 
     public render(): JSX.Element {

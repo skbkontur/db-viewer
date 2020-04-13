@@ -11,8 +11,10 @@ import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlin
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
+import { Condition } from "../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
+import { ObjectFieldFilterOperator } from "../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { PropertyMetaInformation } from "../Domain/Api/DataTypes/PropertyMetaInformation";
 import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
@@ -280,10 +282,19 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     };
 
+    private readonly getItemConditions = (item: object): Condition[] => {
+        const properties = this.state.metaInformation?.typeMetaInformation.properties || [];
+        return properties
+            .filter(x => x.isIdentity)
+            .map(x => ({
+                value: item[x.name],
+                path: x.name,
+                operator: ObjectFieldFilterOperator.Equals,
+            }));
+    };
+
     private readonly getDetailsUrl = (item: object): string => {
-        const meta = this.state.metaInformation;
-        const typeMeta = meta && meta.typeMetaInformation;
-        const properties = (typeMeta && typeMeta.properties) || [];
+        const properties = this.state.metaInformation?.typeMetaInformation.properties || [];
         const query = {};
         for (const prop of properties) {
             if (prop.isIdentity) {
@@ -382,8 +393,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { objects, metaInformation } = this.state;
         const { dbViewerApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
-            const deletedObject = objects.items[index];
-            await dbViewerApi.deleteObject(metaInformation.identifier, deletedObject);
+            const conditions = this.getItemConditions(objects.items[index]);
+            await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
             await this.loadObjects();
         }
     }

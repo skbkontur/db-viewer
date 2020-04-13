@@ -54,7 +54,12 @@ namespace SkbKontur.DbViewer
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
+            var offset = query.Offset ?? 0;
+            var count = query.Count ?? 20;
             var countLimit = schema.Description.CountLimit;
+            if (offset + count > countLimit)
+                throw new InvalidOperationException($"Expected offset ({offset}) + count ({count}) to be less than countLimit ({countLimit})");
+
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var counts = await connector.Count(query.Conditions, countLimit + 1).ConfigureAwait(false);
             var results = await connector.Search(query.Conditions, query.Sorts, query.Offset ?? 0, query.Count ?? 20).ConfigureAwait(false);
@@ -117,7 +122,7 @@ namespace SkbKontur.DbViewer
         [HttpPost]
         [NotNull, ItemNotNull]
         [Route("{objectIdentifier}/details")]
-        public async Task<ObjectDetails> ReadObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectSearchRequest query)
+        public async Task<ObjectDetails> ReadObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectReadRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
@@ -139,25 +144,22 @@ namespace SkbKontur.DbViewer
         [NotNull]
         [HttpDelete]
         [Route("{objectIdentifier}/delete")]
-        public Task DeleteObject([NotNull] string objectIdentifier, [NotNull] [FromBody] object obj)
+        public Task DeleteObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectReadRequest query)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
-            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            var x = ObjectsConverter.ApiToStored(typeMeta, type, obj, schema.CustomPropertyConfigurationProvider);
-            return schemaRegistry.GetConnector(objectIdentifier).Delete(x);
+            return schemaRegistry.GetConnector(objectIdentifier).Delete(query.Conditions);
         }
 
         [HttpPost]
         [NotNull, ItemCanBeNull]
         [Route("{objectIdentifier}/update")]
-        public async Task<object> UpdateObject([NotNull] string objectIdentifier, [NotNull] [FromBody] object obj)
+        public async Task<object> UpdateObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectUpdateRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(obj, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            var stored = ObjectsConverter.ApiToStored(typeMeta, type, obj, schema.CustomPropertyConfigurationProvider);
-            var newObject = await schemaRegistry.GetConnector(objectIdentifier).Write(stored).ConfigureAwait(false);
+            var oldObject = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
+            var updatedObject = ObjectPropertyEditor.SetValue(oldObject, query.Path, query.Value, schema.CustomPropertyConfigurationProvider);
+            var newObject = await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(newObject, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             return ObjectsConverter.StoredToApi(typeMeta, type, newObject, schema.CustomPropertyConfigurationProvider);
         }
 

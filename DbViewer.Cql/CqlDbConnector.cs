@@ -20,7 +20,7 @@ namespace SkbKontur.DbViewer.Cql
             this.timestampProvider = timestampProvider;
         }
 
-        public async Task<object[]> Search(Condition[] filters, Sort[] sorts, int @from, int count)
+        public async Task<object[]> Search(Condition[] filters, Sort[] sorts, int from, int count)
         {
             CqlQuery<T> query = table;
             if (filters.Any())
@@ -58,19 +58,22 @@ namespace SkbKontur.DbViewer.Cql
             return results.SingleOrDefault();
         }
 
-        public async Task Delete(object @object)
+        public async Task Delete(Condition[] filters)
         {
-            var ts = await timestampProvider.GetTimestamp(table.Name);
-            await table.Where(BuildSameIdentitiesPredicate(@object)).Delete().SetTimestamp(ts).ExecuteAsync()
-                       .ConfigureAwait(false);
+            var predicate = BuildPredicate(filters);
+            var results = (await table.Where(predicate).ExecuteAsync().ConfigureAwait(false)).ToArray();
+            if (results.Length != 1)
+                throw new InvalidOperationException($"Expected results count to be 1 but was {results.Length}");
+
+            var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
+            await table.Where(predicate).Delete().SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
         }
 
         public async Task<object> Write(object @object)
         {
-            var ts = await timestampProvider.GetTimestamp(table.Name);
-            await table.Insert((T)@object).SetTimestamp(ts).ExecuteAsync().ConfigureAwait(false);
-            return (await table.Where(BuildSameIdentitiesPredicate(@object)).ExecuteAsync().ConfigureAwait(false))
-                .SingleOrDefault();
+            var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
+            await table.Insert((T)@object).SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
+            return (await table.Where(BuildSameIdentitiesPredicate(@object)).ExecuteAsync().ConfigureAwait(false)).SingleOrDefault();
         }
 
         private static Expression<Func<T, object>> BuildSort(Sort sort)

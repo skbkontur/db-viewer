@@ -8,10 +8,14 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
         public string String { get; set; }
         public Guid Guid { get; set; }
         public Guid? NullableGuid { get; set; }
+        public bool Bool { get; set; }
+        public bool? NullableBool { get; set; }
         public byte Byte { get; set; }
         public byte? NullableByte { get; set; }
         public char Char { get; set; }
         public char? NullableChar { get; set; }
+        public short Short { get; set; }
+        public short? NullableShort { get; set; }
         public int Int { get; set; }
         public int? NullableInt { get; set; }
         public long Long { get; set; }

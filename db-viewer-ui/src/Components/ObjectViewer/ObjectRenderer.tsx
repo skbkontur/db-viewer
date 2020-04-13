@@ -48,7 +48,6 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
     };
 
     public handleSaveChanges = () => {
-        console.info(this.state.value, this.props.path);
         this.props.onChange(this.state.value, this.props.path);
         this.setState({ editableMode: false, value: undefined });
     };

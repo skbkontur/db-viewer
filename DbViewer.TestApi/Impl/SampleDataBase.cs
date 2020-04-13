@@ -74,7 +74,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             set => instance = value;
         }
 
-        public TestClass[] Find(Condition[] filters, Sort[] sorts, int @from, int count)
+        public TestClass[] Find(Condition[] filters, Sort[] sorts, int from, int count)
         {
             var result = data.Where(BuildCriterion(filters)).Skip(from).Take(count);
             return result.ToArray();
@@ -96,9 +96,10 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return data.Single(BuildCriterion(filters));
         }
 
-        public void Delete(TestClass @object)
+        public void Delete(Condition[] filters)
         {
-            data = data.Where(x => !IdentityEquals(x, @object)).ToArray();
+            var f = BuildCriterion(filters);
+            data = data.Where(x => !f(x)).ToArray();
         }
 
         public TestClass Write(TestClass @object)

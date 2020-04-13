@@ -27,9 +27,9 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return SampleDataBase.Instance.Read(filters);
         }
 
-        public async Task Delete(object @object)
+        public async Task Delete(Condition[] filters)
         {
-            SampleDataBase.Instance.Delete((TestClass)@object);
+            SampleDataBase.Instance.Delete(filters);
         }
 
         public async Task<object> Write(object @object)

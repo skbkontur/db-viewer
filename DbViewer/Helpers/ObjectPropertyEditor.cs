@@ -1,83 +1,64 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
+
+using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 namespace SkbKontur.DbViewer.Helpers
 {
-    public interface IObjectPropertyEditor
+    public static class ObjectPropertyEditor
     {
-        Action<object, object> BuildSetter(Type objectType, string path);
-        Type GetPropertyType(Type objectType, string path);
-    }
-
-    public class ObjectPropertyEditor : IObjectPropertyEditor
-    {
-        public Action<object, object> BuildSetter(Type objectType, string path)
+        public static object SetValue(object obj, string[] path, string value, ICustomPropertyConfigurationProvider propertyConfigurator)
         {
-            var pathParts = path.Split('.');
-            var propertyGetter = GetPropertyGetter(objectType, pathParts.Take(pathParts.Length - 1));
-            var propertyType = propertyGetter.Item1;
-            var getter = propertyGetter.Item2;
-            var lastPropertyName = pathParts.Last();
-            if (propertyType.IsArray)
+            var objectType = obj.GetType();
+
+            if (obj is IList list)
             {
-                if (!int.TryParse(lastPropertyName, out var index))
-                    throw new Exception($"Invalid array index: {lastPropertyName}");
-                var oldGetter = getter;
-                return (obj, value) =>
-                    {
-                        var array = (Array)oldGetter(obj);
-                        if (index < 0 || index > array.Length)
-                            throw new Exception($"Array index {index} is out of array bounds");
-                        array.SetValue(value, index);
-                    };
+                var type = objectType.HasElementType ? objectType.GetElementType() : objectType.GetGenericArguments()[0];
+                var index = int.Parse(path[0]);
+                var newValue = path.Length == 1
+                                   ? ObjectParser.Parse(type, value)
+                                   : SetValue(list[index], path.Skip(1).ToArray(), value, propertyConfigurator);
+                list[index] = newValue;
+                return obj;
             }
 
-            var property = propertyType.GetProperty(lastPropertyName);
+            if (obj is IDictionary dictionary)
+            {
+                var args = objectType.GetGenericArguments();
+                var key = ObjectParser.Parse(args[0], path[0]);
+                var newValue = path.Length == 1
+                                   ? ObjectParser.Parse(args[1], value)
+                                   : SetValue(dictionary[key], path.Skip(1).ToArray(), value, propertyConfigurator);
+                dictionary[key] = newValue;
+                return obj;
+            }
+
+            var property = objectType.GetProperty(path[0]);
             if (property == null)
-                throw new Exception($"Type {propertyType.FullName} doesn't have property {lastPropertyName}");
-            var setter = property.GetSetMethod(true);
-            return (obj, value) => setter.Invoke(getter(obj), new[] {value});
-        }
+                throw new InvalidOperationException($"Expected type {objectType} to have property {path[0]}");
 
-        public Type GetPropertyType(Type objectType, string path)
-        {
-            return GetPropertyGetter(objectType, path.Split('.')).Item1;
-        }
-
-        private static Tuple<Type, Func<object, object>> GetPropertyGetter(Type objectType, IEnumerable<string> enumerable)
-        {
-            var type = objectType;
-            Func<object, object> getter = x => x;
-            foreach (var pathPart in enumerable)
+            var propertyConfiguration = propertyConfigurator.TryGetConfiguration(obj, property);
+            if (propertyConfiguration != null)
             {
-                if (type.IsArray)
+                if (path.Length == 1)
                 {
-                    if (!int.TryParse(pathPart, out var index))
-                        throw new Exception($"Invalid array index: {pathPart}");
-                    var oldGetter = getter;
-                    getter = obj =>
-                        {
-                            var array = (Array)oldGetter(obj);
-                            if (index < 0 || index > array.Length)
-                                throw new Exception($"Array index {index} is out of array bounds");
-                            return array.GetValue(index);
-                        };
-                    type = type.GetElementType();
+                    property.SetValue(obj, propertyConfiguration.ApiToStored(ObjectParser.Parse(propertyConfiguration.ResolvedType, value)));
+                    return obj;
                 }
-                else
-                {
-                    var property = type.GetProperty(pathPart);
-                    if (property == null)
-                        throw new Exception($"Type {type.FullName} doesn't have property {pathPart}");
-                    var propertyGetter = property.GetGetMethod();
-                    var oldGetter = getter;
-                    getter = obj => propertyGetter.Invoke(oldGetter(obj), new object[0]);
-                    type = property.PropertyType;
-                }
+
+                var oldValue = propertyConfiguration.StoredToApi(property.GetValue(obj));
+                var intermediateValue = SetValue(oldValue, path.Skip(1).ToArray(), value, propertyConfigurator);
+                var newValue = propertyConfiguration.ApiToStored(intermediateValue);
+                property.SetValue(obj, newValue);
+                return obj;
             }
 
-            return Tuple.Create(type, getter);
+            var newPropertyValue = path.Length == 1
+                                       ? ObjectParser.Parse(property.PropertyType, value)
+                                       : SetValue(property.GetValue(obj), path.Skip(1).ToArray(), value, propertyConfigurator);
+            property.SetValue(obj, newPropertyValue);
+            return obj;
         }
     }
 }

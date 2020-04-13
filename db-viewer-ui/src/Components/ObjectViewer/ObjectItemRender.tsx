@@ -1,4 +1,3 @@
-import Checkbox from "@skbkontur/react-ui/Checkbox";
 import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
 import Link from "@skbkontur/react-ui/Link";
@@ -94,15 +93,25 @@ export function renderForEdit(
                 data-tid="EnumSelect"
                 items={values.map(x => [x, String(x)])}
                 onChange={(e: any, nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
-                value={value || "null"}
+                value={String(value)}
             />
         );
     }
 
     const type = property.type.typeName;
     switch (type) {
-        case "Boolean":
-            return <Checkbox checked={!!value} onChange={(e, nextValue) => onChange(nextValue)} />;
+        case "Boolean": {
+            let values = ["true", "false"];
+            values = property.type.isNullable ? ["null", ...values] : values;
+            return (
+                <Select
+                    data-tid="BooleanSelect"
+                    items={values.map(x => [x, String(x)])}
+                    onChange={(e: any, nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
+                    value={String(value)}
+                />
+            );
+        }
         case "DateTime":
         case "DateTimeOffset":
             return (

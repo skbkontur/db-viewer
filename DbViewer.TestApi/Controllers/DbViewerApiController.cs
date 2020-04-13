@@ -32,15 +32,15 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/details")]
-        public Task<ObjectDetails> ReadObject(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.ReadObject(objectIdentifier, query);
+        public Task<ObjectDetails> ReadObject(string objectIdentifier, [FromBody] ObjectReadRequest query) => impl.ReadObject(objectIdentifier, query);
 
         [HttpDelete]
         [Route("{objectIdentifier}/delete")]
-        public Task DeleteObject(string objectIdentifier, [FromBody] object obj) => impl.DeleteObject(objectIdentifier, obj);
+        public Task DeleteObject(string objectIdentifier, [FromBody] ObjectReadRequest query) => impl.DeleteObject(objectIdentifier, query);
 
         [HttpPost]
         [Route("{objectIdentifier}/update")]
-        public Task<object> UpdateObject(string objectIdentifier, [FromBody] object obj) => impl.UpdateObject(objectIdentifier, obj);
+        public Task<object> UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query);
 
         private readonly DbViewerApi impl;
     }

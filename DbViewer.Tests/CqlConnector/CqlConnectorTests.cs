@@ -184,20 +184,8 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             Write(testObject1);
             var testObject2 = fixture.Create<TestDbSearcherObject>();
             Write(testObject2);
-            (await connector.Read(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", testObject1.PartitionKey1),
-                            CreateEqualsFilter("PartitionKey2", testObject1.PartitionKey2),
-                            CreateEqualsFilter("ClusteringKey1", testObject1.ClusteringKey1),
-                            CreateEqualsFilter("ClusteringKey2", testObject1.ClusteringKey2),
-                        })).Should().BeEquivalentTo(testObject1);
-            (await connector.Read(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", testObject2.PartitionKey1),
-                            CreateEqualsFilter("PartitionKey2", testObject2.PartitionKey2),
-                            CreateEqualsFilter("ClusteringKey1", testObject2.ClusteringKey1),
-                            CreateEqualsFilter("ClusteringKey2", testObject2.ClusteringKey2),
-                        })).Should().BeEquivalentTo(testObject2);
+            (await connector.Read(BuildIdentityFilter(testObject1))).Should().BeEquivalentTo(testObject1);
+            (await connector.Read(BuildIdentityFilter(testObject2))).Should().BeEquivalentTo(testObject2);
         }
 
         [Test]
@@ -210,20 +198,8 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             Write(testObject2);
             testObject1.Value = Guid.NewGuid().ToString();
             await connector.Write(testObject1);
-            (await connector.Read(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", testObject1.PartitionKey1),
-                            CreateEqualsFilter("PartitionKey2", testObject1.PartitionKey2),
-                            CreateEqualsFilter("ClusteringKey1", testObject1.ClusteringKey1),
-                            CreateEqualsFilter("ClusteringKey2", testObject1.ClusteringKey2),
-                        })).Should().BeEquivalentTo(testObject1);
-            (await connector.Read(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", testObject2.PartitionKey1),
-                            CreateEqualsFilter("PartitionKey2", testObject2.PartitionKey2),
-                            CreateEqualsFilter("ClusteringKey1", testObject2.ClusteringKey1),
-                            CreateEqualsFilter("ClusteringKey2", testObject2.ClusteringKey2),
-                        })).Should().BeEquivalentTo(testObject2);
+            (await connector.Read(BuildIdentityFilter(testObject1))).Should().BeEquivalentTo(testObject1);
+            (await connector.Read(BuildIdentityFilter(testObject2))).Should().BeEquivalentTo(testObject2);
         }
 
         [Test]
@@ -234,21 +210,20 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             Write(testObject1);
             var testObject2 = fixture.Create<TestDbSearcherObject>();
             Write(testObject2);
-            await connector.Delete(testObject1);
-            (await connector.Read(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", testObject1.PartitionKey1),
-                            CreateEqualsFilter("PartitionKey2", testObject1.PartitionKey2),
-                            CreateEqualsFilter("ClusteringKey1", testObject1.ClusteringKey1),
-                            CreateEqualsFilter("ClusteringKey2", testObject1.ClusteringKey2),
-                        })).Should().Be(null);
-            (await connector.Read(new[]
-                        {
-                            CreateEqualsFilter("PartitionKey1", testObject2.PartitionKey1),
-                            CreateEqualsFilter("PartitionKey2", testObject2.PartitionKey2),
-                            CreateEqualsFilter("ClusteringKey1", testObject2.ClusteringKey1),
-                            CreateEqualsFilter("ClusteringKey2", testObject2.ClusteringKey2),
-                        })).Should().BeEquivalentTo(testObject2);
+            await connector.Delete(BuildIdentityFilter(testObject1));
+            (await connector.Read(BuildIdentityFilter(testObject1))).Should().Be(null);
+            (await connector.Read(BuildIdentityFilter(testObject2))).Should().BeEquivalentTo(testObject2);
+        }
+
+        private Condition[] BuildIdentityFilter(TestDbSearcherObject obj)
+        {
+            return new[]
+                {
+                    CreateEqualsFilter("PartitionKey1", obj.PartitionKey1),
+                    CreateEqualsFilter("PartitionKey2", obj.PartitionKey2),
+                    CreateEqualsFilter("ClusteringKey1", obj.ClusteringKey1),
+                    CreateEqualsFilter("ClusteringKey2", obj.ClusteringKey2),
+                };
         }
 
         private Condition CreateEqualsFilter<T>(string field, T value)
