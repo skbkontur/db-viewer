@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace SkbKontur.DbViewer.GenericHelpers
+namespace SkbKontur.DbViewer.Helpers
 {
-    internal static class GenericMethod
+    public static class GenericMethod
     {
         public static TResult Invoke<TResult>(Expression<Func<TResult>> expression, Type holderType, Type type)
         {
@@ -19,7 +19,7 @@ namespace SkbKontur.DbViewer.GenericHelpers
                 holderArguments = holderArgs;
                 var result = Visit(expression) as Expression<Func<T>>;
                 if (!atLeastOneMethodCallModified)
-                    throw new GenericMethodInvocationException();
+                    throw new InvalidOperationException("Nothing was modified");
                 return result;
             }
 

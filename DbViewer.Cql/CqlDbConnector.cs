@@ -8,6 +8,7 @@ using Cassandra.Data.Linq;
 using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Cql.Utils;
 using SkbKontur.DbViewer.DataTypes;
+using SkbKontur.DbViewer.Helpers;
 
 namespace SkbKontur.DbViewer.Cql
 {
@@ -28,9 +29,8 @@ namespace SkbKontur.DbViewer.Cql
 
             foreach (var sort in sorts)
             {
-                query = sort.SortOrder == ObjectFilterSortOrder.Ascending
-                            ? query.OrderBy(BuildSort(sort))
-                            : query.OrderByDescending(BuildSort(sort));
+                var propertyType = typeof(T).GetProperty(sort.Path).PropertyType;
+                query = GenericMethod.Invoke(() => AddSort<object>(query, sort), typeof(object), propertyType);
             }
 
             // (p.vostretsov, 28.03.2020): В Cql нельзя сделать Skip
@@ -76,9 +76,16 @@ namespace SkbKontur.DbViewer.Cql
             return (await table.Where(BuildSameIdentitiesPredicate(@object)).ExecuteAsync().ConfigureAwait(false)).SingleOrDefault();
         }
 
-        private static Expression<Func<T, object>> BuildSort(Sort sort)
+        private static CqlQuery<T> AddSort<TProperty>(CqlQuery<T> query, Sort sort)
         {
-            return (Expression<Func<T, object>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Path);
+            return sort.SortOrder == ObjectFilterSortOrder.Ascending
+                       ? query.OrderBy(BuildSort<TProperty>(sort))
+                       : query.OrderByDescending(BuildSort<TProperty>(sort));
+        }
+
+        private static Expression<Func<T, TProperty>> BuildSort<TProperty>(Sort sort)
+        {
+            return (Expression<Func<T, TProperty>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Path);
         }
 
         private static Expression<Func<T, bool>> BuildPredicate(Condition[] filters)

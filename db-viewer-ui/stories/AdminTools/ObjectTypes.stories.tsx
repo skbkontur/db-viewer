@@ -3,7 +3,7 @@ import React from "react";
 import StoryRouter from "storybook-react-router";
 
 import { ObjectTypes } from "../../src/Components/ObjectTypes/ObjectTypes";
-import { SchemaDescription } from "../../src/Domain/Api/Schemas/SchemaDescription";
+import { SchemaDescription } from "../../src/Domain/Api/DataTypes/SchemaDescription";
 
 import objects from "./Responses/objects.json";
 

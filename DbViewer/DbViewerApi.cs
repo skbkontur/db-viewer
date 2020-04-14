@@ -8,7 +8,6 @@ using SkbKontur.DbViewer.Attributes;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
 using SkbKontur.DbViewer.Schemas;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 [assembly : InternalsVisibleTo("SkbKontur.DbViewer.TypeScriptGenerator")]
 

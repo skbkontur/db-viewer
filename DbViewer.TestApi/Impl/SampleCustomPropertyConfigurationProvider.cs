@@ -4,9 +4,9 @@ using System.Reflection;
 using GroBuf;
 using GroBuf.DataMembersExtracters;
 
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.TestApi.Impl.Attributes;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
 {

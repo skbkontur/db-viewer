@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SkbKontur.DbViewer.Schemas
+namespace SkbKontur.DbViewer.DataTypes
 {
     public class SchemaDescription
     {

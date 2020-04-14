@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.DataTypes;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 namespace SkbKontur.DbViewer.Helpers
 {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.TestApi.Impl.Attributes;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
 {

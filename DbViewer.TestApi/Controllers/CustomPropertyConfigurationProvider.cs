@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 namespace SkbKontur.DbViewer.TestApi.Controllers
 {

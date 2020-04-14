@@ -2,6 +2,7 @@
 using System.Linq;
 
 using SkbKontur.DbViewer.Cql;
+using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Schemas;
 using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Cql;
@@ -52,7 +53,7 @@ namespace SkbKontur.DbViewer.TestApi
                                                   typeof(DocumentBindingsMeta),
                                                   typeof(DocumentPrintingInfo),
                                                   typeof(DocumentStorageElement)),
-                    ConnectorsFactory = new Cql.CqlDbConnectorFactory(),
+                    ConnectorsFactory = new CqlDbConnectorFactory(),
                     PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder(),
                     CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider()
                 });

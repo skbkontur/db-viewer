@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace SkbKontur.DbViewer.TypeAndObjectBuilding
+namespace SkbKontur.DbViewer.Configuration
 {
     public interface ICustomPropertyConfigurationProvider
     {

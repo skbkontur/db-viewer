@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-using SkbKontur.DbViewer.Schemas;
-
 namespace SkbKontur.DbViewer.DataTypes
 {
     public class ObjectIdentifier

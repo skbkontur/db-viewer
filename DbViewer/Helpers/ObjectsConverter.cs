@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.DataTypes;
 
-namespace SkbKontur.DbViewer.TypeAndObjectBuilding
+namespace SkbKontur.DbViewer.Helpers
 {
     public static class ObjectsConverter
     {

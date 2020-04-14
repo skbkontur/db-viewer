@@ -31,18 +31,6 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
                 return new InternalApiTypeBuildingContext(targetUnit, type);
             }
 
-            if (type == typeof(Guid))
-                return TypeBuilding.RedirectToType("Guid", @".\DataTypes\Guid", typeof(Guid));
-
-            if (type == typeof(DateTime))
-                return TypeBuilding.RedirectToType("DateTime", @".\DataTypes\DateTime", typeof(DateTime));
-
-            if (type == typeof(DateTimeOffset))
-                return TypeBuilding.RedirectToType("DateTime", @".\DataTypes\DateTime", typeof(DateTimeOffset));
-
-            if (type == typeof(TimeSpan))
-                return TypeBuilding.RedirectToType("TimeSpan", @".\DataTypes\TimeSpan", typeof(TimeSpan));
-
             return null;
         }
 

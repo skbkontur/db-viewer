@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
+using SkbKontur.DbViewer.Configuration;
 
 namespace SkbKontur.DbViewer.Helpers
 {

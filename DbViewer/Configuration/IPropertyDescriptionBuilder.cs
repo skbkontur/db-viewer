@@ -3,7 +3,7 @@ using System.Reflection;
 
 using SkbKontur.DbViewer.DataTypes;
 
-namespace SkbKontur.DbViewer.TypeAndObjectBuilding
+namespace SkbKontur.DbViewer.Configuration
 {
     public interface IPropertyDescriptionBuilder
     {

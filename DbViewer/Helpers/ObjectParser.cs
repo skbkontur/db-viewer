@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace SkbKontur.DbViewer.TypeAndObjectBuilding
+namespace SkbKontur.DbViewer.Helpers
 {
     public static class ObjectParser
     {

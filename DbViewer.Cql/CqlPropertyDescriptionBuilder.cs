@@ -5,8 +5,8 @@ using System.Reflection;
 
 using Cassandra.Mapping.Attributes;
 
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.DataTypes;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
 
 namespace SkbKontur.DbViewer.Cql
 {

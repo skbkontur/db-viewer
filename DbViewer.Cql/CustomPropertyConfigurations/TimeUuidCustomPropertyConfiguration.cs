@@ -3,7 +3,7 @@ using System.Reflection;
 
 using Cassandra;
 
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
+using SkbKontur.DbViewer.Configuration;
 
 namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 {

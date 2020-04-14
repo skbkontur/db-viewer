@@ -8,5 +8,3 @@ export interface DateTimeRange {
 export interface ICanBeValidated {
     focus: () => void;
 }
-
-export type DateTimeRangeChange = (e: React.SyntheticEvent<any>, value: DateTimeRange) => void;
