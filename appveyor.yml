@@ -43,7 +43,6 @@ build_script:
   - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
   - cmd: DbViewer.TypeScriptGenerator\bin\Release\net472\SkbKontur.DbViewer.TypeScriptGenerator.exe
   - cmd: yarn build
-  - cmd: cd db-viewer-ui/dist && npm pack
 
 before_test:
   - cmd: docker-compose up -d
@@ -56,10 +55,13 @@ after_test:
   - ps: |
       if ($env:SHOULD_PUBLISH_NUGET_PACKAGE -eq "true")
       {
-        Write-Host "Will publish npm package" -ForegroundColor "Green"
-        Set-Location -Path 'db-viewer-ui/dist'
         npm config set '//registry.npmjs.org/:_authToken' $env:NPM_TOKEN
-        npm publish
+        $fileNames = Get-ChildItem -Path "db-viewer-ui/dist" -Recurse -Include *.tgz
+        foreach ($file in $fileNames)
+        {
+          Write-Host "Will publish npm package $($file.Name)" -ForegroundColor "Green"
+          npm publish $file.FullName --quiet
+        }
       }
 
 artifacts:
