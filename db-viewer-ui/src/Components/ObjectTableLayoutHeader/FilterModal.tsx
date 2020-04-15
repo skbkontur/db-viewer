@@ -7,7 +7,7 @@ import React from "react";
 import { Link as RouterLink, RouteComponentProps, withRouter } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
-import { Property } from "../../Domain/Objects/Property";
+import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { ObjectFilter } from "../ObjectFilter/ObjectFilter";
 
@@ -17,7 +17,7 @@ interface FilterModalProps extends RouteComponentProps {
     onClose: () => void;
     allowClose: boolean;
     modalEditingConditions: Condition[];
-    tableColumns: Property[];
+    tableColumns: PropertyMetaInformation[];
     onApplyFilter: () => void;
     onChangeFilter: (x0: Condition[]) => void;
 }

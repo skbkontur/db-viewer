@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using AutoFixture;
-using AutoFixture.Kernel;
 
 using Cassandra;
 
@@ -17,14 +17,12 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
-using SkbKontur.DbViewer.Dto;
-using SkbKontur.DbViewer.Dto.TypeInfo;
+using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Schemas;
 using SkbKontur.DbViewer.TestApi;
 using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
-using SkbKontur.DbViewer.VNext.DataTypes;
 
 namespace SkbKontur.DbViewer.Tests.ApiTests
 {
@@ -63,318 +61,298 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                         CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                     }
             );
-            var testClassWithCustomPrimitivesShape = new ClassTypeInfo
+            var testClassWithCustomPrimitivesShape = new TypeMetaInformation
                 {
+                    TypeName = "TestClassWithCustomPrimitives",
+                    GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DateTimeTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "LocalTime",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
+                                    Name = "LocalTime",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new StringTypeInfo(),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "TimeUuid",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Name = "TimeUuid",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new StringTypeInfo(),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableTimeUuid",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Name = "NullableTimeUuid",
+                                    AvailableValues = new string[0],
                                 },
                         }
                 };
-            var testClassWithAllPrimitivesShape = new ClassTypeInfo
+            var testClassWithAllPrimitivesShape = new TypeMetaInformation
                 {
+                    TypeName = "TestClassWithAllPrimitives",
+                    GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new StringTypeInfo(),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "String",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Name = "String",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new StringTypeInfo(),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Guid",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Guid"),
+                                    Name = "Guid",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new StringTypeInfo(),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableGuid",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Guid", isNullable : true),
+                                    Name = "NullableGuid",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new ByteTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Byte",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Boolean"),
+                                    Name = "Bool",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new ByteTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableByte",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Boolean", isNullable : true),
+                                    Name = "NullableBool",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new CharTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Char",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Byte"),
+                                    Name = "Byte",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new CharTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableChar",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Byte", isNullable : true),
+                                    Name = "NullableByte",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new IntTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Int",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Char"),
+                                    Name = "Char",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new IntTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableInt",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Char", isNullable : true),
+                                    Name = "NullableChar",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new LongTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Long",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Int16"),
+                                    Name = "Short",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new LongTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableLong",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Int16", isNullable : true),
+                                    Name = "NullableShort",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DecimalTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Decimal",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Int32"),
+                                    Name = "Int",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DecimalTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableDecimal",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Int32", isNullable : true),
+                                    Name = "NullableInt",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DateTimeTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "DateTime",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Int64"),
+                                    Name = "Long",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DateTimeTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableDateTime",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Int64", isNullable : true),
+                                    Name = "NullableLong",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DateTimeTypeInfo(false),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "DateTimeOffset",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Decimal"),
+                                    Name = "Decimal",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DateTimeTypeInfo(true),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableDateTimeOffset",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("Decimal", isNullable : true),
+                                    Name = "NullableDecimal",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new EnumTypeInfo(false, new[] {"FirstValue", "SecondValue"}),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "Enum",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("DateTime"),
+                                    Name = "DateTime",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new EnumTypeInfo(true, new[] {"FirstValue", "SecondValue"}),
-                                    Description = new PropertyDescription
-                                        {
-                                            Name = "NullableEnum",
-                                        }
+                                    Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
+                                    Name = "NullableDateTime",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new EnumerableTypeInfo(new IntTypeInfo(false)),
-                                    Description = new PropertyDescription
+                                    Type = TypeMetaInformation.ForSimpleType("DateTimeOffset"),
+                                    Name = "DateTimeOffset",
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("DateTimeOffset", isNullable : true),
+                                    Name = "NullableDateTimeOffset",
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("TestEnum"),
+                                    Name = "Enum",
+                                    AvailableValues = new[] {"FirstValue", "SecondValue"},
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("TestEnum", isNullable : true),
+                                    Name = "NullableEnum",
+                                    AvailableValues = new[] {"FirstValue", "SecondValue"},
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = new TypeMetaInformation
                                         {
-                                            Name = "Array",
+                                            TypeName = "Int32[]",
+                                            IsArray = true,
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Int32")},
+                                            Properties = new PropertyMetaInformation[0],
                                         },
+                                    Name = "Array",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new EnumerableTypeInfo(new IntTypeInfo(false)),
-                                    Description = new PropertyDescription
+                                    Type = new TypeMetaInformation
                                         {
-                                            Name = "List",
+                                            TypeName = "List",
+                                            IsArray = true,
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Int32")},
+                                            Properties = new PropertyMetaInformation[0],
                                         },
+                                    Name = "List",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new DictionaryTypeInfo(new StringTypeInfo(), new IntTypeInfo(false)),
-                                    Description = new PropertyDescription
+                                    Type = new TypeMetaInformation
                                         {
-                                            Name = "Dictionary",
+                                            TypeName = "Dictionary",
+                                            IsArray = true,
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String"), TypeMetaInformation.ForSimpleType("Int32")},
+                                            Properties = new PropertyMetaInformation[0],
                                         },
+                                    Name = "Dictionary",
+                                    AvailableValues = new string[0],
                                 },
-                            new Property
+                            new PropertyMetaInformation
                                 {
-                                    TypeInfo = new HashSetTypeInfo(new StringTypeInfo()),
-                                    Description = new PropertyDescription
+                                    Type = new TypeMetaInformation
                                         {
-                                            Name = "HashSet",
+                                            TypeName = "HashSet",
+                                            IsArray = true,
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String")},
+                                            Properties = new PropertyMetaInformation[0],
                                         },
+                                    Name = "HashSet",
+                                    AvailableValues = new string[0],
                                 },
                         }
                 };
-            testClassShape =
-                new ClassTypeInfo
-                    {
-                        Properties = new[]
-                            {
-                                new Property
-                                    {
-                                        TypeInfo = new StringTypeInfo(),
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "Id",
-                                                IsIdentity = true,
-                                                IsSearchable = true,
-                                                AvailableFilters = new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual},
-                                            },
-                                    },
-                                new Property
-                                    {
-                                        TypeInfo = testClassWithAllPrimitivesShape,
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "Content",
-                                            },
-                                    },
-                                new Property
-                                    {
-                                        TypeInfo = new ClassTypeInfo
-                                            {
-                                                Properties = new[]
-                                                    {
-                                                        new Property
-                                                            {
-                                                                TypeInfo = testClassWithAllPrimitivesShape,
-                                                                Description = new PropertyDescription
-                                                                    {
-                                                                        Name = "Content",
-                                                                    }
-                                                            }
-                                                    }
-                                            },
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "Serialized",
-                                            },
-                                    },
-                                new Property
-                                    {
-                                        TypeInfo = new ByteArrayTypeInfo(),
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "File",
-                                            },
-                                    },
-                                new Property
-                                    {
-                                        TypeInfo = new EnumTypeInfo(false, new[] {"A", "B"}),
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "DifficultEnum",
-                                            },
-                                    },
-                                new Property
-                                    {
-                                        TypeInfo = new ClassTypeInfo
-                                            {
-                                                Properties = new[]
-                                                    {
-                                                        new Property
-                                                            {
-                                                                TypeInfo = new IntTypeInfo(false),
-                                                                Description = new PropertyDescription
-                                                                    {
-                                                                        Name = "Int",
-                                                                    }
-                                                            },
-                                                    }
-                                            },
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "DifficultSerialized",
-                                            },
-                                    },
-                                new Property
-                                    {
-                                        TypeInfo = testClassWithCustomPrimitivesShape,
-                                        Description = new PropertyDescription
-                                            {
-                                                Name = "CustomContent",
-                                            },
-                                    },
-                            },
-                    };
+            testClassShape = new TypeMetaInformation
+                {
+                    TypeName = "TestClass",
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                    Properties = new[]
+                        {
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Name = "Id",
+                                    IsIdentity = true,
+                                    IsSearchable = true,
+                                    AvailableFilters = new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual},
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = testClassWithAllPrimitivesShape,
+                                    Name = "Content",
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = new TypeMetaInformation
+                                        {
+                                            TypeName = "ClassForSerialization",
+                                            GenericTypeArguments = new TypeMetaInformation[0],
+                                            Properties = new[]
+                                                {
+                                                    new PropertyMetaInformation
+                                                        {
+                                                            Type = testClassWithAllPrimitivesShape,
+                                                            Name = "Content",
+                                                            AvailableValues = new string[0],
+                                                        }
+                                                }
+                                        },
+                                    Name = "Serialized",
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = new TypeMetaInformation
+                                        {
+                                            TypeName = "Byte[]",
+                                            IsArray = true,
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Byte")},
+                                            Properties = new PropertyMetaInformation[0],
+                                        },
+                                    Name = "File",
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("DifficultEnum"),
+                                    Name = "DifficultEnum",
+                                    AvailableValues = new[] {"A", "B"}
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = null,
+                                    Name = "DifficultSerialized",
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = testClassWithCustomPrimitivesShape,
+                                    Name = "CustomContent",
+                                    AvailableValues = new string[0],
+                                },
+                        },
+                };
             SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
             service.Start(7777);
         }
@@ -404,14 +382,28 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             FillDataBase(@object);
             var result = await client.Read("TestClass", new[]
                 {
-                    new Filter
+                    new Condition
                         {
-                            Type = ObjectFieldFilterOperator.Equals,
-                            Field = "Id",
+                            Operator = ObjectFieldFilterOperator.Equals,
+                            Path = "Id",
                             Value = @object.Id,
                         }
                 });
-            CheckShape(result.TypeInfo, testClassShape);
+            testClassShape.Properties[5].Type = new TypeMetaInformation
+                {
+                    TypeName = "A",
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                    Properties = new[]
+                        {
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Int",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int32")
+                                }
+                        }
+                };
+            CheckShape(result.Meta.TypeMetaInformation, testClassShape);
             var localTime = @object.CustomContent.LocalTime;
             CheckObject(result.Object, new ExpandedTestClass
                 {
@@ -437,39 +429,58 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                    .With(x => x.DifficultEnum, DifficultEnum.A)
                                    .With(x => x.DifficultSerialized, serializer.Serialize(new A {Int = 1}))
                                    .Create();
-            var newCustomPropertyContent = fixture.Create<ClassForSerialization>();
-            var newCustomContent = fixture.Create<TestClassWithCustomPrimitives>();
-            var newObject = new TestClass
-                {
-                    Id = oldObject.Id,
-                    Content = fixture.Create<TestClassWithAllPrimitives>(),
-                    DifficultEnum = DifficultEnum.A,
-                    DifficultSerialized = serializer.Serialize(new A {Int = 2}),
-                    Serialized = serializer.Serialize(newCustomPropertyContent),
-                    CustomContent = newCustomContent,
-                };
-            var localTime = newCustomContent.LocalTime;
-            newCustomContent.LocalTime = localTime.ToDateTime().ToLocalTime();
-            var newObjectExpanded = new ExpandedTestClass
-                {
-                    Id = oldObject.Id,
-                    Content = newObject.Content,
-                    Serialized = newCustomPropertyContent,
-                    DifficultSerialized = new A {Int = 2},
-                    CustomContent = new ExpandedTestClassWithAllPrimitives
-                        {
-                            LocalTime = localTime.ToDateTime(),
-                            TimeUuid = newCustomContent.TimeUuid.ToString(),
-                            NullableTimeUuid = newCustomContent.NullableTimeUuid.ToString(),
-                        }
-                };
 
             FillDataBase(oldObject);
 
-            var result = await client.Write("TestClass", newObjectExpanded);
-            result.Should().BeEquivalentTo(newObjectExpanded);
+            var conditions = new[]
+                {
+                    new Condition
+                        {
+                            Operator = ObjectFieldFilterOperator.Equals,
+                            Path = "Id",
+                            Value = oldObject.Id,
+                        },
+                };
+            var result = await client.Write("TestClass", new ObjectUpdateRequest
+                {
+                    Conditions = conditions,
+                    Path = new[] {"Content", "String"},
+                    Value = "qwer",
+                });
+            ((JObject)result)["Content"]["String"].ToObject<string>().Should().Be("qwer");
 
-            CheckDataBaseContent(newObject);
+            var key = oldObject.Content.Dictionary.Keys.First();
+            result = await client.Write("TestClass", new ObjectUpdateRequest
+                {
+                    Conditions = conditions,
+                    Path = new[] {"Content", "Dictionary", key},
+                    Value = "12",
+                });
+            ((JObject)result)["Content"]["Dictionary"][key].ToObject<int>().Should().Be(12);
+
+            result = await client.Write("TestClass", new ObjectUpdateRequest
+                {
+                    Conditions = conditions,
+                    Path = new[] {"Serialized", "Content", "List", "0"},
+                    Value = "132",
+                });
+            ((JObject)result)["Serialized"]["Content"]["List"][0].ToObject<int>().Should().Be(132);
+
+            result = await client.Write("TestClass", new ObjectUpdateRequest
+                {
+                    Conditions = conditions,
+                    Path = new[] {"CustomContent", "LocalTime"},
+                    Value = "0001-01-01T12:43:12.123000Z",
+                });
+            ((JObject)result)["CustomContent"]["LocalTime"].ToObject<DateTime>().Should().Be(new DateTime(0001, 01, 01, 12, 43, 12, 123, DateTimeKind.Utc));
+
+            oldObject.Content.String = "qwer";
+            oldObject.Content.Dictionary[key] = 12;
+            oldCustomPropertyContent.Content.List[0] = 132;
+            oldObject.Serialized = serializer.Serialize(oldCustomPropertyContent);
+            oldObject.CustomContent.LocalTime = new LocalTime(12, 43, 12, 123_000_000);
+
+            CheckDataBaseContent(oldObject);
         }
 
         [Test]
@@ -483,17 +494,24 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                     CountLimit = 100,
                     AllowReadAll = false,
                 };
-            result.Should().BeEquivalentTo(new TypesListModel
+            result.Should().BeEquivalentTo(new ObjectIdentifier
                 {
-                    Types = new[]
-                        {
-                            new TypeModel
-                                {
-                                    Name = "TestClass",
-                                    SchemaDescription = schemaDescription,
-                                    Shape = testClassShape,
-                                },
-                        }
+                    Identifier = "TestClass",
+                    SchemaDescription = schemaDescription,
+                });
+
+            var meta = await client.GetTypeMeta("TestClass");
+            testClassShape.Properties[5].Type = new TypeMetaInformation
+                {
+                    TypeName = "Object",
+                    Properties = new PropertyMetaInformation[0],
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                };
+            meta.Should().BeEquivalentTo(new ObjectDescription
+                {
+                    Identifier = "TestClass",
+                    SchemaDescription = schemaDescription,
+                    TypeMetaInformation = testClassShape,
                 });
         }
 
@@ -513,14 +531,14 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                        .BeEquivalentTo(expected);
         }
 
-        private void CheckShape(TypeInfo actual, TypeInfo expected)
+        private void CheckShape(TypeMetaInformation actual, TypeMetaInformation expected)
         {
             actual.Should().BeEquivalentTo(expected, x => x.RespectingRuntimeTypes());
         }
 
         private WebApiService service;
         private ApiClient client;
-        private ClassTypeInfo testClassShape;
+        private TypeMetaInformation testClassShape;
         private ISerializer serializer;
         private Fixture fixture;
     }

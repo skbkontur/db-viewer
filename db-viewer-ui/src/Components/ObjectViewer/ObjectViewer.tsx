@@ -10,26 +10,26 @@ import { ObjectRenderer } from "./ObjectRenderer";
 interface ObjectViewerProps {
     objectInfo: object;
     objectMeta: ObjectDescription;
-    onChange: (value: object, path: string[]) => Promise<void>;
+    onChange: (value: string, path: string[]) => Promise<void>;
     customRenderer: ICustomRenderer;
     allowEdit: boolean;
 }
 
 export class ObjectViewer extends React.Component<ObjectViewerProps> {
     public handleChange = (value: any, path: string[]) => {
+        let serverValue = value;
         if (value != null) {
-            let serverValue = String(value);
+            serverValue = String(value);
             if (value instanceof Date) {
                 serverValue = value.toISOString();
             }
-
-            this.props.onChange(serverValue as any, path);
         }
+        this.props.onChange(serverValue, path);
     };
 
     public render(): JSX.Element {
         const { objectMeta, objectInfo, allowEdit, customRenderer } = this.props;
-        const objectProperties = objectMeta?.typeMetaInformation?.properties;
+        const typeMeta = objectMeta.typeMetaInformation;
         return (
             <div>
                 <Accordion
@@ -39,7 +39,7 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
                             target={target}
                             path={path}
                             customRenderer={customRenderer}
-                            property={PropertyMetaInformationUtils.getPropertyTypeByPath(objectProperties, path)}
+                            property={PropertyMetaInformationUtils.getPropertyTypeByPath(typeMeta, path)}
                             objectType={objectMeta.identifier}
                             allowEdit={allowEdit}
                             onChange={this.handleChange}

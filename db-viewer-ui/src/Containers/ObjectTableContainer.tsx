@@ -11,15 +11,17 @@ import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlin
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
+import { Condition } from "../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
+import { ObjectFieldFilterOperator } from "../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../Domain/Api/DataTypes/ObjectFilterSortOrder";
+import { PropertyMetaInformation } from "../Domain/Api/DataTypes/PropertyMetaInformation";
 import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
 import { ObjectSearchQuery } from "../Domain/Objects/ObjectSearchQuery";
 import { ConditionsMapper, SortMapper } from "../Domain/Objects/ObjectSearchQueryUtils";
-import { Property } from "../Domain/Objects/Property";
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
@@ -37,10 +39,10 @@ interface ObjectTableProps extends RouteComponentProps {
 }
 
 interface ObjectTableState {
-    objects: Nullable<SearchResult<object>>;
+    objects: null | SearchResult<object>;
     loading: boolean;
     showModalFilter: boolean;
-    metaInformation: Nullable<ObjectDescription>;
+    metaInformation: null | ObjectDescription;
     displaySearchFilter: boolean;
     displayShowFilter: boolean;
     query: ObjectSearchQuery;
@@ -82,12 +84,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
     public componentDidMount() {
         const { urlQuery } = this.props;
-        this.setState({ query: objectsQueryMapping.parse(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
+        this.setState({ query: this.parseQuery(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
     }
 
     public componentDidUpdate(prevProps: ObjectTableProps) {
         if (this.checkForNecessityLoad(prevProps.urlQuery)) {
-            this.setState({ query: objectsQueryMapping.parse(this.props.urlQuery) }, this.loadObjectsWithLoader);
+            this.setState({ query: this.parseQuery(this.props.urlQuery) }, this.loadObjectsWithLoader);
         }
     }
 
@@ -101,7 +103,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             showDownloadModal,
             downloadCount,
         } = this.state;
-        let properties: null | Property[] = null;
+        let properties: PropertyMetaInformation[] = [];
         if (metaInformation?.typeMetaInformation?.properties) {
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
@@ -189,8 +191,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private checkForNecessityLoad(prevQuery: string): boolean {
         const { urlQuery } = this.props;
         if (prevQuery !== urlQuery) {
-            const prevState = objectsQueryMapping.parse(prevQuery);
-            const nextState = objectsQueryMapping.parse(urlQuery);
+            const prevState = this.parseQuery(prevQuery);
+            const nextState = this.parseQuery(urlQuery);
             const hiddenColumnsChanged = prevState.hiddenColumns.length !== nextState.hiddenColumns.length;
             const restUnchanged = _.isEqual({ ...nextState, hiddenColumns: [] }, { ...prevState, hiddenColumns: [] });
             if (hiddenColumnsChanged && restUnchanged) {
@@ -243,7 +245,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { offset, count, conditions, sort } = this.state.query;
         const objects = await dbViewerApi.searchObjects(objectId, {
             conditions: conditions,
-            sort: sort,
+            sorts: sort == null ? [] : [sort],
+            excludedFields: [],
             offset: offset,
             count: count,
         });
@@ -262,7 +265,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return ObjectFilterSortOrder.Ascending;
     }
 
-    private getVisibleProperties(properties: Property[]): Property[] {
+    private getVisibleProperties(properties: PropertyMetaInformation[]): PropertyMetaInformation[] {
         return properties.filter(item => !this.state.query.hiddenColumns.includes(item.name));
     }
 
@@ -279,10 +282,19 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     };
 
+    private readonly getItemConditions = (item: object): Condition[] => {
+        const properties = this.state.metaInformation?.typeMetaInformation.properties || [];
+        return properties
+            .filter(x => x.isIdentity)
+            .map(x => ({
+                value: item[x.name],
+                path: x.name,
+                operator: ObjectFieldFilterOperator.Equals,
+            }));
+    };
+
     private readonly getDetailsUrl = (item: object): string => {
-        const meta = this.state.metaInformation;
-        const typeMeta = meta && meta.typeMetaInformation;
-        const properties = (typeMeta && typeMeta.properties) || [];
+        const properties = this.state.metaInformation?.typeMetaInformation.properties || [];
         const query = {};
         for (const prop of properties) {
             if (prop.isIdentity) {
@@ -360,7 +372,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
             const downloadResult = await dbViewerApi.downloadObjects(metaInformation.identifier, {
                 conditions: conditions,
-                sort: sort,
+                sorts: sort == null ? [] : [sort],
                 excludedFields: hiddenColumns,
             });
 
@@ -381,8 +393,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { objects, metaInformation } = this.state;
         const { dbViewerApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
-            const deletedObject = objects.items[index];
-            await dbViewerApi.deleteObject(metaInformation.identifier, deletedObject);
+            const conditions = this.getItemConditions(objects.items[index]);
+            await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
             await this.loadObjects();
         }
     }
@@ -395,6 +407,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         const { query } = this.state;
         const { path } = this.props;
         return path + objectsQueryMapping.stringify({ ...query, ...overrides });
+    }
+
+    private parseQuery(urlQuery: string): ObjectSearchQuery {
+        const query = objectsQueryMapping.parse(urlQuery);
+        query.conditions = query.conditions || [];
+        return query;
     }
 
     private readonly goToPage = (page: number) => {

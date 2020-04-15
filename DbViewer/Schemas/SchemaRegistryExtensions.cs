@@ -1,5 +1,5 @@
 ﻿using SkbKontur.DbViewer.Connector;
-using SkbKontur.DbViewer.GenericHelpers;
+using SkbKontur.DbViewer.Helpers;
 
 namespace SkbKontur.DbViewer.Schemas
 {

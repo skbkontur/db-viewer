@@ -1,15 +1,15 @@
 ﻿using System.Threading.Tasks;
 
-using SkbKontur.DbViewer.Dto;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Connector
 {
     public interface IDbConnector
     {
-        Task<object[]> Search(Filter[] filters, Sort[] sorts, int from, int count);
-        Task<int?> Count(Filter[] filters, int? limit);
-        Task<object> Read(Filter[] filters);
-        Task Delete(object @object);
+        Task<object[]> Search(Condition[] filters, Sort[] sorts, int from, int count);
+        Task<int?> Count(Condition[] filters, int? limit);
+        Task<object> Read(Condition[] filters);
+        Task Delete(Condition[] filters);
         Task<object> Write(object @object);
     }
 

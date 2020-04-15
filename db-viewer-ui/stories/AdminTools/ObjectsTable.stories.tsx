@@ -6,6 +6,7 @@ import { ObjectTable } from "../../src/Components/ObjectTable/ObjectTable";
 import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { PropertyMetaInformation } from "../../src/Domain/Api/DataTypes/PropertyMetaInformation";
+import { TypeMetaInformation } from "../../src/Domain/Api/DataTypes/TypeMetaInformation";
 import { NullCustomRenderer } from "../../src/Domain/Objects/CustomRenderer";
 
 async function deleteObject(_index: number): Promise<void> {
@@ -16,24 +17,34 @@ export function emptyMethod() {
     // fake method
 }
 
+const string: TypeMetaInformation = {
+    typeName: "String",
+    properties: [],
+    isArray: false,
+    isNullable: false,
+    genericTypeArguments: [],
+};
+
 const nonIndexed: PropertyMetaInformation = {
     name: "name",
-    type: null,
+    type: string,
     isSortable: false,
     isSearchable: false,
     isRequired: false,
     isIdentity: false,
     availableFilters: [],
+    availableValues: [],
 };
 
 const indexed: PropertyMetaInformation = {
     name: "name",
-    type: null,
+    type: string,
     isSortable: false,
     isSearchable: false,
     isRequired: false,
     isIdentity: false,
     availableFilters: [ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual],
+    availableValues: [],
 };
 
 storiesOf("ObjectTable", module)
@@ -42,9 +53,9 @@ storiesOf("ObjectTable", module)
         <ObjectTable
             items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}
             properties={[
-                { ...nonIndexed, name: "id.gln", type: "String" },
-                { ...nonIndexed, name: "boxId", type: "String" },
-                { ...indexed, name: "lastEditedTime", type: "String" },
+                { ...nonIndexed, name: "id.gln" },
+                { ...nonIndexed, name: "boxId" },
+                { ...indexed, name: "lastEditedTime" },
             ]}
             onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}
@@ -59,9 +70,9 @@ storiesOf("ObjectTable", module)
         <ObjectTable
             items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}
             properties={[
-                { ...indexed, name: "id.gln", type: "String" },
-                { ...indexed, name: "boxId", type: "String" },
-                { ...nonIndexed, name: "lastEditedTime", type: "String" },
+                { ...indexed, name: "id.gln" },
+                { ...indexed, name: "boxId" },
+                { ...nonIndexed, name: "lastEditedTime" },
             ]}
             onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}

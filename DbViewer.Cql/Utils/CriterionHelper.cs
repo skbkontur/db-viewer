@@ -7,8 +7,7 @@ using System.Reflection;
 using Cassandra.Mapping.Attributes;
 
 using SkbKontur.DbViewer.Cql.Utils.ObjectsParser;
-using SkbKontur.DbViewer.Dto;
-using SkbKontur.DbViewer.VNext.DataTypes;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Cql.Utils
 {
@@ -33,7 +32,7 @@ namespace SkbKontur.DbViewer.Cql.Utils
             return Expression.Lambda(filtersExpressions.Skip(1).Aggregate(filtersExpressions[0], Expression.AndAlso), parameter);
         }
 
-        public static LambdaExpression BuildPredicate(Type type, Filter[] filters)
+        public static LambdaExpression BuildPredicate(Type type, Condition[] filters)
         {
             var parameter = Expression.Parameter(type);
 
@@ -43,12 +42,12 @@ namespace SkbKontur.DbViewer.Cql.Utils
             var filterExpression = filters
                                    .Select(filter =>
                                        {
-                                           var memberExpression = CreateMemberAccessExpression(filter.Field, parameter);
+                                           var memberExpression = CreateMemberAccessExpression(filter.Path, parameter);
                                            var valueExpression = CreateValueExpression(filter.Value, memberExpression.Type);
-                                           var expression = CreateFilterExpression(memberExpression.Type, filter.Type, memberExpression, valueExpression);
+                                           var expression = CreateFilterExpression(memberExpression.Type, filter.Operator, memberExpression, valueExpression);
                                            if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
-                                               if (filter.Type == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
+                                               if (filter.Operator == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
                                                    expression = Expression.OrElse(expression,
                                                                                   CreateFilterExpression(memberExpression.Type, ObjectFieldFilterOperator.Equals, memberExpression,
                                                                                                          Expression.Constant(null)));

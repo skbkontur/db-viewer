@@ -7,10 +7,8 @@ using Cassandra.Data.Linq;
 
 using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Cql.Utils;
-using SkbKontur.DbViewer.Dto;
-using SkbKontur.DbViewer.VNext.DataTypes;
-
-using Sort = SkbKontur.DbViewer.Dto.Sort;
+using SkbKontur.DbViewer.DataTypes;
+using SkbKontur.DbViewer.Helpers;
 
 namespace SkbKontur.DbViewer.Cql
 {
@@ -23,7 +21,7 @@ namespace SkbKontur.DbViewer.Cql
             this.timestampProvider = timestampProvider;
         }
 
-        public async Task<object[]> Search(Filter[] filters, Sort[] sorts, int @from, int count)
+        public async Task<object[]> Search(Condition[] filters, Sort[] sorts, int from, int count)
         {
             CqlQuery<T> query = table;
             if (filters.Any())
@@ -31,9 +29,8 @@ namespace SkbKontur.DbViewer.Cql
 
             foreach (var sort in sorts)
             {
-                query = sort.Direction == ObjectFilterSortOrder.Ascending
-                            ? query.OrderBy(BuildSort(sort))
-                            : query.OrderByDescending(BuildSort(sort));
+                var propertyType = typeof(T).GetProperty(sort.Path).PropertyType;
+                query = GenericMethod.Invoke(() => AddSort<object>(query, sort), typeof(object), propertyType);
             }
 
             // (p.vostretsov, 28.03.2020): В Cql нельзя сделать Skip
@@ -41,7 +38,7 @@ namespace SkbKontur.DbViewer.Cql
             return results.Skip(from).Take(count).Cast<object>().ToArray();
         }
 
-        public async Task<int?> Count(Filter[] filters, int? limit)
+        public async Task<int?> Count(Condition[] filters, int? limit)
         {
             CqlQuery<T> query = table;
             if (filters.Any())
@@ -54,34 +51,44 @@ namespace SkbKontur.DbViewer.Cql
             return (int)count;
         }
 
-        public async Task<object> Read(Filter[] filters)
+        public async Task<object> Read(Condition[] filters)
         {
             var query = table.Where(BuildPredicate(filters));
             var results = await query.ExecuteAsync().ConfigureAwait(false);
             return results.SingleOrDefault();
         }
 
-        public async Task Delete(object @object)
+        public async Task Delete(Condition[] filters)
         {
-            var ts = await timestampProvider.GetTimestamp(table.Name);
-            await table.Where(BuildSameIdentitiesPredicate(@object)).Delete().SetTimestamp(ts).ExecuteAsync()
-                       .ConfigureAwait(false);
+            var predicate = BuildPredicate(filters);
+            var results = (await table.Where(predicate).ExecuteAsync().ConfigureAwait(false)).ToArray();
+            if (results.Length != 1)
+                throw new InvalidOperationException($"Expected results count to be 1 but was {results.Length}");
+
+            var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
+            await table.Where(predicate).Delete().SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
         }
 
         public async Task<object> Write(object @object)
         {
-            var ts = await timestampProvider.GetTimestamp(table.Name);
-            await table.Insert((T)@object).SetTimestamp(ts).ExecuteAsync().ConfigureAwait(false);
-            return (await table.Where(BuildSameIdentitiesPredicate(@object)).ExecuteAsync().ConfigureAwait(false))
-                .SingleOrDefault();
+            var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
+            await table.Insert((T)@object).SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
+            return (await table.Where(BuildSameIdentitiesPredicate(@object)).ExecuteAsync().ConfigureAwait(false)).SingleOrDefault();
         }
 
-        private static Expression<Func<T, object>> BuildSort(Sort sort)
+        private static CqlQuery<T> AddSort<TProperty>(CqlQuery<T> query, Sort sort)
         {
-            return (Expression<Func<T, object>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Field);
+            return sort.SortOrder == ObjectFilterSortOrder.Ascending
+                       ? query.OrderBy(BuildSort<TProperty>(sort))
+                       : query.OrderByDescending(BuildSort<TProperty>(sort));
         }
 
-        private static Expression<Func<T, bool>> BuildPredicate(Filter[] filters)
+        private static Expression<Func<T, TProperty>> BuildSort<TProperty>(Sort sort)
+        {
+            return (Expression<Func<T, TProperty>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Path);
+        }
+
+        private static Expression<Func<T, bool>> BuildPredicate(Condition[] filters)
         {
             return (Expression<Func<T, bool>>)CriterionHelper.BuildPredicate(typeof(T), filters);
         }

@@ -7,7 +7,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
-import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
+import { ObjectIdentifier } from "../Domain/Api/DataTypes/ObjectIdentifier";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
@@ -20,14 +20,14 @@ interface ObjectTypesProps extends RouteComponentProps {
 
 interface ObjectTypesState {
     loading: boolean;
-    objects: Nullable<ObjectDescription[]>;
+    objects: ObjectIdentifier[];
     filter: string;
 }
 
 class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, ObjectTypesState> {
     public state: ObjectTypesState = {
         loading: false,
-        objects: null,
+        objects: [],
         filter: "",
     };
 
@@ -40,9 +40,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
         this.setState({ loading: true });
         try {
             const objects = await dbViewerApi.getNames();
-            this.setState({
-                objects: objects,
-            });
+            this.setState({ objects: objects });
         } finally {
             this.setState({ loading: false });
         }
@@ -74,15 +72,13 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                                 />
                             </Fit>
                             <Fit>
-                                {objects && (
-                                    <ObjectTypes
-                                        data-tid="ObjectTypes"
-                                        getPath={this.getPath}
-                                        objects={objects}
-                                        filter={filter}
-                                        identifierKeywords={this.props.identifierKeywords}
-                                    />
-                                )}
+                                <ObjectTypes
+                                    data-tid="ObjectTypes"
+                                    getPath={this.getPath}
+                                    objects={objects}
+                                    filter={filter}
+                                    identifierKeywords={this.props.identifierKeywords}
+                                />
                             </Fit>
                         </ColumnStack>
                     </Loader>

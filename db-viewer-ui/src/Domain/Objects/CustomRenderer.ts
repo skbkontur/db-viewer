@@ -1,9 +1,26 @@
-import { Property } from "./Property";
+import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformation";
 
 export interface ICustomRenderer {
-    renderTableCell: (target: any, path: string[]) => null | string | JSX.Element;
-    renderDetails: (target: any, path: string[], objectType?: string) => null | string | JSX.Element;
-    renderEdit: (value: any, property: Nullable<Property>, onChange: (x0: any) => void) => null | string | JSX.Element;
+    renderTableCell: (
+        target: any,
+        path: string[],
+        property: PropertyMetaInformation,
+        objectType: string
+    ) => null | string | JSX.Element;
+
+    renderDetails: (
+        target: any,
+        path: string[],
+        property: PropertyMetaInformation,
+        objectType: string
+    ) => null | string | JSX.Element;
+
+    renderEdit: (
+        value: any,
+        property: PropertyMetaInformation,
+        objectType: string,
+        onChange: (value: any) => void
+    ) => null | string | JSX.Element;
 }
 
 export class NullCustomRenderer implements ICustomRenderer {

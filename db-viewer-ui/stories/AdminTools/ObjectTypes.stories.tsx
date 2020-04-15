@@ -3,7 +3,7 @@ import React from "react";
 import StoryRouter from "storybook-react-router";
 
 import { ObjectTypes } from "../../src/Components/ObjectTypes/ObjectTypes";
-import { SchemaDescription } from "../../src/Domain/Api/SchemaDescription";
+import { SchemaDescription } from "../../src/Domain/Api/DataTypes/SchemaDescription";
 
 import objects from "./Responses/objects.json";
 
@@ -27,17 +27,14 @@ storiesOf("ObjectTypes", module)
                 {
                     identifier: "table 1",
                     schemaDescription: schema,
-                    typeMetaInformation: null,
                 },
                 {
                     identifier: "Table 3",
                     schemaDescription: schema,
-                    typeMetaInformation: null,
                 },
                 {
                     identifier: "table 2",
                     schemaDescription: schema,
-                    typeMetaInformation: null,
                 },
             ]}
         />

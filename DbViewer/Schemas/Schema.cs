@@ -1,5 +1,6 @@
-﻿using SkbKontur.DbViewer.Connector;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
+﻿using SkbKontur.DbViewer.Configuration;
+using SkbKontur.DbViewer.Connector;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Schemas
 {

@@ -2,7 +2,6 @@ import CopyIcon from "@skbkontur/react-icons/Copy";
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
-import _ from "lodash";
 import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -13,10 +12,10 @@ import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlin
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
 import { ObjectViewer } from "../Components/ObjectViewer/ObjectViewer";
+import { Condition } from "../Domain/Api/DataTypes/Condition";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
 import { ObjectDetails } from "../Domain/Api/DataTypes/ObjectDetails";
 import { ObjectFieldFilterOperator } from "../Domain/Api/DataTypes/ObjectFieldFilterOperator";
-import { ObjectSearchRequest } from "../Domain/Api/DataTypes/ObjectSearchRequest";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { ApiError } from "../Domain/ApiBase/ApiError";
 import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
@@ -32,6 +31,7 @@ interface ObjectDetailsProps extends RouteComponentProps {
 }
 
 interface ObjectDetailsState {
+    conditions: Condition[];
     objectInfo: Nullable<{}>;
     objectMeta: null | ObjectDescription;
     loading: boolean;
@@ -42,6 +42,7 @@ interface ObjectDetailsState {
 class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps, ObjectDetailsState> {
     public state: ObjectDetailsState = {
         loading: false,
+        conditions: [],
         objectInfo: {},
         objectMeta: null,
         showConfirmModal: false,
@@ -62,9 +63,11 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     public async load(): Promise<void> {
         this.setState({ loading: true });
         try {
-            const objectInfo = await this.loadObject();
+            const conditions = this.getConditions();
+            const objectInfo = await this.loadObject(conditions);
             if (objectInfo) {
                 this.setState({
+                    conditions: conditions,
                     objectInfo: objectInfo.object,
                     objectMeta: objectInfo.meta,
                 });
@@ -74,18 +77,10 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         }
     }
 
-    public async loadObject(): Promise<null | ObjectDetails> {
-        const { dbViewerApi, objectId, objectQuery } = this.props;
-        const query = qs.parse(objectQuery.replace(/^\?/, ""));
-        const searchQuery: ObjectSearchRequest = {
-            conditions: Object.keys(query).map(x => ({
-                path: x,
-                value: query[x],
-                operator: ObjectFieldFilterOperator.Equals,
-            })),
-        };
+    public async loadObject(conditions: Condition[]): Promise<null | ObjectDetails> {
+        const { dbViewerApi, objectId } = this.props;
         try {
-            return await dbViewerApi.readObject(objectId, searchQuery);
+            return await dbViewerApi.readObject(objectId, { conditions: conditions });
         } catch (e) {
             if (e instanceof ApiError && e.statusCode === 404) {
                 this.setState({ objectNotFound: true });
@@ -96,28 +91,34 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         }
     }
 
-    public handleChange = async (value: object, path: string[]): Promise<void> => {
-        const { objectMeta, objectInfo } = this.state;
+    public getConditions(): Condition[] {
+        const query = qs.parse(this.props.objectQuery.replace(/^\?/, ""));
+        return Object.keys(query).map(x => ({
+            path: x,
+            value: query[x],
+            operator: ObjectFieldFilterOperator.Equals,
+        }));
+    }
+
+    public handleChange = async (value: string, path: string[]): Promise<void> => {
+        const { conditions, objectMeta, objectInfo } = this.state;
         if (objectMeta == null || objectInfo == null) {
             return;
         }
 
-        try {
-            const updatedObject = _.set(objectInfo, path, value);
-            const savedInfo = await this.props.dbViewerApi.updateObject(objectMeta.identifier, updatedObject);
-            this.setState({ objectInfo: savedInfo });
-        } catch (e) {
-            const obj = await this.loadObject();
-            this.setState({ objectInfo: obj });
-            throw e;
-        }
+        const savedInfo = await this.props.dbViewerApi.updateObject(objectMeta.identifier, {
+            conditions: conditions,
+            path: path,
+            value: value,
+        });
+        this.setState({ objectInfo: savedInfo });
     };
 
     public async handleDelete(): Promise<void> {
-        const { objectMeta, objectInfo } = this.state;
+        const { conditions, objectMeta } = this.state;
         const { dbViewerApi } = this.props;
         if (objectMeta != null) {
-            await dbViewerApi.deleteObject(objectMeta.identifier, objectInfo as any);
+            await dbViewerApi.deleteObject(objectMeta.identifier, { conditions: conditions });
             this.props.history.push(RouteUtils.backUrl(this.props));
             return;
         }

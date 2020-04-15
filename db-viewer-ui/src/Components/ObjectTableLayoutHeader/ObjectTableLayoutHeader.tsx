@@ -12,8 +12,8 @@ import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
+import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ObjectSearchQuery } from "../../Domain/Objects/ObjectSearchQuery";
-import { Property } from "../../Domain/Objects/Property";
 import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaInformationUtils";
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
@@ -25,7 +25,7 @@ import { Spinner } from "./Spinner";
 interface ObjectTableLayoutHeaderProps {
     query: ObjectSearchQuery;
     allowReadAll: boolean;
-    properties: null | undefined | Property[];
+    properties: PropertyMetaInformation[];
     onChange: (x0: null | Partial<ObjectSearchQuery>) => void;
     onDownloadClick: () => void;
     onDownloadAbort: () => void;
@@ -68,7 +68,7 @@ export class ObjectTableLayoutHeader extends React.Component<
     public renderFieldSelectorTooltipContent(): null | JSX.Element {
         const { query, properties, onChange } = this.props;
         const { hiddenColumns } = query;
-        if (properties == null || properties.length === 0) {
+        if (properties.length === 0) {
             return null;
         }
         const fields = properties.map(x => ({ name: x.name, caption: x.name }));
@@ -88,7 +88,7 @@ export class ObjectTableLayoutHeader extends React.Component<
         this.setState({ showFilterModal: true });
     };
 
-    public hanldeCloseFilterModal = () => {
+    public handleCloseFilterModal = () => {
         this.setState({ showFilterModal: false });
     };
 
@@ -113,8 +113,7 @@ export class ObjectTableLayoutHeader extends React.Component<
         } = this.props;
         const { showFilterModal, modalEditingConditions } = this.state;
         const allowCloseModal =
-            allowReadAll ||
-            PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties || []);
+            allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties);
         return (
             <RowStack baseline block gap={2}>
                 <Fill />
@@ -147,10 +146,10 @@ export class ObjectTableLayoutHeader extends React.Component<
                         Выгрузить всё в Excel
                     </Link>
                 </Fit>
-                {showFilterModal && properties != null && (
+                {showFilterModal && (
                     <FilterModal
                         allowClose={allowCloseModal}
-                        onClose={this.hanldeCloseFilterModal}
+                        onClose={this.handleCloseFilterModal}
                         modalEditingConditions={modalEditingConditions}
                         tableColumns={properties.filter(x => x.isSearchable)}
                         onChangeFilter={x => this.setState({ modalEditingConditions: x })}

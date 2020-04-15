@@ -4,7 +4,6 @@ using System.Globalization;
 
 using Cassandra;
 
-using SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Exceptions;
 using SkbKontur.DbViewer.Cql.Utils.ObjectsParser.ParseHelpers;
 using SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers;
 using SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers.InternalImplementations;
@@ -20,14 +19,14 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
         IValueParser IObjectParserCollection.GetParser(Type type)
         {
             if (!parseRules.ContainsKey(type))
-                throw new ParserNotFoundException(type);
+                throw new InvalidOperationException($"Parser not found for type: {type}");
             return parseRules[type];
         }
 
         IValueParser IObjectParserCollection.GetEnumParser()
         {
             if (enumClassParser == null)
-                throw new ParserNotFoundException("for enums");
+                throw new InvalidOperationException($"Parser not found for enums");
             return enumClassParser;
         }
 

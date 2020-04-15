@@ -3,28 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using SkbKontur.DbViewer.Dto;
-using SkbKontur.DbViewer.VNext.DataTypes;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.TestApi.Impl.Utils
 {
     public static class CriterionHelper
     {
-        public static LambdaExpression BuildCriterion(Type businessObjectType, Filter[] filters)
+        public static LambdaExpression BuildCriterion(Type businessObjectType, Condition[] filters)
         {
             var parameter = Expression.Parameter(businessObjectType);
             var filterExpression = filters
                                    .Select(filter =>
                                        {
-                                           var memberExpression = CreateMemberAccessExpression(filter.Field, parameter);
+                                           var memberExpression = CreateMemberAccessExpression(filter.Path, parameter);
                                            var valueExpression = CreateValueExpression(filter.Value, memberExpression.Type);
                                            if (memberExpression.Type == typeof(DateTime) || memberExpression.Type == typeof(DateTime?))
-                                               return DateTimeFilterExpressionBuilder.Build(memberExpression, filter.Value, filter.Type);
+                                               return DateTimeFilterExpressionBuilder.Build(memberExpression, filter.Value, filter.Operator);
 
-                                           var expression = CreateFilterExpression(filter.Type, memberExpression, valueExpression);
+                                           var expression = CreateFilterExpression(filter.Operator, memberExpression, valueExpression);
                                            if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
-                                               if (filter.Type == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
+                                               if (filter.Operator == ObjectFieldFilterOperator.DoesNotEqual && !string.IsNullOrEmpty(filter.Value))
                                                    expression = Expression.OrElse(expression,
                                                                                   CreateFilterExpression(ObjectFieldFilterOperator.Equals, memberExpression,
                                                                                                          Expression.Constant(null)));

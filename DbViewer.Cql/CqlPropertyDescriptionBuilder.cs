@@ -5,17 +5,16 @@ using System.Reflection;
 
 using Cassandra.Mapping.Attributes;
 
-using SkbKontur.DbViewer.Dto.TypeInfo;
-using SkbKontur.DbViewer.TypeAndObjectBuilding;
-using SkbKontur.DbViewer.VNext.DataTypes;
+using SkbKontur.DbViewer.Configuration;
+using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Cql
 {
     public class CqlPropertyDescriptionBuilder : IPropertyDescriptionBuilder
     {
-        public PropertyDescription Build(PropertyInfo propertyInfo, Type typeInfo)
+        public PropertyMetaInformation Build(PropertyInfo propertyInfo, Type typeInfo)
         {
-            var result = new PropertyDescription
+            var result = new PropertyMetaInformation
                 {
                     Name = propertyInfo.Name,
                 };
