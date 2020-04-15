@@ -92,13 +92,7 @@ namespace SkbKontur.DbViewer.Helpers
             if (type.IsGenericType)
             {
                 if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    return new TypeMetaInformation
-                        {
-                            TypeName = type.GetGenericArguments()[0].Name,
-                            IsNullable = true,
-                            Properties = new PropertyMetaInformation[0],
-                            GenericTypeArguments = new TypeMetaInformation[0],
-                        };
+                    return TypeMetaInformation.ForSimpleType(type.GetGenericArguments()[0].Name, isNullable : true);
 
                 return new TypeMetaInformation
                     {
@@ -111,15 +105,16 @@ namespace SkbKontur.DbViewer.Helpers
                     };
             }
 
+            if (IsSimpleType(type))
+                return TypeMetaInformation.ForSimpleType(type.Name);
+
             return new TypeMetaInformation
                 {
                     TypeName = type.Name,
                     GenericTypeArguments = new TypeMetaInformation[0],
-                    Properties = IsSimpleType(type)
-                                     ? new PropertyMetaInformation[0]
-                                     : type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                           .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
-                                           .ToArray(),
+                    Properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                     .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
+                                     .ToArray(),
                 };
         }
 

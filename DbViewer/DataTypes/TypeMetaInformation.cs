@@ -4,6 +4,18 @@ namespace SkbKontur.DbViewer.DataTypes
 {
     public class TypeMetaInformation
     {
+        public static TypeMetaInformation ForSimpleType(string name, bool isNullable = false)
+        {
+            return new TypeMetaInformation
+                {
+                    TypeName = name,
+                    IsNullable = isNullable,
+                    IsArray = false,
+                    Properties = new PropertyMetaInformation[0],
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                };
+        }
+
         [NotNull]
         [JsonProperty("typeName")]
         public string TypeName { get; set; }

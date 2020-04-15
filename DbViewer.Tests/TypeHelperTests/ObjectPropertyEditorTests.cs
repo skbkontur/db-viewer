@@ -16,7 +16,7 @@ using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
-namespace SkbKontur.DbViewer.Tests
+namespace SkbKontur.DbViewer.Tests.TypeHelperTests
 {
     public class ObjectPropertyEditorTests
     {
