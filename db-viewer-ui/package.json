@@ -1,8 +1,19 @@
 {
   "name": "@skbkontur/db-viewer-ui",
   "version": "1.0.0",
+  "description": "Database Viewer with custom configuration",
   "main": "./index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:skbkontur/db-viewer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/skbkontur/db-viewer/issues"
+  },
+  "homepage": "https://github.com/skbkontur/db-viewer",
+  "keywords": ["DbViewer", "Database", "Cassandra", "Cql"],
+  "author": "Den Mukhametianov, Pavel Vostretsov",
   "scripts": {
     "build": "run-s build:clean build:tsc build:copy:* build:patch build:pack",
     "build:clean": "rimraf dist",
