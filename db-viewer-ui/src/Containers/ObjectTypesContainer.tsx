@@ -73,7 +73,6 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                             </Fit>
                             <Fit>
                                 <ObjectTypes
-                                    data-tid="ObjectTypes"
                                     getPath={this.getPath}
                                     objects={objects}
                                     filter={filter}
