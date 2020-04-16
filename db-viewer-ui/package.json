@@ -1,6 +1,6 @@
 {
   "name": "@skbkontur/db-viewer-ui",
-  "version": "0.0.0-placeholder",
+  "version": "1.0.0",
   "main": "./index.js",
   "license": "MIT",
   "scripts": {
