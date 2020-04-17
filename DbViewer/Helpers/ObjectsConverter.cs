@@ -13,6 +13,10 @@ namespace SkbKontur.DbViewer.Helpers
         {
             if (o == null)
                 return null;
+
+            if (type.IsEnum || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && type.GetGenericArguments()[0].IsEnum)
+                return o.ToString();
+
             if (!typeMeta.Properties.Any())
                 return o;
 

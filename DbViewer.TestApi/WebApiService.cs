@@ -34,12 +34,7 @@ namespace SkbKontur.DbViewer.TestApi
                         {
                             SerializerSettings = new JsonSerializerSettings
                                 {
-                                    Converters = new JsonConverter[]
-                                        {
-                                            new CqlObjectPropertyToStringConverter(),
-                                            new StringEnumConverter(),
-                                            new IsoDateTimeConverter {DateTimeFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"}
-                                        }
+                                    Converters = new JsonConverter[] {new CqlObjectPropertyToStringConverter()}
                                 },
                         });
                     config.EnsureInitialized();

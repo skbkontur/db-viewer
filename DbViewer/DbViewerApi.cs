@@ -49,7 +49,7 @@ namespace SkbKontur.DbViewer
         [HttpPost]
         [NotNull, ItemNotNull]
         [Route("{objectIdentifier}/search")]
-        public async Task<SearchResult<object>> SearchObjects([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectSearchRequest query)
+        public async Task<SearchResult> SearchObjects([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectSearchRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
@@ -65,7 +65,7 @@ namespace SkbKontur.DbViewer
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var objects = results.Select(x => ObjectsConverter.StoredToApi(typeMeta, type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
 
-            return new SearchResult<object>
+            return new SearchResult
                 {
                     Count = counts ?? objects.Length,
                     CountLimit = countLimit,

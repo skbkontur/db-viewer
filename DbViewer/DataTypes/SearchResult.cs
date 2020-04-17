@@ -2,11 +2,11 @@ using Newtonsoft.Json;
 
 namespace SkbKontur.DbViewer.DataTypes
 {
-    public class SearchResult<T>
+    public class SearchResult
     {
         [NotNull, ItemNotNull]
         [JsonProperty("items")]
-        public T[] Items { get; set; }
+        public object[] Items { get; set; }
 
         [JsonProperty("count")]
         public int Count { get; set; }
