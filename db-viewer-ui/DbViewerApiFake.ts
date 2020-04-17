@@ -58,7 +58,7 @@ export class DbViewerApiFake implements IDbViewerApi {
         ];
     }
 
-    public async searchObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<SearchResult<object>> {
+    public async searchObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<SearchResult> {
         return {
             items: [
                 {

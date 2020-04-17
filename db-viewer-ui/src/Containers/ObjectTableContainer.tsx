@@ -39,7 +39,7 @@ interface ObjectTableProps extends RouteComponentProps {
 }
 
 interface ObjectTableState {
-    objects: null | SearchResult<object>;
+    objects: null | SearchResult;
     loading: boolean;
     showModalFilter: boolean;
     metaInformation: null | ObjectDescription;
