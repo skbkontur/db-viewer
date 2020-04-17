@@ -71,7 +71,11 @@ export class ObjectTypes extends React.Component<ObjectTypesProps> {
 
     public renderTypes(objects: ObjectIdentifier[], displayGroups: boolean): JSX.Element {
         if (!displayGroups) {
-            return <div className={styles.root}>{objects.map(item => this.renderItem(item))}</div>;
+            return (
+                <div className={styles.root} data-tid="ObjectsList">
+                    {objects.map(item => this.renderItem(item))}
+                </div>
+            );
         }
 
         const groupedObjects = this.getGrouped(objects);
