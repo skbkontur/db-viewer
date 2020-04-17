@@ -78,43 +78,38 @@ namespace SkbKontur.DbViewer.Helpers
             if (usedTypes.Contains(type))
                 return null;
             usedTypes = usedTypes.Concat(new[] {type}).ToArray();
-            if (type.IsArray || type.HasElementType)
-            {
-                return new TypeMetaInformation
-                    {
-                        TypeName = type.Name,
-                        IsArray = true,
-                        Properties = new PropertyMetaInformation[0],
-                        GenericTypeArguments = new[] {BuildTypeMetaInformation(type.GetElementType(), propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes)},
-                    };
-            }
 
-            if (type.IsGenericType)
-            {
-                if (type.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    return TypeMetaInformation.ForSimpleType(type.GetGenericArguments()[0].Name, isNullable : true);
-
-                return new TypeMetaInformation
-                    {
-                        TypeName = new Regex(@"`.*").Replace(type.GetGenericTypeDefinition().Name, ""),
-                        IsArray = true,
-                        Properties = new PropertyMetaInformation[0],
-                        GenericTypeArguments = type.GetGenericArguments()
-                                                   .Select(x => BuildTypeMetaInformation(x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
-                                                   .ToArray(),
-                    };
-            }
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                return TypeMetaInformation.ForSimpleType(type.GetGenericArguments()[0].Name, isNullable : true);
 
             if (IsSimpleType(type))
                 return TypeMetaInformation.ForSimpleType(type.Name);
 
+            var typeName = new Regex(@"`.*").Replace(type.Name, "");
+
+            if (typeof(IEnumerable).IsAssignableFrom(type))
+            {
+                var genericArguments = type.HasElementType ? new[] {type.GetElementType()} : type.GetGenericArguments();
+                return new TypeMetaInformation
+                    {
+                        TypeName = typeName,
+                        IsArray = true,
+                        Properties = new PropertyMetaInformation[0],
+                        GenericTypeArguments = genericArguments
+                                               .Select(x => BuildTypeMetaInformation(x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
+                                               .ToArray(),
+                    };
+            }
+
             return new TypeMetaInformation
                 {
-                    TypeName = type.Name,
-                    GenericTypeArguments = new TypeMetaInformation[0],
+                    TypeName = typeName,
                     Properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                      .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
                                      .ToArray(),
+                    GenericTypeArguments = type.GetGenericArguments()
+                                               .Select(x => BuildTypeMetaInformation(x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
+                                               .ToArray(),
                 };
         }
 
