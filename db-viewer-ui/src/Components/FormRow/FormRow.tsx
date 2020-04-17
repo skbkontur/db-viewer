@@ -14,7 +14,7 @@ export class FormRow extends React.Component<FormRowProps> {
         const { caption, captionWidth, children } = this.props;
         return (
             <RowStack gap={2}>
-                <Fixed className={styles.caption} width={captionWidth || 240}>
+                <Fixed data-tid="FormCaption" className={styles.caption} width={captionWidth || 240}>
                     {caption}
                 </Fixed>
                 <Fit>{children}</Fit>
