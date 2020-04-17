@@ -351,10 +351,70 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Name = "CustomContent",
                                     AvailableValues = new string[0],
                                 },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "GenericIntValues",
+                                    AvailableValues = new string[0],
+                                    Type = GetGenericTypeMeta(TypeMetaInformation.ForSimpleType("Int32"))
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "GenericStringValues",
+                                    AvailableValues = new string[0],
+                                    Type = GetGenericTypeMeta(TypeMetaInformation.ForSimpleType("String"))
+                                }
                         },
                 };
             SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
             service.Start(7777);
+        }
+
+        private static TypeMetaInformation GetGenericTypeMeta(TypeMetaInformation typeParameter)
+        {
+            return new TypeMetaInformation
+                {
+                    TypeName = "C",
+                    GenericTypeArguments = new[] {typeParameter},
+                    Properties = new[]
+                        {
+                            new PropertyMetaInformation
+                                {
+                                    Name = "String",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("String")
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Value",
+                                    AvailableValues = new string[0],
+                                    Type = typeParameter,
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Values",
+                                    AvailableValues = new string[0],
+                                    Type = new TypeMetaInformation
+                                        {
+                                            TypeName = "List",
+                                            IsArray = true,
+                                            Properties = new PropertyMetaInformation[0],
+                                            GenericTypeArguments = new[] {typeParameter}
+                                        }
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "MoreValues",
+                                    AvailableValues = new string[0],
+                                    Type = new TypeMetaInformation
+                                        {
+                                            TypeName = "Dictionary",
+                                            IsArray = true,
+                                            Properties = new PropertyMetaInformation[0],
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String"), typeParameter}
+                                        }
+                                },
+                        }
+                };
         }
 
         [OneTimeTearDown]
