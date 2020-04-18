@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "skbkontur.typescript.contractgenerator.cli": {
-      "version": "2.0.42-pre5",
+      "version": "2.0.55-pre6",
       "commands": [
         "dotnet-ts-gen"
       ]

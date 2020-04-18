@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer", "DbViewer\DbViewer.csproj", "{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.TypeScriptGenerator", "DbViewer.TypeScriptGenerator\DbViewer.TypeScriptGenerator.csproj", "{98533DBE-38DD-4B1F-8DDE-5E801D90405C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.Tests", "DbViewer.Tests\DbViewer.Tests.csproj", "{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.TestApi", "DbViewer.TestApi\DbViewer.TestApi.csproj", "{3646A699-60D3-4668-9E40-E49A8FBF8BC0}"
@@ -20,10 +18,6 @@ Global
 		{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDE5BA73-EA3C-4ACD-AFB8-BE23D47399CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98533DBE-38DD-4B1F-8DDE-5E801D90405C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF77461-DEA9-4CB4-B0E8-4A3E373F4F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU

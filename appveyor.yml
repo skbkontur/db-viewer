@@ -36,12 +36,12 @@ install:
 before_build:
   - cmd: dotnet --info
   - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
+  - cmd: dotnet tool restore
   - cmd: yarn install --frozen-lockfile
 
 build_script:
   - cmd: dotnet build --configuration Release ./DbViewer.sln
   - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
-  - cmd: DbViewer.TypeScriptGenerator\bin\Release\net472\SkbKontur.DbViewer.TypeScriptGenerator.exe
   - cmd: yarn build
 
 before_test:
