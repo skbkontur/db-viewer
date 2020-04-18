@@ -46,7 +46,10 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
 
         protected override Type ResolveJson(JObject @object, PropertyInfo propertyInfo)
         {
-            return GetObjectType(@object["DifficultEnum"].ToObject<DifficultEnum>());
+            var enumValue = @object["DifficultEnum"];
+            if (enumValue == null)
+                throw new InvalidOperationException("Expected EnumValue to be present");
+            return GetObjectType(enumValue.ToObject<DifficultEnum>());
         }
 
         private static Type GetObjectType(DifficultEnum difficultEnum)

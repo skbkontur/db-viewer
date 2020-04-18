@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 
+using SkbKontur.DbViewer.TestApi.Controllers;
+using SkbKontur.DbViewer.TestApi.TypeScriptConfiguration;
 using SkbKontur.TypeScript.ContractGenerator;
-using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 
 namespace SkbKontur.DbViewer.TypeScriptGenerator
 {
@@ -19,20 +20,20 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
             if (!Directory.Exists(targetPath))
                 Directory.CreateDirectory(targetPath);
 
-            var customTypeGenerator = new CustomTypeGenerator();
+            var customTypeGenerator = new DbViewerCustomTypeGenerator();
             var typeScriptCodeGenerator = new TypeScript.ContractGenerator.TypeScriptGenerator(
                 new TypeScriptGenerationOptions
                     {
                         EnableExplicitNullability = true,
                         EnableOptionalProperties = true,
                         UseGlobalNullable = false,
+                        NullabilityMode = NullabilityMode.NullableReference,
                         LinterDisableMode = LinterDisableMode.EsLint,
-                        EnumGenerationMode = EnumGenerationMode.TypeScriptEnum,
                     },
                 customTypeGenerator,
-                new RootTypesProvider(typeof(DbViewerApi))
+                new TypesProvider(typeof(DbViewerApiController))
             );
-            typeScriptCodeGenerator.GenerateFiles(targetPath, JavaScriptTypeChecker.TypeScript);
+            typeScriptCodeGenerator.GenerateFiles(targetPath);
 
             foreach (var file in Directory.EnumerateFiles(targetPath, "*.ts", SearchOption.AllDirectories))
             {

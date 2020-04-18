@@ -9,7 +9,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers.InternalImplementat
             this.tryParse = tryParse;
         }
 
-        public bool TryParse(Type enumType, string value, out object result)
+        public bool TryParse(Type enumType, string value, out object? result)
         {
             return tryParse(enumType, value, out result);
         }

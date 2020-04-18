@@ -12,14 +12,14 @@ namespace SkbKontur.DbViewer.TestApi.Impl
 {
     public class SampleCustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
-        public CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
+        public CustomPropertyConfiguration? TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {
             return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
                    ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
                    ?? CustomTypeConfiguration.TryGetConfiguration(@object, propertyInfo);
         }
 
-        public CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
+        public CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
             return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
                    ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
@@ -29,7 +29,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
 
     public static class CustomTypeConfiguration
     {
-        public static CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
+        public static CustomPropertyConfiguration? TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {
             var serializedAttribute = propertyInfo.GetCustomAttribute<SerializedAttribute>();
             if (serializedAttribute == null)
@@ -42,7 +42,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return GetConfiguration(resolver.ResolveType(@object, propertyInfo));
         }
 
-        public static CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
+        public static CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
             var serializedAttribute = propertyInfo.GetCustomAttribute<SerializedAttribute>();
             if (serializedAttribute == null)
@@ -59,7 +59,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return new CustomPropertyConfiguration
                 {
                     ResolvedType = type,
-                    StoredToApi = @object => serializer.Deserialize(type, (byte[])@object),
+                    StoredToApi = @object => serializer.Deserialize(type, (byte[]?)@object),
                     ApiToStored = @object => serializer.Serialize(type, @object),
                 };
         }

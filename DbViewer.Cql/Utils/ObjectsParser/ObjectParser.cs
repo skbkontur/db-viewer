@@ -4,9 +4,9 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
 {
     internal static class ObjectParser
     {
-        public static object Parse(Type type, string value)
+        public static object? Parse(Type type, string value)
         {
-            object result;
+            object? result;
             if (type.IsEnum)
             {
                 if (collection.GetEnumParser().TryParse(type, value, out result))
@@ -19,7 +19,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
             return Default(type);
         }
 
-        private static object Default(Type type)
+        private static object? Default(Type type)
         {
             if (type.IsValueType)
                 return Activator.CreateInstance(type);

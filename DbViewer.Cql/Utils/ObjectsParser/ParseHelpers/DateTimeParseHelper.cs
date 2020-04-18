@@ -9,7 +9,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.ParseHelpers
 {
     internal static class DateTimeParseHelper
     {
-        public static bool TryParse(string value, out LocalTime result)
+        public static bool TryParse(string value, out LocalTime? result)
         {
             result = default;
 
@@ -20,7 +20,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.ParseHelpers
             return true;
         }
 
-        public static bool TryParse(string value, out LocalDate result)
+        public static bool TryParse(string value, out LocalDate? result)
         {
             result = default;
 

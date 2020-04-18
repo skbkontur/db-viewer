@@ -17,7 +17,7 @@ namespace SkbKontur.DbViewer.Helpers
             {
                 genericArguments = genericArgs;
                 holderArguments = holderArgs;
-                var result = Visit(expression) as Expression<Func<T>>;
+                var result = (Expression<Func<T>>)Visit(expression);
                 if (!atLeastOneMethodCallModified)
                     throw new InvalidOperationException("Nothing was modified");
                 return result;

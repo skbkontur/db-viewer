@@ -16,22 +16,22 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
             return new LocalTime(dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond * nanosecondsInMilliseconds);
         }
 
-        public static LocalDate ToLocalDate(this DateTime? dateTime)
+        public static LocalDate? ToLocalDate(this DateTime? dateTime)
         {
             return dateTime == null ? null : ToLocalDate(dateTime.Value);
         }
 
-        public static LocalTime ToLocalTime(this DateTime? dateTime)
+        public static LocalTime? ToLocalTime(this DateTime? dateTime)
         {
             return dateTime == null ? null : ToLocalTime(dateTime.Value);
         }
 
-        public static DateTime? ToDateTime(this LocalDate localDate)
+        public static DateTime? ToDateTime(this LocalDate? localDate)
         {
             return localDate == null ? (DateTime?)null : new DateTime(localDate.Year, localDate.Month, localDate.Day, 0, 0, 0, DateTimeKind.Utc);
         }
 
-        public static DateTime? ToDateTime(this LocalTime localTime)
+        public static DateTime? ToDateTime(this LocalTime? localTime)
         {
             return localTime == null ? (DateTime?)null : new DateTime(1, 1, 1, localTime.Hour, localTime.Minute, localTime.Second, localTime.Nanoseconds / nanosecondsInMilliseconds);
         }

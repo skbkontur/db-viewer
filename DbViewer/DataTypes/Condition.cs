@@ -8,7 +8,7 @@ namespace SkbKontur.DbViewer.DataTypes
         public string Path { get; set; }
 
         [JsonProperty("value")]
-        public string Value { get; set; }
+        public string? Value { get; set; }
 
         [JsonProperty("operator")]
         public ObjectFieldFilterOperator Operator { get; set; }

@@ -117,6 +117,7 @@ export class DbViewerApiFake implements IDbViewerApi {
             meta: {
                 identifier: "",
                 schemaDescription: {
+                    schemaName: "",
                     downloadLimit: 1000,
                     countLimit: 100,
                     allowReadAll: true,

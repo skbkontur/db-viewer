@@ -6,19 +6,19 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public abstract class BaseCsvWriter
     {
-        protected BaseCsvWriter([NotNull, ItemNotNull] string[] header)
+        protected BaseCsvWriter(string[] header)
         {
             Header = header;
         }
 
-        public void AddRow([NotNull] params string[] fields)
+        public void AddRow(params string[] fields)
         {
             if (fields.Length != Header.Length)
                 throw new InvalidOperationException($"Row contains {fields.Length} elements but csv header contains {Header.Length}");
             InnerAddRow(fields);
         }
 
-        public void AddRow([NotNull] params (string Column, string Value)[] fields)
+        public void AddRow(params (string Column, string Value)[] fields)
         {
             var row = new string[Header.Length];
             foreach (var fieldValue in fields)
@@ -26,7 +26,6 @@ namespace SkbKontur.DbViewer.Helpers
             AddRow(row);
         }
 
-        [NotNull]
         private string FormatElement(string element)
         {
             element = element.Replace("\"", "\"\"");
@@ -35,19 +34,16 @@ namespace SkbKontur.DbViewer.Helpers
             return $"\"{element}\"";
         }
 
-        [NotNull]
-        protected string BuildCsvRow([NotNull, ItemNotNull] string[] row)
+        protected string BuildCsvRow(string[] row)
         {
             return string.Join(";", row.Select(FormatElement));
         }
 
-        [NotNull, ItemNotNull]
         protected string[] Header { get; }
 
-        [NotNull]
         private Dictionary<string, int> HeaderIndex => Header.Select((name, i) => (Name : name, Index : i))
                                                              .ToDictionary(key => key.Name, key => key.Index);
 
-        protected abstract void InnerAddRow([NotNull] string[] fields);
+        protected abstract void InnerAddRow(string[] fields);
     }
 }

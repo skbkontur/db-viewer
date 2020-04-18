@@ -9,7 +9,7 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 {
     public static class TimeUuidCustomPropertyConfiguration
     {
-        public static CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
+        public static CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
             var realType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
             if (realType != typeof(TimeUuid))
@@ -21,7 +21,7 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
                     StoredToApi = @object => @object?.ToString(),
                     ApiToStored = @object =>
                         {
-                            var value = (string)@object;
+                            var value = (string?)@object;
                             if (string.IsNullOrEmpty(value))
                                 return (TimeUuid?)null;
                             return TimeUuid.Parse(value);

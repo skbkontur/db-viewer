@@ -9,7 +9,7 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 {
     public static class LocalDateCustomPropertyConfiguration
     {
-        public static CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
+        public static CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
             if (!(propertyInfo.PropertyType == typeof(LocalDate)))
                 return null;
@@ -17,7 +17,7 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
             return new CustomPropertyConfiguration
                 {
                     ResolvedType = typeof(DateTime?),
-                    StoredToApi = @object => ((LocalDate)@object).ToDateTime(),
+                    StoredToApi = @object => ((LocalDate?)@object).ToDateTime(),
                     ApiToStored = @object => ((DateTime?)@object).ToLocalDate(),
                 };
         }

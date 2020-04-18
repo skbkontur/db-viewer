@@ -9,11 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="1.10.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DbViewer\DbViewer.csproj" />
+    <ProjectReference Include="..\DbViewer.TestApi\DbViewer.TestApi.csproj" />
   </ItemGroup>
 
 </Project>

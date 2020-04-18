@@ -53,7 +53,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Utils
             return makeBinaryExpressionByOperator[@operator](leftExpression, rightExpression);
         }
 
-        private static object ParseValue(string stringValue, Type targetType)
+        private static object? ParseValue(string stringValue, Type targetType)
         {
             if (targetType.IsEnum)
                 return EnumParseHelper.TryParse(targetType, stringValue, out var result) ? result : null;

@@ -39,7 +39,7 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
                 this.parser = parser;
             }
 
-            public bool TryParse(Type type, string value, out object result)
+            public bool TryParse(Type type, string value, out object? result)
             {
                 var innerType = type.GetGenericArguments().First();
                 if (string.IsNullOrEmpty(value))

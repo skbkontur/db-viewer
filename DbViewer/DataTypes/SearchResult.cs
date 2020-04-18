@@ -4,7 +4,6 @@ namespace SkbKontur.DbViewer.DataTypes
 {
     public class SearchResult
     {
-        [NotNull, ItemNotNull]
         [JsonProperty("items")]
         public object[] Items { get; set; }
 
