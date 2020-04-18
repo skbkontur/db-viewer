@@ -7,26 +7,21 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public class CsvWriter : BaseCsvWriter
     {
-        public CsvWriter([NotNull, ItemNotNull] params string[] header)
+        public CsvWriter(params string[] header)
             : this(Encoding.UTF8, header)
         {
         }
 
-        private CsvWriter([NotNull] Encoding encoding, [NotNull, ItemNotNull] params string[] header)
+        private CsvWriter(Encoding encoding, params string[] header)
             : base(header)
         {
             this.encoding = encoding;
             rows = new List<string[]>();
         }
 
-        protected override void InnerAddRow([NotNull] string[] fields)
+        protected override void InnerAddRow(string[] fields)
         {
             rows.Add(fields);
-        }
-
-        public void WriteToFile([NotNull] string filename)
-        {
-            File.WriteAllLines(filename, GetLines(), encoding);
         }
 
         public byte[] GetBytes()

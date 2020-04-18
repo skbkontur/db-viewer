@@ -2,6 +2,7 @@ import CopyIcon from "@skbkontur/react-icons/Copy";
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
+import _ from "lodash";
 import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -106,12 +107,18 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
             return;
         }
 
-        const savedInfo = await this.props.dbViewerApi.updateObject(objectMeta.identifier, {
+        const oldValue = _.get(objectInfo, path);
+        if ((oldValue == null && value == null) || (oldValue != null && String(oldValue) === value)) {
+            return;
+        }
+
+        await this.props.dbViewerApi.updateObject(objectMeta.identifier, {
             conditions: conditions,
             path: path,
             value: value,
         });
-        this.setState({ objectInfo: savedInfo });
+
+        await this.load();
     };
 
     public async handleDelete(): Promise<void> {

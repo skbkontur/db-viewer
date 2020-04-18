@@ -117,6 +117,7 @@ export class DbViewerApiFake implements IDbViewerApi {
             meta: {
                 identifier: "",
                 schemaDescription: {
+                    schemaName: "",
                     downloadLimit: 1000,
                     countLimit: 100,
                     allowReadAll: true,
@@ -215,8 +216,8 @@ export class DbViewerApiFake implements IDbViewerApi {
         // noop
     }
 
-    public async updateObject(objectIdentifier: string, obj: object): Promise<object> {
-        return {};
+    public async updateObject(objectIdentifier: string, obj: object): Promise<void> {
+        // noop
     }
 
     public async downloadObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<DownloadResult> {

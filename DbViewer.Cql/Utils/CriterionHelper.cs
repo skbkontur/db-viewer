@@ -20,18 +20,6 @@ namespace SkbKontur.DbViewer.Cql.Utils
             return Expression.Lambda(memberExpression, parameterExpression);
         }
 
-        public static LambdaExpression BuildSameIdentitiesPredicate(Type type, object @object)
-        {
-            var parameter = Expression.Parameter(type);
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                 .Where(x => x.GetCustomAttribute(typeof(ClusteringKeyAttribute)) != null || x.GetCustomAttribute(typeof(PartitionKeyAttribute)) != null)
-                                 .ToArray();
-            var filtersExpressions = properties.Select(property => Expression.Equal(Expression.Property(parameter, property),
-                                                                                    Expression.Constant(property.GetMethod.Invoke(@object, null), property.PropertyType)))
-                                               .ToArray();
-            return Expression.Lambda(filtersExpressions.Skip(1).Aggregate(filtersExpressions[0], Expression.AndAlso), parameter);
-        }
-
         public static LambdaExpression BuildPredicate(Type type, Condition[] filters)
         {
             var parameter = Expression.Parameter(type);

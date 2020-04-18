@@ -145,7 +145,7 @@ export class ObjectSearchQueryUtilsTest {
         expect(
             ObjectSearchQueryUtils.stringify({
                 sort: {
-                    path: null,
+                    path: "null",
                     sortOrder: ObjectFilterSortOrder.Ascending,
                 },
                 conditions: null,

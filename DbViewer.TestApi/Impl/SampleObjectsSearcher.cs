@@ -32,9 +32,9 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             SampleDataBase.Instance.Delete(filters);
         }
 
-        public async Task<object> Write(object @object)
+        public async Task Write(object @object)
         {
-            return SampleDataBase.Instance.Write((TestClass)@object);
+            SampleDataBase.Instance.Write((TestClass)@object);
         }
     }
 }

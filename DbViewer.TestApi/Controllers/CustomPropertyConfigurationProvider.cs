@@ -7,12 +7,12 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 {
     public class CustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
-        public CustomPropertyConfiguration TryGetConfiguration(object @object, PropertyInfo propertyInfo)
+        public CustomPropertyConfiguration? TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {
             return TryGetConfiguration(propertyInfo);
         }
 
-        public CustomPropertyConfiguration TryGetConfiguration(PropertyInfo propertyInfo)
+        public CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
             return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
                    ?? LocalDateCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)

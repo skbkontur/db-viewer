@@ -7,7 +7,6 @@ namespace SkbKontur.DbViewer.DataTypes
         [JsonProperty("object")]
         public object Object { get; set; }
 
-        [NotNull]
         [JsonProperty("meta")]
         public ObjectDescription Meta { get; set; }
     }

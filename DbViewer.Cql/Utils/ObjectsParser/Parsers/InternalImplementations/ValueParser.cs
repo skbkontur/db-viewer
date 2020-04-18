@@ -17,12 +17,12 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers.InternalImplementat
 
     internal class ValueParser<T> : IValueParser
     {
-        public ValueParser(TryParseDelegate<T> tryParse)
+        public ValueParser(TryParseDelegate<T>? tryParse)
         {
             this.tryParse = tryParse;
         }
 
-        public bool TryParse(Type type, string value, out object result)
+        public bool TryParse(Type type, string value, out object? result)
         {
             if (tryParse == null)
             {
@@ -35,6 +35,6 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser.Parsers.InternalImplementat
             return tryParseResult;
         }
 
-        private readonly TryParseDelegate<T> tryParse;
+        private readonly TryParseDelegate<T>? tryParse;
     }
 }

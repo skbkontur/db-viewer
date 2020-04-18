@@ -37,6 +37,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             fixture = new Fixture();
             fixture.Register(TimeUuid.NewId);
             fixture.Register((DateTime dt) => dt.ToLocalDate());
+            fixture.Register((ChildClass c) => (BaseClass)c);
             var schemaRegistry = new SchemaRegistry();
             schemaRegistry.Add(
                 new Schema
@@ -67,6 +68,12 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                     GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {
+                            new PropertyMetaInformation
+                                {
+                                    Type = null,
+                                    Name = "BaseClass",
+                                    AvailableValues = new string[0],
+                                },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
@@ -362,6 +369,12 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Name = "GenericStringValues",
                                     AvailableValues = new string[0],
                                     Type = GetGenericTypeMeta(TypeMetaInformation.ForSimpleType("String"))
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "BaseClass",
+                                    AvailableValues = new string[0],
+                                    Type = null
                                 }
                         },
                 };
@@ -373,7 +386,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
         {
             return new TypeMetaInformation
                 {
-                    TypeName = "C",
+                    TypeName = "GenericClass",
                     GenericTypeArguments = new[] {typeParameter},
                     Properties = new[]
                         {
@@ -463,6 +476,23 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 }
                         }
                 };
+            var childType = new TypeMetaInformation
+                {
+                    TypeName = "ChildClass",
+                    Properties = new[]
+                        {
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Int",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int32")
+                                }
+                        },
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                };
+            testClassShape.Properties[6].Type.Properties[0].Type = childType;
+            testClassShape.Properties[9].Type = childType;
+
             CheckShape(result.Meta.TypeMetaInformation, testClassShape);
             var localTime = @object.CustomContent.LocalTime;
             CheckObject(result.Object, new ExpandedTestClass
@@ -501,38 +531,38 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                             Value = oldObject.Id,
                         },
                 };
-            var result = await client.Write("TestClass", new ObjectUpdateRequest
+            var result = await Write("TestClass", new ObjectUpdateRequest
                 {
                     Conditions = conditions,
                     Path = new[] {"Content", "String"},
                     Value = "qwer",
                 });
-            ((JObject)result)["Content"]["String"].ToObject<string>().Should().Be("qwer");
+            result["Content"]["String"].ToObject<string>().Should().Be("qwer");
 
             var key = oldObject.Content.Dictionary.Keys.First();
-            result = await client.Write("TestClass", new ObjectUpdateRequest
+            result = await Write("TestClass", new ObjectUpdateRequest
                 {
                     Conditions = conditions,
                     Path = new[] {"Content", "Dictionary", key},
                     Value = "12",
                 });
-            ((JObject)result)["Content"]["Dictionary"][key].ToObject<int>().Should().Be(12);
+            result["Content"]["Dictionary"][key].ToObject<int>().Should().Be(12);
 
-            result = await client.Write("TestClass", new ObjectUpdateRequest
+            result = await Write("TestClass", new ObjectUpdateRequest
                 {
                     Conditions = conditions,
                     Path = new[] {"Serialized", "Content", "List", "0"},
                     Value = "132",
                 });
-            ((JObject)result)["Serialized"]["Content"]["List"][0].ToObject<int>().Should().Be(132);
+            result["Serialized"]["Content"]["List"][0].ToObject<int>().Should().Be(132);
 
-            result = await client.Write("TestClass", new ObjectUpdateRequest
+            result = await Write("TestClass", new ObjectUpdateRequest
                 {
                     Conditions = conditions,
                     Path = new[] {"CustomContent", "LocalTime"},
                     Value = "0001-01-01T12:43:12.123000Z",
                 });
-            ((JObject)result)["CustomContent"]["LocalTime"].ToObject<DateTime>().Should().Be(new DateTime(0001, 01, 01, 12, 43, 12, 123, DateTimeKind.Utc));
+            result["CustomContent"]["LocalTime"].ToObject<DateTime>().Should().Be(new DateTime(0001, 01, 01, 12, 43, 12, 123, DateTimeKind.Utc));
 
             oldObject.Content.String = "qwer";
             oldObject.Content.Dictionary[key] = 12;
@@ -561,18 +591,34 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                 });
 
             var meta = await client.GetTypeMeta("TestClass");
+
             testClassShape.Properties[5].Type = new TypeMetaInformation
                 {
                     TypeName = "Object",
                     Properties = new PropertyMetaInformation[0],
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
+            var baseType = new TypeMetaInformation
+                {
+                    TypeName = "BaseClass",
+                    Properties = new PropertyMetaInformation[0],
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                };
+            testClassShape.Properties[6].Type.Properties[0].Type = baseType;
+            testClassShape.Properties[9].Type = baseType;
+
             meta.Should().BeEquivalentTo(new ObjectDescription
                 {
                     Identifier = "TestClass",
                     SchemaDescription = schemaDescription,
                     TypeMetaInformation = testClassShape,
                 });
+        }
+
+        private async Task<JObject> Write(string objectIdentifier, ObjectUpdateRequest query)
+        {
+            await client.Write(objectIdentifier, query);
+            return (JObject)(await client.Read(objectIdentifier, query.Conditions)).Object;
         }
 
         private void FillDataBase(params TestClass[] objects)

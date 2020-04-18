@@ -1,18 +1,19 @@
-﻿using System;
-using System.Reflection;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 using SkbKontur.TypeScript.ContractGenerator;
+using SkbKontur.TypeScript.ContractGenerator.Abstractions;
 using SkbKontur.TypeScript.ContractGenerator.CodeDom;
 using SkbKontur.TypeScript.ContractGenerator.TypeBuilders;
 
-namespace SkbKontur.DbViewer.TypeScriptGenerator
+namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
 {
-    public class CustomTypeGenerator : ICustomTypeGenerator
+    public class DbViewerCustomTypeGenerator : ICustomTypeGenerator
     {
-        public string GetTypeLocation(Type type)
+        public string GetTypeLocation(ITypeInfo type)
         {
-            var typeName = type.Name;
+            if (InternalApiTypeBuildingContext.Accept(type))
+                return InternalApiTypeBuildingContext.GetApiName(type);
+
             const string dbViewerNamespace = "SkbKontur.DbViewer.";
             if (type.FullName != null && type.FullName.StartsWith(dbViewerNamespace))
             {
@@ -20,10 +21,10 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
                 return new Regex("`.*$").Replace(name, "");
             }
 
-            return type.IsGenericType ? new Regex("`.*$").Replace(typeName, "") : typeName;
+            return type.IsGenericType ? new Regex("`.*$").Replace(type.Name, "") : type.Name;
         }
 
-        public ITypeBuildingContext ResolveType(string initialUnitPath, Type type, ITypeScriptUnitFactory unitFactory)
+        public ITypeBuildingContext ResolveType(string initialUnitPath, ITypeGenerator typeGenerator, ITypeInfo type, ITypeScriptUnitFactory unitFactory)
         {
             if (InternalApiTypeBuildingContext.Accept(type))
             {
@@ -34,7 +35,7 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
             return null;
         }
 
-        public TypeScriptTypeMemberDeclaration ResolveProperty(TypeScriptUnit unit, ITypeGenerator typeGenerator, Type type, PropertyInfo property)
+        public TypeScriptTypeMemberDeclaration ResolveProperty(TypeScriptUnit unit, ITypeGenerator typeGenerator, ITypeInfo type, IPropertyInfo property)
         {
             return null;
         }

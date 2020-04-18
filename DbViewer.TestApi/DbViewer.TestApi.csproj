@@ -5,6 +5,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>SkbKontur.DbViewer.TestApi</AssemblyName>
     <RootNamespace>SkbKontur.DbViewer.TestApi</RootNamespace>
+    <OutputPath>bin\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
     <PackageReference Include="Microsoft.Owin" Version="4.1.0" />
     <PackageReference Include="Microsoft.Owin.SelfHost" Version="4.1.0" />
+    <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="2.0.55-pre6" />
     <PackageReference Include="Topshelf" Version="4.2.1" />
     <PackageReference Include="AutoFixture" Version="4.11.0" />
   </ItemGroup>

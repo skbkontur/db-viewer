@@ -5,7 +5,7 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public static class ObjectParser
     {
-        public static object Parse(Type type, string value)
+        public static object? Parse(Type type, string? value)
         {
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return string.IsNullOrEmpty(value) ? null : Parse(type.GetGenericArguments()[0], value);

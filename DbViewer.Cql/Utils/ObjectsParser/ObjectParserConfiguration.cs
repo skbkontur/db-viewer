@@ -52,8 +52,8 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
                    .Configure<TimeUuid>(TimeUuidParseHelper.TryParse)
                    .Configure<DateTime>(DateTimeParseHelper.TryParse)
                    .Configure<DateTimeOffset>(DateTimeParseHelper.TryParse)
-                   .Configure<LocalDate>(DateTimeParseHelper.TryParse)
-                   .Configure<LocalTime>(DateTimeParseHelper.TryParse)
+                   .Configure<LocalDate?>(DateTimeParseHelper.TryParse)
+                   .Configure<LocalTime?>(DateTimeParseHelper.TryParse)
                    .ConfigureEnumParse(new EnumParser((Type enumType, string value, out object result) => EnumParseHelper.TryParse(enumType, value, out result)));
         }
 
@@ -82,6 +82,6 @@ namespace SkbKontur.DbViewer.Cql.Utils.ObjectsParser
         }
 
         private readonly Dictionary<Type, IValueParser> parseRules = new Dictionary<Type, IValueParser>();
-        private IValueParser enumClassParser;
+        private IValueParser? enumClassParser;
     }
 }

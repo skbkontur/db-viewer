@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-using SkbKontur.DbViewer.Attributes;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
 using SkbKontur.DbViewer.Schemas;
-
-[assembly : InternalsVisibleTo("SkbKontur.DbViewer.TypeScriptGenerator")]
 
 namespace SkbKontur.DbViewer
 {
@@ -20,9 +16,6 @@ namespace SkbKontur.DbViewer
             this.schemaRegistry = schemaRegistry;
         }
 
-        [HttpGet]
-        [Route("names")]
-        [NotNull, ItemNotNull]
         public ObjectIdentifier[] GetNames()
         {
             return schemaRegistry.GetAllSchemas()
@@ -30,14 +23,11 @@ namespace SkbKontur.DbViewer
                                  .ToArray();
         }
 
-        [NotNull]
-        [HttpGet]
-        [Route("{objectIdentifier}/meta")]
-        public ObjectDescription GetMeta([NotNull] string objectIdentifier)
+        public ObjectDescription GetMeta(string objectIdentifier)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             return new ObjectDescription
                 {
                     Identifier = objectIdentifier,
@@ -46,10 +36,7 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        [HttpPost]
-        [NotNull, ItemNotNull]
-        [Route("{objectIdentifier}/search")]
-        public async Task<SearchResult> SearchObjects([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectSearchRequest query)
+        public async Task<SearchResult> SearchObjects(string objectIdentifier, ObjectSearchRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
@@ -62,7 +49,7 @@ namespace SkbKontur.DbViewer
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var counts = await connector.Count(query.Conditions, countLimit + 1).ConfigureAwait(false);
             var results = await connector.Search(query.Conditions, query.Sorts, query.Offset ?? 0, query.Count ?? 20).ConfigureAwait(false);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var objects = results.Select(x => ObjectsConverter.StoredToApi(typeMeta, type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
 
             return new SearchResult
@@ -73,10 +60,7 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        [HttpPost]
-        [NotNull, ItemNotNull]
-        [Route("{objectIdentifier}/download")]
-        public async Task<DownloadResult> DownloadObjects([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectSearchRequest query)
+        public async Task<DownloadResult> DownloadObjects(string objectIdentifier, ObjectSearchRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
@@ -93,7 +77,7 @@ namespace SkbKontur.DbViewer
             var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit).ConfigureAwait(false);
 
             var properties = new List<string>();
-            var getters = new List<Func<object, object>>();
+            var getters = new List<Func<object?, object?>>();
 
             PropertyHelpers.BuildGettersForProperties(type, "", x => x, properties, getters, schema.CustomPropertyConfigurationProvider);
 
@@ -118,10 +102,7 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        [HttpPost]
-        [NotNull, ItemNotNull]
-        [Route("{objectIdentifier}/details")]
-        public async Task<ObjectDetails> ReadObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectReadRequest query)
+        public async Task<ObjectDetails> ReadObject(string objectIdentifier, ObjectReadRequest query)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
@@ -140,26 +121,17 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        [NotNull]
-        [HttpDelete]
-        [Route("{objectIdentifier}/delete")]
-        public Task DeleteObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectReadRequest query)
+        public Task DeleteObject(string objectIdentifier, ObjectReadRequest query)
         {
             return schemaRegistry.GetConnector(objectIdentifier).Delete(query.Conditions);
         }
 
-        [HttpPost]
-        [NotNull, ItemCanBeNull]
-        [Route("{objectIdentifier}/update")]
-        public async Task<object> UpdateObject([NotNull] string objectIdentifier, [NotNull] [FromBody] ObjectUpdateRequest query)
+        public async Task UpdateObject(string objectIdentifier, ObjectUpdateRequest query)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var oldObject = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
             var updatedObject = ObjectPropertyEditor.SetValue(oldObject, query.Path, query.Value, schema.CustomPropertyConfigurationProvider);
-            var newObject = await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(newObject, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            return ObjectsConverter.StoredToApi(typeMeta, type, newObject, schema.CustomPropertyConfigurationProvider);
+            await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
         }
 
         private readonly ISchemaRegistry schemaRegistry;
