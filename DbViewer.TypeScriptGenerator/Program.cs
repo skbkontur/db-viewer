@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.TypeScriptConfiguration;
 using SkbKontur.TypeScript.ContractGenerator;
 
@@ -11,16 +10,10 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
     {
         public static void Main(string[] args)
         {
-            GenerateEdiTypes();
-        }
-
-        private static void GenerateEdiTypes()
-        {
             var targetPath = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).FullName, "../../../../db-viewer-ui/src/Domain/Api");
             if (!Directory.Exists(targetPath))
                 Directory.CreateDirectory(targetPath);
 
-            var customTypeGenerator = new DbViewerCustomTypeGenerator();
             var typeScriptCodeGenerator = new TypeScript.ContractGenerator.TypeScriptGenerator(
                 new TypeScriptGenerationOptions
                     {
@@ -30,9 +23,8 @@ namespace SkbKontur.DbViewer.TypeScriptGenerator
                         NullabilityMode = NullabilityMode.NullableReference,
                         LinterDisableMode = LinterDisableMode.EsLint,
                     },
-                customTypeGenerator,
-                new TypesProvider(typeof(DbViewerApiController))
-            );
+                new DbViewerCustomTypeGenerator(),
+                new DbViewerTypesProvider());
             typeScriptCodeGenerator.GenerateFiles(targetPath);
 
             foreach (var file in Directory.EnumerateFiles(targetPath, "*.ts", SearchOption.AllDirectories))

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "skbkontur.typescript.contractgenerator.cli": {
+      "version": "2.0.42-pre5",
+      "commands": [
+        "dotnet-ts-gen"
+      ]
+    }
+  }
+}
