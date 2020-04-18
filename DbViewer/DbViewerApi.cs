@@ -77,7 +77,7 @@ namespace SkbKontur.DbViewer
             var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit).ConfigureAwait(false);
 
             var properties = new List<string>();
-            var getters = new List<Func<object, object>>();
+            var getters = new List<Func<object?, object?>>();
 
             PropertyHelpers.BuildGettersForProperties(type, "", x => x, properties, getters, schema.CustomPropertyConfigurationProvider);
 

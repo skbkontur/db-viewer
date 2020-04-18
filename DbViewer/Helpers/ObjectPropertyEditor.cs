@@ -8,7 +8,7 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public static class ObjectPropertyEditor
     {
-        public static object SetValue(object obj, string[] path, string value, ICustomPropertyConfigurationProvider propertyConfigurator)
+        public static object SetValue(object obj, string[] path, string? value, ICustomPropertyConfigurationProvider propertyConfigurator)
         {
             var objectType = obj.GetType();
 
@@ -48,6 +48,8 @@ namespace SkbKontur.DbViewer.Helpers
                 }
 
                 var oldValue = propertyConfiguration.StoredToApi(property.GetValue(obj));
+                if (oldValue == null)
+                    throw new InvalidOperationException($"Unable to set inner value for property {property.Name} of type {propertyConfiguration.ResolvedType}");
                 var intermediateValue = SetValue(oldValue, path.Skip(1).ToArray(), value, propertyConfigurator);
                 var newValue = propertyConfiguration.ApiToStored(intermediateValue);
                 property.SetValue(obj, newValue);

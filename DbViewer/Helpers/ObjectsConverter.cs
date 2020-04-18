@@ -9,7 +9,7 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public static class ObjectsConverter
     {
-        public static object StoredToApi(TypeMetaInformation typeMeta, Type type, object o, ICustomPropertyConfigurationProvider customPropertyConfigurationProvider)
+        public static object StoredToApi(TypeMetaInformation typeMeta, Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
         {
             if (o == null)
                 return null;

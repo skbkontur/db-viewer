@@ -12,8 +12,8 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public static class PropertyHelpers
     {
-        public static void BuildGettersForProperties(Type type, string currentName, Func<object, object> currentGetter,
-                                                     List<string> properties, List<Func<object, object>> getters,
+        public static void BuildGettersForProperties(Type type, string currentName, Func<object?, object?> currentGetter,
+                                                     List<string> properties, List<Func<object?, object?>> getters,
                                                      ICustomPropertyConfigurationProvider propertyConfigurationProvider,
                                                      Type[]? usedTypes = null)
         {
@@ -34,7 +34,7 @@ namespace SkbKontur.DbViewer.Helpers
                 var propertyGetter = propertyInfo.GetGetMethod();
 
                 var name = string.IsNullOrEmpty(currentName) ? propertyName : $"{currentName}.{propertyName}";
-                Func<object, object> getter = x =>
+                Func<object?, object?> getter = x =>
                     {
                         var o = currentGetter(x);
                         if (o == null)
@@ -55,15 +55,15 @@ namespace SkbKontur.DbViewer.Helpers
             }
         }
 
-        public static string ToString(Func<object, object> getter, object? value)
+        public static string ToString(Func<object?, object?> getter, object? value)
         {
             var property = getter(value);
             return ToString(property);
         }
 
-        public static TypeMetaInformation? BuildTypeMetaInformation(object @object, Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
-                                                                    ICustomPropertyConfigurationProvider propertyConfigurationProvider,
-                                                                    Type[]? usedTypes = null)
+        public static TypeMetaInformation BuildTypeMetaInformation(object? @object, Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
+                                                                   ICustomPropertyConfigurationProvider propertyConfigurationProvider,
+                                                                   Type[]? usedTypes = null)
         {
             usedTypes = (usedTypes ?? new Type[0]).ToArray();
             if (usedTypes.Contains(type))
@@ -104,12 +104,12 @@ namespace SkbKontur.DbViewer.Helpers
                 };
         }
 
-        private static PropertyMetaInformation BuildPropertyInfo(object @object, PropertyInfo propertyInfo,
+        private static PropertyMetaInformation BuildPropertyInfo(object? @object, PropertyInfo propertyInfo,
                                                                  IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                                                  ICustomPropertyConfigurationProvider propertyConfigurationProvider,
                                                                  Type[] types)
         {
-            object objectProperty;
+            object? objectProperty;
             Type propertyType;
             if (@object == null)
             {
