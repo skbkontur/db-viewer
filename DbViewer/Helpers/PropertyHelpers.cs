@@ -122,8 +122,9 @@ namespace SkbKontur.DbViewer.Helpers
                 var customConfiguration = propertyConfigurationProvider.TryGetConfiguration(@object, propertyInfo);
                 var underlyingProperty = propertyInfo.GetValue(@object);
                 objectProperty = customConfiguration != null ? customConfiguration.StoredToApi(underlyingProperty) : underlyingProperty;
-                var objectPropertyType = IsSimpleType(propertyInfo.PropertyType) ? null : objectProperty?.GetType();
-                propertyType = objectPropertyType ?? customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
+                var resolvedType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
+                var objectPropertyType = IsSimpleType(resolvedType) ? null : objectProperty?.GetType();
+                propertyType = objectPropertyType ?? resolvedType;
             }
 
             var underlyingType = propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? propertyType.GetGenericArguments()[0] : propertyType;
