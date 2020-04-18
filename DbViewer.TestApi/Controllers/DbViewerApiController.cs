@@ -40,7 +40,7 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/update")]
-        public Task<object> UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query);
+        public Task UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query);
 
         private readonly DbViewerApi impl;
     }

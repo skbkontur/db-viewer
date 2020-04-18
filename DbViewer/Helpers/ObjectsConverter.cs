@@ -26,20 +26,9 @@ namespace SkbKontur.DbViewer.Helpers
                 var propertyInfo = type.GetProperty(property.Name);
                 var propertyValue = propertyInfo.GetValue(o);
                 var customPropertyConfiguration = customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
-                if (customPropertyConfiguration != null)
-                {
-                    result[property.Name] = StoredToApi(property.Type,
-                                                        customPropertyConfiguration.ResolvedType,
-                                                        customPropertyConfiguration.StoredToApi(propertyValue),
-                                                        customPropertyConfigurationProvider);
-                }
-                else
-                {
-                    result[property.Name] = StoredToApi(property.Type,
-                                                        propertyInfo.PropertyType,
-                                                        propertyValue,
-                                                        customPropertyConfigurationProvider);
-                }
+                var resolvedProperty = customPropertyConfiguration != null ? customPropertyConfiguration.StoredToApi(propertyValue) : propertyValue;
+                var resolvedType = resolvedProperty?.GetType() ?? customPropertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
+                result[property.Name] = StoredToApi(property.Type, resolvedType, resolvedProperty, customPropertyConfigurationProvider);
             }
 
             return result;

@@ -69,11 +69,10 @@ namespace SkbKontur.DbViewer.Cql
             await table.Where(predicate).Delete().SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
         }
 
-        public async Task<object> Write(object @object)
+        public async Task Write(object @object)
         {
             var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
             await table.Insert((T)@object).SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
-            return (await table.Where(BuildSameIdentitiesPredicate(@object)).ExecuteAsync().ConfigureAwait(false)).SingleOrDefault();
         }
 
         private static CqlQuery<T> AddSort<TProperty>(CqlQuery<T> query, Sort sort)
@@ -91,11 +90,6 @@ namespace SkbKontur.DbViewer.Cql
         private static Expression<Func<T, bool>> BuildPredicate(Condition[] filters)
         {
             return (Expression<Func<T, bool>>)CriterionHelper.BuildPredicate(typeof(T), filters);
-        }
-
-        private static Expression<Func<T, bool>> BuildSameIdentitiesPredicate(object @object)
-        {
-            return (Expression<Func<T, bool>>)CriterionHelper.BuildSameIdentitiesPredicate(typeof(T), @object);
         }
 
         private readonly Table<T> table;

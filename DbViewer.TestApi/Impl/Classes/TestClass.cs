@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 using Newtonsoft.Json.Linq;
@@ -27,8 +26,10 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
 
         public TestClassWithCustomPrimitives CustomContent { get; set; }
 
-        public C<int> GenericIntValues { get; set; }
-        public C<string> GenericStringValues { get; set; }
+        public GenericClass<int> GenericIntValues { get; set; }
+        public GenericClass<string> GenericStringValues { get; set; }
+
+        public BaseClass BaseClass { get; set; }
     }
 
     public enum DifficultEnum
@@ -74,13 +75,5 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
     public class B
     {
         public string String { get; set; }
-    }
-
-    public class C<T>
-    {
-        public string String { get; set; }
-        public T Value { get; set; }
-        public List<T> Values { get; set; }
-        public Dictionary<string, T> MoreValues { get; set; }
     }
 }

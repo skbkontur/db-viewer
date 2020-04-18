@@ -27,7 +27,7 @@ namespace SkbKontur.DbViewer
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             return new ObjectDescription
                 {
                     Identifier = objectIdentifier,
@@ -49,7 +49,7 @@ namespace SkbKontur.DbViewer
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var counts = await connector.Count(query.Conditions, countLimit + 1).ConfigureAwait(false);
             var results = await connector.Search(query.Conditions, query.Sorts, query.Offset ?? 0, query.Count ?? 20).ConfigureAwait(false);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var objects = results.Select(x => ObjectsConverter.StoredToApi(typeMeta, type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
 
             return new SearchResult
@@ -126,15 +126,12 @@ namespace SkbKontur.DbViewer
             return schemaRegistry.GetConnector(objectIdentifier).Delete(query.Conditions);
         }
 
-        public async Task<object> UpdateObject(string objectIdentifier, ObjectUpdateRequest query)
+        public async Task UpdateObject(string objectIdentifier, ObjectUpdateRequest query)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var oldObject = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
             var updatedObject = ObjectPropertyEditor.SetValue(oldObject, query.Path, query.Value, schema.CustomPropertyConfigurationProvider);
-            var newObject = await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(newObject, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            return ObjectsConverter.StoredToApi(typeMeta, type, newObject, schema.CustomPropertyConfigurationProvider);
+            await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
         }
 
         private readonly ISchemaRegistry schemaRegistry;

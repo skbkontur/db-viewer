@@ -10,7 +10,7 @@ namespace SkbKontur.DbViewer.Connector
         Task<int?> Count(Condition[] filters, int? limit);
         Task<object> Read(Condition[] filters);
         Task Delete(Condition[] filters);
-        Task<object> Write(object @object);
+        Task Write(object @object);
     }
 
     public interface IDbConnector<T> : IDbConnector
