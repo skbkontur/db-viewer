@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.x - 2020.04.19
+## v0.2.54 - 2020.04.19
 - Update db-viewer-ui, publish `@skbkontur/db-viewer-ui` package.
 - Use ESLint instead of TSLint.
 - Set TargetFramework to netstandard2.0.
