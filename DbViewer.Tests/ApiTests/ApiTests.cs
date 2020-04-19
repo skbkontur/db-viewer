@@ -374,7 +374,13 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 {
                                     Name = "BaseClass",
                                     AvailableValues = new string[0],
-                                    Type = null
+                                    Type = new TypeMetaInformation
+                                        {
+                                            TypeName = "BaseClass[]",
+                                            IsArray = true,
+                                            Properties = new PropertyMetaInformation[0],
+                                            GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("BaseClass")},
+                                        }
                                 }
                         },
                 };
@@ -476,7 +482,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 }
                         }
                 };
-            var childType = new TypeMetaInformation
+            testClassShape.Properties[6].Type.Properties[0].Type = new TypeMetaInformation
                 {
                     TypeName = "ChildClass",
                     Properties = new[]
@@ -490,8 +496,6 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                         },
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
-            testClassShape.Properties[6].Type.Properties[0].Type = childType;
-            testClassShape.Properties[9].Type = childType;
 
             CheckShape(result.Meta.TypeMetaInformation, testClassShape);
             var localTime = @object.CustomContent.LocalTime;
@@ -598,14 +602,12 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                     Properties = new PropertyMetaInformation[0],
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
-            var baseType = new TypeMetaInformation
+            testClassShape.Properties[6].Type.Properties[0].Type = new TypeMetaInformation
                 {
                     TypeName = "BaseClass",
                     Properties = new PropertyMetaInformation[0],
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
-            testClassShape.Properties[6].Type.Properties[0].Type = baseType;
-            testClassShape.Properties[9].Type = baseType;
 
             meta.Should().BeEquivalentTo(new ObjectDescription
                 {

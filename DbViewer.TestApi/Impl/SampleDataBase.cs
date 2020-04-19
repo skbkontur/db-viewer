@@ -22,7 +22,13 @@ namespace SkbKontur.DbViewer.TestApi.Impl
         {
             var serializer = new Serializer(new AllPropertiesExtractor());
             var fixture = new Fixture();
-            fixture.Register((ChildClass x) => (BaseClass)x);
+            fixture.Register((int i) => i % 2 == 0
+                                            ? (BaseClass)new ChildClass {Int = i}
+                                            : new ChildClass2
+                                                {
+                                                    String = i.ToString(),
+                                                    Strings = Enumerable.Range(0, 10).Select(x => x.ToString()).ToArray()
+                                                });
             data = Enumerable.Range(0, 1000).Select(
                 _ => fixture.Build<TestClass>()
                             .With(x => x.Serialized, serializer.Serialize(fixture.Create<ClassForSerialization>()))

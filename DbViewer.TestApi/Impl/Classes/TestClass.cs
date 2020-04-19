@@ -29,7 +29,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
         public GenericClass<int> GenericIntValues { get; set; }
         public GenericClass<string> GenericStringValues { get; set; }
 
-        public BaseClass BaseClass { get; set; }
+        public BaseClass[] BaseClass { get; set; }
     }
 
     public enum DifficultEnum

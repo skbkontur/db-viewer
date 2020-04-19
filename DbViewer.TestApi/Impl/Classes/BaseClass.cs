@@ -8,4 +8,10 @@
     {
         public int Int { get; set; }
     }
+
+    public class ChildClass2 : BaseClass
+    {
+        public string String { get; set; }
+        public string[] Strings { get; set; }
+    }
 }

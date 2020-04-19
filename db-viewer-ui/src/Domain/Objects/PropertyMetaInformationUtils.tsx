@@ -5,6 +5,25 @@ import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformatio
 import { TypeMetaInformation } from "../Api/DataTypes/TypeMetaInformation";
 import { StringUtils } from "../Utils/StringUtils";
 
+const defaultType: TypeMetaInformation = {
+    isNullable: false,
+    isArray: false,
+    genericTypeArguments: [],
+    properties: [],
+    typeName: "Object",
+};
+
+const defaultProperty: PropertyMetaInformation = {
+    name: "",
+    type: defaultType,
+    isIdentity: false,
+    isSearchable: false,
+    isSortable: false,
+    isRequired: false,
+    availableFilters: [],
+    availableValues: [],
+};
+
 export class PropertyMetaInformationUtils {
     public static hasFilledRequiredFields(conditions: Condition[], properties: PropertyMetaInformation[]): boolean {
         const required = properties.filter(x => x.isRequired).map(x => x.name);
@@ -40,20 +59,19 @@ export class PropertyMetaInformationUtils {
         if (property == null && type.isArray) {
             if (rest.length === 0) {
                 return {
+                    ...defaultProperty,
                     name: "[]",
-                    isIdentity: false,
-                    isSearchable: false,
-                    isSortable: false,
-                    isRequired: false,
-                    availableFilters: [],
-                    availableValues: [],
                     type: type.genericTypeArguments[0],
                 };
             }
             return this.getPropertyTypeByPath(type.genericTypeArguments[0], rest);
         }
         if (property == null) {
-            throw new Error(`Unable to find property ${first}`);
+            return {
+                ...defaultProperty,
+                name: first,
+                type: { ...defaultType, typeName: rest.length === 0 ? "String" : "Object" },
+            };
         }
 
         if (rest.length === 0) {
