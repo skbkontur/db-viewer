@@ -15,4 +15,6 @@ See [CHANGELOG](CHANGELOG.md).
 
 ## How to Use
 
-Пока никак
+See [ApiController](https://github.com/skbkontur/db-viewer/blob/master/DbViewer.TestApi/Controllers/DbViewerApiController.cs) example for backend configuration.
+
+See [DbViewerApplication](https://github.com/skbkontur/db-viewer/blob/master/db-viewer-ui/index.tsx) usage example for front configuration.
