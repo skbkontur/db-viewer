@@ -9,9 +9,9 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 {
     public static class LocalDateCustomPropertyConfiguration
     {
-        public static CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
+        public static CustomPropertyConfiguration? TryGetConfiguration(Type propertyType)
         {
-            if (!(propertyInfo.PropertyType == typeof(LocalDate)))
+            if (propertyType != typeof(LocalDate))
                 return null;
 
             return new CustomPropertyConfiguration

@@ -134,6 +134,7 @@ namespace SkbKontur.DbViewer.Helpers
                     Name = propertyInfo.Name,
                     AvailableFilters = propertyDescription.AvailableFilters,
                     AvailableValues = underlyingType.IsEnum ? Enum.GetNames(underlyingType) : new string[0],
+                    IsEditable = propertyInfo.SetMethod != null,
                     IsIdentity = propertyDescription.IsIdentity,
                     IsRequired = propertyDescription.IsRequired,
                     IsSearchable = propertyDescription.IsSearchable,
@@ -142,7 +143,7 @@ namespace SkbKontur.DbViewer.Helpers
                 };
         }
 
-        private static bool IsSimpleType(Type type)
+        public static bool IsSimpleType(Type type)
         {
             return type.IsEnum ||
                    type.IsPrimitive ||

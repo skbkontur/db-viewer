@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,6 +14,29 @@ namespace SkbKontur.DbViewer.Helpers
         {
             if (o == null)
                 return null;
+
+            if (o is IDictionary dictionary)
+                return dictionary.Keys.Cast<object>().ToDictionary(
+                    k => k,
+                    k => StoredToApi(
+                        typeMeta.GenericTypeArguments[1],
+                        type.GetGenericArguments()[1],
+                        dictionary[k], customPropertyConfigurationProvider
+                    )
+                );
+
+            if (!PropertyHelpers.IsSimpleType(type) && type != typeof(byte[]) && o is IEnumerable enumerable)
+            {
+                var itemType = type.HasElementType ? type.GetElementType() : type.GetGenericArguments()[0];
+                var itemConfigurator = customPropertyConfigurationProvider?.TryGetConfiguration(itemType);
+                // todo (p.vostretsov, 22.04.2020): Use itemConfigurator
+                return enumerable.Cast<object>().Select(
+                    x => StoredToApi(
+                        typeMeta.GenericTypeArguments[0],
+                        itemType, x, customPropertyConfigurationProvider
+                    )
+                );
+            }
 
             if (!typeMeta.Properties.Any())
                 return o;

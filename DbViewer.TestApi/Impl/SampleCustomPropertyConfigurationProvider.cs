@@ -14,16 +14,19 @@ namespace SkbKontur.DbViewer.TestApi.Impl
     {
         public CustomPropertyConfiguration? TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {
-            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? CustomTypeConfiguration.TryGetConfiguration(@object, propertyInfo);
+            return TryGetConfiguration(propertyInfo.PropertyType) ?? CustomTypeConfiguration.TryGetConfiguration(@object, propertyInfo);
         }
 
         public CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
-            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? CustomTypeConfiguration.TryGetConfiguration(propertyInfo);
+            return TryGetConfiguration(propertyInfo.PropertyType) ?? CustomTypeConfiguration.TryGetConfiguration(propertyInfo);
+        }
+
+        public CustomPropertyConfiguration? TryGetConfiguration(Type propertyType)
+        {
+            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyType)
+                   ?? LocalDateCustomPropertyConfiguration.TryGetConfiguration(propertyType)
+                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyType);
         }
     }
 
