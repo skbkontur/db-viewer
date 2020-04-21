@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-
-using Cassandra;
 
 using Newtonsoft.Json.Linq;
 
@@ -28,10 +25,6 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
         public byte[] DifficultSerialized { get; set; }
 
         public TestClassWithCustomPrimitives CustomContent { get; set; }
-        public LocalDate[] CustomPrimitiveArray { get; set; }
-        public TestClassWithCustomPrimitives[] CustomContentArray { get; set; }
-        public Dictionary<LocalDate, LocalTime> CustomPrimitiveDict { get; set; }
-        public Dictionary<TimeUuid, TestClassWithCustomPrimitives> CustomObjectDict { get; set; }
 
         public GenericClass<int> GenericIntValues { get; set; }
         public GenericClass<string> GenericStringValues { get; set; }

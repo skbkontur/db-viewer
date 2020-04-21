@@ -17,26 +17,18 @@ namespace SkbKontur.DbViewer.Helpers
 
             if (o is IDictionary dictionary)
                 return dictionary.Keys.Cast<object>().ToDictionary(
-                    k => k,
-                    k => StoredToApi(
-                        typeMeta.GenericTypeArguments[1],
-                        type.GetGenericArguments()[1],
-                        dictionary[k], customPropertyConfigurationProvider
-                    )
+                    k => StoredToApiInternal(typeMeta.GenericTypeArguments[0], type.GetGenericArguments()[0], k, customPropertyConfigurationProvider),
+                    k => StoredToApiInternal(typeMeta.GenericTypeArguments[1], type.GetGenericArguments()[1], dictionary[k], customPropertyConfigurationProvider)
                 );
 
             if (!PropertyHelpers.IsSimpleType(type) && type != typeof(byte[]) && o is IEnumerable enumerable)
-            {
-                var itemType = type.HasElementType ? type.GetElementType() : type.GetGenericArguments()[0];
-                var itemConfigurator = customPropertyConfigurationProvider?.TryGetConfiguration(itemType);
-                // todo (p.vostretsov, 22.04.2020): Use itemConfigurator
                 return enumerable.Cast<object>().Select(
-                    x => StoredToApi(
+                    x => StoredToApiInternal(
                         typeMeta.GenericTypeArguments[0],
-                        itemType, x, customPropertyConfigurationProvider
+                        type.HasElementType ? type.GetElementType() : type.GetGenericArguments()[0],
+                        x, customPropertyConfigurationProvider
                     )
-                );
-            }
+                ).ToArray();
 
             if (!typeMeta.Properties.Any())
                 return o;
@@ -53,6 +45,17 @@ namespace SkbKontur.DbViewer.Helpers
             }
 
             return result;
+        }
+
+        private static object StoredToApiInternal(TypeMetaInformation typeMeta, Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        {
+            var objectConfigurator = customPropertyConfigurationProvider?.TryGetConfiguration(type);
+            return StoredToApi(
+                typeMeta,
+                objectConfigurator?.ResolvedType ?? type,
+                objectConfigurator != null ? objectConfigurator.StoredToApi(o) : o,
+                customPropertyConfigurationProvider
+            );
         }
     }
 }

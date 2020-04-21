@@ -17,6 +17,7 @@ const type: TypeMetaInformation = {
 
 const prop: PropertyMetaInformation = {
     name: "",
+    isEditable: true,
     isIdentity: false,
     isSearchable: false,
     isSortable: false,

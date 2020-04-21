@@ -70,6 +70,8 @@ namespace SkbKontur.DbViewer.Helpers
                 return null;
             usedTypes = usedTypes.Concat(new[] {type}).ToArray();
 
+            type = propertyConfigurationProvider.TryGetConfiguration(type)?.ResolvedType ?? type;
+
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return TypeMetaInformation.ForSimpleType(type.GetGenericArguments()[0].Name, isNullable : true);
 

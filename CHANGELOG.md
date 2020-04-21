@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.2.x - 2020.04.22
+- Fix json serializer configuration
+- Disallow editing for complex properties and properties without setter
+- Fix complex object inside array conversion to api
+- Fix Cql count query
+
 ## v0.2.54 - 2020.04.19
 - Update db-viewer-ui, publish `@skbkontur/db-viewer-ui` package.
 - Use ESLint instead of TSLint.

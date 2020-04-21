@@ -8,6 +8,7 @@ using NUnit.Framework.Interfaces;
 
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
+using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
@@ -18,19 +19,19 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
         [TestCaseSource(nameof(EnumTestCasesProvider))]
         public void Test_Enum(Type type, TypeMetaInformation expected)
         {
-            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), null), expected);
+            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
         }
 
         [TestCaseSource(nameof(EnumerableTestCasesProvider))]
         public void Test_Enumerable(Type type, TypeMetaInformation expected)
         {
-            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), null), expected);
+            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
         }
 
         [TestCaseSource(nameof(PrimitivesTestCasesProvider))]
         public void Test_Primitives(Type type, TypeMetaInformation expected)
         {
-            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), null), expected);
+            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
         }
 
         private static IEnumerable<ITestCaseData> EnumTestCasesProvider()

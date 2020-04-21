@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 using AutoFixture;
-
-using Cassandra;
 
 using GroBuf;
 using GroBuf.DataMembersExtracters;
 
+using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.TestApi.Impl.Attributes;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
@@ -18,13 +17,26 @@ using SkbKontur.DbViewer.TestApi.Impl.Utils;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
 {
-    public class SampleDataBase
+    public interface ISampleDataBase
+    {
+        void Initialize();
+        void Initialize(object[] data);
+        object[] Find(Condition[] filters, Sort[] sorts, int from, int count);
+        int? Count(Condition[] filters, int? limit);
+        object Read(Condition[] filters);
+        void Delete(Condition[] filters);
+        void Write(object @object);
+        object[] GetContent();
+    }
+
+    public class SampleDataBase<T> : ISampleDataBase
     {
         public SampleDataBase()
         {
-            var serializer = new Serializer(new AllPropertiesExtractor());
-            var fixture = new Fixture();
-            fixture.Register((DateTime date) => new LocalDate(date.Year, date.Month, date.Day));
+            serializer = new Serializer(new AllPropertiesExtractor());
+            fixture = new Fixture();
+            fixture.Register((DateTime date) => date.ToLocalDate());
+            fixture.Register((DateTime time) => CassandraPrimitivesExtensions.ToLocalTime(time));
             fixture.Register((int i) => i % 2 == 0
                                             ? (BaseClass)new ChildClass {Int = i}
                                             : new ChildClass2
@@ -32,68 +44,32 @@ namespace SkbKontur.DbViewer.TestApi.Impl
                                                     String = i.ToString(),
                                                     Strings = Enumerable.Range(0, 10).Select(x => x.ToString()).ToArray()
                                                 });
-            data = Enumerable.Range(0, 1000).Select(
-                _ => fixture.Build<TestClass>()
-                            .With(x => x.Serialized, serializer.Serialize(fixture.Create<ClassForSerialization>()))
-                            .Create()
-            ).ToArray();
-            FillDifficultSerialized(serializer);
         }
 
-        public SampleDataBase(TestClass[] data)
+        public void Initialize()
         {
-            this.data = data;
+            data = CreateData(fixture, serializer);
         }
 
-        private void FillDifficultSerialized(ISerializer serializer)
+        public void Initialize(object[] data)
         {
-            var random = new Random();
-            foreach (var testClass in data)
-            {
-                testClass.File = Encoding.UTF8.GetBytes(string.Join(",", GetRandomBytes(random)));
-                if (random.Next(0, 2) == 0)
-                {
-                    testClass.DifficultEnum = DifficultEnum.A;
-                    testClass.DifficultSerialized = serializer.Serialize(new A {Int = random.Next()});
-                }
-                else
-                {
-                    testClass.DifficultEnum = DifficultEnum.B;
-                    testClass.DifficultSerialized = serializer.Serialize(new B {String = Convert.ToBase64String(GetRandomBytes(random))});
-                }
-            }
+            this.data = data.Cast<T>().ToArray();
         }
 
-        private static byte[] GetRandomBytes(Random random)
+        protected virtual T[] CreateData(Fixture fixture, ISerializer serializer)
         {
-            var b = new byte[100];
-            random.NextBytes(b);
-            return b;
+            return Enumerable.Range(0, 1000).Select(_ => fixture.Build<T>().Create()).ToArray();
         }
 
-        public static SampleDataBase Instance
-        {
-            get
-            {
-                if (instance == null)
-                    lock (lockObject)
-                        if (instance == null)
-                            instance = new SampleDataBase();
-                return instance;
-            }
-            set => instance = value;
-        }
-
-        public TestClass[] Find(Condition[] filters, Sort[] sorts, int from, int count)
+        public object[] Find(Condition[] filters, Sort[] sorts, int from, int count)
         {
             var result = data.Where(BuildCriterion(filters)).Skip(from).Take(count);
-            return result.ToArray();
+            return result.Cast<object>().ToArray();
         }
 
-        private Func<TestClass, bool> BuildCriterion(Condition[] filters)
+        private Func<T, bool> BuildCriterion(Condition[] filters)
         {
-            return ((Expression<Func<TestClass, bool>>)CriterionHelper.BuildCriterion(typeof(TestClass), filters))
-                .Compile();
+            return ((Expression<Func<T, bool>>)CriterionHelper.BuildCriterion(typeof(T), filters)).Compile();
         }
 
         public int? Count(Condition[] filters, int? limit)
@@ -112,25 +88,23 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             data = data.Where(x => !f(x)).ToArray();
         }
 
-        public TestClass Write(TestClass @object)
+        public void Write(object @object)
         {
             for (var i = 0; i < data.Length; i++)
             {
-                if (IdentityEquals(data[i], @object))
-                    data[i] = @object;
+                if (IdentityEquals(data[i], (T)@object))
+                    data[i] = (T)@object;
             }
-
-            return @object;
         }
 
-        public TestClass[] GetContent()
+        public object[] GetContent()
         {
-            return data;
+            return data.Cast<object>().ToArray();
         }
 
-        private bool IdentityEquals(TestClass first, TestClass second)
+        private bool IdentityEquals(T first, T second)
         {
-            foreach (var property in typeof(TestClass).GetProperties())
+            foreach (var property in typeof(T).GetProperties())
             {
                 if (property.GetCustomAttribute(typeof(IdentityAttribute)) != null)
                 {
@@ -144,8 +118,39 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return true;
         }
 
-        private TestClass[] data;
-        private static SampleDataBase instance;
+        private T[] data;
+        private readonly ISerializer serializer;
+        private readonly Fixture fixture;
+    }
+
+    public static class SampleDataBase
+    {
+        public static ISampleDataBase Get<T>()
+        {
+            if (!dataBases.TryGetValue(typeof(T), out var instance))
+                lock (lockObject)
+                    if (!dataBases.TryGetValue(typeof(T), out instance))
+                    {
+                        if (typeof(T) == typeof(TestClass))
+                            instance = new TestClassDataBase();
+                        else if (typeof(T) == typeof(RidiculousUseCasesClass))
+                            instance = new RidiculousUseCasesClassDataBase();
+                        else
+                            throw new InvalidOperationException();
+                        instance.Initialize();
+                        dataBases[typeof(T)] = instance;
+                    }
+
+            return instance;
+        }
+
+        public static void Set<T>(ISampleDataBase instance)
+        {
+            lock (lockObject)
+                dataBases[typeof(T)] = instance;
+        }
+
+        private static readonly Dictionary<Type, ISampleDataBase> dataBases = new Dictionary<Type, ISampleDataBase>();
         private static readonly object lockObject = new object();
     }
 }
