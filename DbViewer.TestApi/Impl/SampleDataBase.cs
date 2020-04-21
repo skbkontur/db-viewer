@@ -6,6 +6,8 @@ using System.Text;
 
 using AutoFixture;
 
+using Cassandra;
+
 using GroBuf;
 using GroBuf.DataMembersExtracters;
 
@@ -22,6 +24,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
         {
             var serializer = new Serializer(new AllPropertiesExtractor());
             var fixture = new Fixture();
+            fixture.Register((DateTime date) => new LocalDate(date.Year, date.Month, date.Day));
             fixture.Register((int i) => i % 2 == 0
                                             ? (BaseClass)new ChildClass {Int = i}
                                             : new ChildClass2
