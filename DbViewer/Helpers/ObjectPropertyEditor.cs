@@ -17,7 +17,7 @@ namespace SkbKontur.DbViewer.Helpers
                 var type = objectType.HasElementType ? objectType.GetElementType() : objectType.GetGenericArguments()[0];
                 var index = int.Parse(path[0]);
                 var newValue = path.Length == 1
-                                   ? ObjectParser.Parse(type, value)
+                                   ? ParseInternal(type, value, propertyConfigurator)
                                    : SetValue(list[index], path.Skip(1).ToArray(), value, propertyConfigurator);
                 list[index] = newValue;
                 return obj;
@@ -26,9 +26,9 @@ namespace SkbKontur.DbViewer.Helpers
             if (obj is IDictionary dictionary)
             {
                 var args = objectType.GetGenericArguments();
-                var key = ObjectParser.Parse(args[0], path[0]);
+                var key = ParseInternal(args[0], path[0], propertyConfigurator);
                 var newValue = path.Length == 1
-                                   ? ObjectParser.Parse(args[1], value)
+                                   ? ParseInternal(args[1], value, propertyConfigurator)
                                    : SetValue(dictionary[key], path.Skip(1).ToArray(), value, propertyConfigurator);
                 dictionary[key] = newValue;
                 return obj;
@@ -61,6 +61,13 @@ namespace SkbKontur.DbViewer.Helpers
                                        : SetValue(property.GetValue(obj), path.Skip(1).ToArray(), value, propertyConfigurator);
             property.SetValue(obj, newPropertyValue);
             return obj;
+        }
+
+        private static object? ParseInternal(Type type, string? value, ICustomPropertyConfigurationProvider propertyConfigurator)
+        {
+            var configuration = propertyConfigurator.TryGetConfiguration(type);
+            var parsedObject = ObjectParser.Parse(configuration?.ResolvedType ?? type, value);
+            return configuration == null ? parsedObject : configuration.ApiToStored(parsedObject);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace SkbKontur.DbViewer.Configuration
 {
@@ -6,5 +7,6 @@ namespace SkbKontur.DbViewer.Configuration
     {
         CustomPropertyConfiguration? TryGetConfiguration(object @object, PropertyInfo propertyInfo);
         CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo);
+        CustomPropertyConfiguration? TryGetConfiguration(Type propertyType);
     }
 }

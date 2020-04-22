@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
@@ -14,9 +15,14 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         public CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
         {
-            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? LocalDateCustomPropertyConfiguration.TryGetConfiguration(propertyInfo)
-                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyInfo);
+            return TryGetConfiguration(propertyInfo.PropertyType);
+        }
+
+        public CustomPropertyConfiguration? TryGetConfiguration(Type propertyType)
+        {
+            return LocalTimeCustomPropertyConfiguration.TryGetConfiguration(propertyType)
+                   ?? LocalDateCustomPropertyConfiguration.TryGetConfiguration(propertyType)
+                   ?? TimeUuidCustomPropertyConfiguration.TryGetConfiguration(propertyType);
         }
     }
 }

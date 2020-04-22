@@ -28,6 +28,7 @@ const string: TypeMetaInformation = {
 const nonIndexed: PropertyMetaInformation = {
     name: "name",
     type: string,
+    isEditable: true,
     isSortable: false,
     isSearchable: false,
     isRequired: false,
@@ -39,6 +40,7 @@ const nonIndexed: PropertyMetaInformation = {
 const indexed: PropertyMetaInformation = {
     name: "name",
     type: string,
+    isEditable: true,
     isSortable: false,
     isSearchable: false,
     isRequired: false,

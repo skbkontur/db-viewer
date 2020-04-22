@@ -16,6 +16,7 @@ const defaultType: TypeMetaInformation = {
 const defaultProperty: PropertyMetaInformation = {
     name: "",
     type: defaultType,
+    isEditable: true,
     isIdentity: false,
     isSearchable: false,
     isSortable: false,
@@ -61,7 +62,7 @@ export class PropertyMetaInformationUtils {
                 return {
                     ...defaultProperty,
                     name: "[]",
-                    type: type.genericTypeArguments[0],
+                    type: type.genericTypeArguments[type.genericTypeArguments.length - 1],
                 };
             }
             return this.getPropertyTypeByPath(type.genericTypeArguments[0], rest);

@@ -62,6 +62,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                         CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                     }
             );
+
             var testClassWithCustomPrimitivesShape = new TypeMetaInformation
                 {
                     TypeName = "TestClassWithCustomPrimitives",
@@ -72,24 +73,28 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 {
                                     Type = null,
                                     Name = "BaseClass",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
                                     Name = "LocalTime",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("String"),
                                     Name = "TimeUuid",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("String"),
                                     Name = "NullableTimeUuid",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                         }
@@ -104,138 +109,161 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("String"),
                                     Name = "String",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Guid"),
                                     Name = "Guid",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Guid", isNullable : true),
                                     Name = "NullableGuid",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Boolean"),
                                     Name = "Bool",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Boolean", isNullable : true),
                                     Name = "NullableBool",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Byte"),
                                     Name = "Byte",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Byte", isNullable : true),
                                     Name = "NullableByte",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Char"),
                                     Name = "Char",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Char", isNullable : true),
                                     Name = "NullableChar",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Int16"),
                                     Name = "Short",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Int16", isNullable : true),
                                     Name = "NullableShort",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Int32"),
                                     Name = "Int",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Int32", isNullable : true),
                                     Name = "NullableInt",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Int64"),
                                     Name = "Long",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Int64", isNullable : true),
                                     Name = "NullableLong",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Decimal"),
                                     Name = "Decimal",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("Decimal", isNullable : true),
                                     Name = "NullableDecimal",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DateTime"),
                                     Name = "DateTime",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
                                     Name = "NullableDateTime",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DateTimeOffset"),
                                     Name = "DateTimeOffset",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DateTimeOffset", isNullable : true),
                                     Name = "NullableDateTimeOffset",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("TestEnum"),
                                     Name = "Enum",
+                                    IsEditable = true,
                                     AvailableValues = new[] {"FirstValue", "SecondValue"},
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("TestEnum", isNullable : true),
                                     Name = "NullableEnum",
+                                    IsEditable = true,
                                     AvailableValues = new[] {"FirstValue", "SecondValue"},
                                 },
                             new PropertyMetaInformation
@@ -248,6 +276,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                             Properties = new PropertyMetaInformation[0],
                                         },
                                     Name = "Array",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
@@ -260,6 +289,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                             Properties = new PropertyMetaInformation[0],
                                         },
                                     Name = "List",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
@@ -272,6 +302,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                             Properties = new PropertyMetaInformation[0],
                                         },
                                     Name = "Dictionary",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
@@ -284,6 +315,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                             Properties = new PropertyMetaInformation[0],
                                         },
                                     Name = "HashSet",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                         }
@@ -298,6 +330,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("String"),
                                     Name = "Id",
+                                    IsEditable = true,
                                     IsIdentity = true,
                                     IsSearchable = true,
                                     AvailableFilters = new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual},
@@ -307,6 +340,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 {
                                     Type = testClassWithAllPrimitivesShape,
                                     Name = "Content",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
@@ -321,11 +355,13 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                                         {
                                                             Type = testClassWithAllPrimitivesShape,
                                                             Name = "Content",
+                                                            IsEditable = true,
                                                             AvailableValues = new string[0],
                                                         }
                                                 }
                                         },
                                     Name = "Serialized",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
@@ -338,41 +374,48 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                             Properties = new PropertyMetaInformation[0],
                                         },
                                     Name = "File",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = TypeMetaInformation.ForSimpleType("DifficultEnum"),
                                     Name = "DifficultEnum",
+                                    IsEditable = true,
                                     AvailableValues = new[] {"A", "B"}
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = null,
                                     Name = "DifficultSerialized",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Type = testClassWithCustomPrimitivesShape,
                                     Name = "CustomContent",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
                                     Name = "GenericIntValues",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = GetGenericTypeMeta(TypeMetaInformation.ForSimpleType("Int32"))
                                 },
                             new PropertyMetaInformation
                                 {
                                     Name = "GenericStringValues",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = GetGenericTypeMeta(TypeMetaInformation.ForSimpleType("String"))
                                 },
                             new PropertyMetaInformation
                                 {
                                     Name = "BaseClass",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = new TypeMetaInformation
                                         {
@@ -381,6 +424,12 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                             Properties = new PropertyMetaInformation[0],
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("BaseClass")},
                                         }
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "NotEditable",
+                                    Type = TypeMetaInformation.ForSimpleType("DifficultEnum"),
+                                    AvailableValues = new[] {"A", "B"}
                                 }
                         },
                 };
@@ -399,18 +448,21 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                             new PropertyMetaInformation
                                 {
                                     Name = "String",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = TypeMetaInformation.ForSimpleType("String")
                                 },
                             new PropertyMetaInformation
                                 {
                                     Name = "Value",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = typeParameter,
                                 },
                             new PropertyMetaInformation
                                 {
                                     Name = "Values",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = new TypeMetaInformation
                                         {
@@ -423,6 +475,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                             new PropertyMetaInformation
                                 {
                                     Name = "MoreValues",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = new TypeMetaInformation
                                         {
@@ -477,6 +530,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                             new PropertyMetaInformation
                                 {
                                     Name = "Int",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = TypeMetaInformation.ForSimpleType("Int32")
                                 }
@@ -490,6 +544,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                             new PropertyMetaInformation
                                 {
                                     Name = "Int",
+                                    IsEditable = true,
                                     AvailableValues = new string[0],
                                     Type = TypeMetaInformation.ForSimpleType("Int32")
                                 }
@@ -625,12 +680,14 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
 
         private void FillDataBase(params TestClass[] objects)
         {
-            SampleDataBase.Instance = new SampleDataBase(objects);
+            var db = new TestClassDataBase();
+            db.Initialize(objects.Cast<object>().ToArray());
+            SampleDataBase.Set<TestClass>(db);
         }
 
         private void CheckDataBaseContent(params TestClass[] objects)
         {
-            SampleDataBase.Instance.GetContent().Should().BeEquivalentTo(objects);
+            SampleDataBase.Get<TestClass>().GetContent().Should().BeEquivalentTo(objects);
         }
 
         private void CheckObject<T>(object actual, T expected)

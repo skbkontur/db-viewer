@@ -7,6 +7,9 @@ namespace SkbKontur.DbViewer.DataTypes
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("isEditable")]
+        public bool IsEditable { get; set; }
+
         [JsonProperty("isIdentity")]
         public bool IsIdentity { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 using Cassandra;
 
@@ -9,9 +8,9 @@ namespace SkbKontur.DbViewer.Cql.CustomPropertyConfigurations
 {
     public static class TimeUuidCustomPropertyConfiguration
     {
-        public static CustomPropertyConfiguration? TryGetConfiguration(PropertyInfo propertyInfo)
+        public static CustomPropertyConfiguration? TryGetConfiguration(Type propertyType)
         {
-            var realType = Nullable.GetUnderlyingType(propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+            var realType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
             if (realType != typeof(TimeUuid))
                 return null;
 

@@ -59,7 +59,7 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
     public canEditProperty = () => {
         const { property, allowEdit } = this.props;
         const type = property.type.typeName;
-        return type != null && !type.includes("[]") && !property.isIdentity && allowEdit;
+        return type != null && !type.includes("[]") && !property.isIdentity && property.isEditable && allowEdit;
     };
 
     public render(): JSX.Element {

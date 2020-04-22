@@ -30,6 +30,8 @@ namespace SkbKontur.DbViewer.TestApi.Impl.Classes
         public GenericClass<string> GenericStringValues { get; set; }
 
         public BaseClass[] BaseClass { get; set; }
+
+        public DifficultEnum NotEditable => DifficultEnum.A;
     }
 
     public enum DifficultEnum

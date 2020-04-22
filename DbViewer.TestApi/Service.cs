@@ -29,7 +29,7 @@ namespace SkbKontur.DbViewer.TestApi
                                 AllowReadAll = true,
                                 AllowEdit = true,
                             },
-                        Types = BuildTypeDescriptions(typeof(TestClass)),
+                        Types = BuildTypeDescriptions(typeof(TestClass), typeof(RidiculousUseCasesClass)),
                         PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                         ConnectorsFactory = new SampleIdbConnectorFactory(),
                         CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),

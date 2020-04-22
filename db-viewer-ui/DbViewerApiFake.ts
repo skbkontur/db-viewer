@@ -154,6 +154,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                     {
                         name: "Id",
                         isIdentity: true,
+                        isEditable: true,
                         isRequired: true,
                         isSearchable: true,
                         isSortable: false,
@@ -169,6 +170,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                     },
                     {
                         name: "ScopeId",
+                        isEditable: true,
                         isIdentity: true,
                         isRequired: true,
                         isSearchable: true,
@@ -186,6 +188,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                     {
                         name: "LastModificationDateTime",
                         isIdentity: true,
+                        isEditable: true,
                         isRequired: true,
                         isSearchable: true,
                         isSortable: false,

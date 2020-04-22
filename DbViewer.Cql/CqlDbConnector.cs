@@ -28,10 +28,7 @@ namespace SkbKontur.DbViewer.Cql
                 query = query.Where(BuildPredicate(filters));
 
             foreach (var sort in sorts)
-            {
-                var propertyType = typeof(T).GetProperty(sort.Path).PropertyType;
-                query = GenericMethod.Invoke(() => AddSort<object>(query, sort), typeof(object), propertyType);
-            }
+                query = AddSort(query, sort);
 
             // (p.vostretsov, 28.03.2020): В Cql нельзя сделать Skip
             var results = await query.Take(from + count).ExecuteAsync().ConfigureAwait(false);
@@ -47,8 +44,8 @@ namespace SkbKontur.DbViewer.Cql
             if (limit.HasValue)
                 query = query.Take(limit.Value);
 
-            var count = await query.Count().ExecuteAsync().ConfigureAwait(false);
-            return (int)count;
+            var results = await query.ExecuteAsync().ConfigureAwait(false);
+            return results.Count();
         }
 
         public async Task<object> Read(Condition[] filters)
@@ -73,6 +70,12 @@ namespace SkbKontur.DbViewer.Cql
         {
             var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
             await table.Insert((T)@object).SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
+        }
+
+        private static CqlQuery<T> AddSort(CqlQuery<T> query, Sort sort)
+        {
+            var propertyType = typeof(T).GetProperty(sort.Path).PropertyType;
+            return GenericMethod.Invoke(() => AddSort<object>(query, sort), typeof(object), propertyType);
         }
 
         private static CqlQuery<T> AddSort<TProperty>(CqlQuery<T> query, Sort sort)

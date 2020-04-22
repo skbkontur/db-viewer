@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,8 +15,20 @@ namespace SkbKontur.DbViewer.Helpers
             if (o == null)
                 return null;
 
-            if (type.IsEnum || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && type.GetGenericArguments()[0].IsEnum)
-                return o.ToString();
+            if (o is IDictionary dictionary)
+                return dictionary.Keys.Cast<object>().ToDictionary(
+                    k => StoredToApiInternal(typeMeta.GenericTypeArguments[0], type.GetGenericArguments()[0], k, customPropertyConfigurationProvider),
+                    k => StoredToApiInternal(typeMeta.GenericTypeArguments[1], type.GetGenericArguments()[1], dictionary[k], customPropertyConfigurationProvider)
+                );
+
+            if (!PropertyHelpers.IsSimpleType(type) && type != typeof(byte[]) && o is IEnumerable enumerable)
+                return enumerable.Cast<object>().Select(
+                    x => StoredToApiInternal(
+                        typeMeta.GenericTypeArguments[0],
+                        type.HasElementType ? type.GetElementType() : type.GetGenericArguments()[0],
+                        x, customPropertyConfigurationProvider
+                    )
+                ).ToArray();
 
             if (!typeMeta.Properties.Any())
                 return o;
@@ -32,6 +45,17 @@ namespace SkbKontur.DbViewer.Helpers
             }
 
             return result;
+        }
+
+        private static object StoredToApiInternal(TypeMetaInformation typeMeta, Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        {
+            var objectConfigurator = customPropertyConfigurationProvider?.TryGetConfiguration(type);
+            return StoredToApi(
+                typeMeta,
+                objectConfigurator?.ResolvedType ?? type,
+                objectConfigurator != null ? objectConfigurator.StoredToApi(o) : o,
+                customPropertyConfigurationProvider
+            );
         }
     }
 }
