@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.x - 2020.04.27
+## v0.2.61 - 2020.04.27
 - Fix db-viewer-ui compilation to es5
 
 ## v0.2.59 - 2020.04.22
