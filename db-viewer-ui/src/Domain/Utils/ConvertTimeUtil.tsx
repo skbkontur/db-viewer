@@ -16,11 +16,7 @@ export function timestampToTicks(timeStr: Nullable<string> | Nullable<Date>): Nu
     } else {
         commonTime = new Decimal(timeStr.getTime());
     }
-    return commonTime
-        .mul(10000)
-        .plus(offset)
-        .plus(end)
-        .toString();
+    return commonTime.mul(10000).plus(offset).plus(end).toString();
 }
 
 export function ticksToTimestamp(timeStr: Nullable<string>): Nullable<Date> {
@@ -29,10 +25,5 @@ export function ticksToTimestamp(timeStr: Nullable<string>): Nullable<Date> {
     }
     const offset = new Decimal("621355968000000000");
     const commonTime = new Decimal(timeStr);
-    return new Date(
-        commonTime
-            .minus(offset)
-            .div(10000)
-            .toNumber()
-    );
+    return new Date(commonTime.minus(offset).div(10000).toNumber());
 }

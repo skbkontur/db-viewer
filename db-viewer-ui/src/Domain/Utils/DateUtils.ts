@@ -14,10 +14,7 @@ export class DateUtils {
         timeZone: number,
         format: string = this.datePickerFormat
     ): string {
-        return moment
-            .utc(date)
-            .utcOffset(timeZone)
-            .format(format);
+        return moment.utc(date).utcOffset(timeZone).format(format);
     }
 
     public static convertStringToDate(date: RussianDateFormat): Date {
