@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.2.x - 2020.04.27
+- Fix db-viewer-ui compilation to es5
+
 ## v0.2.59 - 2020.04.22
 - Fix json serializer configuration
 - Disallow editing for complex properties and properties without setter
