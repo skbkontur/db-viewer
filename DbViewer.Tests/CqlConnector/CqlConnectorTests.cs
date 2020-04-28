@@ -20,7 +20,10 @@ using SkbKontur.DbViewer.TestApi.Cql;
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
     [NUnit.Framework.Ignore("Unable to run integration tests")]
-    public class CqlConnectorTests
+    [TestFixture(typeof(CqlDbConnectorFactory))]
+    [TestFixture(typeof(CqlPagedDbConnectorFactory))]
+    public class CqlConnectorTests<TConnectorFactory>
+        where TConnectorFactory : IDbConnectorFactory, new()
     {
         private static ISession TryConnectToCassandra(TimeSpan timeout, TimeSpan interval)
         {
@@ -50,7 +53,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             session.CreateKeyspaceIfNotExists(CqlDbConnectorFactory.Keyspace);
             table = new Table<TestDbSearcherObject>(session);
             table.CreateIfNotExists();
-            connector = new CqlDbConnectorFactory().CreateConnector<TestDbSearcherObject>();
+            connector = new TConnectorFactory().CreateConnector<TestDbSearcherObject>();
         }
 
         [Test]

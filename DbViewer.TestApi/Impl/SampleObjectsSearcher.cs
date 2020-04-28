@@ -15,12 +15,12 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return SampleDataBase.Get<T>().Find(filters, sorts, from, count);
         }
 
-        public async Task<int?> Count(Condition[] filters, int? limit)
+        public async Task<int?> Count(Condition[] filters, int limit)
         {
             return SampleDataBase.Get<T>().Count(filters, limit);
         }
 
-        public async Task<object> Read(Condition[] filters)
+        public async Task<object?> Read(Condition[] filters)
         {
             return SampleDataBase.Get<T>().Read(filters);
         }

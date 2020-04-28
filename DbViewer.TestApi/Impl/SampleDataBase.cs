@@ -22,7 +22,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
         void Initialize();
         void Initialize(object[] data);
         object[] Find(Condition[] filters, Sort[] sorts, int from, int count);
-        int? Count(Condition[] filters, int? limit);
+        int? Count(Condition[] filters, int limit);
         object Read(Condition[] filters);
         void Delete(Condition[] filters);
         void Write(object @object);
@@ -72,9 +72,9 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return ((Expression<Func<T, bool>>)CriterionHelper.BuildCriterion(typeof(T), filters)).Compile();
         }
 
-        public int? Count(Condition[] filters, int? limit)
+        public int? Count(Condition[] filters, int limit)
         {
-            return Math.Min(limit ?? 0, data.Count(BuildCriterion(filters)));
+            return Math.Min(limit, data.Count(BuildCriterion(filters)));
         }
 
         public object Read(Condition[] filters)

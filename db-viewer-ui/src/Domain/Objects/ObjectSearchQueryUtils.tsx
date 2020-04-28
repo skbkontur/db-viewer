@@ -4,7 +4,19 @@ import { ObjectFilterSortOrder } from "../Api/DataTypes/ObjectFilterSortOrder";
 import { Sort } from "../Api/DataTypes/Sort";
 import { PlainValueMapper, QueryObject } from "../QueryStringMapping/Mappers";
 
+import { ObjectSearchQuery } from "./ObjectSearchQuery";
 import { convertOperationToString, convertStringToOperation } from "./OperationsConverter";
+
+export class ObjectSearchQueryUtils {
+    public static normalize(query: ObjectSearchQuery, removeCounts: boolean): ObjectSearchQuery {
+        return {
+            ...query,
+            count: removeCounts ? 0 : query.count,
+            offset: removeCounts ? 0 : query.offset,
+            hiddenColumns: [],
+        };
+    }
+}
 
 export class ConditionsMapper {
     public keysToSkip: string[];
