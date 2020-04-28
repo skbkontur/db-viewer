@@ -276,12 +276,17 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     private readonly updateQuery = (queryUpdate: Partial<ObjectSearchQuery>) => {
+        let offset = queryUpdate.offset ?? this.state.query.offset;
+        if (offset !== 0 && queryUpdate.count) {
+            offset = Math.floor(offset / queryUpdate.count) * queryUpdate.count;
+        }
         this.setState(
             {
                 showModalFilter: false,
                 query: {
                     ...this.state.query,
                     ...queryUpdate,
+                    offset: offset,
                 },
             },
             this.updateRoute
