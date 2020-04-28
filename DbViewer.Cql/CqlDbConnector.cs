@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using Cassandra.Data.Linq;
@@ -8,7 +6,6 @@ using Cassandra.Data.Linq;
 using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Cql.Utils;
 using SkbKontur.DbViewer.DataTypes;
-using SkbKontur.DbViewer.Helpers;
 
 namespace SkbKontur.DbViewer.Cql
 {
@@ -23,77 +20,19 @@ namespace SkbKontur.DbViewer.Cql
 
         public async Task<object[]> Search(Condition[] filters, Sort[] sorts, int from, int count)
         {
-            CqlQuery<T> query = table;
-            if (filters.Any())
-                query = query.Where(BuildPredicate(filters));
-
-            foreach (var sort in sorts)
-                query = AddSort(query, sort);
-
-            // (p.vostretsov, 28.03.2020): В Cql нельзя сделать Skip
-            var results = await query.Take(from + count).ExecuteAsync().ConfigureAwait(false);
-            return results.Skip(from).Take(count).Cast<object>().ToArray();
-        }
-
-        public async Task<int?> Count(Condition[] filters, int? limit)
-        {
-            CqlQuery<T> query = table;
-            if (filters.Any())
-                query = query.Where(BuildPredicate(filters));
-
-            if (limit.HasValue)
-                query = query.Take(limit.Value);
-
+            var query = CqlQueryHelper.BuildQuery(table, filters, sorts).Take(count);
             var results = await query.ExecuteAsync().ConfigureAwait(false);
-            return results.Count();
+            return results.Cast<object>().ToArray();
         }
 
-        public async Task<object> Read(Condition[] filters)
+        public Task<int?> Count(Condition[] filters, int limit)
         {
-            var query = table.Where(BuildPredicate(filters));
-            var results = await query.ExecuteAsync().ConfigureAwait(false);
-            return results.SingleOrDefault();
+            return Task.FromResult((int?)null);
         }
 
-        public async Task Delete(Condition[] filters)
-        {
-            var predicate = BuildPredicate(filters);
-            var results = (await table.Where(predicate).ExecuteAsync().ConfigureAwait(false)).ToArray();
-            if (results.Length != 1)
-                throw new InvalidOperationException($"Expected results count to be 1 but was {results.Length}");
-
-            var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
-            await table.Where(predicate).Delete().SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
-        }
-
-        public async Task Write(object @object)
-        {
-            var timestamp = await timestampProvider.GetTimestamp(table.Name).ConfigureAwait(false);
-            await table.Insert((T)@object).SetTimestamp(timestamp).ExecuteAsync().ConfigureAwait(false);
-        }
-
-        private static CqlQuery<T> AddSort(CqlQuery<T> query, Sort sort)
-        {
-            var propertyType = typeof(T).GetProperty(sort.Path).PropertyType;
-            return GenericMethod.Invoke(() => AddSort<object>(query, sort), typeof(object), propertyType);
-        }
-
-        private static CqlQuery<T> AddSort<TProperty>(CqlQuery<T> query, Sort sort)
-        {
-            return sort.SortOrder == ObjectFilterSortOrder.Ascending
-                       ? query.OrderBy(BuildSort<TProperty>(sort))
-                       : query.OrderByDescending(BuildSort<TProperty>(sort));
-        }
-
-        private static Expression<Func<T, TProperty>> BuildSort<TProperty>(Sort sort)
-        {
-            return (Expression<Func<T, TProperty>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Path);
-        }
-
-        private static Expression<Func<T, bool>> BuildPredicate(Condition[] filters)
-        {
-            return (Expression<Func<T, bool>>)CriterionHelper.BuildPredicate(typeof(T), filters);
-        }
+        public Task<object?> Read(Condition[] filters) => CqlQueryHelper.Read(table, filters);
+        public Task Delete(Condition[] filters) => CqlQueryHelper.Delete(table, timestampProvider, filters);
+        public Task Write(object @object) => CqlQueryHelper.Write(table, timestampProvider, @object);
 
         private readonly Table<T> table;
         private readonly ITimestampProvider timestampProvider;

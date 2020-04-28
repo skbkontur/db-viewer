@@ -11,6 +11,12 @@ namespace SkbKontur.DbViewer.Helpers
             return modifier.Modify(expression, new[] {type}, new[] {holderType}).Compile().Invoke();
         }
 
+        public static TResult Invoke<TResult>(Expression<Func<TResult>> expression, Type[] holderTypes, Type[] types)
+        {
+            var modifier = new GenericMethodModifier();
+            return modifier.Modify(expression, types, holderTypes).Compile().Invoke();
+        }
+
         private class GenericMethodModifier : ExpressionVisitor
         {
             public Expression<Func<T>> Modify<T>(Expression<Func<T>> expression, Type[] genericArgs, Type[] holderArgs)

@@ -48,13 +48,15 @@ namespace SkbKontur.DbViewer
 
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var counts = await connector.Count(query.Conditions, countLimit + 1).ConfigureAwait(false);
-            var results = await connector.Search(query.Conditions, query.Sorts, query.Offset ?? 0, query.Count ?? 20).ConfigureAwait(false);
+            var results = counts == null
+                              ? await connector.Search(query.Conditions, query.Sorts, 0, countLimit + 1).ConfigureAwait(false)
+                              : await connector.Search(query.Conditions, query.Sorts, offset, count).ConfigureAwait(false);
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var objects = results.Select(x => ObjectsConverter.StoredToApi(typeMeta, type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
 
             return new SearchResult
                 {
-                    Count = counts ?? objects.Length,
+                    Count = counts,
                     CountLimit = countLimit,
                     Items = objects,
                 };
