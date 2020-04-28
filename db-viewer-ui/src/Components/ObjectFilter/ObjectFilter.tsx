@@ -71,6 +71,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             renderMessage={tooltip("right middle")}
                             validationInfo={this.getValidation(property, value)}>
                             <Input
+                                mask="999999999999999999"
                                 data-tid={"DateTimeInTicks"}
                                 onChange={(e, nextValue) => this.updateItem(property, { value: nextValue })}
                                 value={value ? value : ""}
