@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.x - 2020.04.29
+## v0.2.70 - 2020.04.29
 - Move `@skbkontur/react-ui` & `@skbkontur/react-icons` to peerDependencies.
 - Update front dependencies.
 - Fix DateTimeTicks input.
