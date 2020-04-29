@@ -368,6 +368,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private readonly handleCloseDownloadModal = () => {
+        if (this.state.downloadCount?.file) {
+            FileUtils.downloadFile(this.state.downloadCount.file);
+        }
         this.setState({ showDownloadModal: false });
     };
 
