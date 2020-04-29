@@ -1,0 +1,57 @@
+@import '../../styles/variables.less';
+
+:local {
+    .content {
+        margin: 100px auto;
+        max-width: 930px;
+    }
+
+    .headerTitle {
+        margin: 25px 0;
+        font-weight: 300;
+        font-size: 50px;
+        line-height: 52px;
+    }
+
+    .headerCode {
+        vertical-align: super;
+        color: @double-muted-text;
+        font-size: 18px;
+        line-height: 27px;
+    }
+
+    .message {
+        font-size: 18px;
+        line-height: 25px;
+    }
+
+    .clouds {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+    }
+
+    .cloudsItem {
+        position: fixed;
+        top: 26.7vh;
+        left: 0;
+        width: 2270px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .cloudsItem {
+            width: 5540px;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .content {
+            max-width: 100%;
+        }
+
+        .cloudsItem {
+            width: 2270px;
+        }
+    }
+}
