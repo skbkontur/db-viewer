@@ -48,13 +48,15 @@ namespace SkbKontur.DbViewer
 
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var counts = await connector.Count(query.Conditions, countLimit + 1).ConfigureAwait(false);
-            var results = await connector.Search(query.Conditions, query.Sorts, query.Offset ?? 0, query.Count ?? 20).ConfigureAwait(false);
+            var results = counts == null
+                              ? await connector.Search(query.Conditions, query.Sorts, 0, countLimit + 1).ConfigureAwait(false)
+                              : await connector.Search(query.Conditions, query.Sorts, offset, count).ConfigureAwait(false);
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var objects = results.Select(x => ObjectsConverter.StoredToApi(typeMeta, type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
 
             return new SearchResult
                 {
-                    Count = counts ?? objects.Length,
+                    Count = counts,
                     CountLimit = countLimit,
                     Items = objects,
                 };
@@ -74,7 +76,7 @@ namespace SkbKontur.DbViewer
                         CountLimit = downloadLimit,
                     };
 
-            var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit).ConfigureAwait(false);
+            var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit + 1).ConfigureAwait(false);
 
             var properties = new List<string>();
             var getters = new List<Func<object?, object?>>();
@@ -86,12 +88,12 @@ namespace SkbKontur.DbViewer
             var filteredGetters = getters.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
 
             var csvWriter = new CsvWriter(filteredProperties);
-            foreach (var item in results)
+            foreach (var item in results.Take(downloadLimit))
                 csvWriter.AddRow(filteredGetters.Select(f => PropertyHelpers.ToString(f, item)).ToArray());
 
             return new DownloadResult
                 {
-                    Count = count ?? 0,
+                    Count = results.Length,
                     CountLimit = downloadLimit,
                     File = new FileInfo
                         {

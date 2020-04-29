@@ -192,10 +192,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     };
 
     private getPath(pathPrefix: string[], key: string): string {
-        return [...pathPrefix, key]
-            .join("_")
-            .replace("[", "")
-            .replace("]", "");
+        return [...pathPrefix, key].join("_").replace("[", "").replace("]", "");
     }
 
     private readonly isThereItemsToToggleAtFirstLevel = (): boolean =>

@@ -33,4 +33,19 @@ namespace SkbKontur.DbViewer.TestApi.Cql
 
         private readonly ISession session;
     }
+
+    public class CqlPagedDbConnectorFactory : IDbConnectorFactory
+    {
+        public CqlPagedDbConnectorFactory()
+        {
+            session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+        }
+
+        public IDbConnector CreateConnector<T>() where T : class
+        {
+            return new CqlPagedDbConnector<T>(new Table<T>(session), new TimestampProvider());
+        }
+
+        private readonly ISession session;
+    }
 }

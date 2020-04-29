@@ -21,7 +21,7 @@ import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
 import { ObjectSearchQuery } from "../Domain/Objects/ObjectSearchQuery";
-import { ConditionsMapper, SortMapper } from "../Domain/Objects/ObjectSearchQueryUtils";
+import { ConditionsMapper, ObjectSearchQueryUtils, SortMapper } from "../Domain/Objects/ObjectSearchQueryUtils";
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
@@ -88,8 +88,11 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     public componentDidUpdate(prevProps: ObjectTableProps) {
+        if (prevProps.urlQuery !== this.props.urlQuery) {
+            this.setState({ query: this.parseQuery(this.props.urlQuery) });
+        }
         if (this.checkForNecessityLoad(prevProps.urlQuery)) {
-            this.setState({ query: this.parseQuery(this.props.urlQuery) }, this.loadObjectsWithLoader);
+            this.loadObjectsWithLoader();
         }
     }
 
@@ -140,7 +143,13 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                     <Loader type="big" active={loading}>
                         <ColumnStack gap={4}>
                             <Fit>
-                                {objects && this.renderItemsCount(offset, count, objects.count, objects.countLimit)}
+                                {objects &&
+                                    this.renderItemsCount(
+                                        offset,
+                                        count,
+                                        objects.count || objects.items.length,
+                                        objects.countLimit
+                                    )}
                             </Fit>
                             <Fit style={{ maxWidth: "inherit" }}>
                                 {objects != null && objects.items && objects.items.length > 0 ? (
@@ -150,7 +159,11 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             objectType={metaInformation?.identifier || ""}
                                             customRenderer={this.props.customRenderer}
                                             currentSort={sort}
-                                            items={objects.items}
+                                            items={
+                                                objects.count == null
+                                                    ? objects.items.slice(offset, offset + count)
+                                                    : objects.items
+                                            }
                                             onDetailsClick={this.getDetailsUrl}
                                             onDeleteClick={index => this.handleDeleteObject(index)}
                                             onChangeSortClick={(columnName: string) =>
@@ -191,14 +204,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private checkForNecessityLoad(prevQuery: string): boolean {
         const { urlQuery } = this.props;
         if (prevQuery !== urlQuery) {
-            const prevState = this.parseQuery(prevQuery);
-            const nextState = this.parseQuery(urlQuery);
-            const hiddenColumnsChanged = prevState.hiddenColumns.length !== nextState.hiddenColumns.length;
-            const restUnchanged = _.isEqual({ ...nextState, hiddenColumns: [] }, { ...prevState, hiddenColumns: [] });
-            if (hiddenColumnsChanged && restUnchanged) {
-                return false;
-            }
-            return true;
+            const prevState = ObjectSearchQueryUtils.normalize(this.parseQuery(prevQuery), !this.state.objects?.count);
+            const nextState = ObjectSearchQueryUtils.normalize(this.parseQuery(urlQuery), !this.state.objects?.count);
+            return !_.isEqual(nextState, prevState);
         }
         return false;
     }
@@ -250,9 +258,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             offset: offset,
             count: count,
         });
-        this.setState({
-            objects: objects,
-        });
+        this.setState({ objects: objects });
     }
 
     private getSortOrder(columnName: string): ObjectFilterSortOrder {
@@ -270,12 +276,17 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     private readonly updateQuery = (queryUpdate: Partial<ObjectSearchQuery>) => {
+        let offset = queryUpdate.offset ?? this.state.query.offset;
+        if (offset !== 0 && queryUpdate.count) {
+            offset = Math.floor(offset / queryUpdate.count) * queryUpdate.count;
+        }
         this.setState(
             {
                 showModalFilter: false,
                 query: {
                     ...this.state.query,
                     ...queryUpdate,
+                    offset: offset,
                 },
             },
             this.updateRoute
@@ -334,7 +345,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         if (objects == null) {
             return null;
         }
-        const totalCount = objects.count > objects.countLimit ? objects.countLimit : objects.count;
+        const trueCount = objects.count || objects.items.length;
+        const totalCount = trueCount > objects.countLimit ? objects.countLimit : trueCount;
         if (totalCount == null || totalCount === 0 || Math.ceil(totalCount / count) <= 1) {
             return null;
         }
@@ -356,6 +368,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private readonly handleCloseDownloadModal = () => {
+        if (this.state.downloadCount?.file) {
+            FileUtils.downloadFile(this.state.downloadCount.file);
+        }
         this.setState({ showDownloadModal: false });
     };
 

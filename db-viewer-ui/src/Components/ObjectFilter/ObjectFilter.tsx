@@ -10,7 +10,6 @@ import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMeta
 import { ticksToTimestamp, timestampToTicks } from "../../Domain/Utils/ConvertTimeUtil";
 import { StringUtils } from "../../Domain/Utils/StringUtils";
 import { TimeUtils } from "../../Domain/Utils/TimeUtils";
-import { validateObjectField } from "../../Domain/Utils/ValidationUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 import { FormRow } from "../FormRow/FormRow";
 
@@ -71,6 +70,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             renderMessage={tooltip("right middle")}
                             validationInfo={this.getValidation(property, value)}>
                             <Input
+                                mask="999999999999999999"
                                 data-tid={"DateTimeInTicks"}
                                 onChange={(e, nextValue) => this.updateItem(property, { value: nextValue })}
                                 value={value ? value : ""}
@@ -132,7 +132,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         if (property.isRequired && StringUtils.isNullOrWhitespace(value)) {
             return { message: "Поле должно быть заполнено", type: "submit" };
         }
-        return validateObjectField(value);
+        return null;
     }
 
     public render(): JSX.Element {

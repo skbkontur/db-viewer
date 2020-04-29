@@ -47,13 +47,29 @@ namespace SkbKontur.DbViewer.TestApi
                             AllowDelete = true,
                             AllowEdit = true,
                         },
-                    Types = BuildTypeDescriptions(typeof(CqlDocumentMeta),
-                                                  typeof(CqlOrganizationInfo),
-                                                  typeof(CqlUserInfo),
-                                                  typeof(DocumentBindingsMeta),
+                    Types = BuildTypeDescriptions(typeof(DocumentBindingsMeta),
                                                   typeof(DocumentPrintingInfo),
                                                   typeof(DocumentStorageElement)),
                     ConnectorsFactory = new CqlDbConnectorFactory(),
+                    PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder(),
+                    CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider()
+                });
+
+            schemaRegistry.Add(new Schema
+                {
+                    Description = new SchemaDescription
+                        {
+                            AllowReadAll = true,
+                            CountLimit = 10_000,
+                            DownloadLimit = 100_000,
+                            SchemaName = "CQL Paged Objects",
+                            AllowDelete = true,
+                            AllowEdit = true,
+                        },
+                    Types = BuildTypeDescriptions(typeof(CqlDocumentMeta),
+                                                  typeof(CqlOrganizationInfo),
+                                                  typeof(CqlUserInfo)),
+                    ConnectorsFactory = new CqlPagedDbConnectorFactory(),
                     PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder(),
                     CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider()
                 });

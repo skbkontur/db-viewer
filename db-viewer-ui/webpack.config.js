@@ -4,7 +4,7 @@ const path = require("path");
 
 const webpack = require("webpack");
 
-module.exports = function(env) {
+module.exports = function (env) {
     const NODE_ENV = process.env.NODE_ENV;
     const API_MODE = env.api || "real";
 

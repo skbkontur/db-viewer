@@ -66,7 +66,7 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                 });
             var definition = new TypeScriptInterfaceDefinition();
             definition.Members.AddRange(methodInfos.SelectMany(x => BuildApiInterfaceMember(x, buildAndImportType)));
-            targetUnit.AddDefaultSymbolImport(baseApiClassName, $"../apiBase/{baseApiClassName}");
+            targetUnit.AddDefaultSymbolImport(baseApiClassName, $"../ApiBase/{baseApiClassName}");
 
             var interfaceDeclaration = new TypeScriptInterfaceDeclaration
                 {

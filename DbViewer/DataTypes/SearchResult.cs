@@ -11,7 +11,7 @@ namespace SkbKontur.DbViewer.DataTypes
         public object[] Items { get; set; }
 
         [JsonProperty("count")]
-        public int Count { get; set; }
+        public int? Count { get; set; }
 
         [JsonProperty("countLimit")]
         public int CountLimit { get; set; }
