@@ -76,7 +76,7 @@ namespace SkbKontur.DbViewer
                         CountLimit = downloadLimit,
                     };
 
-            var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit).ConfigureAwait(false);
+            var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit + 1).ConfigureAwait(false);
 
             var properties = new List<string>();
             var getters = new List<Func<object?, object?>>();
@@ -88,12 +88,12 @@ namespace SkbKontur.DbViewer
             var filteredGetters = getters.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
 
             var csvWriter = new CsvWriter(filteredProperties);
-            foreach (var item in results)
+            foreach (var item in results.Take(downloadLimit))
                 csvWriter.AddRow(filteredGetters.Select(f => PropertyHelpers.ToString(f, item)).ToArray());
 
             return new DownloadResult
                 {
-                    Count = count ?? 0,
+                    Count = results.Length,
                     CountLimit = downloadLimit,
                     File = new FileInfo
                         {
