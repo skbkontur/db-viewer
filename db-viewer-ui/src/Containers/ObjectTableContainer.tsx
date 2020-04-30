@@ -55,7 +55,7 @@ const objectsQueryMapping: QueryStringMapping<ObjectSearchQuery> = new QueryStri
     .mapToInteger(x => x.count, "count", 20)
     .mapToInteger(x => x.offset, "offset", 0)
     .mapToStringArray(x => x.hiddenColumns, "hiddenColumns", [])
-    .mapTo(x => x.sort, new SortMapper("sort"))
+    .mapTo(x => x.sorts, new SortMapper("sort"))
     .mapTo(x => x.conditions, new ConditionsMapper(["sort", "count", "offset", "hiddenColumns", "countLimit"]))
     .build();
 
@@ -65,7 +65,7 @@ function getDefaultQuery(): ObjectSearchQuery {
         offset: 0,
         count: 20,
         hiddenColumns: [],
-        sort: null,
+        sorts: [],
     };
 }
 
@@ -101,7 +101,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             loading,
             objects,
             metaInformation,
-            query: { offset, count, sort },
+            query: { offset, count, sorts },
             downloading,
             showDownloadModal,
             downloadCount,
@@ -158,22 +158,15 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             properties={this.getVisibleProperties(properties)}
                                             objectType={metaInformation?.identifier || ""}
                                             customRenderer={this.props.customRenderer}
-                                            currentSort={sort}
+                                            currentSorts={sorts}
                                             items={
                                                 objects.count == null
                                                     ? objects.items.slice(offset, offset + count)
                                                     : objects.items
                                             }
                                             onDetailsClick={this.getDetailsUrl}
-                                            onDeleteClick={index => this.handleDeleteObject(index)}
-                                            onChangeSortClick={(columnName: string) =>
-                                                this.updateQuery({
-                                                    sort: {
-                                                        path: columnName,
-                                                        sortOrder: this.getSortOrder(columnName),
-                                                    },
-                                                })
-                                            }
+                                            onDeleteClick={this.handleDeleteObject}
+                                            onChangeSortClick={this.handleChangeSort}
                                             allowDelete={this.props.allowEdit && allowDelete}
                                         />
                                     )
@@ -250,25 +243,15 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
     private async loadObjects(): Promise<void> {
         const { dbViewerApi, objectId } = this.props;
-        const { offset, count, conditions, sort } = this.state.query;
+        const { offset, count, conditions, sorts } = this.state.query;
         const objects = await dbViewerApi.searchObjects(objectId, {
             conditions: conditions,
-            sorts: sort == null ? [] : [sort],
+            sorts: sorts,
             excludedFields: [],
             offset: offset,
             count: count,
         });
         this.setState({ objects: objects });
-    }
-
-    private getSortOrder(columnName: string): ObjectFilterSortOrder {
-        const { sort } = this.state.query;
-        if (sort && sort.path === columnName) {
-            return sort.sortOrder === ObjectFilterSortOrder.Descending
-                ? ObjectFilterSortOrder.Ascending
-                : ObjectFilterSortOrder.Descending;
-        }
-        return ObjectFilterSortOrder.Ascending;
     }
 
     private getVisibleProperties(properties: PropertyMetaInformation[]): PropertyMetaInformation[] {
@@ -352,6 +335,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         }
         return (
             <Paging
+                data-tid="Paging"
                 activePage={Math.floor(offset / count) + 1}
                 pagesCount={Math.ceil(totalCount / count)}
                 onPageChange={this.goToPage}
@@ -383,11 +367,11 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         this.setState({ downloading: true });
         try {
             const { dbViewerApi } = this.props;
-            const { conditions, sort, hiddenColumns } = this.state.query;
+            const { conditions, sorts, hiddenColumns } = this.state.query;
 
             const downloadResult = await dbViewerApi.downloadObjects(metaInformation.identifier, {
                 conditions: conditions,
-                sorts: sort == null ? [] : [sort],
+                sorts: sorts,
                 excludedFields: hiddenColumns,
             });
 
@@ -404,7 +388,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         }
     };
 
-    private async handleDeleteObject(index: number): Promise<void> {
+    private handleDeleteObject = async (index: number): Promise<void> => {
         const { objects, metaInformation } = this.state;
         const { dbViewerApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
@@ -412,7 +396,45 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
             await this.loadObjects();
         }
-    }
+    };
+
+    private handleChangeSort = (columnName: string) => {
+        const { sorts } = this.state.query;
+        const currentSortIndex = sorts.findIndex(x => x.path === columnName);
+        if (currentSortIndex === -1) {
+            this.updateQuery({
+                sorts: [
+                    ...sorts,
+                    {
+                        path: columnName,
+                        sortOrder: ObjectFilterSortOrder.Ascending,
+                    },
+                ],
+            });
+            return;
+        }
+
+        const currentSortOrder = sorts[currentSortIndex].sortOrder;
+        if (currentSortOrder === ObjectFilterSortOrder.Ascending) {
+            this.updateQuery({
+                sorts: [
+                    ...sorts.slice(0, currentSortIndex),
+                    {
+                        path: columnName,
+                        sortOrder: ObjectFilterSortOrder.Descending,
+                    },
+                    ...sorts.slice(currentSortIndex + 1),
+                ],
+            });
+            return;
+        }
+
+        if (currentSortOrder === ObjectFilterSortOrder.Descending) {
+            this.updateQuery({
+                sorts: [...sorts.slice(0, currentSortIndex), ...sorts.slice(currentSortIndex + 1)],
+            });
+        }
+    };
 
     private updateRoute() {
         this.props.history.push(this.getQuery());
@@ -427,6 +449,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private parseQuery(urlQuery: string): ObjectSearchQuery {
         const query = objectsQueryMapping.parse(urlQuery);
         query.conditions = query.conditions || [];
+        query.sorts = query.sorts || [];
         return query;
     }
 

@@ -67,32 +67,34 @@ export class ConditionsMapper {
     }
 }
 
-export class SortMapper extends PlainValueMapper<Sort> {
+export class SortMapper extends PlainValueMapper<Sort[]> {
     public constructor(queryStringParameterName: string) {
         super(queryStringParameterName);
     }
 
-    public parseString(parameterValue: string): Nullable<Sort> {
-        if (parameterValue != null && parameterValue.trim() !== "") {
-            const sortInfo = parameterValue.split(":");
-            if (sortInfo[0].trim() === "") {
-                return null;
-            }
+    public parseString(parameterValue: string): Sort[] {
+        if (parameterValue == null || parameterValue.trim() === "") {
+            return [];
+        }
+
+        const sorts = parameterValue.split(",");
+        return sorts.map(x => {
+            const sortInfo = x.split(":");
             return {
                 path: sortInfo[0],
                 sortOrder: sortInfo[1] === "asc" ? ObjectFilterSortOrder.Ascending : ObjectFilterSortOrder.Descending,
             };
-        }
-        return null;
+        });
     }
 
-    public stringifyValue(value: Nullable<Sort>): Nullable<string> {
-        if (value == null) {
+    public stringifyValue(value: Sort[]): Nullable<string> {
+        if (value.length === 0) {
             return null;
         }
-        if (value.path == null || value.path === "") {
-            return null;
-        }
-        return `${value.path}:${value.sortOrder === ObjectFilterSortOrder.Ascending ? "asc" : "desc"}`;
+
+        return value
+            .filter(x => x.path != null && x.path !== "")
+            .map(x => `${x.path}:${x.sortOrder === ObjectFilterSortOrder.Ascending ? "asc" : "desc"}`)
+            .join(",");
     }
 }

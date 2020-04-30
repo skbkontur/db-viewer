@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.x - 2020.04.30
+- Allow sort by multiple columns.
+- Mark `CqlPagedDbConnector` as obsolete since it does not work properly.
+
 ## v0.2.70 - 2020.04.29
 - Move `@skbkontur/react-ui` & `@skbkontur/react-icons` to peerDependencies.
 - Update front dependencies.

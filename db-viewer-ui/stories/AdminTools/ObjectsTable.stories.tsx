@@ -64,7 +64,7 @@ storiesOf("ObjectTable", module)
             objectType="Type"
             customRenderer={new NullCustomRenderer()}
             onDeleteClick={deleteObject}
-            currentSort={{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }}
+            currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
             allowDelete
         />
     ))
@@ -81,7 +81,7 @@ storiesOf("ObjectTable", module)
             onDeleteClick={deleteObject}
             objectType="Type"
             customRenderer={new NullCustomRenderer()}
-            currentSort={{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }}
+            currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
             allowDelete={false}
         />
     ));
