@@ -11,7 +11,7 @@ import { QueryStringMappingBuilder } from "../../src/Domain/QueryStringMapping/Q
 
 interface ObjectSearchQuery {
     conditions: Nullable<Condition[]>;
-    sort: Nullable<Sort>;
+    sorts: Nullable<Sort[]>;
     count: Nullable<number>;
     offset: Nullable<number>;
     countLimit: Nullable<number>;
@@ -23,7 +23,7 @@ const mapper: QueryStringMapping<ObjectSearchQuery> = new QueryStringMappingBuil
     .mapToInteger(x => x.offset, "offset")
     .mapToInteger(x => x.countLimit, "countLimit")
     .mapToStringArray(x => x.hiddenColumns, "hiddenColumns")
-    .mapTo(x => x.sort, new SortMapper("sort"))
+    .mapTo(x => x.sorts, new SortMapper("sort"))
     .mapTo(x => x.conditions, new ConditionsMapper(["sort", "count", "offset", "hiddenColumns", "countLimit"]))
     .build();
 
@@ -35,7 +35,7 @@ class ObjectSearchQueryUtils {
     public static stringify(query: Partial<ObjectSearchQuery>): Nullable<string> {
         return mapper.stringify({
             conditions: null,
-            sort: null,
+            sorts: [],
             count: null,
             offset: null,
             countLimit: null,
@@ -129,25 +129,29 @@ export class ObjectSearchQueryUtilsTest {
     public "должен переводить в строку"() {
         expect(
             ObjectSearchQueryUtils.stringify({
-                sort: {
-                    path: "path.to.object",
-                    sortOrder: ObjectFilterSortOrder.Ascending,
-                },
+                sorts: [
+                    {
+                        path: "path.to.object",
+                        sortOrder: ObjectFilterSortOrder.Ascending,
+                    },
+                ],
                 conditions: null,
             })
         ).to.eql("?sort=path.to.object%3Aasc");
         expect(
             ObjectSearchQueryUtils.stringify({
-                sort: null,
+                sorts: [],
                 conditions: null,
             })
         ).to.eql("");
         expect(
             ObjectSearchQueryUtils.stringify({
-                sort: {
-                    path: "null",
-                    sortOrder: ObjectFilterSortOrder.Ascending,
-                },
+                sorts: [
+                    {
+                        path: "null",
+                        sortOrder: ObjectFilterSortOrder.Ascending,
+                    },
+                ],
                 conditions: null,
             })
         ).to.eql("");
@@ -249,10 +253,12 @@ export class ObjectSearchQueryUtilsTest {
             ObjectSearchQueryUtils.stringify({
                 count: 100,
                 offset: 20,
-                sort: {
-                    path: "Box.Id",
-                    sortOrder: ObjectFilterSortOrder.Ascending,
-                },
+                sorts: [
+                    {
+                        path: "Box.Id",
+                        sortOrder: ObjectFilterSortOrder.Ascending,
+                    },
+                ],
                 conditions: [
                     {
                         path: "Box.Id",

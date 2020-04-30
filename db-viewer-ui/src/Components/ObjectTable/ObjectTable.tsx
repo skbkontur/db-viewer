@@ -24,7 +24,7 @@ interface ObjectTableProps {
     onChangeSortClick: (name: string) => void;
     onDetailsClick: (item: object) => string;
     onDeleteClick: (index: number) => Promise<void>;
-    currentSort: Nullable<Sort>;
+    currentSorts: Sort[];
     allowDelete: boolean;
 }
 
@@ -110,13 +110,14 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         return arr;
     }
 
-    public getIcon(name: string, currentSort: Nullable<Sort>): JSX.Element {
+    public getIcon(name: string, currentSort: Sort[]): JSX.Element {
         const dictionary: { [key: string]: JSX.Element } = {
             Ascending: <SortUpIcon />,
             Descending: <SortDownIcon />,
         };
-        if (currentSort && currentSort.path === name) {
-            return dictionary[currentSort.sortOrder];
+        const currentSortOrder = currentSort.find(x => x.path === name)?.sortOrder;
+        if (currentSortOrder) {
+            return dictionary[currentSortOrder];
         }
 
         return <SortDefaultIcon />;
@@ -127,7 +128,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         const content = item.isSortable ? (
             <Link
                 data-tid={`Header_${name}`}
-                icon={this.getIcon(name, this.props.currentSort)}
+                icon={this.getIcon(name, this.props.currentSorts)}
                 onClick={() => this.props.onChangeSortClick(name)}>
                 {name}
             </Link>

@@ -3,7 +3,7 @@ import { Sort } from "../Api/DataTypes/Sort";
 
 export interface ObjectSearchQuery {
     conditions: Condition[];
-    sort: Nullable<Sort>;
+    sorts: Sort[];
     count: number;
     offset: number;
     hiddenColumns: string[];

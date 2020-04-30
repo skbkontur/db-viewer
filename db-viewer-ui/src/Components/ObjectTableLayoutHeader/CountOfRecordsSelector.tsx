@@ -25,9 +25,10 @@ export class CountOfRecordsSelector extends React.Component<CountOfRecordsSelect
     public render(): JSX.Element {
         return (
             <DropdownMenu
+                data-tid="CountDropdown"
                 menuWidth={200}
                 caption={
-                    <Link icon={<CellsEqualHeightIcon />}>
+                    <Link data-tid="CurrentCount" icon={<CellsEqualHeightIcon />}>
                         {this.props.count} записей на странице
                         {"\u00A0"}
                         <ArrowTriangleDownIcon />
