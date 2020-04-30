@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.x - 2020.04.30
+## v0.2.74 - 2020.04.30
 - Allow sort by multiple columns.
 - Mark `CqlPagedDbConnector` as obsolete since it does not work properly.
 
