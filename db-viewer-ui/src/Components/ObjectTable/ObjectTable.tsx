@@ -1,3 +1,4 @@
+import SortDefaultIcon from "@skbkontur/react-icons/SortDefault";
 import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import Link from "@skbkontur/react-ui/Link";
@@ -118,7 +119,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
             return dictionary[currentSort.sortOrder];
         }
 
-        return <SortDownIcon />;
+        return <SortDefaultIcon />;
     }
 
     public renderTableHeader(item: PropertyMetaInformation, key: number): JSX.Element {

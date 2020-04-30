@@ -1,6 +1,7 @@
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
+import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { CommonLayout } from "../Layouts/CommonLayout";
 
 import styles from "./ObjectNotFoundPage.less";
@@ -121,7 +122,9 @@ class ObjectNotFoundPageInternal extends React.Component<RouteComponentProps> {
         return (
             <>
                 <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block" }}>
-                    <CommonLayout.GoBack to="..">Вернуться к списку объектов</CommonLayout.GoBack>
+                    <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)}>
+                        Вернуться к списку объектов
+                    </CommonLayout.GoBack>
                     <CommonLayout.Content className={styles.content}>
                         <h2 className={styles.headerTitle} data-tid="Header">
                             Страница не найдена
