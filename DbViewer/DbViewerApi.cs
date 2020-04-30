@@ -19,7 +19,7 @@ namespace SkbKontur.DbViewer
         public ObjectIdentifier[] GetNames()
         {
             return schemaRegistry.GetAllSchemas()
-                                 .SelectMany(s => s.Types.Select(x => new ObjectIdentifier {Identifier = x.Type.Name, SchemaDescription = s.Description}))
+                                 .SelectMany(s => s.Types.Select(x => new ObjectIdentifier {Identifier = x.TypeIdentifier, SchemaDescription = s.Description}))
                                  .ToArray();
         }
 
