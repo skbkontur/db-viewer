@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.75 - 2020.04.30
+## v0.2.76 - 2020.04.30
 - Display TypeIdentifier instead of type name in types list
 
 ## v0.2.74 - 2020.04.30
