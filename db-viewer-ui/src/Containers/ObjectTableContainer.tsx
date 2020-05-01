@@ -89,10 +89,11 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
     public componentDidUpdate(prevProps: ObjectTableProps) {
         if (prevProps.urlQuery !== this.props.urlQuery) {
-            this.setState({ query: this.parseQuery(this.props.urlQuery) });
-        }
-        if (this.checkForNecessityLoad(prevProps.urlQuery)) {
-            this.loadObjectsWithLoader();
+            this.setState({ query: this.parseQuery(this.props.urlQuery) }, () => {
+                if (this.checkForNecessityLoad(prevProps.urlQuery)) {
+                    this.loadObjectsWithLoader();
+                }
+            });
         }
     }
 

@@ -1,7 +1,10 @@
 # Changelog
 
+## v0.2.78 - 2020.05.01
+- Fix server side paging.
+
 ## v0.2.76 - 2020.04.30
-- Display TypeIdentifier instead of type name in types list
+- Display TypeIdentifier instead of type name in types list.
 
 ## v0.2.74 - 2020.04.30
 - Allow sort by multiple columns.

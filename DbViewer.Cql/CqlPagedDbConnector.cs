@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 using Cassandra.Data.Linq;
@@ -10,7 +9,6 @@ using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Cql
 {
-    [Obsolete("Does not work properly")]
     public class CqlPagedDbConnector<T> : IDbConnector
         where T : class
     {
