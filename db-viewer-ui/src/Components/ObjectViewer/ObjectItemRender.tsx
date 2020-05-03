@@ -2,7 +2,7 @@ import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
 import Input from "@skbkontur/react-ui/Input";
 import Link from "@skbkontur/react-ui/Link";
 import Select from "@skbkontur/react-ui/Select";
-import _ from "lodash";
+import get from "lodash/get";
 import React from "react";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
@@ -11,7 +11,7 @@ import { FileUtils } from "../../Domain/Utils/FileUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
-    return _.get(target, path.join("."));
+    return get(target, path.join("."));
 }
 
 function download(objectType: string, path: string[], content: string) {

@@ -2,7 +2,7 @@ import CopyIcon from "@skbkontur/react-icons/Copy";
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
-import _ from "lodash";
+import get from "lodash/get";
 import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -107,7 +107,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
             return;
         }
 
-        const oldValue = _.get(objectInfo, path);
+        const oldValue = get(objectInfo, path);
         if ((oldValue == null && value == null) || (oldValue != null && String(oldValue) === value)) {
             return;
         }

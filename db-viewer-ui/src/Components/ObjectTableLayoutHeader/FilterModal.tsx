@@ -4,7 +4,8 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import React from "react";
-import { Link as RouterLink, RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router";
+import { Link as RouterLink } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";

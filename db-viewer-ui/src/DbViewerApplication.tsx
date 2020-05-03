@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
+import { Route, RouteComponentProps, Switch, withRouter } from "react-router";
 
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
 import { ObjectTableContainer } from "./Containers/ObjectTableContainer";

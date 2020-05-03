@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import _ from "lodash";
+import get from "lodash/get";
 
 export type PropertyPicker<T, V> = (x: T) => V;
 
@@ -13,7 +13,7 @@ export function pathLens<TTarget extends {}, TProp>(propertyPicker: (target: TTa
     // @ts-ignore
     const fieldsString = /return [^\{\}\(\)]*?\.([^\{\}\(\)]*?)\s*[;\}]/.exec(propertyPicker.toString())[1];
     return {
-        get: (x: TTarget) => _.get(x, fieldsString),
+        get: (x: TTarget) => get(x, fieldsString),
         set: (x: TTarget, value: TProp) => {
             return fieldsString
                 .split(".")

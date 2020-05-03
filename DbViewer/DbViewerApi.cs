@@ -132,6 +132,8 @@ namespace SkbKontur.DbViewer
         {
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var oldObject = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
+            if (oldObject == null)
+                throw new InvalidOperationException("Expected edited object to exist");
             var updatedObject = ObjectPropertyEditor.SetValue(oldObject, query.Path, query.Value, schema.CustomPropertyConfigurationProvider);
             await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
         }

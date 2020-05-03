@@ -2,10 +2,10 @@ import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
 import Loader from "@skbkontur/react-ui/Loader";
 import Paging from "@skbkontur/react-ui/Paging";
-import _ from "lodash";
+import isEqual from "lodash/isEqual";
 import qs from "qs";
 import React from "react";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
@@ -200,7 +200,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         if (prevQuery !== urlQuery) {
             const prevState = ObjectSearchQueryUtils.normalize(this.parseQuery(prevQuery), !this.state.objects?.count);
             const nextState = ObjectSearchQueryUtils.normalize(this.parseQuery(urlQuery), !this.state.objects?.count);
-            return !_.isEqual(nextState, prevState);
+            return !isEqual(nextState, prevState);
         }
         return false;
     }
