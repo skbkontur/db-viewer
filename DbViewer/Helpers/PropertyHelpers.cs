@@ -62,7 +62,7 @@ namespace SkbKontur.DbViewer.Helpers
         }
 
         public static TypeMetaInformation BuildTypeMetaInformation(object? @object, Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
-                                                                   ICustomPropertyConfigurationProvider propertyConfigurationProvider,
+                                                                   ICustomPropertyConfigurationProvider? propertyConfigurationProvider,
                                                                    Type[]? usedTypes = null)
         {
             usedTypes = (usedTypes ?? new Type[0]).ToArray();
@@ -70,7 +70,7 @@ namespace SkbKontur.DbViewer.Helpers
                 return null;
             usedTypes = usedTypes.Concat(new[] {type}).ToArray();
 
-            type = propertyConfigurationProvider.TryGetConfiguration(type)?.ResolvedType ?? type;
+            type = propertyConfigurationProvider?.TryGetConfiguration(type)?.ResolvedType ?? type;
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return TypeMetaInformation.ForSimpleType(type.GetGenericArguments()[0].Name, isNullable : true);
@@ -89,7 +89,7 @@ namespace SkbKontur.DbViewer.Helpers
                         IsArray = true,
                         Properties = new PropertyMetaInformation[0],
                         GenericTypeArguments = genericArguments
-                                               .Select(x => BuildTypeMetaInformation(null, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
+                                               .Select(x => BuildTypeMetaInformation(null, x, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, usedTypes))
                                                .ToArray(),
                     };
             }
@@ -101,27 +101,27 @@ namespace SkbKontur.DbViewer.Helpers
                                      .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
                                      .ToArray(),
                     GenericTypeArguments = type.GetGenericArguments()
-                                               .Select(x => BuildTypeMetaInformation(null, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
+                                               .Select(x => BuildTypeMetaInformation(null, x, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, usedTypes))
                                                .ToArray(),
                 };
         }
 
         private static PropertyMetaInformation BuildPropertyInfo(object? @object, PropertyInfo propertyInfo,
                                                                  IPropertyDescriptionBuilder propertyDescriptionBuilder,
-                                                                 ICustomPropertyConfigurationProvider propertyConfigurationProvider,
+                                                                 ICustomPropertyConfigurationProvider? propertyConfigurationProvider,
                                                                  Type[] types)
         {
             object? objectProperty;
             Type propertyType;
             if (@object == null)
             {
-                var customConfiguration = propertyConfigurationProvider.TryGetConfiguration(propertyInfo);
+                var customConfiguration = propertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
                 objectProperty = null;
                 propertyType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
             }
             else
             {
-                var customConfiguration = propertyConfigurationProvider.TryGetConfiguration(@object, propertyInfo);
+                var customConfiguration = propertyConfigurationProvider?.TryGetConfiguration(@object, propertyInfo);
                 var underlyingProperty = propertyInfo.GetValue(@object);
                 objectProperty = customConfiguration != null ? customConfiguration.StoredToApi(underlyingProperty) : underlyingProperty;
                 var resolvedType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
@@ -141,7 +141,7 @@ namespace SkbKontur.DbViewer.Helpers
                     IsRequired = propertyDescription.IsRequired,
                     IsSearchable = propertyDescription.IsSearchable,
                     IsSortable = propertyDescription.IsSortable,
-                    Type = BuildTypeMetaInformation(objectProperty, propertyType, propertyDescriptionBuilder, propertyConfigurationProvider, types),
+                    Type = BuildTypeMetaInformation(objectProperty, propertyType, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, types),
                 };
         }
 

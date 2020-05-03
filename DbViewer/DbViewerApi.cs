@@ -51,8 +51,7 @@ namespace SkbKontur.DbViewer
             var results = counts == null
                               ? await connector.Search(query.Conditions, query.Sorts, 0, countLimit + 1).ConfigureAwait(false)
                               : await connector.Search(query.Conditions, query.Sorts, offset, count).ConfigureAwait(false);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            var objects = results.Select(x => ObjectsConverter.StoredToApi(typeMeta, type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
+            var objects = results.Select(x => ObjectsConverter.StoredToApi(type, x, schema.CustomPropertyConfigurationProvider)).ToArray();
 
             return new SearchResult
                 {
@@ -110,7 +109,7 @@ namespace SkbKontur.DbViewer
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var result = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(result, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            var obj = ObjectsConverter.StoredToApi(typeMeta, type, result, schema.CustomPropertyConfigurationProvider);
+            var obj = ObjectsConverter.StoredToApiDeep(type, result, schema.CustomPropertyConfigurationProvider);
             return new ObjectDetails
                 {
                     Object = obj,
