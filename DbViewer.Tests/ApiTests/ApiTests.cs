@@ -62,43 +62,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                         CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
                     }
             );
-
-            var testClassWithCustomPrimitivesShape = new TypeMetaInformation
-                {
-                    TypeName = "TestClassWithCustomPrimitives",
-                    GenericTypeArguments = new TypeMetaInformation[0],
-                    Properties = new[]
-                        {
-                            new PropertyMetaInformation
-                                {
-                                    Type = null,
-                                    Name = "BaseClass",
-                                    IsEditable = true,
-                                    AvailableValues = new string[0],
-                                },
-                            new PropertyMetaInformation
-                                {
-                                    Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
-                                    Name = "LocalTime",
-                                    IsEditable = true,
-                                    AvailableValues = new string[0],
-                                },
-                            new PropertyMetaInformation
-                                {
-                                    Type = TypeMetaInformation.ForSimpleType("String"),
-                                    Name = "TimeUuid",
-                                    IsEditable = true,
-                                    AvailableValues = new string[0],
-                                },
-                            new PropertyMetaInformation
-                                {
-                                    Type = TypeMetaInformation.ForSimpleType("String"),
-                                    Name = "NullableTimeUuid",
-                                    IsEditable = true,
-                                    AvailableValues = new string[0],
-                                },
-                        }
-                };
+            var testClassWithCustomPrimitivesShape = GetTestClassWithCustomPrimitivesShape();
             var testClassWithAllPrimitivesShape = new TypeMetaInformation
                 {
                     TypeName = "TestClassWithAllPrimitives",
@@ -437,6 +401,46 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             service.Start(7777);
         }
 
+        private static TypeMetaInformation GetTestClassWithCustomPrimitivesShape()
+        {
+            return new TypeMetaInformation
+                {
+                    TypeName = "TestClassWithCustomPrimitives",
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                    Properties = new[]
+                        {
+                            new PropertyMetaInformation
+                                {
+                                    Type = null,
+                                    Name = "BaseClass",
+                                    IsEditable = true,
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
+                                    Name = "LocalTime",
+                                    IsEditable = true,
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Name = "TimeUuid",
+                                    IsEditable = true,
+                                    AvailableValues = new string[0],
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Name = "NullableTimeUuid",
+                                    IsEditable = true,
+                                    AvailableValues = new string[0],
+                                },
+                        }
+                };
+        }
+
         private static TypeMetaInformation GetGenericTypeMeta(TypeMetaInformation typeParameter)
         {
             return new TypeMetaInformation
@@ -536,6 +540,8 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 }
                         }
                 };
+
+            testClassShape.Properties[6].Type = GetTestClassWithCustomPrimitivesShape();
             testClassShape.Properties[6].Type.Properties[0].Type = new TypeMetaInformation
                 {
                     TypeName = "ChildClass",
@@ -663,6 +669,48 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                     Properties = new PropertyMetaInformation[0],
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
+            testClassShape.Properties[6].Type.Properties[1].Type = new TypeMetaInformation
+                {
+                    TypeName = "LocalTime",
+                    GenericTypeArguments = new TypeMetaInformation[0],
+                    Properties = new[]
+                        {
+                            new PropertyMetaInformation
+                                {
+                                    Name = "TotalNanoseconds",
+                                    IsEditable = true,
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int64")
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Hour",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int32")
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Minute",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int32")
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Second",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int32")
+                                },
+                            new PropertyMetaInformation
+                                {
+                                    Name = "Nanoseconds",
+                                    AvailableValues = new string[0],
+                                    Type = TypeMetaInformation.ForSimpleType("Int32")
+                                },
+                        }
+                };
+            testClassShape.Properties[6].Type.Properties[2].Type.TypeName = "TimeUuid";
+            testClassShape.Properties[6].Type.Properties[3].Type.TypeName = "TimeUuid";
+            testClassShape.Properties[6].Type.Properties[3].Type.IsNullable = true;
 
             meta.Should().BeEquivalentTo(new ObjectDescription
                 {

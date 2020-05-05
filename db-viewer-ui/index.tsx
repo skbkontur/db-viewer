@@ -24,7 +24,7 @@ function AdminToolsEntryPoint() {
                             identifierKeywords={["Cql", "StorageElement"]}
                             customRenderer={new NullCustomRenderer()}
                             useErrorHandlingContainer
-                            allowEdit
+                            isSuperUser
                             dbViewerApi={dbViewerApi}
                             {...props}
                         />

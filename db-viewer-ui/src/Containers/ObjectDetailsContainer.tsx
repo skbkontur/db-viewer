@@ -25,7 +25,7 @@ import { RouteUtils } from "../Domain/Utils/RouteUtils";
 interface ObjectDetailsProps extends RouteComponentProps {
     objectId: string;
     objectQuery: string;
-    allowEdit: boolean;
+    isSuperUser: boolean;
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     useErrorHandlingContainer: boolean;
@@ -149,7 +149,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     };
 
     public render(): JSX.Element {
-        const { objectId, allowEdit: allowEditForUser, customRenderer, useErrorHandlingContainer } = this.props;
+        const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer } = this.props;
         const { objectInfo, objectNotFound, objectMeta, loading } = this.state;
         if (objectNotFound || objectInfo == null) {
             return <ObjectNotFoundPage />;
@@ -174,7 +174,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                                     </Link>
                                 </Fit>
                                 <Fit>
-                                    {allowDelete && allowEditForUser && (
+                                    {allowDelete && isSuperUser && (
                                         <Link
                                             icon={<TrashIcon />}
                                             onClick={this.handleTryDeleteObject}
@@ -210,7 +210,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                                     <ObjectViewer
                                         objectInfo={objectInfo}
                                         objectMeta={objectMeta}
-                                        allowEdit={allowEdit && allowEditForUser}
+                                        allowEdit={allowEdit && isSuperUser}
                                         customRenderer={customRenderer}
                                         onChange={this.handleChange}
                                     />
@@ -218,7 +218,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                             </Fit>
                         </ColumnStack>
                     </CommonLayout.Content>
-                    {this.state.showConfirmModal && allowDelete && allowEditForUser && (
+                    {this.state.showConfirmModal && allowDelete && isSuperUser && (
                         <ConfirmDeleteObjectModal
                             onDelete={this.handleConfirmDelete}
                             onCancel={this.handleCancelDelete}
