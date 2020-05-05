@@ -14,6 +14,8 @@ const schema: SchemaDescription = {
     schemaName: "ab",
     downloadLimit: 100,
     countLimit: 10,
+    countLimitForSuperUser: 1000,
+    downloadLimitForSuperUser: 10000,
 };
 
 storiesOf("ObjectTypes", module)

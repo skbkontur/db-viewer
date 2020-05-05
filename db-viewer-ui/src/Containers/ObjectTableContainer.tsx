@@ -34,7 +34,7 @@ interface ObjectTableProps extends RouteComponentProps {
     useErrorHandlingContainer: boolean;
     objectId: string;
     urlQuery: string;
-    allowEdit: boolean;
+    isSuperUser: boolean;
     path: string;
 }
 
@@ -168,7 +168,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             onDetailsClick={this.getDetailsUrl}
                                             onDeleteClick={this.handleDeleteObject}
                                             onChangeSortClick={this.handleChangeSort}
-                                            allowDelete={this.props.allowEdit && allowDelete}
+                                            allowDelete={this.props.isSuperUser && allowDelete}
                                         />
                                     )
                                 ) : (
