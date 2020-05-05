@@ -36,13 +36,13 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        public async Task<SearchResult> SearchObjects(string objectIdentifier, ObjectSearchRequest query)
+        public async Task<SearchResult> SearchObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var offset = query.Offset ?? 0;
             var count = query.Count ?? 20;
-            var countLimit = schema.Description.CountLimit;
+            var countLimit = isSuperUser ? schema.Description.CountLimitForSuperUser : schema.Description.CountLimit;
             if (offset + count > countLimit)
                 throw new InvalidOperationException($"Expected offset ({offset}) + count ({count}) to be less than countLimit ({countLimit})");
 
@@ -61,11 +61,11 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        public async Task<DownloadResult> DownloadObjects(string objectIdentifier, ObjectSearchRequest query)
+        public async Task<DownloadResult> DownloadObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var downloadLimit = schema.Description.DownloadLimit;
+            var downloadLimit = isSuperUser ? schema.Description.DownloadLimitForSuperUser : schema.Description.DownloadLimit;
             var count = await schemaRegistry.GetConnector(objectIdentifier).Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
             if (count > downloadLimit)
                 return new DownloadResult
@@ -109,7 +109,7 @@ namespace SkbKontur.DbViewer
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var result = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
             var typeMeta = PropertyHelpers.BuildTypeMetaInformation(result, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
-            var obj = ObjectsConverter.StoredToApiDeep(type, result, schema.CustomPropertyConfigurationProvider);
+            var obj = ObjectsConverter.StoredToApiDeep(result, schema.CustomPropertyConfigurationProvider);
             return new ObjectDetails
                 {
                     Object = obj,
@@ -122,13 +122,17 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        public Task DeleteObject(string objectIdentifier, ObjectReadRequest query)
+        public Task DeleteObject(string objectIdentifier, ObjectReadRequest query, bool isSuperUser)
         {
+            if (!isSuperUser)
+                throw new InvalidOperationException("User cannot delete object");
             return schemaRegistry.GetConnector(objectIdentifier).Delete(query.Conditions);
         }
 
-        public async Task UpdateObject(string objectIdentifier, ObjectUpdateRequest query)
+        public async Task UpdateObject(string objectIdentifier, ObjectUpdateRequest query, bool isSuperUser)
         {
+            if (!isSuperUser)
+                throw new InvalidOperationException("User cannot update object");
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var oldObject = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
             if (oldObject == null)

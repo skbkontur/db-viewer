@@ -19,7 +19,13 @@ namespace SkbKontur.DbViewer.DataTypes
         [JsonProperty("countLimit")]
         public int CountLimit { get; set; }
 
+        [JsonProperty("countLimitForSuperUser")]
+        public int CountLimitForSuperUser { get; set; }
+
         [JsonProperty("downloadLimit")]
         public int DownloadLimit { get; set; }
+
+        [JsonProperty("downloadLimitForSuperUser")]
+        public int DownloadLimitForSuperUser { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace SkbKontur.DbViewer.Helpers
                 return null;
 
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            if (PropertyHelpers.IsSimpleType(type) || !properties.Any())
+            if (PropertyHelpers.IsSimpleType(type) || type == typeof(byte[]) || !properties.Any())
                 return o;
 
             var result = new Dictionary<string, object?>();
@@ -32,24 +32,20 @@ namespace SkbKontur.DbViewer.Helpers
             return result;
         }
 
-        public static object StoredToApiDeep(Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        public static object StoredToApiDeep(object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
         {
             if (o == null)
                 return null;
 
             if (o is IDictionary dictionary)
                 return dictionary.Keys.Cast<object>().ToDictionary(
-                    k => StoredToApiInternal(type.GetGenericArguments()[0], k, customPropertyConfigurationProvider),
-                    k => StoredToApiInternal(type.GetGenericArguments()[1], dictionary[k], customPropertyConfigurationProvider)
+                    k => StoredToApiInternal(k, customPropertyConfigurationProvider),
+                    k => StoredToApiInternal(dictionary[k], customPropertyConfigurationProvider)
                 );
 
+            var type = o.GetType();
             if (!PropertyHelpers.IsSimpleType(type) && type != typeof(byte[]) && o is IEnumerable enumerable)
-                return enumerable.Cast<object>().Select(
-                    x => StoredToApiInternal(
-                        type.HasElementType ? type.GetElementType() : type.GetGenericArguments()[0],
-                        x, customPropertyConfigurationProvider
-                    )
-                ).ToArray();
+                return enumerable.Cast<object>().Select(x => StoredToApiInternal(x, customPropertyConfigurationProvider)).ToArray();
 
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             if (PropertyHelpers.IsSimpleType(type) || type == typeof(byte[]) || !properties.Any())
@@ -61,18 +57,16 @@ namespace SkbKontur.DbViewer.Helpers
                 var propertyValue = propertyInfo.GetValue(o);
                 var customPropertyConfiguration = customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
                 var resolvedProperty = customPropertyConfiguration != null ? customPropertyConfiguration.StoredToApi(propertyValue) : propertyValue;
-                var resolvedType = resolvedProperty?.GetType() ?? customPropertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
-                result[propertyInfo.Name] = StoredToApiDeep(resolvedType, resolvedProperty, customPropertyConfigurationProvider);
+                result[propertyInfo.Name] = StoredToApiDeep(resolvedProperty, customPropertyConfigurationProvider);
             }
 
             return result;
         }
 
-        private static object StoredToApiInternal(Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        private static object StoredToApiInternal(object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
         {
-            var objectConfigurator = customPropertyConfigurationProvider?.TryGetConfiguration(type);
+            var objectConfigurator = o == null ? null : customPropertyConfigurationProvider?.TryGetConfiguration(o.GetType());
             return StoredToApiDeep(
-                objectConfigurator?.ResolvedType ?? type,
                 objectConfigurator != null ? objectConfigurator.StoredToApi(o) : o,
                 customPropertyConfigurationProvider
             );

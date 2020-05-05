@@ -37,7 +37,13 @@ namespace SkbKontur.DbViewer.Helpers
             if (type == typeof(decimal))
                 return decimal.Parse(value, CultureInfo.InvariantCulture);
             if (type == typeof(DateTimeOffset))
-                return DateTimeOffset.Parse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+            {
+                var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK";
+                if (long.TryParse(value, out var ticks))
+                    return new DateTimeOffset(ticks, TimeSpan.Zero);
+                return DateTimeOffset.ParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+            }
+
             if (type == typeof(DateTime))
             {
                 var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK";

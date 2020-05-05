@@ -24,11 +24,11 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/search")]
-        public Task<SearchResult> SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.SearchObjects(objectIdentifier, query);
+        public Task<SearchResult> SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.SearchObjects(objectIdentifier, query, true);
 
         [HttpPost]
         [Route("{objectIdentifier}/download")]
-        public Task<DownloadResult> DownloadObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.DownloadObjects(objectIdentifier, query);
+        public Task<DownloadResult> DownloadObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.DownloadObjects(objectIdentifier, query, true);
 
         [HttpPost]
         [Route("{objectIdentifier}/details")]
@@ -36,11 +36,11 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpDelete]
         [Route("{objectIdentifier}/delete")]
-        public Task DeleteObject(string objectIdentifier, [FromBody] ObjectReadRequest query) => impl.DeleteObject(objectIdentifier, query);
+        public Task DeleteObject(string objectIdentifier, [FromBody] ObjectReadRequest query) => impl.DeleteObject(objectIdentifier, query, true);
 
         [HttpPost]
         [Route("{objectIdentifier}/update")]
-        public Task UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query);
+        public Task UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query, true);
 
         private readonly DbViewerApi impl;
     }
