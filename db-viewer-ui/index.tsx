@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDom from "react-dom";
 import { hot } from "react-hot-loader";
-import { Switch, Redirect } from "react-router";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 
 import { DbViewerApplication, DbViewerApi, NullCustomRenderer } from "./src";
 
@@ -24,7 +24,7 @@ function AdminToolsEntryPoint() {
                             identifierKeywords={["Cql", "StorageElement"]}
                             customRenderer={new NullCustomRenderer()}
                             useErrorHandlingContainer
-                            allowEdit
+                            isSuperUser
                             dbViewerApi={dbViewerApi}
                             {...props}
                         />

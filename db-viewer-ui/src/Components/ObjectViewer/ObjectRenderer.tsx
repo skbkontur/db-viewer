@@ -3,7 +3,7 @@ import OkIcon from "@skbkontur/react-icons/Ok";
 import UndoIcon from "@skbkontur/react-icons/Undo";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
-import _ from "lodash";
+import get from "lodash/get";
 import React from "react";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
@@ -12,7 +12,7 @@ import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { renderForEdit, renderForDetails } from "./ObjectItemRender";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
-    return _.get(target, path.join("."));
+    return get(target, path.join("."));
 }
 
 interface ObjectRendererProps {

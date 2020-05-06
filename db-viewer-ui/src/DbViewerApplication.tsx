@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, RouteComponentProps, Switch, withRouter } from "react-router-dom";
+import { Route, RouteComponentProps, Switch, withRouter } from "react-router";
 
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
 import { ObjectTableContainer } from "./Containers/ObjectTableContainer";
@@ -12,13 +12,13 @@ interface DbViewerApplicationProps extends RouteComponentProps {
     customRenderer: ICustomRenderer;
     identifierKeywords: string[];
     useErrorHandlingContainer: boolean;
-    allowEdit: boolean;
+    isSuperUser: boolean;
 }
 
 function DbViewerApplicationInternal({
     dbViewerApi,
     customRenderer,
-    allowEdit,
+    isSuperUser,
     identifierKeywords,
     useErrorHandlingContainer,
     match,
@@ -42,7 +42,7 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/:objectId`}
                 render={({ location, match: { params } }) => (
                     <ObjectTableContainer
-                        allowEdit={allowEdit}
+                        isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         useErrorHandlingContainer={useErrorHandlingContainer}
@@ -56,7 +56,7 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/:objectId/details`}
                 render={({ location, match: { params } }) => (
                     <ObjectDetailsContainer
-                        allowEdit={allowEdit}
+                        isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         useErrorHandlingContainer={useErrorHandlingContainer}

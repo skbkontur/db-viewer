@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using SkbKontur.DbViewer.Cql.Utils.ObjectsParser;
 using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Cql.Utils
@@ -51,7 +50,7 @@ namespace SkbKontur.DbViewer.Cql.Utils
 
         private static ConstantExpression CreateValueExpression(string stringValue, Type targetType)
         {
-            var parsedValue = ObjectParser.Parse(targetType, stringValue);
+            var parsedValue = CqlObjectParser.Parse(targetType, stringValue);
             var valueExpression = Expression.Constant(parsedValue, targetType);
             return valueExpression;
         }

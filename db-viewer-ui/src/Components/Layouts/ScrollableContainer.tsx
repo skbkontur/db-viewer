@@ -1,5 +1,4 @@
-import classNames from "classnames";
-import _ from "lodash";
+import debounce from "lodash/debounce";
 import React from "react";
 
 import styles from "./ScrollableContainer.less";
@@ -28,7 +27,7 @@ export class ScrollableContainer extends React.Component<ScrollableContainerProp
     public scrollbarChild: HTMLDivElement | null = null;
     public scrollbar: HTMLDivElement | null = null;
 
-    public setScrollingSource = _.debounce(x => {
+    public setScrollingSource = debounce(x => {
         this.scrollingSource = x;
     }, 50);
 
@@ -152,8 +151,8 @@ export class ScrollableContainer extends React.Component<ScrollableContainerProp
     public render(): JSX.Element {
         const { children, className, style, scrollStyle = {} } = this.props;
         return (
-            <div ref={el => (this.root = el)} className={classNames(styles.container, className)} style={style}>
-                <div className={classNames(styles.root, className)} style={style} ref={el => (this.container = el)}>
+            <div ref={el => (this.root = el)} className={`${styles.container} ${className}`} style={style}>
+                <div className={`${styles.root} ${className}`} style={style} ref={el => (this.container = el)}>
                     {children}
                     {
                         <div

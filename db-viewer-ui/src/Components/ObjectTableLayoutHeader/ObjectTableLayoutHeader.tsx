@@ -7,7 +7,7 @@ import Button from "@skbkontur/react-ui/Button";
 import Link from "@skbkontur/react-ui/Link";
 import Modal from "@skbkontur/react-ui/Modal";
 import Tooltip from "@skbkontur/react-ui/Tooltip";
-import _ from "lodash";
+import difference from "lodash/difference";
 import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
@@ -78,7 +78,7 @@ export class ObjectTableLayoutHeader extends React.Component<
                 data-tid="ColumnSelector"
                 fieldDefinitions={fields}
                 hiddenFields={hiddenColumns}
-                onShowField={fieldNames => onChange({ hiddenColumns: _.difference(hiddenColumns, fieldNames) })}
+                onShowField={fieldNames => onChange({ hiddenColumns: difference(hiddenColumns, fieldNames) })}
                 onHideField={fieldNames => onChange({ hiddenColumns: [...hiddenColumns, ...fieldNames] })}
             />
         );

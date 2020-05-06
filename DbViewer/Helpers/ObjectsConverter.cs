@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.DataTypes;
@@ -10,49 +11,62 @@ namespace SkbKontur.DbViewer.Helpers
 {
     public static class ObjectsConverter
     {
-        public static object StoredToApi(TypeMetaInformation typeMeta, Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        public static object StoredToApi(Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        {
+            if (o == null)
+                return null;
+
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            if (PropertyHelpers.IsSimpleType(type) || type == typeof(byte[]) || !properties.Any())
+                return o;
+
+            var result = new Dictionary<string, object?>();
+            foreach (var propertyInfo in properties)
+            {
+                var propertyValue = propertyInfo.GetValue(o);
+                var customPropertyConfiguration = customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
+                var resolvedProperty = customPropertyConfiguration != null ? customPropertyConfiguration.StoredToApi(propertyValue) : propertyValue;
+                result[propertyInfo.Name] = resolvedProperty;
+            }
+
+            return result;
+        }
+
+        public static object StoredToApiDeep(object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
         {
             if (o == null)
                 return null;
 
             if (o is IDictionary dictionary)
                 return dictionary.Keys.Cast<object>().ToDictionary(
-                    k => StoredToApiInternal(typeMeta.GenericTypeArguments[0], type.GetGenericArguments()[0], k, customPropertyConfigurationProvider),
-                    k => StoredToApiInternal(typeMeta.GenericTypeArguments[1], type.GetGenericArguments()[1], dictionary[k], customPropertyConfigurationProvider)
+                    k => StoredToApiInternal(k, customPropertyConfigurationProvider),
+                    k => StoredToApiInternal(dictionary[k], customPropertyConfigurationProvider)
                 );
 
+            var type = o.GetType();
             if (!PropertyHelpers.IsSimpleType(type) && type != typeof(byte[]) && o is IEnumerable enumerable)
-                return enumerable.Cast<object>().Select(
-                    x => StoredToApiInternal(
-                        typeMeta.GenericTypeArguments[0],
-                        type.HasElementType ? type.GetElementType() : type.GetGenericArguments()[0],
-                        x, customPropertyConfigurationProvider
-                    )
-                ).ToArray();
+                return enumerable.Cast<object>().Select(x => StoredToApiInternal(x, customPropertyConfigurationProvider)).ToArray();
 
-            if (!typeMeta.Properties.Any())
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            if (PropertyHelpers.IsSimpleType(type) || type == typeof(byte[]) || !properties.Any())
                 return o;
 
             var result = new Dictionary<string, object>();
-            foreach (var property in typeMeta.Properties)
+            foreach (var propertyInfo in properties)
             {
-                var propertyInfo = type.GetProperty(property.Name);
                 var propertyValue = propertyInfo.GetValue(o);
                 var customPropertyConfiguration = customPropertyConfigurationProvider?.TryGetConfiguration(o, propertyInfo);
                 var resolvedProperty = customPropertyConfiguration != null ? customPropertyConfiguration.StoredToApi(propertyValue) : propertyValue;
-                var resolvedType = resolvedProperty?.GetType() ?? customPropertyConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
-                result[property.Name] = StoredToApi(property.Type, resolvedType, resolvedProperty, customPropertyConfigurationProvider);
+                result[propertyInfo.Name] = StoredToApiDeep(resolvedProperty, customPropertyConfigurationProvider);
             }
 
             return result;
         }
 
-        private static object StoredToApiInternal(TypeMetaInformation typeMeta, Type type, object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
+        private static object StoredToApiInternal(object? o, ICustomPropertyConfigurationProvider? customPropertyConfigurationProvider)
         {
-            var objectConfigurator = customPropertyConfigurationProvider?.TryGetConfiguration(type);
-            return StoredToApi(
-                typeMeta,
-                objectConfigurator?.ResolvedType ?? type,
+            var objectConfigurator = o == null ? null : customPropertyConfigurationProvider?.TryGetConfiguration(o.GetType());
+            return StoredToApiDeep(
                 objectConfigurator != null ? objectConfigurator.StoredToApi(o) : o,
                 customPropertyConfigurationProvider
             );

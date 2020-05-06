@@ -43,10 +43,8 @@
   "dependencies": {
     "@skbkontur/react-stack-layout": "^1.0.3",
     "@skbkontur/react-ui-validations": "^1.1.4",
-    "classnames": "^2.2.6",
     "copy-to-clipboard": "^3.3.1",
     "decimal.js": "^10.2.0",
-    "history": "^4.10.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "qs": "^6.9.3",
@@ -67,7 +65,6 @@
     "@storybook/addons": "^5.3.18",
     "@storybook/react": "^5.3.18",
     "@types/chai": "^4.2.11",
-    "@types/classnames": "^2.2.10",
     "@types/lodash": "^4.14.150",
     "@types/mocha": "^7.0.2",
     "@types/qs": "^6.9.1",

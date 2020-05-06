@@ -58,7 +58,7 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
             ObjectPropertyEditor.SetValue(obj, new[] {"DocumentPrice"}, "100", provider);
             obj.DocumentPrice.Should().Be(100m);
 
-            ObjectPropertyEditor.SetValue(obj, new[] {"DocumentSendTime"}, "2014-12-12", provider);
+            ObjectPropertyEditor.SetValue(obj, new[] {"DocumentSendTime"}, "2014-12-12T00:00:00.000Z", provider);
             obj.DocumentSendTime.Should().Be(new DateTimeOffset(2014, 12, 12, 0, 0, 0, TimeSpan.Zero));
 
             ObjectPropertyEditor.SetValue(obj, new[] {"DocumentTags", "0"}, "10", provider);

@@ -1,4 +1,4 @@
-import _ from "lodash";
+import flatten from "lodash/flatten";
 
 import { Condition } from "../Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformation";
@@ -51,7 +51,7 @@ export class PropertyMetaInformationUtils {
                 });
             }
         });
-        return _.flatten(props);
+        return flatten(props);
     }
 
     public static getPropertyTypeByPath(type: TypeMetaInformation, path: string[]): PropertyMetaInformation {

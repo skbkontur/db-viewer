@@ -2,8 +2,9 @@ import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Link from "@skbkontur/react-ui/Link";
-import classNames from "classnames";
-import _ from "lodash";
+import isArray from "lodash/isArray";
+import isEqual from "lodash/isEqual";
+import isPlainObject from "lodash/isPlainObject";
 import React from "react";
 
 import styles from "./Accordion.less";
@@ -57,10 +58,10 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         nextState: Readonly<TaskAccordionState>,
         nextContext: any
     ): boolean {
-        const isValueChanged = !_.isEqual(this.props.value, nextProps.value);
+        const isValueChanged = !isEqual(this.props.value, nextProps.value);
         const isForceCollapsedChanged = this.props._internalForceCollapsed !== nextProps._internalForceCollapsed;
         const isDefaultCollapsedChanged = this.props.defaultCollapsed !== nextProps.defaultCollapsed;
-        const isStateChanged = !_.isEqual(this.state, nextState);
+        const isStateChanged = !isEqual(this.state, nextState);
         return isValueChanged || isForceCollapsedChanged || isDefaultCollapsedChanged || isStateChanged;
     }
 
@@ -89,10 +90,10 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         const isToggleLinkVisible = showToggleAll && this.isThereItemsToToggleAtFirstLevel();
         const showTitleBlock = title != null || isToggleLinkVisible;
         return (
-            <div className={classNames({ [styles.valueWrapper]: title != null })}>
+            <div className={`${title && styles.valueWrapper}`}>
                 {showTitleBlock && (
                     <RowStack
-                        className={classNames(styles.titleBlock, { [styles.hasTitle]: title })}
+                        className={`${styles.titleBlock} ${title && styles.hasTitle})`}
                         inline
                         verticalAlign="baseline">
                         {title && (
@@ -141,7 +142,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
 
         return keys.map(key => {
             const valueToRender = value[key];
-            if (_.isPlainObject(valueToRender) || _.isArray(valueToRender)) {
+            if (isPlainObject(valueToRender) || isArray(valueToRender)) {
                 const newCustomRender: null | CustomRenderer =
                     customRender != null ? (target, path) => customRender(value, [key, ...path]) : null;
                 return (
@@ -196,5 +197,5 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     }
 
     private readonly isThereItemsToToggleAtFirstLevel = (): boolean =>
-        Object.values(this.props.value).some(item => _.isPlainObject(item) || _.isArray(item));
+        Object.values(this.props.value).some(item => isPlainObject(item) || isArray(item));
 }

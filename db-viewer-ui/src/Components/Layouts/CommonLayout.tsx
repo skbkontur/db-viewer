@@ -1,7 +1,6 @@
 import ArrowChevronLeftIcon from "@skbkontur/react-icons/ArrowChevronLeft";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import Loader from "@skbkontur/react-ui/Loader";
-import { LocationDescriptor } from "history";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -32,7 +31,7 @@ interface CommonLayoutGreyLineHeaderProps {
 
 interface CommonLayoutGoBackProps {
     children?: any;
-    to: LocationDescriptor;
+    to: string;
 }
 
 interface ContentLoaderProps {
