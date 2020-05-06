@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2.x - 2020.05.06
+## v0.2.83 - 2020.05.06
 - Fix for rendering object with Hashtable inside.
 - Use non-recursive convert method in `SearchObjects` for better performance with large objects.
 - Add `CountLimitForSuperUser` and `DownloadLimitForSuperUser` constants.
