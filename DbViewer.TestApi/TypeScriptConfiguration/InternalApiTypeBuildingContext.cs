@@ -35,28 +35,25 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
 
         public override void Initialize(ITypeGenerator typeGenerator)
         {
-            Declaration = GenerateInternalApiController(Unit, Type, (x, y) => typeGenerator.BuildAndImportType(Unit, x, y));
+            Declaration = GenerateInternalApiController(x => typeGenerator.BuildAndImportType(Unit, x));
             base.Initialize(typeGenerator);
         }
 
-        private TypeScriptTypeDeclaration GenerateInternalApiController(TypeScriptUnit targetUnit, ITypeInfo type,
-                                                                        Func<IAttributeProvider, ITypeInfo, TypeScriptType> buildAndImportType)
+        private TypeScriptTypeDeclaration GenerateInternalApiController(Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
             var baseApiClassName = "ApiBase";
-            var apiName = GetApiName(type);
+            var apiName = GetApiName(Type);
             var interfaceName = "I" + apiName;
             var typeScriptClassDefinition = new TypeScriptClassDefinition
                 {
                     BaseClass = new TypeScriptTypeReference(baseApiClassName),
                     ImplementedInterfaces = new TypeScriptType[] {new TypeScriptTypeReference(interfaceName)}
                 };
-            var methodInfos = type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
-                                  .Where(x => x.DeclaringType.Equals(type))
-                                  .ToArray();
+            var methodInfos = Type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).ToArray();
 
-            typeScriptClassDefinition.Members.AddRange(methodInfos.SelectMany(x => BuildApiImplMember(x, buildAndImportType)));
+            typeScriptClassDefinition.Members.AddRange(methodInfos.Select(x => BuildApiImplMember(x, buildAndImportType)));
 
-            targetUnit.Body.Add(new TypeScriptExportStatement
+            Unit.Body.Add(new TypeScriptExportStatement
                 {
                     Declaration = new TypeScriptClassDeclaration
                         {
@@ -65,19 +62,17 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                         }
                 });
             var definition = new TypeScriptInterfaceDefinition();
-            definition.Members.AddRange(methodInfos.SelectMany(x => BuildApiInterfaceMember(x, buildAndImportType)));
-            targetUnit.AddDefaultSymbolImport(baseApiClassName, $"../ApiBase/{baseApiClassName}");
+            definition.Members.AddRange(methodInfos.Select(x => BuildApiInterfaceMember(x, buildAndImportType)));
+            Unit.AddDefaultSymbolImport(baseApiClassName, $"../ApiBase/{baseApiClassName}");
 
-            var interfaceDeclaration = new TypeScriptInterfaceDeclaration
+            return new TypeScriptInterfaceDeclaration
                 {
                     Name = interfaceName,
                     Definition = definition
                 };
-
-            return interfaceDeclaration;
         }
 
-        private IEnumerable<TypeScriptClassMemberDefinition> BuildApiImplMember(IMethodInfo methodInfo, Func<IAttributeProvider, ITypeInfo, TypeScriptType> buildAndImportType)
+        private static TypeScriptClassMemberDefinition BuildApiImplMember(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
             var functionDefinition = new TypeScriptFunctionDefinition
                 {
@@ -89,25 +84,21 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                 methodInfo.GetParameters().Select(x => new TypeScriptArgumentDeclaration
                     {
                         Name = x.Name,
-                        Type = buildAndImportType(x, x.ParameterType)
+                        Type = buildAndImportType(x.ParameterType)
                     })
             );
-            yield return new TypeScriptClassMemberDefinition
+            return new TypeScriptClassMemberDefinition
                 {
                     Name = methodInfo.Name.ToLowerCamelCase(),
                     Definition = functionDefinition
                 };
         }
 
-        private static TypeScriptType GetMethodResult(IMethodInfo methodInfo, Func<IAttributeProvider, ITypeInfo, TypeScriptType> buildAndImportType)
+        private static TypeScriptType GetMethodResult(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
-            var realType = methodInfo.ReturnType;
-            if (realType.IsGenericType && realType.GetGenericTypeDefinition().Equals(TypeInfo.From(typeof(Task<>))))
-                realType = realType.GetGenericArguments()[0];
-            else if (realType.Equals(TypeInfo.From<Task>()))
-                realType = TypeInfo.From(typeof(void));
-
-            return new TypeScriptPromiseOfType(buildAndImportType(methodInfo, realType));
+            var returnType = buildAndImportType(methodInfo.ReturnType);
+            var trueType = returnType is TypeScriptPromiseOfType promise ? promise.TargetType : returnType;
+            return new TypeScriptPromiseOfType(trueType);
         }
 
         private static TypeScriptReturnStatement CreateCall(IMethodInfo methodInfo)
@@ -133,7 +124,7 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                     "get",
                     new[]
                         {
-                            new TypeScriptTemplateStringLiteral(AppendRoutePrefix(routeTemplate).Replace("{", "${")),
+                            new TypeScriptTemplateStringLiteral(routeTemplate.Replace("{", "${")),
                             GenerateConstructGetParams(methodInfo.GetParameters().ToArray(), routeTemplate)
                         }.Where(x => x != null).ToArray()
                 ));
@@ -146,14 +137,9 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                 new TypeScriptMethodCallExpression(
                     new TypeScriptThisReference(),
                     methodName,
-                    new TypeScriptTemplateStringLiteral(AppendRoutePrefix(routeTemplate).Replace("{", "${")),
+                    new TypeScriptTemplateStringLiteral(routeTemplate.Replace("{", "${")),
                     GenerateConstructBody(methodInfo.GetParameters().ToArray(), routeTemplate)
                 ));
-        }
-
-        private static string AppendRoutePrefix(string routeTemplate)
-        {
-            return routeTemplate;
         }
 
         private static TypeScriptExpression GenerateConstructBody(IParameterInfo[] parameters, string routeTemplate)
@@ -214,17 +200,17 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
             return result;
         }
 
-        private static IEnumerable<TypeScriptInterfaceFunctionMember> BuildApiInterfaceMember(IMethodInfo methodInfo, Func<IAttributeProvider, ITypeInfo, TypeScriptType> buildAndImportType)
+        private static TypeScriptInterfaceFunctionMember BuildApiInterfaceMember(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
             var result = new TypeScriptInterfaceFunctionMember(methodInfo.Name.ToLowerCamelCase(), GetMethodResult(methodInfo, buildAndImportType));
             result.Arguments.AddRange(
                 methodInfo.GetParameters().Select(x => new TypeScriptArgumentDeclaration
                     {
                         Name = x.Name,
-                        Type = buildAndImportType(x, x.ParameterType)
+                        Type = buildAndImportType(x.ParameterType)
                     })
             );
-            yield return result;
+            return result;
         }
     }
 }
