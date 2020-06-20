@@ -51,11 +51,6 @@ module.exports = function (env) {
         resolve: {
             modules: ["node_modules"],
             extensions: [".js", ".jsx", ".ts", ".tsx"],
-            alias: {
-                Components: path.join(__dirname, "src/Components"),
-                Containers: path.join(__dirname, "src/Containers"),
-                Domain: path.join(__dirname, "src/Domain"),
-            },
         },
         plugins: [
             new webpack.DefinePlugin({

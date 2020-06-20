@@ -38,10 +38,6 @@ module.exports = {
         ];
 
         config.resolve.extensions = [".js", ".jsx", ".ts", ".tsx"];
-        config.resolve.alias = config.resolve.alias || {};
-        config.resolve.alias.Components = path.join(__dirname, "../src/Components");
-        config.resolve.alias.Containers = path.join(__dirname, "../src/Containers");
-        config.resolve.alias.Domain = path.join(__dirname, "../src/Domain");
 
         return config;
     },

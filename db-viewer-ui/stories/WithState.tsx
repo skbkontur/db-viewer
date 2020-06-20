@@ -21,7 +21,7 @@ export class WithState<S> extends React.Component<WithStateProps<S>, WithStateSt
         return this.props.children(
             this.state.state,
             (x: Partial<S>) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 this.setState({ state: { ...this.state.state, ...x } });
             },

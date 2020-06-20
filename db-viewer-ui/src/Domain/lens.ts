@@ -9,7 +9,7 @@ export interface Lens<T, TResult> {
 }
 
 export function pathLens<TTarget extends {}, TProp>(propertyPicker: (target: TTarget) => TProp): Lens<TTarget, TProp> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const fieldsString = /return [^\{\}\(\)]*?\.([^\{\}\(\)]*?)\s*[;\}]/.exec(propertyPicker.toString())[1];
     return {

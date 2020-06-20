@@ -22,7 +22,7 @@
     "experimentalDecorators": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "lib": ["es2015", "dom", "esnext", "dom.iterable"],
+    "lib": ["es2020", "dom"],
     "paths": {
       "*": ["typings/*"]
     }
