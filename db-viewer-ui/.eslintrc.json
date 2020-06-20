@@ -19,6 +19,16 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "types": {
+          "object": false,
+          "{}": false
+        },
+        "extendDefaults": true
+      }
+    ],
     "@typescript-eslint/interface-name-prefix": "off",
     "import/no-namespace": "error",
     "import/newline-after-import": "error",
@@ -26,23 +36,6 @@
       "error",
       {
         "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
-        "pathGroups": [
-          {
-            "pattern": "Components/**",
-            "group": "internal",
-            "position": "after"
-          },
-          {
-            "pattern": "Containers/**",
-            "group": "internal",
-            "position": "after"
-          },
-          {
-            "pattern": "Domain/**",
-            "group": "internal",
-            "position": "after"
-          }
-        ],
         "alphabetize": { "order":  "asc" },
         "newlines-between": "always"
       }
