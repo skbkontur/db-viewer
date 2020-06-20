@@ -50,7 +50,7 @@ const indexed: PropertyMetaInformation = {
 };
 
 storiesOf("ObjectTable", module)
-    .addDecorator(StoryRouter())
+    .addDecorator(StoryRouter() as any)
     .add("Default", () => (
         <ObjectTable
             items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}

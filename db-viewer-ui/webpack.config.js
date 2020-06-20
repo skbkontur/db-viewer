@@ -5,12 +5,9 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = function (env) {
-    const NODE_ENV = process.env.NODE_ENV;
-    const API_MODE = env.api || "real";
-
     return {
         context: __dirname,
-        entry: { root: "./index" },
+        entry: { root: require.resolve("./index.tsx") },
         output: {
             path: path.resolve(__dirname, "dist"),
             publicPath: "/dist/",
@@ -20,31 +17,27 @@ module.exports = function (env) {
             rules: [
                 {
                     test: /\.[jt]sx?$/,
-                    use: "babel-loader",
+                    use: require.resolve("babel-loader"),
                     exclude: /node_modules/,
                 },
                 {
                     test: /\.(c|le)ss$/,
                     use: [
-                        "style-loader",
+                        require.resolve("style-loader"),
                         {
-                            loader: "css-loader",
+                            loader: require.resolve("css-loader"),
                             options: {
                                 modules: {
                                     localIdentName: "[name]-[local]-[hash:base64:4]",
                                 },
                             },
                         },
-                        "less-loader",
+                        require.resolve("less-loader"),
                     ],
                 },
                 {
-                    test: /\.(woff|woff2|eot|ttf)$/,
-                    use: "file-loader",
-                },
-                {
-                    test: /\.(svg|gif|png)$/,
-                    use: "url-loader",
+                    test: /\.(woff|woff2|eot|ttf|svg|gif|png)$/,
+                    loader: require.resolve("url-loader"),
                 },
             ],
         },
@@ -54,8 +47,8 @@ module.exports = function (env) {
         },
         plugins: [
             new webpack.DefinePlugin({
-                "process.env.API": JSON.stringify(API_MODE),
-                "process.env.NODE_ENV": JSON.stringify(NODE_ENV),
+                "process.env.API": JSON.stringify(env.api || "real"),
+                "process.env.NODE_ENV": JSON.stringify("development"),
             }),
             new webpack.NamedModulesPlugin(),
         ],

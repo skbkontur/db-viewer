@@ -34,7 +34,7 @@ function SpaceFiller(props: { width?: number | string; height?: number | string 
     );
 }
 storiesOf("Layouts", module)
-    .addDecorator(StoryRouter())
+    .addDecorator(StoryRouter() as any)
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>

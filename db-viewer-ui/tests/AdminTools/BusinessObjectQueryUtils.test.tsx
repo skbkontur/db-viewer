@@ -1,5 +1,4 @@
 import { expect } from "chai";
-import { suite, test } from "mocha-typescript";
 
 import { Condition } from "../../src/Domain/Api/DataTypes/Condition";
 import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
@@ -45,10 +44,8 @@ class ObjectSearchQueryUtils {
     }
 }
 
-@suite
-export class ObjectSearchQueryUtilsTest {
-    @test
-    public "должен парсить сортировку в простых случаях"() {
+describe("ObjectSearchQueryUtilsTest", () => {
+    it("должен парсить сортировку в простых случаях", () => {
         expect(ObjectSearchQueryUtils.parse("?sort=path.to.object:asc")).to.eql({
             conditions: null,
             count: null,
@@ -123,10 +120,8 @@ export class ObjectSearchQueryUtilsTest {
             hiddenColumns: null,
             sort: null,
         });
-    }
-
-    @test
-    public "должен переводить в строку"() {
+    });
+    it("должен переводить в строку", () => {
         expect(
             ObjectSearchQueryUtils.stringify({
                 sorts: [
@@ -155,10 +150,8 @@ export class ObjectSearchQueryUtilsTest {
                 conditions: null,
             })
         ).to.eql("");
-    }
-
-    @test
-    public "должен парсить массив значений"() {
+    });
+    it("должен парсить массив значений", () => {
         expect(ObjectSearchQueryUtils.parse("?Box.Id=%3E123")).to.eql({
             conditions: [
                 {
@@ -245,10 +238,8 @@ export class ObjectSearchQueryUtilsTest {
                 },
             ],
         });
-    }
-
-    @test
-    public "должен переводить в строку объект"() {
+    });
+    it("должен переводить в строку объект", () => {
         expect(
             ObjectSearchQueryUtils.stringify({
                 count: 100,
@@ -291,5 +282,5 @@ export class ObjectSearchQueryUtilsTest {
                 ],
             })
         ).to.eql("?count=20&offset=1580&Box.Gln=%3C10&LastModificationDateTime=%3C%3D13263165");
-    }
-}
+    });
+});
