@@ -5,13 +5,13 @@ const babelConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../.babe
 
 module.exports = {
     stories: ["../stories/**/*.stories.tsx"],
-    addons: ["@storybook/addon-actions/register"],
+    addons: [require.resolve("@storybook/addon-actions/register")],
     webpackFinal: config => {
         config.module.rules = [
             {
                 test: /\.[jt]sx?$/,
                 use: {
-                    loader: "babel-loader",
+                    loader: require.resolve("babel-loader"),
                     options: babelConfig,
                 },
                 exclude: /node_modules/,
@@ -19,21 +19,21 @@ module.exports = {
             {
                 test: /\.(c|le)ss$/,
                 loaders: [
-                    "style-loader",
+                    require.resolve("style-loader"),
                     {
-                        loader: "css-loader",
+                        loader: require.resolve("css-loader"),
                         options: {
                             modules: {
                                 localIdentName: "[name]-[local]-[hash:base64:4]",
                             },
                         },
                     },
-                    "less-loader",
+                    require.resolve("less-loader"),
                 ],
             },
             {
                 test: /\.(woff|woff2|eot|ttf|svg|gif|png)$/,
-                loader: "url-loader",
+                loader: require.resolve("url-loader"),
             },
         ];
 

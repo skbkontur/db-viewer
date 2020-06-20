@@ -19,7 +19,7 @@ const schema: SchemaDescription = {
 };
 
 storiesOf("ObjectTypes", module)
-    .addDecorator(StoryRouter())
+    .addDecorator(StoryRouter() as any)
     .add("Default", () => (
         <ObjectTypes
             filter=""
