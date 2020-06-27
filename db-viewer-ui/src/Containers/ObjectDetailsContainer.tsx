@@ -96,7 +96,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         const query = qs.parse(this.props.objectQuery.replace(/^\?/, ""));
         return Object.keys(query).map(x => ({
             path: x,
-            value: query[x],
+            value: String(query[x]),
             operator: ObjectFieldFilterOperator.Equals,
         }));
     }
