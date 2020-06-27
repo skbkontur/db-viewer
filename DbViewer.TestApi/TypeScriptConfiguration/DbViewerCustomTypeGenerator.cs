@@ -27,10 +27,7 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
         public ITypeBuildingContext ResolveType(string initialUnitPath, ITypeGenerator typeGenerator, ITypeInfo type, ITypeScriptUnitFactory unitFactory)
         {
             if (InternalApiTypeBuildingContext.Accept(type))
-            {
-                var targetUnit = unitFactory.GetOrCreateTypeUnit(initialUnitPath);
-                return new InternalApiTypeBuildingContext(targetUnit, type);
-            }
+                return new InternalApiTypeBuildingContext(unitFactory.GetOrCreateTypeUnit(initialUnitPath), type);
 
             return null;
         }
