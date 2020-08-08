@@ -19,6 +19,12 @@
       "commands": [
         "jb"
       ]
+    },
+    "dotnet-ef": {
+      "version": "3.1.6",
+      "commands": [
+        "dotnet-ef"
+      ]
     }
   }
 }

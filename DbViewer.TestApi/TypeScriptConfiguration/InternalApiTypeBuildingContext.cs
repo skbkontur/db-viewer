@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Web.Http;
+
+using Microsoft.AspNetCore.Mvc;
 
 using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.TypeScript.ContractGenerator;

@@ -11,6 +11,7 @@ using GroBuf.DataMembersExtracters;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.Helpers;
+using SkbKontur.DbViewer.TestApi;
 using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.TestApi.Impl;
@@ -109,7 +110,7 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
                         })
                 };
 
-            ObjectPropertyEditor.SetValue(data, new[] {"Serialized", "Content", "String"}, "def", new SampleCustomPropertyConfigurationProvider());
+            ObjectPropertyEditor.SetValue(data, new[] {"Serialized", "Content", "String"}, "def", new CustomPropertyConfigurationProvider());
             serializer.Deserialize<ClassForSerialization>(data.Serialized).Content.String.Should().Be("def");
         }
     }

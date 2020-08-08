@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.TestApi", "DbViewe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.Cql", "DbViewer.Cql\DbViewer.Cql.csproj", "{13DDD37F-3881-4BDE-AC38-B2A0F2F71912}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbViewer.EntityFramework", "DbViewer.EntityFramework\DbViewer.EntityFramework.csproj", "{CEA67715-3AD0-43B6-A15D-D910BDA8E1EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{13DDD37F-3881-4BDE-AC38-B2A0F2F71912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13DDD37F-3881-4BDE-AC38-B2A0F2F71912}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13DDD37F-3881-4BDE-AC38-B2A0F2F71912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA67715-3AD0-43B6-A15D-D910BDA8E1EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA67715-3AD0-43B6-A15D-D910BDA8E1EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA67715-3AD0-43B6-A15D-D910BDA8E1EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA67715-3AD0-43B6-A15D-D910BDA8E1EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

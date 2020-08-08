@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Cassandra;
 using Cassandra.Mapping.Attributes;
 
 using SkbKontur.DbViewer.Configuration;
@@ -32,27 +32,23 @@ namespace SkbKontur.DbViewer.Cql
                 result.IsSearchable = true;
                 result.IsIdentity = true;
                 result.IsSortable = true;
-                result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType)
-                                              ? availableFilters[propertyInfo.PropertyType]
-                                              : new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual};
+                result.AvailableFilters = specialTypes.Contains(propertyInfo.PropertyType)
+                                              ? new[] {ObjectFieldFilterOperator.Equals}
+                                              : defaultFilters;
             }
 
             return result;
         }
 
-        private static readonly Dictionary<Type, ObjectFieldFilterOperator[]> availableFilters = new Dictionary<Type, ObjectFieldFilterOperator[]>
+        private static readonly Type[] specialTypes = {typeof(TimeUuid), typeof(bool)};
+
+        private static readonly ObjectFieldFilterOperator[] defaultFilters =
             {
-                {
-                    typeof(string), new[]
-                        {
-                            ObjectFieldFilterOperator.LessThan,
-                            ObjectFieldFilterOperator.Equals,
-                            ObjectFieldFilterOperator.GreaterThan,
-                            ObjectFieldFilterOperator.DoesNotEqual,
-                            ObjectFieldFilterOperator.LessThanOrEquals,
-                            ObjectFieldFilterOperator.GreaterThanOrEquals,
-                        }
-                }
+                ObjectFieldFilterOperator.LessThan,
+                ObjectFieldFilterOperator.Equals,
+                ObjectFieldFilterOperator.GreaterThan,
+                ObjectFieldFilterOperator.LessThanOrEquals,
+                ObjectFieldFilterOperator.GreaterThanOrEquals,
             };
     }
 }

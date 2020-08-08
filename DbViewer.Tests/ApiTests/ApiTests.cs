@@ -59,7 +59,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                             },
                         PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
                         ConnectorsFactory = new SampleIdbConnectorFactory(),
-                        CustomPropertyConfigurationProvider = new SampleCustomPropertyConfigurationProvider(),
+                        CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider(),
                     }
             );
             var testClassWithCustomPrimitivesShape = GetTestClassWithCustomPrimitivesShape();

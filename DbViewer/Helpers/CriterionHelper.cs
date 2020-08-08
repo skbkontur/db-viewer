@@ -5,18 +5,28 @@ using System.Linq.Expressions;
 
 using SkbKontur.DbViewer.DataTypes;
 
-namespace SkbKontur.DbViewer.Cql.Utils
+namespace SkbKontur.DbViewer.Helpers
 {
     public static class CriterionHelper
     {
-        public static LambdaExpression BuildSortExpression(Type type, string propertyPath)
+        public static Expression<Func<T, TProperty>> BuildSort<T, TProperty>(Sort sort)
+        {
+            return (Expression<Func<T, TProperty>>)BuildSortExpression(typeof(T), sort.Path);
+        }
+
+        public static Expression<Func<T, bool>> BuildPredicate<T>(Condition[] filters, Func<Type, string, object?> parse = null)
+        {
+            return (Expression<Func<T, bool>>)BuildPredicate(typeof(T), filters, parse ?? ObjectParser.Parse);
+        }
+
+        private static LambdaExpression BuildSortExpression(Type type, string propertyPath)
         {
             var parameterExpression = Expression.Parameter(type);
             var memberExpression = CreateMemberAccessExpression(propertyPath, parameterExpression);
             return Expression.Lambda(memberExpression, parameterExpression);
         }
 
-        public static LambdaExpression BuildPredicate(Type type, Condition[] filters)
+        private static LambdaExpression BuildPredicate(Type type, Condition[] filters, Func<Type, string, object?> parse)
         {
             var parameter = Expression.Parameter(type);
 
@@ -27,7 +37,7 @@ namespace SkbKontur.DbViewer.Cql.Utils
                                    .Select(filter =>
                                        {
                                            var memberExpression = CreateMemberAccessExpression(filter.Path, parameter);
-                                           var valueExpression = CreateValueExpression(filter.Value, memberExpression.Type);
+                                           var valueExpression = CreateValueExpression(filter.Value, memberExpression.Type, parse);
                                            var expression = CreateFilterExpression(memberExpression.Type, filter.Operator, memberExpression, valueExpression);
                                            if (Nullable.GetUnderlyingType(memberExpression.Type)?.IsEnum == true)
                                            {
@@ -48,9 +58,9 @@ namespace SkbKontur.DbViewer.Cql.Utils
             return path.Split('.').Aggregate(root, Expression.Property);
         }
 
-        private static ConstantExpression CreateValueExpression(string stringValue, Type targetType)
+        private static ConstantExpression CreateValueExpression(string stringValue, Type targetType, Func<Type, string, object?> parse)
         {
-            var parsedValue = CqlObjectParser.Parse(targetType, stringValue);
+            var parsedValue = parse(targetType, stringValue);
             var valueExpression = Expression.Constant(parsedValue, targetType);
             return valueExpression;
         }
