@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
@@ -25,20 +26,18 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
 
         public Task<ObjectDetails> Read(string objectIdentifier, Condition[] filters)
         {
-            return Request<ObjectDetails>(x => x.PostAsJsonAsync($"{objectIdentifier}/details", new ObjectReadRequest
-                {
-                    Conditions = filters,
-                }));
+            var requestContent = new ObjectReadRequest {Conditions = filters};
+            return Request<ObjectDetails>(x => x.PostAsync($"{objectIdentifier}/details", new StringContent(JsonConvert.SerializeObject(requestContent), Encoding.UTF8, "application/json")));
         }
 
         public Task<object> Write(string objectIdentifier, ObjectUpdateRequest query)
         {
-            return Request<object>(x => x.PostAsJsonAsync($"{objectIdentifier}/update", query));
+            return Request<object>(x => x.PostAsync($"{objectIdentifier}/update", new StringContent(JsonConvert.SerializeObject(query), Encoding.UTF8, "application/json")));
         }
 
         private async Task<T> Request<T>(Func<HttpClient, Task<HttpResponseMessage>> func)
         {
-            var baseUri = new Uri("http://localhost:7777/db-viewer/");
+            var baseUri = new Uri("https://localhost:5001/db-viewer/");
             using (var handler = new HttpClientHandler())
             using (var client = new HttpClient(handler) {BaseAddress = baseUri})
             {

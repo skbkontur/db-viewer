@@ -11,7 +11,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
     {
         public CqlPagedSchemaConfiguration()
         {
-            ConnectorsFactory = new CqlPagedDbConnectorFactory();
+            ConnectorsFactory = new CqlDbConnectorFactory(typeof(CqlPagedDbConnector<>));
             PropertyDescriptionBuilder = new CqlPropertyDescriptionBuilder();
         }
 

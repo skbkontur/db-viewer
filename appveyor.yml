@@ -53,6 +53,7 @@ build_script:
 
 before_test:
   - cmd: docker-compose up -d
+  - cmd: dotnet ef --project ./DbViewer.TestApi/DbViewer.TestApi.csproj database update
 
 test_script:
   - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --verbosity=WARN

@@ -20,7 +20,6 @@ using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Schemas;
 using SkbKontur.DbViewer.TestApi;
-using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
@@ -31,37 +30,12 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
         [OneTimeSetUp]
         public void SetUp()
         {
-            service = new WebApiService();
             client = new ApiClient();
             serializer = new Serializer(new AllPropertiesExtractor());
             fixture = new Fixture();
             fixture.Register(TimeUuid.NewId);
             fixture.Register((DateTime dt) => dt.ToLocalDate());
             fixture.Register((ChildClass c) => (BaseClass)c);
-            var schemaRegistry = new SchemaRegistry();
-            schemaRegistry.Add(
-                new Schema
-                    {
-                        Description = new SchemaDescription
-                            {
-                                SchemaName = "SampleSchema",
-                                DownloadLimit = 10_000,
-                                CountLimit = 100,
-                                AllowReadAll = false,
-                            },
-                        Types = new[]
-                            {
-                                new TypeDescription
-                                    {
-                                        Type = typeof(TestClass),
-                                        TypeIdentifier = "TestClass",
-                                    },
-                            },
-                        PropertyDescriptionBuilder = new SamplePropertyDescriptionBuilder(),
-                        ConnectorsFactory = new SampleIdbConnectorFactory(),
-                        CustomPropertyConfigurationProvider = new CustomPropertyConfigurationProvider(),
-                    }
-            );
             var testClassWithCustomPrimitivesShape = GetTestClassWithCustomPrimitivesShape();
             var testClassWithAllPrimitivesShape = new TypeMetaInformation
                 {
@@ -397,8 +371,6 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 }
                         },
                 };
-            SchemaRegistryProvider.SetSchemaRegistry(schemaRegistry);
-            service.Start(7777);
         }
 
         private static TypeMetaInformation GetTestClassWithCustomPrimitivesShape()
@@ -491,19 +463,6 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 },
                         }
                 };
-        }
-
-        [OneTimeTearDown]
-        public void TearDown()
-        {
-            try
-            {
-                service.Stop();
-            }
-            catch
-            {
-                // ignored
-            }
         }
 
         [Test]
@@ -749,7 +708,6 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             actual.Should().BeEquivalentTo(expected, x => x.RespectingRuntimeTypes());
         }
 
-        private WebApiService service;
         private ApiClient client;
         private TypeMetaInformation testClassShape;
         private ISerializer serializer;
