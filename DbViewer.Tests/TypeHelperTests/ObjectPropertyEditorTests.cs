@@ -12,9 +12,7 @@ using NUnit.Framework;
 
 using SkbKontur.DbViewer.Helpers;
 using SkbKontur.DbViewer.TestApi;
-using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Cql;
-using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
 namespace SkbKontur.DbViewer.Tests.TypeHelperTests

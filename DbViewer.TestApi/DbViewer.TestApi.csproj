@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IsPackable>false</IsPackable>
     <AssemblyName>SkbKontur.DbViewer.TestApi</AssemblyName>
     <RootNamespace>SkbKontur.DbViewer.TestApi</RootNamespace>

@@ -56,7 +56,7 @@ before_test:
   - cmd: dotnet ef --project ./DbViewer.TestApi/DbViewer.TestApi.csproj database update
 
 test_script:
-  - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --verbosity=WARN
+  - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
   - cmd: git diff --exit-code
   - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
   - cmd: yarn lint

@@ -33,10 +33,10 @@ namespace SkbKontur.DbViewer.TestApi.Cql
 
         public const string Keyspace = "dbviewer";
 
+        private ISession Session => session ??= Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+
         private readonly Type connectorType;
 
         private ISession session;
-
-        private ISession Session => session ??= Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
     }
 }

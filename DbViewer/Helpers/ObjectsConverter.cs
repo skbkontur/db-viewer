@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 
 using SkbKontur.DbViewer.Configuration;
-using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.Helpers
 {

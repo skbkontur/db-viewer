@@ -9,7 +9,6 @@ using NUnit.Framework.Interfaces;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
 using SkbKontur.DbViewer.TestApi;
-using SkbKontur.DbViewer.TestApi.Controllers;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 

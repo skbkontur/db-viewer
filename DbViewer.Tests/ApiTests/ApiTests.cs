@@ -18,8 +18,6 @@ using NUnit.Framework;
 
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.DataTypes;
-using SkbKontur.DbViewer.Schemas;
-using SkbKontur.DbViewer.TestApi;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 

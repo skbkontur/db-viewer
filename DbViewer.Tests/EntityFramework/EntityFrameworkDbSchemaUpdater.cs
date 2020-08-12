@@ -1,17 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using AutoFixture;
-
-using Cassandra;
-using Cassandra.Data.Linq;
+﻿using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
 using NUnit.Framework;
 
-using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
-using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.TestApi.EntityFramework;
 
 namespace SkbKontur.DbViewer.Tests.EntityFramework
