@@ -13,6 +13,12 @@
       "commands": [
         "nbgv"
       ]
+    },
+    "jetbrains.resharper.globaltools": {
+      "version": "2020.2.0-eap09",
+      "commands": [
+        "jb"
+      ]
     }
   }
 }
