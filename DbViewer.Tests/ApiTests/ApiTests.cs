@@ -1,25 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoFixture;
-
-using Cassandra;
-
 using FluentAssertions;
-
-using GroBuf;
-using GroBuf.DataMembersExtracters;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using NUnit.Framework;
 
-using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.DataTypes;
-using SkbKontur.DbViewer.TestApi.Impl;
-using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
 namespace SkbKontur.DbViewer.Tests.ApiTests
 {
@@ -29,11 +20,6 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
         public void SetUp()
         {
             client = new ApiClient();
-            serializer = new Serializer(new AllPropertiesExtractor());
-            fixture = new Fixture();
-            fixture.Register(TimeUuid.NewId);
-            fixture.Register((DateTime dt) => dt.ToLocalDate());
-            fixture.Register((ChildClass c) => (BaseClass)c);
             var testClassWithCustomPrimitivesShape = GetTestClassWithCustomPrimitivesShape();
             var testClassWithAllPrimitivesShape = new TypeMetaInformation
                 {
@@ -466,93 +452,50 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
         [Test]
         public async Task Test_Read()
         {
-            var customPropertyContent = fixture.Create<ClassForSerialization>();
-            var @object = fixture.Build<TestClass>()
-                                 .With(x => x.Serialized, serializer.Serialize(customPropertyContent))
-                                 .With(x => x.DifficultEnum, DifficultEnum.A)
-                                 .With(x => x.DifficultSerialized, serializer.Serialize(new A {Int = 1}))
-                                 .Create();
-            FillDataBase(@object);
             var result = await client.Read("TestClass", new[]
                 {
                     new Condition
                         {
                             Operator = ObjectFieldFilterOperator.Equals,
                             Path = "Id",
-                            Value = @object.Id,
+                            Value = "0",
                         }
                 });
-            testClassShape.Properties[5].Type = new TypeMetaInformation
-                {
-                    TypeName = "A",
-                    GenericTypeArguments = new TypeMetaInformation[0],
-                    Properties = new[]
-                        {
-                            new PropertyMetaInformation
-                                {
-                                    Name = "Int",
-                                    IsEditable = true,
-                                    AvailableValues = new string[0],
-                                    Type = TypeMetaInformation.ForSimpleType("Int32")
-                                }
-                        }
-                };
 
-            testClassShape.Properties[6].Type = GetTestClassWithCustomPrimitivesShape();
-            testClassShape.Properties[6].Type.Properties[0].Type = new TypeMetaInformation
-                {
-                    TypeName = "ChildClass",
-                    Properties = new[]
-                        {
-                            new PropertyMetaInformation
-                                {
-                                    Name = "Int",
-                                    IsEditable = true,
-                                    AvailableValues = new string[0],
-                                    Type = TypeMetaInformation.ForSimpleType("Int32")
-                                }
-                        },
-                    GenericTypeArguments = new TypeMetaInformation[0],
-                };
+            testClassShape.Properties[5].Type = null;
+            testClassShape.Properties[6].Type = null;
 
-            CheckShape(result.Meta.TypeMetaInformation, testClassShape);
-            var localTime = @object.CustomContent.LocalTime;
-            CheckObject(result.Object, new ExpandedTestClass
-                {
-                    Id = @object.Id,
-                    Content = @object.Content,
-                    Serialized = customPropertyContent,
-                    DifficultSerialized = new A {Int = 1},
-                    CustomContent = new ExpandedTestClassWithAllPrimitives
-                        {
-                            LocalTime = new DateTime(1, 1, 1, localTime.Hour, localTime.Minute, localTime.Second, localTime.Nanoseconds / 1000, DateTimeKind.Utc),
-                            TimeUuid = @object.CustomContent.TimeUuid.ToString(),
-                            NullableTimeUuid = @object.CustomContent.NullableTimeUuid.ToString(),
-                        },
-                });
+            result.Meta.TypeMetaInformation.Should().BeEquivalentTo(testClassShape, x => x.Excluding(y => y.Properties[5].Type)
+                                                                                          .Excluding(y => y.Properties[6].Type)
+                                                                                          .RespectingRuntimeTypes());
+
+            var resultObject = JsonConvert.DeserializeObject<ExpandedTestClass>(((JObject)result.Object).ToString());
+            resultObject.Id.Should().Be("0");
+
+            resultObject.Content.String.Should().NotBeNullOrEmpty();
+            resultObject.Content.Array.Should().HaveCount(3);
+
+            resultObject.Serialized.Content.String.Should().NotBeNullOrEmpty();
+            resultObject.Serialized.Content.List.Should().HaveCount(3);
+            resultObject.Serialized.Content.Dictionary.Should().HaveCount(3);
+            resultObject.Serialized.Content.HashSet.Should().HaveCount(3);
         }
 
         [Test]
         public async Task Test_Write()
         {
-            var oldCustomPropertyContent = fixture.Create<ClassForSerialization>();
-            var oldObject = fixture.Build<TestClass>()
-                                   .With(x => x.Serialized, serializer.Serialize(oldCustomPropertyContent))
-                                   .With(x => x.DifficultEnum, DifficultEnum.A)
-                                   .With(x => x.DifficultSerialized, serializer.Serialize(new A {Int = 1}))
-                                   .Create();
-
-            FillDataBase(oldObject);
-
             var conditions = new[]
                 {
                     new Condition
                         {
                             Operator = ObjectFieldFilterOperator.Equals,
                             Path = "Id",
-                            Value = oldObject.Id,
+                            Value = "999",
                         },
                 };
+
+            var oldObject = (JObject)(await client.Read("TestClass", conditions)).Object;
+
             var result = await Write("TestClass", new ObjectUpdateRequest
                 {
                     Conditions = conditions,
@@ -561,7 +504,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                 });
             result["Content"]["String"].ToObject<string>().Should().Be("qwer");
 
-            var key = oldObject.Content.Dictionary.Keys.First();
+            var key = oldObject["Content"]["Dictionary"].ToObject<Dictionary<string, int>>().Keys.First();
             result = await Write("TestClass", new ObjectUpdateRequest
                 {
                     Conditions = conditions,
@@ -586,13 +529,12 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                 });
             result["CustomContent"]["LocalTime"].ToObject<DateTime>().Should().Be(new DateTime(0001, 01, 01, 12, 43, 12, 123, DateTimeKind.Utc));
 
-            oldObject.Content.String = "qwer";
-            oldObject.Content.Dictionary[key] = 12;
-            oldCustomPropertyContent.Content.List[0] = 132;
-            oldObject.Serialized = serializer.Serialize(oldCustomPropertyContent);
-            oldObject.CustomContent.LocalTime = new LocalTime(12, 43, 12, 123_000_000);
+            oldObject["Content"]["String"] = "qwer";
+            oldObject["Content"]["Dictionary"][key] = 12;
+            oldObject["Serialized"]["Content"]["List"][0] = 132;
+            oldObject["CustomContent"]["LocalTime"] = new DateTime(1, 1, 1, 12, 43, 12, 123, DateTimeKind.Utc);
 
-            CheckDataBaseContent(oldObject);
+            result.Should().BeEquivalentTo(oldObject);
         }
 
         [Test]
@@ -602,11 +544,15 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             var schemaDescription = new SchemaDescription
                 {
                     SchemaName = "SampleSchema",
-                    DownloadLimit = 10_000,
-                    CountLimit = 100,
-                    AllowReadAll = false,
+                    DownloadLimit = 100_000,
+                    DownloadLimitForSuperUser = 100_000,
+                    CountLimit = 10_000,
+                    CountLimitForSuperUser = 10_000,
+                    AllowReadAll = true,
+                    AllowDelete = false,
+                    AllowEdit = true,
                 };
-            result.Should().BeEquivalentTo(new ObjectIdentifier
+            result.Should().ContainEquivalentOf(new ObjectIdentifier
                 {
                     Identifier = "TestClass",
                     SchemaDescription = schemaDescription,
@@ -683,32 +629,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             return (JObject)(await client.Read(objectIdentifier, query.Conditions)).Object;
         }
 
-        private void FillDataBase(params TestClass[] objects)
-        {
-            var db = new TestClassDataBase();
-            db.Initialize(objects.Cast<object>().ToArray());
-            SampleDataBase.Set<TestClass>(db);
-        }
-
-        private void CheckDataBaseContent(params TestClass[] objects)
-        {
-            SampleDataBase.Get<TestClass>().GetContent().Should().BeEquivalentTo(objects);
-        }
-
-        private void CheckObject<T>(object actual, T expected)
-        {
-            JsonConvert.DeserializeObject<T>(((JObject)actual).ToString()).Should()
-                       .BeEquivalentTo(expected);
-        }
-
-        private void CheckShape(TypeMetaInformation actual, TypeMetaInformation expected)
-        {
-            actual.Should().BeEquivalentTo(expected, x => x.RespectingRuntimeTypes());
-        }
-
         private ApiClient client;
         private TypeMetaInformation testClassShape;
-        private ISerializer serializer;
-        private Fixture fixture;
     }
 }
