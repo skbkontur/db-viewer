@@ -48,6 +48,12 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
             getters["PartyBoxesSettings.SupplierBoxSelectionStrategy"](items[1]).Should().Be(SupplierBoxSelectionStrategy.ShipperField);
         }
 
+        public enum SupplierBoxSelectionStrategy
+        {
+            None,
+            ShipperField,
+        }
+
         public class PartySettings
         {
             public string Id { get; set; }
@@ -59,12 +65,6 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
         public class PartyBoxesSettings
         {
             public SupplierBoxSelectionStrategy SupplierBoxSelectionStrategy { get; set; }
-        }
-
-        public enum SupplierBoxSelectionStrategy
-        {
-            None,
-            ShipperField,
         }
     }
 }

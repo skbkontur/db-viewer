@@ -37,7 +37,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
 
         private async Task<T> Request<T>(Func<HttpClient, Task<HttpResponseMessage>> func)
         {
-            var baseUri = new Uri("https://localhost:5001/db-viewer/");
+            var baseUri = new Uri("http://localhost:5000/db-viewer/");
             using (var handler = new HttpClientHandler())
             using (var client = new HttpClient(handler) {BaseAddress = baseUri})
             {

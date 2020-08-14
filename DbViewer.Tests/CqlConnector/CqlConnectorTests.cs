@@ -20,7 +20,6 @@ using SkbKontur.DbViewer.TestApi.Cql;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
-    [NUnit.Framework.Ignore("Unable to run integration tests")]
     [TestFixture(typeof(CqlDbConnector<TestDbSearcherObject>))]
     [TestFixture(typeof(CqlPagedDbConnector<TestDbSearcherObject>))]
     public class CqlConnectorTests<TConnector>

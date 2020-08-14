@@ -26,7 +26,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
                 AllowEdit = true,
             };
 
-        public TypeDescription[] Types => new[] {typeof(UsersTable)}.ToTypeDescriptions();
+        public TypeDescription[] Types => EntityFrameworkDbContext.EntityTypes.ToTypeDescriptions();
         public IDbConnectorFactory ConnectorsFactory { get; }
         public IPropertyDescriptionBuilder PropertyDescriptionBuilder { get; }
     }

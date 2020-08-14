@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
-using Microsoft.EntityFrameworkCore;
+using GroBuf;
+using GroBuf.DataMembersExtracters;
 
 using NUnit.Framework;
 
@@ -14,26 +16,40 @@ namespace SkbKontur.DbViewer.Tests.EntityFramework
         [Explicit]
         public async Task Test()
         {
+            var serializer = new Serializer(new AllPropertiesExtractor());
+            var customer = new Customer
+                {
+                    Age = 1,
+                    Name = "qwer",
+                    Orders = new[]
+                        {
+                            new Order {Price = 3, ShippingAddress = "4"},
+                            new Order {Price = 1, ShippingAddress = "2"},
+                        }
+                };
+
             await using var context = new EntityFrameworkDbContext();
-            await CreateTable<TestTable>(context, 100).ConfigureAwait(false);
-            await CreateTable<UsersTable>(context, 1000).ConfigureAwait(false);
-        }
+            await context.Set<TestTable>().AddAsync(new TestTable
+                {
+                    Id = 1,
+                    CompositeKey = "2",
+                    Boolean = false,
+                    Integer = 1345,
+                    String = "qwerty",
+                    DateTime = DateTime.Today,
+                    DateTimeOffset = DateTimeOffset.UtcNow,
+                    Customer = customer,
+                    CustomerSerialized = serializer.Serialize(customer),
+                });
 
-        private static async Task CreateTable<T>(DbContext context, int count)
-            where T : class
-        {
-            var table = context.Set<T>();
-            await table.AddRangeAsync();
-            // await table.AddAsync().ConfigureAwait(false)
-            // session.Execute($"DROP TABLE IF EXISTS {table.KeyspaceName}.{table.Name};");
-            // table.CreateIfNotExists();
+            await context.Set<UsersTable>().AddAsync(new UsersTable
+                {
+                    Id = 1,
+                    Email = "2",
+                    Name = "3",
+                });
 
-            // var fixture = new Fixture();
-            // fixture.Register((DateTime dt) => dt.ToLocalDate());
-            // fixture.Register((DateTime dt) => CassandraPrimitivesExtensions.ToLocalTime(dt));
-
-            // for (var i = 0; i < count; i++)
-            // table.Insert(fixture.Create<T>()).SetTimestamp(DateTimeOffset.UtcNow).Execute();
+            await context.SaveChangesAsync();
         }
     }
 }

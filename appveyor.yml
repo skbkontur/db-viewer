@@ -19,6 +19,7 @@ environment:
 
 install:
   - cmd: powershell Install-Product node $env:NODEJS_VERSION
+  - cmd: docker-switch-linux && docker-compose up -d
 
 before_build:
   - ps: |
@@ -52,8 +53,8 @@ build_script:
   - cmd: yarn build
 
 before_test:
-  - cmd: docker-compose up -d
-  - cmd: dotnet ef --project ./DbViewer.TestApi/DbViewer.TestApi.csproj database update
+  - cmd: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
+  - ps: Start-Process ./DbViewer.TestApi/bin/netcoreapp3.1/win-x64/SkbKontur.DbViewer.TestApi.exe
 
 test_script:
   - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN

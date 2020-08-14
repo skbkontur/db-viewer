@@ -16,7 +16,7 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var type in entityTypes)
+            foreach (var type in EntityTypes)
             {
                 modelBuilder.Entity(type)
                             .ApplyPrimaryKey()
@@ -24,12 +24,11 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
             }
         }
 
-        // todo (p.vostretsov, 08.08.2020): точно получше никак нельзя?
-        private static readonly Type[] entityTypes = typeof(EntityFrameworkDbContext)
-                                                     .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                                     .Select(x => x.PropertyType)
-                                                     .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(DbSet<>))
-                                                     .Select(x => x.GetGenericArguments()[0])
-                                                     .ToArray();
+        public static readonly Type[] EntityTypes = typeof(EntityFrameworkDbContext)
+                                                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                                    .Select(x => x.PropertyType)
+                                                    .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(DbSet<>))
+                                                    .Select(x => x.GetGenericArguments()[0])
+                                                    .ToArray();
     }
 }

@@ -22,8 +22,7 @@ namespace SkbKontur.DbViewer.TestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers()
-                    .AddNewtonsoftJson();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddDbContext<EntityFrameworkDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("EntityFrameworkDbContext")));
             services.AddSingleton<IControllerFactory>(new GroboControllerFactory());
         }
@@ -34,7 +33,6 @@ namespace SkbKontur.DbViewer.TestApi
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -24,35 +23,33 @@ namespace SkbKontur.DbViewer.EntityFramework
                 result.IsSearchable = true;
                 result.IsIdentity = true;
                 result.IsSortable = true;
-                result.AvailableFilters = new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual};
+                result.AvailableFilters = specialTypes.Contains(propertyInfo.PropertyType)
+                                              ? new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
+                                              : defaultFilters;
             }
 
             if (propertyInfo.CustomAttributes.Any(x => x.AttributeType == typeof(TIndex)))
             {
                 result.IsSearchable = true;
-                result.IsIdentity = true;
                 result.IsSortable = true;
-                result.AvailableFilters = availableFilters.ContainsKey(propertyInfo.PropertyType)
-                                              ? availableFilters[propertyInfo.PropertyType]
-                                              : new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual};
+                result.AvailableFilters = specialTypes.Contains(propertyInfo.PropertyType)
+                                              ? new[] {ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual}
+                                              : defaultFilters;
             }
 
             return result;
         }
 
-        private readonly Dictionary<Type, ObjectFieldFilterOperator[]> availableFilters = new Dictionary<Type, ObjectFieldFilterOperator[]>
+        private readonly Type[] specialTypes = {typeof(bool)};
+
+        private readonly ObjectFieldFilterOperator[] defaultFilters =
             {
-                {
-                    typeof(string), new[]
-                        {
-                            ObjectFieldFilterOperator.LessThan,
-                            ObjectFieldFilterOperator.Equals,
-                            ObjectFieldFilterOperator.GreaterThan,
-                            ObjectFieldFilterOperator.DoesNotEqual,
-                            ObjectFieldFilterOperator.LessThanOrEquals,
-                            ObjectFieldFilterOperator.GreaterThanOrEquals,
-                        }
-                }
+                ObjectFieldFilterOperator.LessThan,
+                ObjectFieldFilterOperator.Equals,
+                ObjectFieldFilterOperator.GreaterThan,
+                ObjectFieldFilterOperator.DoesNotEqual,
+                ObjectFieldFilterOperator.LessThanOrEquals,
+                ObjectFieldFilterOperator.GreaterThanOrEquals,
             };
     }
 }
