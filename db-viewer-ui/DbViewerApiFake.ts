@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DownloadResult } from "./src/Domain/Api/DataTypes/DownloadResult";
 import { ObjectDescription } from "./src/Domain/Api/DataTypes/ObjectDescription";
 import { ObjectDetails } from "./src/Domain/Api/DataTypes/ObjectDetails";
@@ -13,6 +14,7 @@ const string: TypeMetaInformation = {
     isArray: false,
     properties: [],
     typeName: "String",
+    originalTypeName: "String",
 };
 
 export class DbViewerApiFake implements IDbViewerApi {
@@ -153,6 +155,7 @@ export class DbViewerApiFake implements IDbViewerApi {
             },
             typeMetaInformation: {
                 typeName: "StatusReportDocumentSubscriptionObject",
+                originalTypeName: "StatusReportDocumentSubscriptionObject",
                 isArray: false,
                 isNullable: false,
                 genericTypeArguments: [],
@@ -168,6 +171,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         availableFilters: [],
                         type: {
                             typeName: "String",
+                            originalTypeName: "String",
                             isArray: false,
                             isNullable: false,
                             properties: [],
@@ -185,6 +189,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         availableFilters: [],
                         type: {
                             typeName: "String",
+                            originalTypeName: "String",
                             isArray: false,
                             isNullable: false,
                             properties: [],
@@ -202,12 +207,14 @@ export class DbViewerApiFake implements IDbViewerApi {
                         availableFilters: [],
                         type: {
                             typeName: "Nullable",
+                            originalTypeName: "Nullable",
                             isArray: true,
                             isNullable: false,
                             properties: [],
                             genericTypeArguments: [
                                 {
                                     typeName: "DateTime",
+                                    originalTypeName: "DateTime",
                                     isArray: false,
                                     isNullable: false,
                                     properties: [],

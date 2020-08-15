@@ -19,6 +19,7 @@ export function emptyMethod() {
 
 const string: TypeMetaInformation = {
     typeName: "String",
+    originalTypeName: "String",
     properties: [],
     isArray: false,
     isNullable: false,

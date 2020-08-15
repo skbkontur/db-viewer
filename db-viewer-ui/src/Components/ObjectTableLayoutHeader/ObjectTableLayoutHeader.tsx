@@ -49,13 +49,13 @@ export class ObjectTableLayoutHeader extends React.Component<
         modalEditingConditions: [],
     };
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this.setState({
             modalEditingConditions: this.props.query.conditions || [],
         });
     }
 
-    public componentDidUpdate(prevProps: ObjectTableLayoutHeaderProps) {
+    public componentDidUpdate(prevProps: ObjectTableLayoutHeaderProps): void {
         const { query, showModalFilter } = this.props;
         if (query.conditions !== prevProps.query.conditions || showModalFilter !== prevProps.showModalFilter) {
             this.setState({
@@ -64,40 +64,6 @@ export class ObjectTableLayoutHeader extends React.Component<
             });
         }
     }
-
-    public renderFieldSelectorTooltipContent(): null | JSX.Element {
-        const { query, properties, onChange } = this.props;
-        const { hiddenColumns } = query;
-        if (properties.length === 0) {
-            return null;
-        }
-        const fields = properties.map(x => ({ name: x.name, caption: x.name }));
-        return (
-            <FieldSelector
-                showSelectAllButton
-                data-tid="ColumnSelector"
-                fieldDefinitions={fields}
-                hiddenFields={hiddenColumns}
-                onShowField={fieldNames => onChange({ hiddenColumns: difference(hiddenColumns, fieldNames) })}
-                onHideField={fieldNames => onChange({ hiddenColumns: [...hiddenColumns, ...fieldNames] })}
-            />
-        );
-    }
-
-    public handleOpenFilterModal = () => {
-        this.setState({ showFilterModal: true });
-    };
-
-    public handleCloseFilterModal = () => {
-        this.setState({ showFilterModal: false });
-    };
-
-    public handleApplyFilter = () => {
-        this.props.onChange({
-            conditions: this.state.modalEditingConditions.filter(x => x.value != null && x.value.trim() !== ""),
-        });
-        this.setState({ showFilterModal: false });
-    };
 
     public render(): JSX.Element {
         const {
@@ -174,4 +140,38 @@ export class ObjectTableLayoutHeader extends React.Component<
             </RowStack>
         );
     }
+
+    private renderFieldSelectorTooltipContent(): null | JSX.Element {
+        const { query, properties, onChange } = this.props;
+        const { hiddenColumns } = query;
+        if (properties.length === 0) {
+            return null;
+        }
+        const fields = properties.map(x => ({ name: x.name, caption: x.name }));
+        return (
+            <FieldSelector
+                showSelectAllButton
+                data-tid="ColumnSelector"
+                fieldDefinitions={fields}
+                hiddenFields={hiddenColumns}
+                onShowField={fieldNames => onChange({ hiddenColumns: difference(hiddenColumns, fieldNames) })}
+                onHideField={fieldNames => onChange({ hiddenColumns: [...hiddenColumns, ...fieldNames] })}
+            />
+        );
+    }
+
+    private readonly handleOpenFilterModal = () => {
+        this.setState({ showFilterModal: true });
+    };
+
+    private readonly handleCloseFilterModal = () => {
+        this.setState({ showFilterModal: false });
+    };
+
+    private readonly handleApplyFilter = () => {
+        this.props.onChange({
+            conditions: this.state.modalEditingConditions.filter(x => x.value != null && x.value.trim() !== ""),
+        });
+        this.setState({ showFilterModal: false });
+    };
 }

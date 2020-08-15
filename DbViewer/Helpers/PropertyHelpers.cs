@@ -61,7 +61,8 @@ namespace SkbKontur.DbViewer.Helpers
             return ToString(property);
         }
 
-        public static TypeMetaInformation BuildTypeMetaInformation(object? @object, Type type, IPropertyDescriptionBuilder propertyDescriptionBuilder,
+        public static TypeMetaInformation BuildTypeMetaInformation(object? @object, Type type, Type originalType,
+                                                                   IPropertyDescriptionBuilder propertyDescriptionBuilder,
                                                                    ICustomPropertyConfigurationProvider? propertyConfigurationProvider,
                                                                    Type[]? usedTypes = null)
         {
@@ -70,13 +71,14 @@ namespace SkbKontur.DbViewer.Helpers
                 return null;
             usedTypes = usedTypes.Concat(new[] {type}).ToArray();
 
+            var originalTypeName = new Regex(@"`.*").Replace(originalType.Name, "");
             type = propertyConfigurationProvider?.TryGetConfiguration(type)?.ResolvedType ?? type;
 
             if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return TypeMetaInformation.ForSimpleType(type.GetGenericArguments()[0].Name, isNullable : true);
 
             if (IsSimpleType(type))
-                return TypeMetaInformation.ForSimpleType(type.Name);
+                return TypeMetaInformation.ForSimpleType(type.Name, originalTypeName);
 
             var typeName = new Regex(@"`.*").Replace(type.Name, "");
 
@@ -86,10 +88,11 @@ namespace SkbKontur.DbViewer.Helpers
                 return new TypeMetaInformation
                     {
                         TypeName = typeName,
+                        OriginalTypeName = originalTypeName,
                         IsArray = true,
                         Properties = new PropertyMetaInformation[0],
                         GenericTypeArguments = genericArguments
-                                               .Select(x => BuildTypeMetaInformation(null, x, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, usedTypes))
+                                               .Select(x => BuildTypeMetaInformation(null, x, x, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, usedTypes))
                                                .ToArray(),
                     };
             }
@@ -97,11 +100,12 @@ namespace SkbKontur.DbViewer.Helpers
             return new TypeMetaInformation
                 {
                     TypeName = typeName,
+                    OriginalTypeName = originalTypeName,
                     Properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                      .Select(x => BuildPropertyInfo(@object, x, propertyDescriptionBuilder, propertyConfigurationProvider, usedTypes))
                                      .ToArray(),
                     GenericTypeArguments = type.GetGenericArguments()
-                                               .Select(x => BuildTypeMetaInformation(null, x, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, usedTypes))
+                                               .Select(x => BuildTypeMetaInformation(null, x, x, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, usedTypes))
                                                .ToArray(),
                 };
         }
@@ -113,11 +117,13 @@ namespace SkbKontur.DbViewer.Helpers
         {
             object? objectProperty;
             Type propertyType;
+            Type originalPropertyType;
             if (@object == null)
             {
                 var customConfiguration = propertyConfigurationProvider?.TryGetConfiguration(propertyInfo);
                 objectProperty = null;
                 propertyType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
+                originalPropertyType = propertyInfo.PropertyType;
             }
             else
             {
@@ -127,6 +133,7 @@ namespace SkbKontur.DbViewer.Helpers
                 var resolvedType = customConfiguration?.ResolvedType ?? propertyInfo.PropertyType;
                 var objectPropertyType = IsSimpleType(resolvedType) ? null : objectProperty?.GetType();
                 propertyType = objectPropertyType ?? resolvedType;
+                originalPropertyType = underlyingProperty?.GetType() ?? propertyInfo.PropertyType;
             }
 
             var underlyingType = propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? propertyType.GetGenericArguments()[0] : propertyType;
@@ -141,7 +148,7 @@ namespace SkbKontur.DbViewer.Helpers
                     IsRequired = propertyDescription.IsRequired,
                     IsSearchable = propertyDescription.IsSearchable,
                     IsSortable = propertyDescription.IsSortable,
-                    Type = BuildTypeMetaInformation(objectProperty, propertyType, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, types),
+                    Type = BuildTypeMetaInformation(objectProperty, propertyType, originalPropertyType, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, types),
                 };
         }
 

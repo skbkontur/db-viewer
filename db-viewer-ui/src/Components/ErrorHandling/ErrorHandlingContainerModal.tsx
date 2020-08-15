@@ -27,21 +27,21 @@ export class ErrorHandlingContainerModal extends React.Component<
 > {
     public state: ErrorHandlingContainerModalState = { showStack: false };
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         window.addEventListener("keypress", this.handleKeyPress);
     }
 
-    public componentWillUnmount() {
+    public componentWillUnmount(): void {
         window.removeEventListener("keypress", this.handleKeyPress);
     }
 
-    public handleKeyPress = (e: KeyboardEvent) => {
+    private handleKeyPress = (e: KeyboardEvent) => {
         if (e.key === "h") {
             this.setState({ showStack: true });
         }
     };
 
-    public render() {
+    public render(): JSX.Element {
         const { canClose, message, onClose, serverStack, stack } = this.props;
 
         const { showStack } = this.state;

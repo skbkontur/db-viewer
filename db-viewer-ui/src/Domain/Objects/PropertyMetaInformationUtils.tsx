@@ -11,6 +11,7 @@ const defaultType: TypeMetaInformation = {
     genericTypeArguments: [],
     properties: [],
     typeName: "Object",
+    originalTypeName: "Object",
 };
 
 const defaultProperty: PropertyMetaInformation = {

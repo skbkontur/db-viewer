@@ -24,6 +24,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             var testClassWithAllPrimitivesShape = new TypeMetaInformation
                 {
                     TypeName = "TestClassWithAllPrimitives",
+                    OriginalTypeName = "TestClassWithAllPrimitives",
                     GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {
@@ -193,6 +194,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "Int32[]",
+                                            OriginalTypeName = "Int32[]",
                                             IsArray = true,
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Int32")},
                                             Properties = new PropertyMetaInformation[0],
@@ -206,6 +208,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "List",
+                                            OriginalTypeName = "List",
                                             IsArray = true,
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Int32")},
                                             Properties = new PropertyMetaInformation[0],
@@ -219,6 +222,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "Dictionary",
+                                            OriginalTypeName = "Dictionary",
                                             IsArray = true,
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String"), TypeMetaInformation.ForSimpleType("Int32")},
                                             Properties = new PropertyMetaInformation[0],
@@ -232,6 +236,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "HashSet",
+                                            OriginalTypeName = "HashSet",
                                             IsArray = true,
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String")},
                                             Properties = new PropertyMetaInformation[0],
@@ -245,6 +250,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             testClassShape = new TypeMetaInformation
                 {
                     TypeName = "TestClass",
+                    OriginalTypeName = "TestClass",
                     GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {
@@ -270,6 +276,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "ClassForSerialization",
+                                            OriginalTypeName = "Byte[]",
                                             GenericTypeArguments = new TypeMetaInformation[0],
                                             Properties = new[]
                                                 {
@@ -291,6 +298,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "Byte[]",
+                                            OriginalTypeName = "Byte[]",
                                             IsArray = true,
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Byte")},
                                             Properties = new PropertyMetaInformation[0],
@@ -342,6 +350,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "BaseClass[]",
+                                            OriginalTypeName = "BaseClass[]",
                                             IsArray = true,
                                             Properties = new PropertyMetaInformation[0],
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("BaseClass")},
@@ -362,6 +371,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             return new TypeMetaInformation
                 {
                     TypeName = "TestClassWithCustomPrimitives",
+                    OriginalTypeName = "TestClassWithCustomPrimitives",
                     GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {
@@ -374,21 +384,21 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                 },
                             new PropertyMetaInformation
                                 {
-                                    Type = TypeMetaInformation.ForSimpleType("DateTime", isNullable : true),
+                                    Type = TypeMetaInformation.ForSimpleType("DateTime", "LocalTime", isNullable : true),
                                     Name = "LocalTime",
                                     IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
-                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Type = TypeMetaInformation.ForSimpleType("String", "TimeUuid"),
                                     Name = "TimeUuid",
                                     IsEditable = true,
                                     AvailableValues = new string[0],
                                 },
                             new PropertyMetaInformation
                                 {
-                                    Type = TypeMetaInformation.ForSimpleType("String"),
+                                    Type = TypeMetaInformation.ForSimpleType("String", "TimeUuid"),
                                     Name = "NullableTimeUuid",
                                     IsEditable = true,
                                     AvailableValues = new string[0],
@@ -402,6 +412,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             return new TypeMetaInformation
                 {
                     TypeName = "GenericClass",
+                    OriginalTypeName = "GenericClass",
                     GenericTypeArguments = new[] {typeParameter},
                     Properties = new[]
                         {
@@ -427,6 +438,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "List",
+                                            OriginalTypeName = "List",
                                             IsArray = true,
                                             Properties = new PropertyMetaInformation[0],
                                             GenericTypeArguments = new[] {typeParameter}
@@ -440,6 +452,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                                     Type = new TypeMetaInformation
                                         {
                                             TypeName = "Dictionary",
+                                            OriginalTypeName = "Dictionary",
                                             IsArray = true,
                                             Properties = new PropertyMetaInformation[0],
                                             GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String"), typeParameter}
@@ -563,18 +576,21 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
             testClassShape.Properties[5].Type = new TypeMetaInformation
                 {
                     TypeName = "Object",
+                    OriginalTypeName = "Byte[]",
                     Properties = new PropertyMetaInformation[0],
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
             testClassShape.Properties[6].Type.Properties[0].Type = new TypeMetaInformation
                 {
                     TypeName = "BaseClass",
+                    OriginalTypeName = "BaseClass",
                     Properties = new PropertyMetaInformation[0],
                     GenericTypeArguments = new TypeMetaInformation[0],
                 };
             testClassShape.Properties[6].Type.Properties[1].Type = new TypeMetaInformation
                 {
                     TypeName = "LocalTime",
+                    OriginalTypeName = "LocalTime",
                     GenericTypeArguments = new TypeMetaInformation[0],
                     Properties = new[]
                         {

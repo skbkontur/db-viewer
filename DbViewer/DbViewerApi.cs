@@ -27,7 +27,7 @@ namespace SkbKontur.DbViewer
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(null, type, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             return new ObjectDescription
                 {
                     Identifier = objectIdentifier,
@@ -108,7 +108,7 @@ namespace SkbKontur.DbViewer
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var result = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
-            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(result, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
+            var typeMeta = PropertyHelpers.BuildTypeMetaInformation(result, type, type, schema.PropertyDescriptionBuilder, schema.CustomPropertyConfigurationProvider);
             var obj = ObjectsConverter.StoredToApiDeep(result, schema.CustomPropertyConfigurationProvider);
             return new ObjectDetails
                 {
