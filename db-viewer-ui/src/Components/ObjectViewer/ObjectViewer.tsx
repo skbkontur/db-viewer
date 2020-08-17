@@ -1,5 +1,3 @@
-import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Hint from "@skbkontur/react-ui/Hint";
 import React from "react";
 
 import { ObjectDescription } from "../../Domain/Api/DataTypes/ObjectDescription";
@@ -8,7 +6,6 @@ import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaI
 import { Accordion } from "../Accordion/Accordion";
 
 import { ObjectRenderer } from "./ObjectRenderer";
-import styles from "./ObjectViewer.less";
 
 interface ObjectViewerProps {
     objectInfo: object;
@@ -25,7 +22,7 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
             <div>
                 <Accordion
                     data-tid="RootAccordion"
-                    renderTitle={this.renderTitle}
+                    renderCaption={this.renderCaption}
                     renderValue={this.renderValue}
                     title={null}
                     value={objectInfo}
@@ -47,26 +44,14 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
         this.props.onChange(serverValue, path);
     };
 
-    private renderTitle = (title: null | string, isObject: boolean, path: string[]) => {
+    private renderCaption = (path: string[]) => {
         const { objectMeta } = this.props;
         const propertyMeta = PropertyMetaInformationUtils.getPropertyTypeByPath(objectMeta.typeMetaInformation, path);
         let typeName = propertyMeta.type.originalTypeName;
         if (typeName === "Byte[]") {
             typeName = propertyMeta.type.typeName;
         }
-        if (isObject) {
-            return (
-                <RowStack gap={1} data-tid="Title">
-                    <Fit data-tid="Title" className={styles.title}>
-                        {title}
-                    </Fit>
-                    <Fit data-tid="Type" className={styles.mutedKeyword}>
-                        Тип: {typeName}
-                    </Fit>
-                </RowStack>
-            );
-        }
-        return <Hint text={`Тип: ${typeName}`}>{title}</Hint>;
+        return `Тип: ${typeName}`;
     };
 
     private renderValue = (target: { [key: string]: any }, path: string[]) => {
