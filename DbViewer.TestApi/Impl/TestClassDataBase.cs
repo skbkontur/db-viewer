@@ -15,7 +15,8 @@ namespace SkbKontur.DbViewer.TestApi.Impl
         protected override TestClass[] CreateData(Fixture fixture, ISerializer serializer)
         {
             var data = Enumerable.Range(0, 1000).Select(
-                _ => fixture.Build<TestClass>()
+                i => fixture.Build<TestClass>()
+                            .With(x => x.Id, i.ToString())
                             .With(x => x.Serialized, serializer.Serialize(fixture.Create<ClassForSerialization>()))
                             .Create()
             ).ToArray();
@@ -23,7 +24,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             return data;
         }
 
-        private void FillDifficultSerialized(ISerializer serializer, TestClass[] data)
+        private static void FillDifficultSerialized(ISerializer serializer, TestClass[] data)
         {
             var random = new Random();
             foreach (var testClass in data)

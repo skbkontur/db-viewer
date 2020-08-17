@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 using Cassandra.Data.Linq;
@@ -45,7 +44,7 @@ namespace SkbKontur.DbViewer.Cql.Utils
 
         public static CqlQuery<T> BuildQuery<T>(CqlQuery<T> query, Condition[] filters)
         {
-            return filters.Any() ? query.Where(BuildPredicate<T>(filters)) : query;
+            return filters.Any() ? query.Where(CriterionHelper.BuildPredicate<T>(filters, CqlObjectParser.Parse)) : query;
         }
 
         public static CqlQuery<T> BuildQuery<T>(CqlQuery<T> query, Condition[] filters, Sort[] sorts)
@@ -69,18 +68,8 @@ namespace SkbKontur.DbViewer.Cql.Utils
         private static CqlQuery<T> AddSort<T, TProperty>(CqlQuery<T> query, Sort sort)
         {
             return sort.SortOrder == ObjectFilterSortOrder.Ascending
-                       ? query.OrderBy(BuildSort<T, TProperty>(sort))
-                       : query.OrderByDescending(BuildSort<T, TProperty>(sort));
-        }
-
-        private static Expression<Func<T, TProperty>> BuildSort<T, TProperty>(Sort sort)
-        {
-            return (Expression<Func<T, TProperty>>)CriterionHelper.BuildSortExpression(typeof(T), sort.Path);
-        }
-
-        private static Expression<Func<T, bool>> BuildPredicate<T>(Condition[] filters)
-        {
-            return (Expression<Func<T, bool>>)CriterionHelper.BuildPredicate(typeof(T), filters);
+                       ? query.OrderBy(CriterionHelper.BuildSort<T, TProperty>(sort))
+                       : query.OrderByDescending(CriterionHelper.BuildSort<T, TProperty>(sort));
         }
     }
 }

@@ -56,7 +56,7 @@ module.exports = function (env) {
         devServer: {
             proxy: {
                 "/db-viewer/**": {
-                    target: "http://localhost:5555/",
+                    target: "http://localhost:5000/",
                 },
                 "*": {
                     secure: false,

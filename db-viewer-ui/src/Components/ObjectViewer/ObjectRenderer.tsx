@@ -36,32 +36,6 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
         value: undefined,
     };
 
-    public handleClick = () => {
-        this.setState({
-            editableMode: true,
-            value: getByPath(this.props.target, this.props.path),
-        });
-    };
-
-    public handleChange = (value: any) => {
-        this.setState({ value: value });
-    };
-
-    public handleSaveChanges = () => {
-        this.props.onChange(this.state.value, this.props.path);
-        this.setState({ editableMode: false, value: undefined });
-    };
-
-    public handleCancelChanges = () => {
-        this.setState({ editableMode: false, value: undefined });
-    };
-
-    public canEditProperty = () => {
-        const { property, allowEdit } = this.props;
-        const type = property.type.typeName;
-        return type != null && !type.includes("[]") && !property.isIdentity && property.isEditable && allowEdit;
-    };
-
     public render(): JSX.Element {
         const { path, target, property, objectType, customRenderer } = this.props;
         const value = this.state.editableMode ? this.state.value : getByPath(target, path);
@@ -97,4 +71,30 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
             </RowStack>
         );
     }
+
+    private readonly handleClick = () => {
+        this.setState({
+            editableMode: true,
+            value: getByPath(this.props.target, this.props.path),
+        });
+    };
+
+    private readonly handleChange = (value: any) => {
+        this.setState({ value: value });
+    };
+
+    private readonly handleSaveChanges = () => {
+        this.props.onChange(this.state.value, this.props.path);
+        this.setState({ editableMode: false, value: undefined });
+    };
+
+    private readonly handleCancelChanges = () => {
+        this.setState({ editableMode: false, value: undefined });
+    };
+
+    private readonly canEditProperty = () => {
+        const { property, allowEdit } = this.props;
+        const type = property.type.typeName;
+        return type != null && !type.includes("[]") && !property.isIdentity && property.isEditable && allowEdit;
+    };
 }

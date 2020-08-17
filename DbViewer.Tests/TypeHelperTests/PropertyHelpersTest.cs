@@ -8,7 +8,7 @@ using NUnit.Framework.Interfaces;
 
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
-using SkbKontur.DbViewer.TestApi.Controllers;
+using SkbKontur.DbViewer.TestApi;
 using SkbKontur.DbViewer.TestApi.Impl;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
 
@@ -19,19 +19,19 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
         [TestCaseSource(nameof(EnumTestCasesProvider))]
         public void Test_Enum(Type type, TypeMetaInformation expected)
         {
-            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
+            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
         }
 
         [TestCaseSource(nameof(EnumerableTestCasesProvider))]
         public void Test_Enumerable(Type type, TypeMetaInformation expected)
         {
-            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
+            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
         }
 
         [TestCaseSource(nameof(PrimitivesTestCasesProvider))]
         public void Test_Primitives(Type type, TypeMetaInformation expected)
         {
-            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
+            CheckResult(PropertyHelpers.BuildTypeMetaInformation(null, type, type, new SamplePropertyDescriptionBuilder(), new CustomPropertyConfigurationProvider()), expected);
         }
 
         private static IEnumerable<ITestCaseData> EnumTestCasesProvider()
@@ -46,6 +46,7 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
                                         new TypeMetaInformation
                                             {
                                                 TypeName = "String[]",
+                                                OriginalTypeName = "String[]",
                                                 IsArray = true,
                                                 Properties = new PropertyMetaInformation[0],
                                                 GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String")}
@@ -56,6 +57,7 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
                                         new TypeMetaInformation
                                             {
                                                 TypeName = "List",
+                                                OriginalTypeName = "List",
                                                 IsArray = true,
                                                 Properties = new PropertyMetaInformation[0],
                                                 GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Int32", isNullable : true)},
@@ -66,6 +68,7 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
                                         new TypeMetaInformation
                                             {
                                                 TypeName = "HashSet",
+                                                OriginalTypeName = "HashSet",
                                                 IsArray = true,
                                                 Properties = new PropertyMetaInformation[0],
                                                 GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("Guid")},
@@ -76,6 +79,7 @@ namespace SkbKontur.DbViewer.Tests.TypeHelperTests
                                         new TypeMetaInformation
                                             {
                                                 TypeName = "Dictionary",
+                                                OriginalTypeName = "Dictionary",
                                                 IsArray = true,
                                                 Properties = new PropertyMetaInformation[0],
                                                 GenericTypeArguments = new[] {TypeMetaInformation.ForSimpleType("String"), TypeMetaInformation.ForSimpleType("Decimal")},

@@ -191,7 +191,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                                     x.isIdentity && (
                                         <Fit>
                                             <RowStack gap={2}>
-                                                <Fit>{x.name}:</Fit>
+                                                <Fit style={{ minWidth: 140 }}>{x.name}:</Fit>
                                                 <Fit>
                                                     <AllowCopyToClipboard data-tid={x.name}>
                                                         {String(objectInfo[x.name])}
@@ -206,7 +206,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                     <CommonLayout.Content>
                         <ColumnStack gap={4} block>
                             <Fit style={{ maxWidth: "100%" }}>
-                                {objectInfo != null && objectMeta != null && (
+                                {objectMeta != null && (
                                     <ObjectViewer
                                         objectInfo={objectInfo}
                                         objectMeta={objectMeta}

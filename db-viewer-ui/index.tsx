@@ -22,7 +22,7 @@ function AdminToolsEntryPoint() {
                             identifierKeywords={["Cql", "StorageElement"]}
                             customRenderer={new NullCustomRenderer()}
                             useErrorHandlingContainer
-                            isSuperUser
+                            isSuperUser={document.cookie.includes("isSuperUser=true")}
                             dbViewerApi={dbViewerApi}
                             {...props}
                         />

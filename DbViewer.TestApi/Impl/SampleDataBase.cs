@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 using AutoFixture;
@@ -11,9 +10,9 @@ using GroBuf.DataMembersExtracters;
 
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.DataTypes;
+using SkbKontur.DbViewer.Helpers;
 using SkbKontur.DbViewer.TestApi.Impl.Attributes;
 using SkbKontur.DbViewer.TestApi.Impl.Classes;
-using SkbKontur.DbViewer.TestApi.Impl.Utils;
 
 namespace SkbKontur.DbViewer.TestApi.Impl
 {
@@ -69,7 +68,7 @@ namespace SkbKontur.DbViewer.TestApi.Impl
 
         private Func<T, bool> BuildCriterion(Condition[] filters)
         {
-            return ((Expression<Func<T, bool>>)CriterionHelper.BuildCriterion(typeof(T), filters)).Compile();
+            return CriterionHelper.BuildPredicate<T>(filters).Compile();
         }
 
         public int? Count(Condition[] filters, int limit)

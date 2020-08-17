@@ -8,9 +8,9 @@ using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
 using SkbKontur.DbViewer.TestApi.Impl.Attributes;
 
-namespace SkbKontur.DbViewer.TestApi.Impl
+namespace SkbKontur.DbViewer.TestApi
 {
-    public class SampleCustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
+    public class CustomPropertyConfigurationProvider : ICustomPropertyConfigurationProvider
     {
         public CustomPropertyConfiguration? TryGetConfiguration(object @object, PropertyInfo propertyInfo)
         {

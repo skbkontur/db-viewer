@@ -27,7 +27,7 @@
     "build:copy:src": "copyfiles --up 1 \"src/**/*.js\" \"src/**/*.less\" dist",
     "build:copy:meta": "copyfiles --flat package.json \"../*.md\" ../LICENSE dist",
     "build:pack": "cd dist && npm pack",
-    "build:types": "dotnet ts-gen --assembly ./../DbViewer.TestApi/bin/net472/SkbKontur.DbViewer.TestApi.exe --outputDir ./src/Domain/Api --nullabilityMode NullableReference",
+    "build:types": "dotnet ts-gen --assembly ./../DbViewer.TestApi/bin/netcoreapp3.1/win-x64/SkbKontur.DbViewer.TestApi.dll --outputDir ./src/Domain/Api --nullabilityMode NullableReference",
     "start": "webpack-dev-server --hot --env.api=fake",
     "start:prod": "webpack-dev-server --hot --env.api=real",
     "storybook": "start-storybook -p 6006 -s .",

@@ -9,12 +9,14 @@ import React from "react";
 
 import styles from "./Accordion.less";
 
-type CustomRenderer = (target: { [key: string]: any }, path: string[]) => JSX.Element | null;
+type TitleRenderer = (title: null | string, isObject: boolean, path: string[]) => null | JSX.Element;
+type ValueRenderer = (target: { [key: string]: any }, path: string[]) => null | JSX.Element;
 
 export interface TaskAccordionProps {
-    customRender: null | CustomRenderer;
+    renderTitle: null | TitleRenderer;
+    renderValue: null | ValueRenderer;
     value: { [key: string]: any };
-    title?: string | JSX.Element;
+    title: null | string;
     pathPrefix?: string[];
     defaultCollapsed?: boolean;
     showToggleAll?: boolean;
@@ -34,7 +36,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
 
     public constructor(props: TaskAccordionProps) {
         super(props);
-        const canCollapseSelf = props.title !== undefined;
+        const canCollapseSelf = props.title != null;
         const defaultCollapsedValue = props.defaultCollapsed || false;
         const collapsed = canCollapseSelf && defaultCollapsedValue;
 
@@ -84,7 +86,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     }
 
     public render(): JSX.Element {
-        const { showToggleAll, value, title } = this.props;
+        const { showToggleAll, value, title, renderTitle } = this.props;
         const { collapsedSelf, collapsedRecursive } = this.state;
 
         const isToggleLinkVisible = showToggleAll && this.isThereItemsToToggleAtFirstLevel();
@@ -103,7 +105,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                                 onClick={this.toggleCollapseManual}>
                                 {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
                                 <span data-tid="ToggleButtonText" className={styles.toggleButtonText}>
-                                    {title}
+                                    {(renderTitle && renderTitle(title, true, [])) || title}
                                 </span>
                             </button>
                         )}
@@ -125,7 +127,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     }
 
     public renderValue(): JSX.Element[] {
-        const { value, customRender, pathPrefix = [], defaultCollapsed } = this.props;
+        const { value, renderTitle, renderValue, pathPrefix = [], defaultCollapsed } = this.props;
         const { collapsedRecursive, isForced } = this.state;
         const keys = Object.keys(value);
 
@@ -143,13 +145,20 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         return keys.map(key => {
             const valueToRender = value[key];
             if (isPlainObject(valueToRender) || isArray(valueToRender)) {
-                const newCustomRender: null | CustomRenderer =
-                    customRender != null ? (target, path) => customRender(value, [key, ...path]) : null;
+                const newValueRender: null | ValueRenderer =
+                    renderValue != null ? (target, path) => renderValue(value, [key, ...path]) : null;
+
+                const newTitleRender: null | TitleRenderer =
+                    renderTitle != null
+                        ? (title, isObject, path) => renderTitle(title, isObject, [key, ...path])
+                        : null;
+
                 return (
                     <Accordion
                         defaultCollapsed={defaultCollapsedValue}
                         data-tid={this.getPath(pathPrefix, key)}
-                        customRender={newCustomRender}
+                        renderTitle={newTitleRender}
+                        renderValue={newValueRender}
                         key={key}
                         value={valueToRender}
                         title={key}
@@ -167,10 +176,10 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                     className={styles.stringWrapper}
                     data-tid={this.getPath(pathPrefix, key)}>
                     <Fit data-tid="Key" className={styles.title}>
-                        {key}:
+                        {(renderTitle && renderTitle(key, false, [key])) || key}:
                     </Fit>
                     <Fill data-tid="Value" className={styles.value}>
-                        {(customRender && customRender(value, [key])) ||
+                        {(renderValue && renderValue(value, [key])) ||
                             (Array.isArray(value[key]) ? value[key].join(", ") : String(value[key]))}
                     </Fill>
                 </RowStack>
@@ -184,7 +193,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
 
     private readonly toggleCollapseAll = () => {
         const { title } = this.props;
-        const needToggleFirstLevel = title !== undefined;
+        const needToggleFirstLevel = title != null;
         this.setState(state => ({
             collapsedSelf: needToggleFirstLevel ? !state.collapsedRecursive : state.collapsedSelf,
             collapsedRecursive: !state.collapsedRecursive,

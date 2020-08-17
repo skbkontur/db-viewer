@@ -1,17 +1,19 @@
 using System.Threading.Tasks;
-using System.Web.Http;
 
+using Microsoft.AspNetCore.Mvc;
+
+using SkbKontur.DbViewer.Configuration;
 using SkbKontur.DbViewer.DataTypes;
 
 namespace SkbKontur.DbViewer.TestApi.Controllers
 {
-    [RoutePrefix("db-viewer")]
-    public class DbViewerApiController : ApiController
+    [ApiController]
+    [Route("db-viewer")]
+    public class DbViewerApiController : ControllerBase
     {
-        public DbViewerApiController()
+        public DbViewerApiController(SchemaRegistryProvider schemaRegistryProvider)
         {
-            var schemaRegistry = SchemaRegistryProvider.GetSchemaRegistry();
-            impl = new DbViewerApi(schemaRegistry);
+            impl = new DbViewerApi(schemaRegistryProvider.GetSchemaRegistry());
         }
 
         [HttpGet]

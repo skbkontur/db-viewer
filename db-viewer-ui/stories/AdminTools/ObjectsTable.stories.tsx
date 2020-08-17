@@ -19,6 +19,7 @@ export function emptyMethod() {
 
 const string: TypeMetaInformation = {
     typeName: "String",
+    originalTypeName: "String",
     properties: [],
     isArray: false,
     isNullable: false,
@@ -53,11 +54,11 @@ storiesOf("ObjectTable", module)
     .addDecorator(StoryRouter() as any)
     .add("Default", () => (
         <ObjectTable
-            items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}
+            items={[{ id: { gln: "2125215-151256125-12521" }, lastEditedTime: "12521512521", boxId: "12365126126" }]}
             properties={[
                 { ...nonIndexed, name: "id.gln" },
                 { ...nonIndexed, name: "boxId" },
-                { ...indexed, name: "lastEditedTime" },
+                { ...indexed, name: "lastEditedTime", isSortable: true },
             ]}
             onDetailsClick={() => "scopeId/id"}
             onChangeSortClick={emptyMethod}
@@ -70,10 +71,16 @@ storiesOf("ObjectTable", module)
     ))
     .add("Без удаления", () => (
         <ObjectTable
-            items={[{ id: "2125215-151256125-12521", lastModificationDateTime: "12521512521", scopeId: "12365126126" }]}
+            items={[
+                {
+                    id: { gln: "2125215-151256125-12521" },
+                    lastEditedTime: "12521512521",
+                    boxId: "12365126126",
+                },
+            ]}
             properties={[
-                { ...indexed, name: "id.gln" },
-                { ...indexed, name: "boxId" },
+                { ...indexed, name: "id.gln", isSortable: true },
+                { ...indexed, name: "boxId", isSortable: true },
                 { ...nonIndexed, name: "lastEditedTime" },
             ]}
             onDetailsClick={() => "scopeId/id"}

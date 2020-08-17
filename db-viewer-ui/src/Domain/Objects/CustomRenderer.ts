@@ -24,15 +24,15 @@ export interface ICustomRenderer {
 }
 
 export class NullCustomRenderer implements ICustomRenderer {
-    public renderTableCell() {
+    public renderTableCell(): null | string | JSX.Element {
         return null;
     }
 
-    public renderDetails() {
+    public renderDetails(): null | string | JSX.Element {
         return null;
     }
 
-    public renderEdit() {
+    public renderEdit(): null | string | JSX.Element {
         return null;
     }
 }

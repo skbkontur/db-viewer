@@ -14,16 +14,16 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.Connector;
+using SkbKontur.DbViewer.Cql;
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.TestApi.Cql;
 
 namespace SkbKontur.DbViewer.Tests.CqlConnector
 {
-    [NUnit.Framework.Ignore("Unable to run integration tests")]
-    [TestFixture(typeof(CqlDbConnectorFactory))]
-    [TestFixture(typeof(CqlPagedDbConnectorFactory))]
-    public class CqlConnectorTests<TConnectorFactory>
-        where TConnectorFactory : IDbConnectorFactory, new()
+    [TestFixture(typeof(CqlDbConnector<TestDbSearcherObject>))]
+    [TestFixture(typeof(CqlPagedDbConnector<TestDbSearcherObject>))]
+    public class CqlConnectorTests<TConnector>
+        where TConnector : IDbConnector
     {
         private static ISession TryConnectToCassandra(TimeSpan timeout, TimeSpan interval)
         {
@@ -53,7 +53,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             session.CreateKeyspaceIfNotExists(CqlDbConnectorFactory.Keyspace);
             table = new Table<TestDbSearcherObject>(session);
             table.CreateIfNotExists();
-            connector = new TConnectorFactory().CreateConnector<TestDbSearcherObject>();
+            connector = new CqlDbConnectorFactory(typeof(TConnector).GetGenericTypeDefinition()).CreateConnector<TestDbSearcherObject>();
         }
 
         [Test]

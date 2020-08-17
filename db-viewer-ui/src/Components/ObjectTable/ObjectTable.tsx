@@ -38,32 +38,11 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         deletedIndex: null,
     };
 
-    public componentDidUpdate(prevProps: ObjectTableProps) {
+    public componentDidUpdate(prevProps: ObjectTableProps): void {
         if (prevProps.items !== this.props.items) {
             window.scrollTo(0, 0);
         }
     }
-
-    public handleDeleteItem = () => {
-        if (this.state.deletedIndex != null) {
-            this.props.onDeleteClick(this.state.deletedIndex);
-        }
-        this.handleCancelDelete();
-    };
-
-    public handleCancelDelete = () => {
-        this.setState({
-            showConfirmModal: false,
-            deletedIndex: null,
-        });
-    };
-
-    public handleConfirmDeletion = (index: number) => {
-        this.setState({
-            showConfirmModal: true,
-            deletedIndex: index,
-        });
-    };
 
     public render(): JSX.Element {
         const { items, properties, allowDelete } = this.props;
@@ -96,6 +75,27 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
             </ScrollableContainer>
         );
     }
+
+    private readonly handleDeleteItem = () => {
+        if (this.state.deletedIndex != null) {
+            this.props.onDeleteClick(this.state.deletedIndex);
+        }
+        this.handleCancelDelete();
+    };
+
+    private readonly handleCancelDelete = () => {
+        this.setState({
+            showConfirmModal: false,
+            deletedIndex: null,
+        });
+    };
+
+    private readonly handleConfirmDeletion = (index: number) => {
+        this.setState({
+            showConfirmModal: true,
+            deletedIndex: index,
+        });
+    };
 
     public renderEmpty(count: number): JSX.Element[] {
         const arr: JSX.Element[] = [];

@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <IsPackable>false</IsPackable>
     <AssemblyName>SkbKontur.DbViewer.TestApi</AssemblyName>
     <RootNamespace>SkbKontur.DbViewer.TestApi</RootNamespace>
@@ -11,19 +12,17 @@
   <ItemGroup>
     <PackageReference Include="GroboContainer" Version="1.2.45" />
     <PackageReference Include="GroBuf" Version="1.5.5" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.7" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
-    <PackageReference Include="Microsoft.Owin" Version="4.1.0" />
-    <PackageReference Include="Microsoft.Owin.SelfHost" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     <PackageReference Include="SkbKontur.TypeScript.ContractGenerator" Version="2.0.81" />
-    <PackageReference Include="Topshelf" Version="4.2.1" />
-    <PackageReference Include="AutoFixture" Version="4.11.0" />
+    <PackageReference Include="AutoFixture" Version="4.13.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DbViewer.Cql\DbViewer.Cql.csproj" />
-    <ProjectReference Include="..\DbViewer\DbViewer.csproj" />
+    <ProjectReference Include="..\DbViewer.EntityFramework\DbViewer.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

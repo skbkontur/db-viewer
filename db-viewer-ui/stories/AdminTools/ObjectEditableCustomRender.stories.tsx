@@ -13,6 +13,7 @@ const type: TypeMetaInformation = {
     isArray: false,
     properties: [],
     typeName: "",
+    originalTypeName: "",
 };
 
 const prop: PropertyMetaInformation = {

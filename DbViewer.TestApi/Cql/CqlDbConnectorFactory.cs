@@ -19,33 +19,24 @@ namespace SkbKontur.DbViewer.TestApi.Cql
 
     public class CqlDbConnectorFactory : IDbConnectorFactory
     {
-        public CqlDbConnectorFactory()
+        public CqlDbConnectorFactory(Type connectorType)
         {
-            session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+            if (!connectorType.IsGenericTypeDefinition)
+                throw new InvalidOperationException("Expected GenericTypeDefinition");
+            this.connectorType = connectorType;
         }
 
         public IDbConnector CreateConnector<T>() where T : class
         {
-            return new CqlDbConnector<T>(new Table<T>(session), new TimestampProvider());
+            return (IDbConnector)Activator.CreateInstance(connectorType.MakeGenericType(typeof(T)), new Table<T>(Session), new TimestampProvider());
         }
 
         public const string Keyspace = "dbviewer";
 
-        private readonly ISession session;
-    }
+        private ISession Session => session ??= Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
 
-    public class CqlPagedDbConnectorFactory : IDbConnectorFactory
-    {
-        public CqlPagedDbConnectorFactory()
-        {
-            session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
-        }
+        private readonly Type connectorType;
 
-        public IDbConnector CreateConnector<T>() where T : class
-        {
-            return new CqlPagedDbConnector<T>(new Table<T>(session), new TimestampProvider());
-        }
-
-        private readonly ISession session;
+        private ISession session;
     }
 }
