@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.100 - 2020.08.17
+- Add `DbViewer.EntityFramework` package
+- Add type information to object details view
+
 ## v0.2.83 - 2020.05.06
 - Fix for rendering object with Hashtable inside.
 - Use non-recursive convert method in `SearchObjects` for better performance with large objects.
