@@ -1,6 +1,7 @@
 import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import Hint from "@skbkontur/react-ui/Hint";
 import Link from "@skbkontur/react-ui/Link";
 import isArray from "lodash/isArray";
 import isEqual from "lodash/isEqual";
@@ -8,7 +9,6 @@ import isPlainObject from "lodash/isPlainObject";
 import React from "react";
 
 import styles from "./Accordion.less";
-import Hint from "@skbkontur/react-ui/Hint";
 
 type CaptionRenderer = (path: string[]) => null | string;
 type ValueRenderer = (target: { [key: string]: any }, path: string[]) => null | JSX.Element;
@@ -190,25 +190,21 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         const { collapsedSelf } = this.state;
         if (title == null) return null;
         const caption = renderCaption?.([]);
-        const titleButton = (
-            <button data-tid="ToggleButton" className={styles.toggleButton} onClick={this.toggleCollapseManual}>
-                {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
-                <span data-tid="ToggleButtonText" className={styles.toggleButtonText}>
-                    {title}
-                </span>
-            </button>
-        );
-        if (caption == null) {
-            return titleButton;
-        }
         return (
             <RowStack gap={1} data-tid="Title" verticalAlign="baseline">
                 <Fit data-tid="Title" className={styles.title}>
-                    {titleButton}
+                    <button data-tid="ToggleButton" className={styles.toggleButton} onClick={this.toggleCollapseManual}>
+                        {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
+                        <span data-tid="ToggleButtonText" className={styles.toggleButtonText}>
+                            {title}
+                        </span>
+                    </button>
                 </Fit>
-                <Fit data-tid="Type" className={styles.mutedKeyword}>
-                    {caption}
-                </Fit>
+                {caption && (
+                    <Fit data-tid="Type" className={styles.mutedKeyword}>
+                        {caption}
+                    </Fit>
+                )}
             </RowStack>
         );
     };
