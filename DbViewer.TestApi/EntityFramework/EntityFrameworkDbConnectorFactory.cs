@@ -14,7 +14,7 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
 
         public IDbConnector CreateConnector<T>() where T : class
         {
-            return new EntityFrameworkDbConnector<T>(createContext());
+            return new EntityFrameworkDbConnector<T>(createContext);
         }
 
         private readonly Func<EntityFrameworkDbContext> createContext;

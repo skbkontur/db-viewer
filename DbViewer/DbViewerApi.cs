@@ -66,7 +66,9 @@ namespace SkbKontur.DbViewer
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             var downloadLimit = isSuperUser ? schema.Description.DownloadLimitForSuperUser : schema.Description.DownloadLimit;
-            var count = await schemaRegistry.GetConnector(objectIdentifier).Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
+
+            var connector = schemaRegistry.GetConnector(objectIdentifier);
+            var count = await connector.Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
             if (count > downloadLimit)
                 return new DownloadResult
                     {
@@ -75,7 +77,7 @@ namespace SkbKontur.DbViewer
                         CountLimit = downloadLimit,
                     };
 
-            var results = await schemaRegistry.GetConnector(objectIdentifier).Search(query.Conditions, query.Sorts, 0, downloadLimit + 1).ConfigureAwait(false);
+            var results = await connector.Search(query.Conditions, query.Sorts, 0, downloadLimit + 1).ConfigureAwait(false);
 
             var properties = new List<string>();
             var getters = new List<Func<object?, object?>>();
@@ -134,11 +136,12 @@ namespace SkbKontur.DbViewer
             if (!isSuperUser)
                 throw new InvalidOperationException("User cannot update object");
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
-            var oldObject = await schemaRegistry.GetConnector(objectIdentifier).Read(query.Conditions).ConfigureAwait(false);
+            var connector = schemaRegistry.GetConnector(objectIdentifier);
+            var oldObject = await connector.Read(query.Conditions).ConfigureAwait(false);
             if (oldObject == null)
                 throw new InvalidOperationException("Expected edited object to exist");
             var updatedObject = ObjectPropertyEditor.SetValue(oldObject, query.Path, query.Value, schema.CustomPropertyConfigurationProvider);
-            await schemaRegistry.GetConnector(objectIdentifier).Write(updatedObject).ConfigureAwait(false);
+            await connector.Write(updatedObject).ConfigureAwait(false);
         }
 
         private readonly ISchemaRegistry schemaRegistry;

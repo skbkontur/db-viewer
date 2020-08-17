@@ -13,13 +13,15 @@ namespace SkbKontur.DbViewer.EntityFramework
     public class EntityFrameworkDbConnector<T> : IDbConnector
         where T : class
     {
-        public EntityFrameworkDbConnector(DbContext context)
+        public EntityFrameworkDbConnector(Func<DbContext> createContext)
         {
-            this.context = context;
+            this.createContext = createContext;
         }
 
         public async Task<object[]> Search(Condition[] filters, Sort[] sorts, int from, int count)
         {
+            await using var context = createContext();
+
             var query = BuildQuery(context.Set<T>().AsNoTracking(), filters);
             query = AddSorts(query, sorts);
             query = query.Skip(from).Take(count);
@@ -30,6 +32,8 @@ namespace SkbKontur.DbViewer.EntityFramework
 
         public async Task<int?> Count(Condition[] filters, int limit)
         {
+            await using var context = createContext();
+
             var query = BuildQuery(context.Set<T>().AsNoTracking(), filters).Take(limit);
             var count = await query.CountAsync().ConfigureAwait(false);
             return count;
@@ -37,6 +41,8 @@ namespace SkbKontur.DbViewer.EntityFramework
 
         public async Task<object?> Read(Condition[] filters)
         {
+            await using var context = createContext();
+
             var query = BuildReadQuery(context.Set<T>().AsNoTracking(), filters);
             var results = await query.ToArrayAsync().ConfigureAwait(false);
             return results.SingleOrDefault();
@@ -44,6 +50,8 @@ namespace SkbKontur.DbViewer.EntityFramework
 
         public async Task Delete(Condition[] filters)
         {
+            await using var context = createContext();
+
             var query = BuildReadQuery(context.Set<T>(), filters);
             var results = await query.ToArrayAsync().ConfigureAwait(false);
             if (results.Length != 1)
@@ -55,6 +63,8 @@ namespace SkbKontur.DbViewer.EntityFramework
 
         public async Task Write(object @object)
         {
+            await using var context = createContext();
+
             context.Set<T>().Update((T)@object);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }
@@ -107,6 +117,6 @@ namespace SkbKontur.DbViewer.EntityFramework
                        : query.ThenByDescending(CriterionHelper.BuildSort<T, TProperty>(sort));
         }
 
-        private readonly DbContext context;
+        private readonly Func<DbContext> createContext;
     }
 }
