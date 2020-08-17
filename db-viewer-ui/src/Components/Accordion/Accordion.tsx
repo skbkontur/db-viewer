@@ -188,10 +188,12 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     private readonly renderTitle = () => {
         const { title, renderCaption } = this.props;
         const { collapsedSelf } = this.state;
-        if (title == null) return null;
+        if (title == null) {
+            return null;
+        }
         const caption = renderCaption?.([]);
         return (
-            <RowStack gap={1} data-tid="Title" verticalAlign="baseline">
+            <RowStack gap={1} verticalAlign="baseline">
                 <Fit data-tid="Title" className={styles.title}>
                     <button data-tid="ToggleButton" className={styles.toggleButton} onClick={this.toggleCollapseManual}>
                         {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
@@ -201,7 +203,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                     </button>
                 </Fit>
                 {caption && (
-                    <Fit data-tid="Type" className={styles.mutedKeyword}>
+                    <Fit data-tid="Caption" className={styles.mutedKeyword}>
                         {caption}
                     </Fit>
                 )}
