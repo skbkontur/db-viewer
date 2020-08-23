@@ -49,11 +49,14 @@ module.exports = function (env) {
             new webpack.DefinePlugin({
                 "process.env.API": JSON.stringify(env.api || "real"),
                 "process.env.NODE_ENV": JSON.stringify("development"),
+                "process.env.enableReactTesting": JSON.stringify(true),
             }),
             new webpack.NamedModulesPlugin(),
         ],
         mode: "development",
         devServer: {
+            host: "0.0.0.0",
+            port: 8080,
             proxy: {
                 "/db-viewer/**": {
                     target: "http://localhost:5000/",

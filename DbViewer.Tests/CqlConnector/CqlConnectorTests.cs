@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using AutoFixture;
-
-using Cassandra;
-using Cassandra.Data.Linq;
 
 using FluentAssertions;
 
@@ -25,34 +20,9 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
     public class CqlConnectorTests<TConnector>
         where TConnector : IDbConnector
     {
-        private static ISession TryConnectToCassandra(TimeSpan timeout, TimeSpan interval)
-        {
-            var sw = Stopwatch.StartNew();
-            while (sw.Elapsed < timeout)
-            {
-                try
-                {
-                    var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
-                    Console.WriteLine($"Successfully connected to cassandra after {sw.Elapsed.TotalSeconds} seconds");
-                    return session;
-                }
-                catch (NoHostAvailableException)
-                {
-                }
-
-                Thread.Sleep(interval);
-            }
-
-            throw new InvalidOperationException($"Failed to wait for local cassandra node to start in {timeout.TotalSeconds} seconds");
-        }
-
         [OneTimeSetUp]
         public void SetUp()
         {
-            var session = TryConnectToCassandra(timeout : TimeSpan.FromMinutes(1), interval : TimeSpan.FromSeconds(1));
-            session.CreateKeyspaceIfNotExists(CqlDbConnectorFactory.Keyspace);
-            table = new Table<TestDbSearcherObject>(session);
-            table.CreateIfNotExists();
             connector = new CqlDbConnectorFactory(typeof(TConnector).GetGenericTypeDefinition()).CreateConnector<TestDbSearcherObject>();
         }
 
@@ -241,11 +211,10 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
 
         private void Write(params TestDbSearcherObject[] objects)
         {
-            foreach (var o in objects)
-                table.Insert(o).SetTimestamp(DateTimeOffset.UtcNow).Execute();
+            using var context = new CqlDbContext();
+            context.InsertDocuments(objects);
         }
 
         private IDbConnector connector;
-        private Table<TestDbSearcherObject> table;
     }
 }

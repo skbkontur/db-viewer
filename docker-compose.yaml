@@ -32,5 +32,5 @@ services:
     links:
       - selenoid
     ports:
-      - "8080:8080"
-    command: ["--selenoid-uri", "http://selenoid:4444"]
+      - "8081:8081"
+    command: ["--listen", ":8081", "--selenoid-uri", "http://selenoid:4444"]

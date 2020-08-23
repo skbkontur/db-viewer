@@ -21,23 +21,6 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 {
     public static class AssertionExtensions
     {
-        public static T ClickAndGoTo<T>(this ControlBase control)
-            where T : PageBase
-        {
-            return control.ClickAndGetPage().GoTo<T>();
-        }
-
-        private static PageBase ClickAndGetPage(this ControlBase control)
-        {
-            control.Click();
-            return (PageBase)control.GetRootContainer();
-        }
-
-        public static void WaitPresence(this ControlBase control)
-        {
-            control.IsPresent.Wait().That(Is.True);
-        }
-
         public static void WaitText(this Label compoundControl, string text)
         {
             compoundControl.Text.Wait().That(Is.EqualTo(text));

@@ -5,7 +5,6 @@ using SkbKontur.DbViewer.Tests.FrontTests.Pages;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
-    [Ignore("не работает")]
     public class BusinessObjectsSearchTests
     {
         /// <summary>
@@ -18,18 +17,23 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using var browser = new BrowserForTests();
 
             var businessObjectsPage = browser.SwitchTo<BusinessObjectsPage>();
-            businessObjectsPage.FilterInput.ClearAndInputText("VCBO");
+            businessObjectsPage.FilterInput.ClearAndInputText("CI");
+            businessObjectsPage.ObjectGroups.WaitCount(1);
+            businessObjectsPage.ObjectGroups
+                               .GetItemWithText(x => x.Name.Text, "CQL Paged Objects").ObjectsList
+                               .Wait(x => x.ObjectLink.Text)
+                               .That(Is.EqualTo(new[] {"CqlOrganizationInfo", "CqlUserInfo"}));
+
+            businessObjectsPage.FilterInput.ClearAndInputText("DocMe");
             businessObjectsPage.ObjectGroups.WaitCount(2);
-
-            var arrayObjects = businessObjectsPage.ObjectGroups.GetItemWithText(x => x.Name.Text, "Business Array Objects");
-            arrayObjects.ObjectsList.Wait(x => x.ObjectLink.Text).That(Is.EqualTo(new[]
-                {
-                    "ValidationsCheckProcessingNowBusinessObject",
-                    "RecentValidationsCheckBusinessObject"
-                }));
-
-            var objects = businessObjectsPage.ObjectGroups.GetItemWithText(x => x.Name.Text, "Business Objects");
-            objects.ObjectsList.Wait(x => x.ObjectLink.Text).That(Is.EqualTo(new[] {"ValidationsCheckBusinessObject"}));
+            businessObjectsPage.ObjectGroups
+                               .GetItemWithText(x => x.Name.Text, "CQL Objects").ObjectsList
+                               .Wait(x => x.ObjectLink.Text)
+                               .That(Is.EqualTo(new[] {"DocumentBindingsMeta"}));
+            businessObjectsPage.ObjectGroups
+                               .GetItemWithText(x => x.Name.Text, "CQL Paged Objects").ObjectsList
+                               .Wait(x => x.ObjectLink.Text)
+                               .That(Is.EqualTo(new[] {"CqlDocumentMeta"}));
         }
 
         /// <summary>
@@ -41,13 +45,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using var browser = new BrowserForTests();
 
             var businessObjects = browser.SwitchTo<BusinessObjectsPage>();
-            businessObjects.FilterInput.ClearAndInputText("FtpUserThrift");
+            businessObjects.FilterInput.ClearAndInputText("UsersTable");
             businessObjects.ObjectGroups.WaitCount(1);
 
-            var objects = businessObjects.ObjectGroups.GetItemWithText(x => x.Name.Text, "Business Objects");
+            var objects = businessObjects.ObjectGroups.GetItemWithText(x => x.Name.Text, "Postgres Objects");
             objects.IndexedLabel.WaitPresence();
             objects.ObjectsList.WaitCount(1);
-            objects.ObjectsList[0].ObjectLink.WaitText("FtpUserThrift");
+            objects.ObjectsList[0].ObjectLink.WaitText("UsersTable");
         }
 
         /// <summary>
@@ -60,10 +64,10 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using var browser = new BrowserForTests();
 
             var businessObjectsPage = browser.SwitchTo<BusinessObjectsPage>();
-            businessObjectsPage.FilterInput.ClearAndInputText("CqlDocumentPrintingInfo");
+            businessObjectsPage.FilterInput.ClearAndInputText("DocumentPrintingInfo");
             businessObjectsPage.ObjectGroups.WaitCount(1);
             businessObjectsPage.ObjectGroups[0].ObjectsList.WaitCount(1);
-            businessObjectsPage.FindBusinessObjectLink("CQL Objects", "CqlDocumentPrintingInfo").WaitPresence();
+            businessObjectsPage.FindBusinessObjectLink("CQL Objects", "DocumentPrintingInfo").WaitPresence();
         }
 
         /// <summary>
@@ -76,9 +80,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using var browser = new BrowserForTests();
 
             var businessObjectsPage = browser.SwitchTo<BusinessObjectsPage>();
-            var link = businessObjectsPage.FindBusinessObjectLink("CQL Objects", "CqlDocumentPrintingInfo");
+            var link = businessObjectsPage.FindBusinessObjectLink("CQL Objects", "DocumentPrintingInfo");
             var page = link.ClickAndGoTo<BusinessObjectTablePage>();
-            page.Header.WaitText("CqlDocumentPrintingInfo");
+            page.Header.WaitText("DocumentPrintingInfo");
         }
     }
 }

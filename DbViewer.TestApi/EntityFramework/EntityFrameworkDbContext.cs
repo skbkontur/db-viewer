@@ -9,6 +9,7 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
     public class EntityFrameworkDbContext : DbContext
     {
         public DbSet<UsersTable> Users { get; set; }
+        public DbSet<FtpUser> FtpUsers { get; set; }
         public DbSet<TestTable> Tests { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

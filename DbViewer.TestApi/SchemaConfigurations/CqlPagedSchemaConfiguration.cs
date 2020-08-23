@@ -30,6 +30,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
                 typeof(CqlDocumentMeta),
                 typeof(CqlOrganizationInfo),
                 typeof(CqlUserInfo),
+                typeof(CqlActiveBoxState)
             }.ToTypeDescriptions();
 
         public IDbConnectorFactory ConnectorsFactory { get; }

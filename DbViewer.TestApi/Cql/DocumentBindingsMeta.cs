@@ -3,6 +3,8 @@
 using Cassandra;
 using Cassandra.Mapping.Attributes;
 
+using SkbKontur.DbViewer.TestApi.Impl.Attributes;
+
 namespace SkbKontur.DbViewer.TestApi.Cql
 {
     [Table("document_bindings_meta", Keyspace = CqlDbConnectorFactory.Keyspace, CaseSensitive = true)]
@@ -45,9 +47,11 @@ namespace SkbKontur.DbViewer.TestApi.Cql
         public DateTimeOffset DateTime { get; set; }
 
         [Column("document_without_good_items_bytes")]
+        [Serialized(typeof(Document))]
         public byte[] DocumentWithoutGoodItemsBytes { get; set; }
 
         [Column("entity_meta_bytes")]
+        [Serialized(typeof(EntityMeta))]
         public byte[] EntityMetaBytes { get; set; }
     }
 }
