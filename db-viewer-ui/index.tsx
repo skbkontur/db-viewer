@@ -44,6 +44,4 @@ function AdminToolsEntryPoint() {
     );
 }
 
-// todo react-hot-loader не дружит с react-selenium-testing
-export const AdminTools = AdminToolsEntryPoint;
-ReactDom.render(<AdminTools />, document.getElementById("content"));
+ReactDom.render(<AdminToolsEntryPoint />, document.getElementById("content"));

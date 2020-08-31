@@ -15,10 +15,8 @@ import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFo
 import { ObjectViewer } from "../Components/ObjectViewer/ObjectViewer";
 import { Condition } from "../Domain/Api/DataTypes/Condition";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
-import { ObjectDetails } from "../Domain/Api/DataTypes/ObjectDetails";
 import { ObjectFieldFilterOperator } from "../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
-import { ApiError } from "../Domain/ApiBase/ApiError";
 import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
@@ -37,7 +35,6 @@ interface ObjectDetailsState {
     objectMeta: null | ObjectDescription;
     loading: boolean;
     showConfirmModal: boolean;
-    objectNotFound: boolean;
 }
 
 class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps, ObjectDetailsState> {
@@ -47,7 +44,6 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         objectInfo: {},
         objectMeta: null,
         showConfirmModal: false,
-        objectNotFound: false,
     };
 
     public componentDidMount() {
@@ -62,33 +58,19 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     }
 
     public async load(): Promise<void> {
+        const { dbViewerApi, objectId } = this.props;
+
         this.setState({ loading: true });
         try {
             const conditions = this.getConditions();
-            const objectInfo = await this.loadObject(conditions);
-            if (objectInfo) {
-                this.setState({
-                    conditions: conditions,
-                    objectInfo: objectInfo.object,
-                    objectMeta: objectInfo.meta,
-                });
-            }
+            const objectInfo = await dbViewerApi.readObject(objectId, { conditions: conditions });
+            this.setState({
+                conditions: conditions,
+                objectInfo: objectInfo.object,
+                objectMeta: objectInfo.meta,
+            });
         } finally {
             this.setState({ loading: false });
-        }
-    }
-
-    public async loadObject(conditions: Condition[]): Promise<null | ObjectDetails> {
-        const { dbViewerApi, objectId } = this.props;
-        try {
-            return await dbViewerApi.readObject(objectId, { conditions: conditions });
-        } catch (e) {
-            if (e instanceof ApiError && e.statusCode === 404) {
-                this.setState({ objectNotFound: true });
-                return null;
-            } else {
-                throw new Error(e.message);
-            }
         }
     }
 
@@ -150,8 +132,8 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
 
     public render(): JSX.Element {
         const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer } = this.props;
-        const { objectInfo, objectNotFound, objectMeta, loading } = this.state;
-        if (objectNotFound || objectInfo == null) {
+        const { objectInfo, objectMeta, loading } = this.state;
+        if (objectInfo == null) {
             return <ObjectNotFoundPage />;
         }
 
