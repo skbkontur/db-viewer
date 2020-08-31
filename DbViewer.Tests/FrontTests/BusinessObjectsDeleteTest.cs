@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 
 using NUnit.Framework;
 
@@ -20,7 +21,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var ftpUser = CreateFtpUser();
 
             using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("FtpUserThrift");
+            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
 
             businessObjectPage.OpenFilter.Click();
             businessObjectPage.FilterModal.GetFilter("Login").Input.ClearAndInputText(ftpUser.Login);
@@ -43,7 +44,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var ftpUser = CreateFtpUser();
 
             using var browser = new BrowserForTests();
-            var businessObjectPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("FtpUserThrift");
+            var businessObjectPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("FtpUser");
 
             businessObjectPage.OpenFilter.Click();
             businessObjectPage.FilterModal.GetFilter("Login").Input.ClearAndInputText(ftpUser.Login);
@@ -69,7 +70,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var ftpUser = CreateFtpUser();
 
             using var browser = new BrowserForTests();
-            var detailsPage = browser.SwitchTo<BusinessObjectDetailsPage>("FtpUserThrift", $"Id={ftpUser.Id}");
+            var detailsPage = browser.SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
             detailsPage.Delete.IsPresent.Wait().That(Is.False, "Delete link should only be present for gods");
         }
 
@@ -85,7 +86,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var ftpUser = CreateFtpUser();
 
             using var browser = new BrowserForTests();
-            var detailsPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>("FtpUserThrift", $"Id={ftpUser.Id}");
+            var detailsPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
             detailsPage.Delete.Click();
             ConfirmDeletion(detailsPage.ConfirmDeleteObjectModal, confirmDeletion);
 
@@ -107,12 +108,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             if (deletionConfirmed)
             {
-                Assert.That(GetFtpUser(userId), Is.Null, "Failed to delete ftp user: User still exists");
+                Assert.That(() => GetFtpUser(userId), Is.Null.After(2000, 100), "Failed to delete ftp user: User still exists");
                 return;
             }
 
-            // Проверяем, что пользователь действительно не удалился после {timeout} ms
-            Assert.That(GetFtpUser(userId), Is.Not.Null, "Deleted ftp user despite denying confirmation");
+            // Проверяем, что пользователь действительно не удалился после 2000 ms
+            Thread.Sleep(2000);
+            Assert.That(() => GetFtpUser(userId), Is.Not.Null, "Deleted ftp user despite denying confirmation");
         }
 
         private FtpUser CreateFtpUser()
@@ -137,7 +139,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         private FtpUser GetFtpUser(Guid userId)
         {
             using var context = new EntityFrameworkDbContext();
-            return context.FtpUsers.Where(x => x.Id == userId).ToArray().Single();
+            return context.FtpUsers.Where(x => x.Id == userId).ToArray().SingleOrDefault();
         }
     }
 }

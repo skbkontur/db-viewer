@@ -1,7 +1,6 @@
 import "./react-selenium-testing";
 import React from "react";
 import ReactDom from "react-dom";
-import { hot } from "react-hot-loader";
 import { Switch, Redirect, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
@@ -23,7 +22,7 @@ function AdminToolsEntryPoint() {
                             identifierKeywords={["Cql", "StorageElement"]}
                             customRenderer={new NullCustomRenderer()}
                             useErrorHandlingContainer
-                            isSuperUser={document.cookie.includes("isSuperUser=true")}
+                            isSuperUser={localStorage.getItem("isSuperUser") === "true"}
                             dbViewerApi={dbViewerApi}
                             {...props}
                         />
@@ -32,10 +31,19 @@ function AdminToolsEntryPoint() {
                 <Route exact path="/">
                     <Redirect to="/BusinessObjects" />
                 </Route>
+                <Route
+                    exact
+                    path="/Admin"
+                    render={() => {
+                        localStorage.setItem("isSuperUser", "true");
+                        return <Redirect to="/BusinessObjects" />;
+                    }}
+                />
             </Switch>
         </BrowserRouter>
     );
 }
 
-export const AdminTools = hot(module)(AdminToolsEntryPoint);
+// todo react-hot-loader не дружит с react-selenium-testing
+export const AdminTools = AdminToolsEntryPoint;
 ReactDom.render(<AdminTools />, document.getElementById("content"));

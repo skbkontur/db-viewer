@@ -55,8 +55,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                     FirstPartnerPartyId = firstPartnersPartyId,
                     SecondPartnerPartyId = secondPartnersPartyId,
                     DocumentNumber = "0",
-                    DocumentDate = new LocalDate(2000, 10, 11),
-                    DocumentTime = new LocalTime(13, 12, 10, 0),
+                    DocumentDate = new LocalDate(2000, 10, 10),
+                    DocumentTime = new LocalTime(13, 12, 11, 0),
                     DocumentType = "Orders",
                     DocumentCirculationId = TimeUuid.NewId(),
                     DocumentWithoutGoodItemsBytes = serializer.Serialize(new Document

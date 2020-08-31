@@ -12,9 +12,9 @@ using NUnit.Framework;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
-using SKBKontur.SeleniumTesting;
+using SkbKontur.DbViewer.Tests.FrontTests.Pages;
 
-using Cookie = OpenQA.Selenium.Cookie;
+using SKBKontur.SeleniumTesting;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 {
@@ -50,11 +50,6 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             return uri.IsAbsoluteUri ? uri : new Uri(new Uri(BaseUrl), uri);
         }
 
-        private static IPAddress GetLocalIp()
-        {
-            return Dns.GetHostAddresses(Dns.GetHostName()).First(x => x.AddressFamily == AddressFamily.InterNetwork);
-        }
-
         public RemoteWebDriver WebDriver
         {
             get
@@ -77,7 +72,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             }
         }
 
-        private string BaseUrl { get; } = $"http://{GetLocalIp()}:8080/";
+        private string BaseUrl { get; } = $"http://{IpAddress}:8080/";
+
+        public static readonly IPAddress IpAddress = Dns.GetHostAddresses(Dns.GetHostName()).First(x => x.AddressFamily == AddressFamily.InterNetwork);
 
         private RemoteWebDriver webDriver;
     }
@@ -110,7 +107,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 
         public static BrowserForTests LoginAsSuperUser(this BrowserForTests browser)
         {
-            browser.WebDriver.Manage().Cookies.AddCookie(new Cookie("isSuperUser", "true", "/"));
+            browser.SwitchToUri<BusinessObjectsPage>(new Uri("Admin", UriKind.Relative));
             return browser;
         }
 

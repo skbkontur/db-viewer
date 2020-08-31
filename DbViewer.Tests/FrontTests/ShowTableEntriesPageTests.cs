@@ -33,13 +33,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 context.InsertDocument(printingInfo);
 
             using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("CqlDocumentPrintingInfo");
+            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
 
             showTableEntriesPage.OpenFilter.Click();
             showTableEntriesPage.FilterModal.Apply.Click();
             var searchField = showTableEntriesPage.FilterModal.GetFilter("Id");
             searchField.InputValidation.ExpectIsOpenedWithMessage("Поле должно быть заполнено");
-            searchField.Input.ClearAndInputText(Guid.Empty.ToString());
+            searchField.Input.ClearAndInputText(Guid.NewGuid().ToString());
             showTableEntriesPage.FilterModal.Apply.Click();
 
             showTableEntriesPage.BusinessObjectItems.WaitAbsence();
@@ -74,7 +74,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 context.InsertDocuments(documents);
 
             using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("CqlDocumentBindingMeta");
+            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
             showTableEntriesPage.OpenFilter.Click();
             showTableEntriesPage.FilterModal.GetFilter("BindingType").EnumSelect.SelectValueByText("ByPriceList");
             showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId").Input.ClearAndInputText(firstPartnerPartyId);
@@ -83,11 +83,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId").Input.WaitIncorrect();
             showTableEntriesPage.FilterModal.GetFilter("DocumentNumber").Input.WaitIncorrect();
             showTableEntriesPage.FilterModal.GetFilter("DocumentDate").DateTimeInTicks.WaitIncorrect();
+            showTableEntriesPage.FilterModal.GetFilter("DocumentTime").DateTimeInTicks.WaitIncorrect();
             showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId").Input.WaitCorrect();
 
             showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId").Input.ClearAndInputText(secondPartnerPartyId);
             showTableEntriesPage.FilterModal.GetFilter("DocumentNumber").Input.ClearAndInputText("0");
             showTableEntriesPage.FilterModal.GetFilter("DocumentDate").Date.ClearAndInputText("10.10.2000");
+            showTableEntriesPage.FilterModal.GetFilter("DocumentTime").DateTimeInTicks.ClearAndInputText(new DateTime(2020, 10, 10, 13, 12, 11, DateTimeKind.Utc).Ticks.ToString());
 
             var documentType = documents[0].DocumentType;
             var documentCirculationId = documents[0].DocumentCirculationId.ToString();
@@ -138,13 +140,14 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 context.InsertDocuments(documents);
 
             using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("CqlDocumentBindingMeta");
+            var showTableEntriesPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
             showTableEntriesPage.OpenFilter.Click();
             showTableEntriesPage.FilterModal.GetFilter("BindingType").EnumSelect.SelectValueByText("ByPriceList");
             showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId").Input.ClearAndInputText(firstPartnerPartyId);
             showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId").Input.ClearAndInputText(secondPartnerPartyId);
             showTableEntriesPage.FilterModal.GetFilter("DocumentNumber").Input.ClearAndInputText("0");
             showTableEntriesPage.FilterModal.GetFilter("DocumentDate").Date.ClearAndInputText("10.10.2000");
+            showTableEntriesPage.FilterModal.GetFilter("DocumentTime").DateTimeInTicks.ClearAndInputText(new DateTime(2020, 10, 10, 13, 12, 11, DateTimeKind.Utc).Ticks.ToString());
             showTableEntriesPage.FilterModal.GetFilter("DocumentType").Input.ClearAndInputText(documentType);
             showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId").Input.ClearAndInputText(documentCirculationId);
             showTableEntriesPage.FilterModal.Apply.Click();
@@ -258,6 +261,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                                       && x.SecondPartnerPartyId == meta.SecondPartnerPartyId
                                       && x.DocumentNumber == meta.DocumentNumber
                                       && x.DocumentDate == meta.DocumentDate
+                                      && x.DocumentTime == meta.DocumentTime
                                       && x.DocumentType == meta.DocumentType
                                       && x.DocumentCirculationId == meta.DocumentCirculationId)
                           .Execute()

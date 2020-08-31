@@ -44,7 +44,7 @@
     "@typescript-eslint/explicit-function-return-type": "off",
     "react/no-deprecated": "warn"
   },
-  "ignorePatterns": ["dist/"],
+  "ignorePatterns": ["dist/", "react-selenium-testing.js"],
   "settings": {
     "import/resolver": {
       "node": {

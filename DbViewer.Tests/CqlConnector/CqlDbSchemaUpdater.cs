@@ -2,6 +2,9 @@
 
 using AutoFixture;
 
+using GroBuf;
+using GroBuf.DataMembersExtracters;
+
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.Cql.CustomPropertyConfigurations;
@@ -24,7 +27,8 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             CreateTable<DocumentStorageElement>(context, 123);
         }
 
-        private static void CreateTable<T>(CqlDbContext context, int count)
+        private void CreateTable<T>(CqlDbContext context, int count)
+            where T : class
         {
             context.DropTable<T>();
             var table = context.GetTable<T>();
@@ -34,7 +38,22 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             fixture.Register((DateTime dt) => CassandraPrimitivesExtensions.ToLocalTime(dt));
 
             for (var i = 0; i < count; i++)
-                table.Insert(fixture.Create<T>()).SetTimestamp(DateTimeOffset.UtcNow).Execute();
+                table.Insert(Modify<T>(fixture)).SetTimestamp(DateTimeOffset.UtcNow).Execute();
         }
+
+        private T Modify<T>(Fixture fixture)
+            where T : class
+        {
+            var document = fixture.Create<T>();
+            if (document is DocumentBindingsMeta meta)
+            {
+                meta.EntityMetaBytes = serializer.Serialize(fixture.Create<EntityMeta>());
+                meta.DocumentWithoutGoodItemsBytes = serializer.Serialize(fixture.Create<Document>());
+                return (meta as T)!;
+            }
+            return document;
+        }
+
+        private readonly ISerializer serializer = new Serializer(new AllPropertiesExtractor());
     }
 }
