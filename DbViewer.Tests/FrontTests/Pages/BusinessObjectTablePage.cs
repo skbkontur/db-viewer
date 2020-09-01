@@ -34,8 +34,6 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Link FieldSettings { get; set; }
         public Link DownloadLink { get; set; }
 
-        // public TooltipContent<ColumnSelector> ColumnSelector { get; set; }
-
         public ConfirmDeleteObjectModal ConfirmDeleteObjectModal { get; set; }
 
         public BusinessObjectTableHeader TableHeader { get; set; }
@@ -45,11 +43,5 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public ControlList<BusinessObjectTableRow> BusinessObjectItems { get; set; }
 
         public Paging Paging { get; set; }
-
-        // public void DownloadExcel()
-        // {
-        // DownloadLink.WaitEnabled();
-        // DownloadLink.Click();
-        // }
     }
 }

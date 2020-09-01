@@ -31,6 +31,11 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             compoundControl.Text.Wait().That(Is.EqualTo(text));
         }
 
+        public static void WaitText(this CompoundControl compoundControl, string text)
+        {
+            compoundControl.Text.Wait().That(Is.EqualTo(text));
+        }
+
         public static void WaitCount<T>(this ControlListBase<T> controlList, int count)
             where T : ControlBase
         {

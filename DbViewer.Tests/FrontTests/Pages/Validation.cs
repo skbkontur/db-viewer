@@ -1,5 +1,7 @@
 ﻿using Kontur.Selone.Properties;
 
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
+
 using SKBKontur.SeleniumTesting;
 using SKBKontur.SeleniumTesting.Controls;
 
@@ -19,7 +21,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         {
             if (message != null)
             {
-                // portal.WaitText(message);
+                portal.WaitText(message);
             }
         }
 
