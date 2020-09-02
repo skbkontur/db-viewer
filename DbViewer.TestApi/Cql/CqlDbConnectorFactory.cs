@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using Cassandra;
-using Cassandra.Data.Linq;
-
 using SkbKontur.DbViewer.Connector;
 using SkbKontur.DbViewer.Cql;
 
@@ -28,15 +25,15 @@ namespace SkbKontur.DbViewer.TestApi.Cql
 
         public IDbConnector CreateConnector<T>() where T : class
         {
-            return (IDbConnector)Activator.CreateInstance(connectorType.MakeGenericType(typeof(T)), new Table<T>(Session), new TimestampProvider());
+            return (IDbConnector)Activator.CreateInstance(connectorType.MakeGenericType(typeof(T)), Context.GetTable<T>(), new TimestampProvider());
         }
 
         public const string Keyspace = "dbviewer";
 
-        private ISession Session => session ??= Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+        private CqlDbContext Context => context ??= new CqlDbContext();
 
         private readonly Type connectorType;
 
-        private ISession session;
+        private CqlDbContext context;
     }
 }

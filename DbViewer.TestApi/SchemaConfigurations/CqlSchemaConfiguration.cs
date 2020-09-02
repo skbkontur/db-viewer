@@ -30,6 +30,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
                 typeof(DocumentBindingsMeta),
                 typeof(DocumentPrintingInfo),
                 typeof(DocumentStorageElement),
+                typeof(CqlConnectorDeliveryContext)
             }.ToTypeDescriptions();
 
         public IDbConnectorFactory ConnectorsFactory { get; }

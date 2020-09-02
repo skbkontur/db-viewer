@@ -10,6 +10,19 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "FtpUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Login = table.Column<string>(nullable: false),
+                    BoxId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FtpUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tests",
                 columns: table => new
                 {
@@ -43,6 +56,11 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_FtpUsers_Login",
+                table: "FtpUsers",
+                column: "Login");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Tests_Boolean_Integer_String_DateTime_DateTimeOffset",
                 table: "Tests",
                 columns: new[] { "Boolean", "Integer", "String", "DateTime", "DateTimeOffset" });
@@ -55,6 +73,9 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "FtpUsers");
+
             migrationBuilder.DropTable(
                 name: "Tests");
 

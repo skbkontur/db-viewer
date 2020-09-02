@@ -2,8 +2,8 @@
 
 using AutoFixture;
 
-using Cassandra;
-using Cassandra.Data.Linq;
+using GroBuf;
+using GroBuf.DataMembersExtracters;
 
 using NUnit.Framework;
 
@@ -18,28 +18,42 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
         [Explicit]
         public void Test()
         {
-            var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
-            session.CreateKeyspaceIfNotExists(CqlDbConnectorFactory.Keyspace);
-            CreateTable<CqlDocumentMeta>(session, 100);
-            CreateTable<CqlOrganizationInfo>(session, 1000);
-            CreateTable<CqlUserInfo>(session, 1500);
-            CreateTable<DocumentBindingsMeta>(session, 150);
-            CreateTable<DocumentPrintingInfo>(session, 11000);
-            CreateTable<DocumentStorageElement>(session, 123);
+            using var context = new CqlDbContext();
+            CreateTable<CqlDocumentMeta>(context, 100);
+            CreateTable<CqlOrganizationInfo>(context, 1000);
+            CreateTable<CqlUserInfo>(context, 1500);
+            CreateTable<DocumentBindingsMeta>(context, 150);
+            CreateTable<DocumentPrintingInfo>(context, 11000);
+            CreateTable<DocumentStorageElement>(context, 123);
         }
 
-        private static void CreateTable<T>(ISession session, int count)
+        private void CreateTable<T>(CqlDbContext context, int count)
+            where T : class
         {
-            var table = new Table<T>(session);
-            session.Execute($"DROP TABLE IF EXISTS {table.KeyspaceName}.{table.Name};");
-            table.CreateIfNotExists();
+            context.DropTable<T>();
+            var table = context.GetTable<T>();
 
             var fixture = new Fixture();
             fixture.Register((DateTime dt) => dt.ToLocalDate());
             fixture.Register((DateTime dt) => CassandraPrimitivesExtensions.ToLocalTime(dt));
 
             for (var i = 0; i < count; i++)
-                table.Insert(fixture.Create<T>()).SetTimestamp(DateTimeOffset.UtcNow).Execute();
+                table.Insert(Modify<T>(fixture)).SetTimestamp(DateTimeOffset.UtcNow).Execute();
         }
+
+        private T Modify<T>(Fixture fixture)
+            where T : class
+        {
+            var document = fixture.Create<T>();
+            if (document is DocumentBindingsMeta meta)
+            {
+                meta.EntityMetaBytes = serializer.Serialize(fixture.Create<EntityMeta>());
+                meta.DocumentWithoutGoodItemsBytes = serializer.Serialize(fixture.Create<Document>());
+                return (meta as T)!;
+            }
+            return document;
+        }
+
+        private readonly ISerializer serializer = new Serializer(new AllPropertiesExtractor());
     }
 }
