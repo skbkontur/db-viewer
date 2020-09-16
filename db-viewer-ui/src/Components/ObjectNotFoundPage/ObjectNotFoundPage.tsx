@@ -121,7 +121,7 @@ class ObjectNotFoundPageInternal extends React.Component<RouteComponentProps> {
     public render(): JSX.Element {
         return (
             <>
-                <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block" }}>
+                <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }}>
                     <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)}>
                         Вернуться к списку объектов
                     </CommonLayout.GoBack>
