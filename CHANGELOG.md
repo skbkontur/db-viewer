@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.0 - 2020.09.16
+## v1.0.1 - 2020.09.16
 - Type captions in Object viewer can be copied
 - Fix NotFound page
 
