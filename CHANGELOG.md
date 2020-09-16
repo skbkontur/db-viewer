@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0 - 2020.09.16
+- Type captions in Object viewer can be copied
+- Fix NotFound page
+
 ## v0.2.100 - 2020.08.17
 - Add `DbViewer.EntityFramework` package
 - Add type information to object details view
