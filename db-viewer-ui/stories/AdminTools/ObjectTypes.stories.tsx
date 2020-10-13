@@ -11,6 +11,7 @@ const schema: SchemaDescription = {
     allowReadAll: true,
     allowDelete: true,
     allowEdit: true,
+    allowSort: true,
     schemaName: "ab",
     downloadLimit: 100,
     countLimit: 10,

@@ -24,6 +24,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
                 SchemaName = "Postgres Objects",
                 AllowDelete = true,
                 AllowEdit = true,
+                AllowSort = true,
             };
 
         public TypeDescription[] Types => EntityFrameworkDbContext.EntityTypes.ToTypeDescriptions();

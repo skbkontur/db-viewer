@@ -112,9 +112,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
 
-        const { allowReadAll, allowDelete } = metaInformation?.schemaDescription || {
+        const { allowReadAll, allowDelete, allowSort } = metaInformation?.schemaDescription || {
             allowReadAll: false,
             allowDelete: false,
+            allowSort: false,
         };
 
         return (
@@ -169,6 +170,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             onDeleteClick={this.handleDeleteObject}
                                             onChangeSortClick={this.handleChangeSort}
                                             allowDelete={this.props.isSuperUser && allowDelete}
+                                            allowSort={allowSort}
                                         />
                                     )
                                 ) : (

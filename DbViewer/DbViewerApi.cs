@@ -40,6 +40,11 @@ namespace SkbKontur.DbViewer
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
+            if (!schema.Description.AllowReadAll && !query.Conditions.Any())
+                throw new InvalidOperationException($"Reading without filters is not allowed for {objectIdentifier}");
+            if (!schema.Description.AllowSort && query.Sorts.Any())
+                throw new InvalidOperationException($"Sorting is not allowed for {objectIdentifier}");
+
             var offset = query.Offset ?? 0;
             var count = query.Count ?? 20;
             var countLimit = isSuperUser ? schema.Description.CountLimitForSuperUser : schema.Description.CountLimit;
@@ -65,6 +70,11 @@ namespace SkbKontur.DbViewer
         {
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
+            if (!schema.Description.AllowReadAll && !query.Conditions.Any())
+                throw new InvalidOperationException($"Reading without filters is not allowed for {objectIdentifier}");
+            if (!schema.Description.AllowSort && query.Sorts.Any())
+                throw new InvalidOperationException($"Sorting is not allowed for {objectIdentifier}");
+
             var downloadLimit = isSuperUser ? schema.Description.DownloadLimitForSuperUser : schema.Description.DownloadLimit;
 
             var connector = schemaRegistry.GetConnector(objectIdentifier);
@@ -128,6 +138,11 @@ namespace SkbKontur.DbViewer
         {
             if (!isSuperUser)
                 throw new InvalidOperationException("User cannot delete object");
+
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
+            if (!schema.Description.AllowDelete)
+                throw new InvalidOperationException($"Deleting is not allowed for {objectIdentifier}");
+
             return schemaRegistry.GetConnector(objectIdentifier).Delete(query.Conditions);
         }
 
@@ -135,11 +150,16 @@ namespace SkbKontur.DbViewer
         {
             if (!isSuperUser)
                 throw new InvalidOperationException("User cannot update object");
+
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
+            if (!schema.Description.AllowEdit)
+                throw new InvalidOperationException($"Updating is not allowed for {objectIdentifier}");
+
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var oldObject = await connector.Read(query.Conditions).ConfigureAwait(false);
             if (oldObject == null)
                 throw new InvalidOperationException("Expected edited object to exist");
+
             var updatedObject = ObjectPropertyEditor.SetValue(oldObject, query.Path, query.Value, schema.CustomPropertyConfigurationProvider);
             await connector.Write(updatedObject).ConfigureAwait(false);
         }
