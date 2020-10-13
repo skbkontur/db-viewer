@@ -22,6 +22,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
                 CountLimit = 10_000,
                 AllowReadAll = true,
                 AllowEdit = true,
+                AllowSort = true,
             };
 
         public TypeDescription[] Types => new[]

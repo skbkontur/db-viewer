@@ -67,6 +67,7 @@ storiesOf("ObjectTable", module)
             onDeleteClick={deleteObject}
             currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
             allowDelete
+            allowSort
         />
     ))
     .add("Без удаления", () => (
@@ -90,5 +91,6 @@ storiesOf("ObjectTable", module)
             customRenderer={new NullCustomRenderer()}
             currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
             allowDelete={false}
+            allowSort
         />
     ));

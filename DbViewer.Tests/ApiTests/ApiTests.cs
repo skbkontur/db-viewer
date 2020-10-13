@@ -564,6 +564,7 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
                     AllowReadAll = true,
                     AllowDelete = false,
                     AllowEdit = true,
+                    AllowSort = true,
                 };
             result.Should().ContainEquivalentOf(new ObjectIdentifier
                 {

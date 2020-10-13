@@ -25,6 +25,7 @@ interface ObjectTableProps {
     onDeleteClick: (index: number) => Promise<void>;
     currentSorts: Sort[];
     allowDelete: boolean;
+    allowSort: boolean;
 }
 
 interface ObjectTableState {
@@ -45,7 +46,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
     }
 
     public render(): JSX.Element {
-        const { items, properties, allowDelete } = this.props;
+        const { items, properties, allowDelete, allowSort } = this.props;
 
         return (
             <ScrollableContainer className={styles.tableWrapper}>
@@ -57,7 +58,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
                         <AdvancedTable.Head data-tid="TableHeader" className={styles.tableHeader}>
                             <AdvancedTable.Row className={styles.row}>
                                 {this.renderEmpty(allowDelete ? 2 : 1)}
-                                {properties.map((item, key) => this.renderTableHeader(item, key))}
+                                {properties.map((item, key) => this.renderTableHeader(item, key, allowSort))}
                             </AdvancedTable.Row>
                         </AdvancedTable.Head>
                         <AdvancedTable.Body data-tid="Body">
@@ -122,18 +123,19 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         return <SortDefaultIcon />;
     }
 
-    public renderTableHeader(item: PropertyMetaInformation, key: number): JSX.Element {
+    public renderTableHeader(item: PropertyMetaInformation, key: number, allowSort: boolean): JSX.Element {
         const name = item.name;
-        const content = item.isSortable ? (
-            <Link
-                data-tid={`Header_${name}`}
-                icon={this.getIcon(name, this.props.currentSorts)}
-                onClick={() => this.props.onChangeSortClick(name)}>
-                {name}
-            </Link>
-        ) : (
-            name
-        );
+        const content =
+            item.isSortable && allowSort ? (
+                <Link
+                    data-tid={`Header_${name}`}
+                    icon={this.getIcon(name, this.props.currentSorts)}
+                    onClick={() => this.props.onChangeSortClick(name)}>
+                    {name}
+                </Link>
+            ) : (
+                name
+            );
 
         return (
             <AdvancedTable.HeadCell className={`${styles.cell} ${styles.headerCell}`} key={key}>

@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.x - 2020.10.13
+- Explicitly allow sorting in SchemaDescription
+- Add validations to DbViewerApi methods
+
 ## v1.0.1 - 2020.09.16
 - Type captions in Object viewer can be copied
 - Fix NotFound page

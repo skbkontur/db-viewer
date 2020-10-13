@@ -16,6 +16,9 @@ namespace SkbKontur.DbViewer.DataTypes
         [JsonProperty("allowEdit")]
         public bool AllowEdit { get; set; }
 
+        [JsonProperty("allowSort")]
+        public bool AllowSort { get; set; }
+
         [JsonProperty("countLimit")]
         public int CountLimit { get; set; }
 

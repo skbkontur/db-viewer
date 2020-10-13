@@ -23,6 +23,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
                 SchemaName = "CQL Objects",
                 AllowDelete = true,
                 AllowEdit = true,
+                AllowSort = true,
             };
 
         public TypeDescription[] Types => new[]
