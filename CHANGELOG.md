@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.x - 2020.10.13
+## v1.0.4 - 2020.10.13
 - Explicitly allow sorting in SchemaDescription
 - Add validations to DbViewerApi methods
 
