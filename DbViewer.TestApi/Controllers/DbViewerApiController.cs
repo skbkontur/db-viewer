@@ -17,6 +17,13 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
         }
 
         [HttpGet]
+        [Route("file")]
+        public IActionResult GetFile()
+        {
+            return File(new DownloadFileStream(), "text/csv", "file.csv");
+        }
+        
+        [HttpGet]
         [Route("names")]
         public ObjectIdentifier[] GetNames() => impl.GetNames();
 
