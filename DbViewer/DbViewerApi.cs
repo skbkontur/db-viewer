@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
 using SkbKontur.DbViewer.Schemas;
+
+using FileInfo = SkbKontur.DbViewer.DataTypes.FileInfo;
 
 namespace SkbKontur.DbViewer
 {
@@ -66,9 +72,8 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        public async Task<DownloadResult> DownloadObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
+        public async Task<DownloadResult> CountObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
         {
-            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             if (!schema.Description.AllowReadAll && !query.Conditions.Any())
                 throw new InvalidOperationException($"Reading without filters is not allowed for {objectIdentifier}");
@@ -79,14 +84,27 @@ namespace SkbKontur.DbViewer
 
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var count = await connector.Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
-            if (count > downloadLimit)
-                return new DownloadResult
-                    {
-                        File = null,
-                        Count = (int)count,
-                        CountLimit = downloadLimit,
-                    };
+            return new DownloadResult
+                {
+                    FileQuery = count > downloadLimit ? null : Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(query))),
+                    Count = count,
+                    CountLimit = downloadLimit,
+                };
+        }
 
+        public async Task<FileInfo> DownloadObjects(string objectIdentifier, string searchQuery, bool isSuperUser)
+        {
+            var query = JsonConvert.DeserializeObject<ObjectSearchRequest>(Encoding.UTF8.GetString(Convert.FromBase64String(searchQuery)));
+            var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
+            var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
+            if (!schema.Description.AllowReadAll && !query.Conditions.Any())
+                throw new InvalidOperationException($"Reading without filters is not allowed for {objectIdentifier}");
+            if (!schema.Description.AllowSort && query.Sorts.Any())
+                throw new InvalidOperationException($"Sorting is not allowed for {objectIdentifier}");
+
+            var downloadLimit = isSuperUser ? schema.Description.DownloadLimitForSuperUser : schema.Description.DownloadLimit;
+
+            var connector = schemaRegistry.GetConnector(objectIdentifier);
             var results = await connector.Search(query.Conditions, query.Sorts, 0, downloadLimit + 1).ConfigureAwait(false);
 
             var properties = new List<string>();
@@ -102,16 +120,11 @@ namespace SkbKontur.DbViewer
             foreach (var item in results.Take(downloadLimit))
                 csvWriter.AddRow(filteredGetters.Select(f => PropertyHelpers.ToString(f, item)).ToArray());
 
-            return new DownloadResult
+            return new FileInfo
                 {
-                    Count = results.Length,
-                    CountLimit = downloadLimit,
-                    File = new FileInfo
-                        {
-                            Content = csvWriter.GetBytes(),
-                            ContentType = "text/csv",
-                            Name = $"{objectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
-                        }
+                    Content = new MemoryStream(csvWriter.GetBytes()),
+                    ContentType = "text/csv",
+                    Name = $"{objectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
                 };
         }
 

@@ -1,16 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using System.IO;
 
 namespace SkbKontur.DbViewer.DataTypes
 {
     public class FileInfo
     {
-        [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("contentType")]
         public string ContentType { get; set; }
-
-        [JsonProperty("content")]
-        public byte[] Content { get; set; }
+        public Stream Content { get; set; }
     }
 }

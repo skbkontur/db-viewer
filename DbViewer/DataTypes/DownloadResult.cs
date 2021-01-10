@@ -4,11 +4,11 @@ namespace SkbKontur.DbViewer.DataTypes
 {
     public class DownloadResult
     {
-        [JsonProperty("file")]
-        public FileInfo? File { get; set; }
+        [JsonProperty("fileQuery")]
+        public string? FileQuery { get; set; }
 
         [JsonProperty("count")]
-        public int Count { get; set; }
+        public int? Count { get; set; }
 
         [JsonProperty("countLimit")]
         public int CountLimit { get; set; }

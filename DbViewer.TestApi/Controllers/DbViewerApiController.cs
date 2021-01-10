@@ -22,7 +22,7 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
         {
             return File(new DownloadFileStream(), "text/csv", "file.csv");
         }
-        
+
         [HttpGet]
         [Route("names")]
         public ObjectIdentifier[] GetNames() => impl.GetNames();
@@ -36,8 +36,16 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
         public Task<SearchResult> SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.SearchObjects(objectIdentifier, query, true);
 
         [HttpPost]
-        [Route("{objectIdentifier}/download")]
-        public Task<DownloadResult> DownloadObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.DownloadObjects(objectIdentifier, query, true);
+        [Route("{objectIdentifier}/count")]
+        public Task<DownloadResult> CountObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.CountObjects(objectIdentifier, query, true);
+
+        [HttpGet]
+        [Route("{objectIdentifier}/download/{query}")]
+        public async Task<IActionResult> DownloadObjects(string objectIdentifier, string query)
+        {
+            var fileInfo = await impl.DownloadObjects(objectIdentifier, query, true).ConfigureAwait(false);
+            return File(fileInfo.Content, fileInfo.ContentType, fileInfo.Name);
+        }
 
         [HttpPost]
         [Route("{objectIdentifier}/details")]

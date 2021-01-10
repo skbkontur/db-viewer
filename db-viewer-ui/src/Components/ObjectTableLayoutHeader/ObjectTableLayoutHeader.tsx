@@ -127,7 +127,7 @@ export class ObjectTableLayoutHeader extends React.Component<
                         <Modal.Header data-tid="Header">Слишком большой список</Modal.Header>
                         <Modal.Body data-tid="Body">
                             Мы умеем выгружать не более {downloadCount.countLimit} объектов из этой таблицы.{" "}
-                            {downloadCount.file && `Будут выгружены первые ${downloadCount.countLimit} объектов. `}
+                            {downloadCount.fileQuery && `Будут выгружены первые ${downloadCount.countLimit} объектов. `}
                             Уточните запрос с помощью фильтров, чтобы записей стало меньше.
                         </Modal.Body>
                         <Modal.Footer panel>

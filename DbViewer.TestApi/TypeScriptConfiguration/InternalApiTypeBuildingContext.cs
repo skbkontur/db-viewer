@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -73,11 +74,12 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
 
         private static TypeScriptClassMemberDefinition BuildApiImplMember(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
+            var isUrlMethod = IsUrlMethod(methodInfo);
             var functionDefinition = new TypeScriptFunctionDefinition
                 {
-                    IsAsync = true,
+                    IsAsync = !isUrlMethod,
                     Result = GetMethodResult(methodInfo, buildAndImportType),
-                    Body = {CreateCall(methodInfo)}
+                    Body = {isUrlMethod ? GenerateGetUrlCall(methodInfo) : CreateCall(methodInfo)}
                 };
             functionDefinition.Arguments.AddRange(
                 methodInfo.GetParameters().Select(x => new TypeScriptArgumentDeclaration
@@ -88,13 +90,15 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
             );
             return new TypeScriptClassMemberDefinition
                 {
-                    Name = methodInfo.Name.ToLowerCamelCase(),
+                    Name = GetMethodName(methodInfo),
                     Definition = functionDefinition
                 };
         }
 
         private static TypeScriptType GetMethodResult(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
+            if (IsUrlMethod(methodInfo))
+                return new TypeScriptTypeReference("string");
             var returnType = buildAndImportType(methodInfo.ReturnType);
             var trueType = returnType is TypeScriptPromiseOfType promise ? promise.TargetType : returnType;
             return new TypeScriptPromiseOfType(trueType);
@@ -127,6 +131,14 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                             GenerateConstructGetParams(methodInfo.GetParameters().ToArray(), routeTemplate)
                         }.Where(x => x != null).ToArray()
                 ));
+        }
+
+        private static TypeScriptReturnStatement GenerateGetUrlCall(IMethodInfo methodInfo)
+        {
+            var routeTemplate = methodInfo.GetAttributes(TypeInfo.From<RouteAttribute>()).Single().GetValue("Template", "");
+            return new TypeScriptReturnStatement(
+                new TypeScriptTemplateStringLiteral("${this.prefix}" + routeTemplate.Replace("{", "${"))
+            );
         }
 
         private static TypeScriptReturnStatement GenerateMethodCallWithBody(IMethodInfo methodInfo, string methodName)
@@ -178,6 +190,16 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
             return routeTemplate.Contains("{" + x.Name + "}");
         }
 
+        private static bool IsUrlMethod(IMethodInfo methodInfo)
+        {
+            return methodInfo.ReturnType.Equals(TypeInfo.From<IActionResult>()) || methodInfo.ReturnType.Equals(TypeInfo.From<Task<IActionResult>>());
+        }
+
+        private static string GetMethodName(IMethodInfo methodInfo)
+        {
+            return IsUrlMethod(methodInfo) ? $"get{methodInfo.Name}Url" : methodInfo.Name.ToLowerCamelCase();
+        }
+
         private static TypeScriptExpression GenerateConstructGetParams(IParameterInfo[] parameters, string routeTemplate)
         {
             var literalProperties = parameters
@@ -201,7 +223,7 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
 
         private static TypeScriptInterfaceFunctionMember BuildApiInterfaceMember(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
-            var result = new TypeScriptInterfaceFunctionMember(methodInfo.Name.ToLowerCamelCase(), GetMethodResult(methodInfo, buildAndImportType));
+            var result = new TypeScriptInterfaceFunctionMember(GetMethodName(methodInfo), GetMethodResult(methodInfo, buildAndImportType));
             result.Arguments.AddRange(
                 methodInfo.GetParameters().Select(x => new TypeScriptArgumentDeclaration
                     {

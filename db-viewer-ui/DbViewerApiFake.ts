@@ -239,15 +239,19 @@ export class DbViewerApiFake implements IDbViewerApi {
         // noop
     }
 
-    public async downloadObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<DownloadResult> {
+    public async countObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<DownloadResult> {
         return {
             count: 100,
             countLimit: 1000,
-            file: {
-                content: "aHV5bnlhMg==",
-                contentType: "text/csv",
-                name: "file",
-            },
+            fileQuery: "",
         };
+    }
+
+    public getDownloadObjectsUrl(objectIdentifier: string, query: string): string {
+        return "";
+    }
+
+    public getGetFileUrl(): string {
+        return "";
     }
 }

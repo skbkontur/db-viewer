@@ -25,7 +25,6 @@ import { ConditionsMapper, ObjectSearchQueryUtils, SortMapper } from "../Domain/
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
 import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
-import { FileUtils } from "../Domain/Utils/FileUtils";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTableProps extends RouteComponentProps {
@@ -355,8 +354,13 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private readonly handleCloseDownloadModal = () => {
-        if (this.state.downloadCount?.file) {
-            FileUtils.downloadFile(this.state.downloadCount.file);
+        const { dbViewerApi } = this.props;
+        const { metaInformation } = this.state;
+        if (metaInformation && this.state.downloadCount?.fileQuery) {
+            window.location.href = dbViewerApi.getDownloadObjectsUrl(
+                metaInformation.identifier,
+                this.state.downloadCount.fileQuery
+            );
         }
         this.setState({ showDownloadModal: false });
     };
@@ -372,19 +376,23 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             const { dbViewerApi } = this.props;
             const { conditions, sorts, hiddenColumns } = this.state.query;
 
-            const downloadResult = await dbViewerApi.downloadObjects(metaInformation.identifier, {
+            const downloadResult = await dbViewerApi.countObjects(metaInformation.identifier, {
                 conditions: conditions,
                 sorts: sorts,
                 excludedFields: hiddenColumns,
             });
 
-            if (downloadResult.count > downloadResult.countLimit) {
+            const count = downloadResult.count ?? 0;
+            if (count > downloadResult.countLimit) {
                 this.setState({ downloading: false, showDownloadModal: true, downloadCount: downloadResult });
                 return;
             }
 
-            if (downloadResult.file) {
-                FileUtils.downloadFile(downloadResult.file);
+            if (downloadResult.fileQuery) {
+                window.location.href = dbViewerApi.getDownloadObjectsUrl(
+                    metaInformation.identifier,
+                    downloadResult.fileQuery
+                );
             }
         } finally {
             this.setState({ downloading: false });
