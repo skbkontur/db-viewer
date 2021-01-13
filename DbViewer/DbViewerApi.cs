@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Collections.Concurrent;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
-using Newtonsoft.Json;
 
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
@@ -74,6 +70,9 @@ namespace SkbKontur.DbViewer
 
         public async Task<DownloadResult> CountObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
         {
+            var requestId = Guid.NewGuid();
+            downloadRequests[requestId] = query;
+
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             if (!schema.Description.AllowReadAll && !query.Conditions.Any())
                 throw new InvalidOperationException($"Reading without filters is not allowed for {objectIdentifier}");
@@ -86,15 +85,17 @@ namespace SkbKontur.DbViewer
             var count = await connector.Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
             return new DownloadResult
                 {
-                    FileQuery = count > downloadLimit ? null : Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(query))),
+                    FileQuery = count > downloadLimit ? (Guid?)null : requestId,
                     Count = count,
                     CountLimit = downloadLimit,
                 };
         }
 
-        public async Task<FileInfo> DownloadObjects(string objectIdentifier, string searchQuery, bool isSuperUser)
+        public async Task<FileInfo> DownloadObjects(string objectIdentifier, Guid requestId, bool isSuperUser)
         {
-            var query = JsonConvert.DeserializeObject<ObjectSearchRequest>(Encoding.UTF8.GetString(Convert.FromBase64String(searchQuery)));
+            if (!downloadRequests.TryRemove(requestId, out var query))
+                throw new InvalidOperationException($"Request not found for Id: {requestId}");
+
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             if (!schema.Description.AllowReadAll && !query.Conditions.Any())
@@ -107,22 +108,10 @@ namespace SkbKontur.DbViewer
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var results = await connector.Search(query.Conditions, query.Sorts, 0, downloadLimit + 1).ConfigureAwait(false);
 
-            var properties = new List<string>();
-            var getters = new List<Func<object?, object?>>();
-
-            PropertyHelpers.BuildGettersForProperties(type, "", x => x, properties, getters, schema.CustomPropertyConfigurationProvider);
-
-            var excludedIndices = properties.Select((x, i) => (x, i)).Where(x => query.ExcludedFields.Contains(x.x)).Select(x => x.i).ToArray();
-            var filteredProperties = properties.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
-            var filteredGetters = getters.Where((x, i) => !excludedIndices.Contains(i)).ToArray();
-
-            var csvWriter = new CsvWriter(filteredProperties);
-            foreach (var item in results.Take(downloadLimit))
-                csvWriter.AddRow(filteredGetters.Select(f => PropertyHelpers.ToString(f, item)).ToArray());
-
             return new FileInfo
                 {
-                    Content = new MemoryStream(csvWriter.GetBytes()),
+                    // Content = new MemoryStream(csvWriter.GetBytes()),
+                    Content = new DownloadFileStream(type, results, query.ExcludedFields, schema.CustomPropertyConfigurationProvider, downloadLimit),
                     ContentType = "text/csv",
                     Name = $"{objectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
                 };
@@ -178,5 +167,7 @@ namespace SkbKontur.DbViewer
         }
 
         private readonly ISchemaRegistry schemaRegistry;
+
+        private static readonly ConcurrentDictionary<Guid, ObjectSearchRequest> downloadRequests = new ConcurrentDictionary<Guid, ObjectSearchRequest>();
     }
 }

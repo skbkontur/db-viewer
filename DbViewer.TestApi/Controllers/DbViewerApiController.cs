@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +42,7 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpGet]
         [Route("{objectIdentifier}/download/{query}")]
-        public async Task<IActionResult> DownloadObjects(string objectIdentifier, string query)
+        public async Task<IActionResult> DownloadObjects(string objectIdentifier, Guid query)
         {
             var fileInfo = await impl.DownloadObjects(objectIdentifier, query, true).ConfigureAwait(false);
             return File(fileInfo.Content, fileInfo.ContentType, fileInfo.Name);
