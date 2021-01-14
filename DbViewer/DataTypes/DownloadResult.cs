@@ -6,8 +6,8 @@ namespace SkbKontur.DbViewer.DataTypes
 {
     public class DownloadResult
     {
-        [JsonProperty("fileQuery")]
-        public Guid? FileQuery { get; set; }
+        [JsonProperty("requestId")]
+        public Guid? RequestId { get; set; }
 
         [JsonProperty("count")]
         public int? Count { get; set; }

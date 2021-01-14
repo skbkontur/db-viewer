@@ -243,15 +243,11 @@ export class DbViewerApiFake implements IDbViewerApi {
         return {
             count: 100,
             countLimit: 1000,
-            fileQuery: "",
+            requestId: null,
         };
     }
 
     public getDownloadObjectsUrl(objectIdentifier: string, query: string): string {
-        return "";
-    }
-
-    public getGetFileUrl(): string {
         return "";
     }
 }

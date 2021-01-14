@@ -356,10 +356,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private readonly handleCloseDownloadModal = () => {
         const { dbViewerApi } = this.props;
         const { metaInformation } = this.state;
-        if (metaInformation && this.state.downloadCount?.fileQuery) {
+        if (metaInformation && this.state.downloadCount?.requestId) {
             window.location.href = dbViewerApi.getDownloadObjectsUrl(
                 metaInformation.identifier,
-                this.state.downloadCount.fileQuery
+                this.state.downloadCount.requestId
             );
         }
         this.setState({ showDownloadModal: false });
@@ -388,10 +388,10 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 return;
             }
 
-            if (downloadResult.fileQuery) {
+            if (downloadResult.requestId) {
                 window.location.href = dbViewerApi.getDownloadObjectsUrl(
                     metaInformation.identifier,
-                    downloadResult.fileQuery
+                    downloadResult.requestId
                 );
             }
         } finally {

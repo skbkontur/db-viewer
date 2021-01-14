@@ -85,7 +85,7 @@ namespace SkbKontur.DbViewer
             var count = await connector.Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
             return new DownloadResult
                 {
-                    FileQuery = count > downloadLimit ? (Guid?)null : requestId,
+                    RequestId = count > downloadLimit ? (Guid?)null : requestId,
                     Count = count,
                     CountLimit = downloadLimit,
                 };
@@ -110,7 +110,6 @@ namespace SkbKontur.DbViewer
 
             return new FileInfo
                 {
-                    // Content = new MemoryStream(csvWriter.GetBytes()),
                     Content = new DownloadFileStream(type, results, query.ExcludedFields, schema.CustomPropertyConfigurationProvider, downloadLimit),
                     ContentType = "text/csv",
                     Name = $"{objectIdentifier}-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv"
