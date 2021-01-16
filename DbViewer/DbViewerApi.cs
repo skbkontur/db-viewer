@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
 
 using SkbKontur.DbViewer.DataTypes;
 using SkbKontur.DbViewer.Helpers;
@@ -68,11 +69,8 @@ namespace SkbKontur.DbViewer
                 };
         }
 
-        public async Task<DownloadResult> CountObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
+        public async Task<CountResult> CountObjects(string objectIdentifier, ObjectSearchRequest query, bool isSuperUser)
         {
-            var requestId = Guid.NewGuid();
-            downloadRequests[requestId] = query;
-
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             if (!schema.Description.AllowReadAll && !query.Conditions.Any())
                 throw new InvalidOperationException($"Reading without filters is not allowed for {objectIdentifier}");
@@ -83,19 +81,16 @@ namespace SkbKontur.DbViewer
 
             var connector = schemaRegistry.GetConnector(objectIdentifier);
             var count = await connector.Count(query.Conditions, downloadLimit + 1).ConfigureAwait(false);
-            return new DownloadResult
+            return new CountResult
                 {
-                    RequestId = count > downloadLimit ? (Guid?)null : requestId,
                     Count = count,
                     CountLimit = downloadLimit,
                 };
         }
 
-        public async Task<FileInfo> DownloadObjects(string objectIdentifier, Guid requestId, bool isSuperUser)
+        public async Task<FileInfo> DownloadObjects(string objectIdentifier, string queryString, bool isSuperUser)
         {
-            if (!downloadRequests.TryRemove(requestId, out var query))
-                throw new InvalidOperationException($"Request not found for Id: {requestId}");
-
+            var query = JsonConvert.DeserializeObject<ObjectSearchRequest>(queryString);
             var type = schemaRegistry.GetTypeByTypeIdentifier(objectIdentifier);
             var schema = schemaRegistry.GetSchemaByTypeIdentifier(objectIdentifier);
             if (!schema.Description.AllowReadAll && !query.Conditions.Any())
@@ -166,7 +161,5 @@ namespace SkbKontur.DbViewer
         }
 
         private readonly ISchemaRegistry schemaRegistry;
-
-        private static readonly ConcurrentDictionary<Guid, ObjectSearchRequest> downloadRequests = new ConcurrentDictionary<Guid, ObjectSearchRequest>();
     }
 }

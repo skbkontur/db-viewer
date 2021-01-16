@@ -1,14 +1,9 @@
-﻿using System;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace SkbKontur.DbViewer.DataTypes
 {
-    public class DownloadResult
+    public class CountResult
     {
-        [JsonProperty("requestId")]
-        public Guid? RequestId { get; set; }
-
         [JsonProperty("count")]
         public int? Count { get; set; }
 

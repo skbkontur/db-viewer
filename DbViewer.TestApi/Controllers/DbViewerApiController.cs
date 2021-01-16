@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
@@ -31,13 +30,13 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/count")]
-        public Task<DownloadResult> CountObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.CountObjects(objectIdentifier, query, true);
+        public Task<CountResult> CountObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.CountObjects(objectIdentifier, query, true);
 
         [HttpGet]
-        [Route("{objectIdentifier}/download/{requestId}")]
-        public async Task<IActionResult> DownloadObjects(string objectIdentifier, Guid requestId)
+        [Route("{objectIdentifier}/download/{queryString}")]
+        public async Task<IActionResult> DownloadObjects(string objectIdentifier, string queryString)
         {
-            var fileInfo = await impl.DownloadObjects(objectIdentifier, requestId, true).ConfigureAwait(false);
+            var fileInfo = await impl.DownloadObjects(objectIdentifier, queryString, true).ConfigureAwait(false);
             return File(fileInfo.Content, fileInfo.ContentType, fileInfo.Name);
         }
 

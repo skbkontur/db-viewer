@@ -19,3 +19,35 @@ See [CHANGELOG](CHANGELOG.md).
 See [ApiController](https://github.com/skbkontur/db-viewer/blob/master/DbViewer.TestApi/Controllers/DbViewerApiController.cs) example for backend configuration.
 
 See [DbViewerApplication](https://github.com/skbkontur/db-viewer/blob/master/db-viewer-ui/index.tsx) usage example for front configuration.
+
+## How to Start
+
+```
+# needed for browser tests
+docker pull selenoid/vnc:chrome_84.0
+
+# start databases
+docker-compose up -d
+
+# build backend
+dotnet tool restore
+dotnet build --configuration Release ./DbViewer.sln
+
+# build front
+yarn install
+yarn build:types
+
+# apply db migration
+dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
+
+# start db-viewer
+./DbViewer.TestApi/bin/netcoreapp3.1/win-x64/SkbKontur.DbViewer.TestApi.exe
+yarn start:prod
+
+# start tests
+dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
+
+# run code cleanup
+dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
+yarn lint
+```

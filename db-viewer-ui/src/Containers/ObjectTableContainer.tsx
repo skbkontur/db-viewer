@@ -12,7 +12,7 @@ import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
 import { Condition } from "../Domain/Api/DataTypes/Condition";
-import { DownloadResult } from "../Domain/Api/DataTypes/DownloadResult";
+import { CountResult } from "../Domain/Api/DataTypes/CountResult";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
 import { ObjectFieldFilterOperator } from "../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../Domain/Api/DataTypes/ObjectFilterSortOrder";
@@ -47,7 +47,7 @@ interface ObjectTableState {
     query: ObjectSearchQuery;
     downloading: boolean;
     showDownloadModal: boolean;
-    downloadCount?: DownloadResult;
+    downloadCount?: CountResult;
 }
 
 const objectsQueryMapping: QueryStringMapping<ObjectSearchQuery> = new QueryStringMappingBuilder<ObjectSearchQuery>()
@@ -301,9 +301,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private readonly handleOpenFilter = () => {
-        this.setState({
-            showModalFilter: true,
-        });
+        this.setState({ showModalFilter: true });
     };
 
     private renderItemsCount(offset: number, countPerPage: number, count: number, countLimit: number): JSX.Element {
@@ -354,14 +352,6 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private readonly handleCloseDownloadModal = () => {
-        const { dbViewerApi } = this.props;
-        const { metaInformation } = this.state;
-        if (metaInformation && this.state.downloadCount?.requestId) {
-            window.location.href = dbViewerApi.getDownloadObjectsUrl(
-                metaInformation.identifier,
-                this.state.downloadCount.requestId
-            );
-        }
         this.setState({ showDownloadModal: false });
     };
 
@@ -376,11 +366,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             const { dbViewerApi } = this.props;
             const { conditions, sorts, hiddenColumns } = this.state.query;
 
-            const downloadResult = await dbViewerApi.countObjects(metaInformation.identifier, {
+            const query = {
                 conditions: conditions,
                 sorts: sorts,
                 excludedFields: hiddenColumns,
-            });
+            };
+            const downloadResult = await dbViewerApi.countObjects(metaInformation.identifier, query);
 
             const count = downloadResult.count ?? 0;
             if (count > downloadResult.countLimit) {
@@ -388,12 +379,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 return;
             }
 
-            if (downloadResult.requestId) {
-                window.location.href = dbViewerApi.getDownloadObjectsUrl(
-                    metaInformation.identifier,
-                    downloadResult.requestId
-                );
-            }
+            window.location.href = dbViewerApi.getDownloadObjectsUrl(metaInformation.identifier, JSON.stringify(query));
         } finally {
             this.setState({ downloading: false });
         }
