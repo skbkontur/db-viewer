@@ -11,7 +11,7 @@ import difference from "lodash/difference";
 import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
-import { DownloadResult } from "../../Domain/Api/DataTypes/DownloadResult";
+import { CountResult } from "../../Domain/Api/DataTypes/CountResult";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ObjectSearchQuery } from "../../Domain/Objects/ObjectSearchQuery";
 import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaInformationUtils";
@@ -32,7 +32,7 @@ interface ObjectTableLayoutHeaderProps {
     downloading: boolean;
     showModalFilter: boolean;
     showDownloadModal: boolean;
-    downloadCount?: DownloadResult;
+    downloadCount?: CountResult;
 }
 
 interface ObjectTableLayoutHeaderState {
@@ -126,9 +126,8 @@ export class ObjectTableLayoutHeader extends React.Component<
                     <Modal width={500} onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
                         <Modal.Header data-tid="Header">Слишком большой список</Modal.Header>
                         <Modal.Body data-tid="Body">
-                            Мы умеем выгружать не более {downloadCount.countLimit} объектов из этой таблицы.{" "}
-                            {downloadCount.file && `Будут выгружены первые ${downloadCount.countLimit} объектов. `}
-                            Уточните запрос с помощью фильтров, чтобы записей стало меньше.
+                            Мы умеем выгружать не более {downloadCount.countLimit} объектов из этой таблицы. Уточните
+                            запрос с помощью фильтров, чтобы записей стало меньше.
                         </Modal.Body>
                         <Modal.Footer panel>
                             <Button data-tid="Cancel" onClick={onDownloadAbort}>

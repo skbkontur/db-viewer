@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DownloadResult } from "./src/Domain/Api/DataTypes/DownloadResult";
+import { CountResult } from "./src/Domain/Api/DataTypes/CountResult";
 import { ObjectDescription } from "./src/Domain/Api/DataTypes/ObjectDescription";
 import { ObjectDetails } from "./src/Domain/Api/DataTypes/ObjectDetails";
 import { ObjectIdentifier } from "./src/Domain/Api/DataTypes/ObjectIdentifier";
@@ -239,15 +239,14 @@ export class DbViewerApiFake implements IDbViewerApi {
         // noop
     }
 
-    public async downloadObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<DownloadResult> {
+    public async countObjects(objectIdentifier: string, query: ObjectSearchRequest): Promise<CountResult> {
         return {
             count: 100,
             countLimit: 1000,
-            file: {
-                content: "aHV5bnlhMg==",
-                contentType: "text/csv",
-                name: "file",
-            },
         };
+    }
+
+    public getDownloadObjectsUrl(objectIdentifier: string, query: string): string {
+        return "";
     }
 }

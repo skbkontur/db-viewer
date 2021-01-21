@@ -1,4 +1,8 @@
-import { FileInfo } from "../Api/DataTypes/FileInfo";
+interface FileInfo {
+    name: string;
+    content: string;
+    contentType: string;
+}
 
 export class FileUtils {
     public static downloadFile(file: FileInfo) {

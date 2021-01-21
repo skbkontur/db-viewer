@@ -1,39 +1,49 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Text;
 
 namespace SkbKontur.DbViewer.Helpers
 {
-    public class CsvWriter : BaseCsvWriter
+    public class CsvFormatter
     {
-        public CsvWriter(params string[] header)
-            : this(Encoding.UTF8, header)
+        public CsvFormatter(object?[] data, string[] properties, Func<object?, object?>[] getters)
         {
+            this.data = data;
+            this.properties = properties;
+            this.getters = getters;
         }
 
-        private CsvWriter(Encoding encoding, params string[] header)
-            : base(header)
+        public byte[] GetHeader()
         {
-            this.encoding = encoding;
-            rows = new List<string[]>();
+            var header = $"sep=;\n{string.Join(";", properties.Select(FormatElement))}\n";
+            return Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(header)).ToArray();
         }
 
-        protected override void InnerAddRow(string[] fields)
+        public byte[] GetRows(int start, int end)
         {
-            rows.Add(fields);
+            var sb = new StringBuilder();
+            end = Math.Min(end, data.Length);
+            for (var i = start; i < end; i++)
+            {
+                for (var j = 0; j < getters.Length; j++)
+                {
+                    sb.Append(FormatElement(PropertyHelpers.ToString(getters[j], data[i])));
+                    sb.Append(j < getters.Length - 1 ? ';' : '\n');
+                }
+            }
+            return Encoding.UTF8.GetBytes(sb.ToString());
         }
 
-        public byte[] GetBytes()
+        private static string FormatElement(string element)
         {
-            return encoding.GetPreamble().Concat(encoding.GetBytes(string.Join("\n", GetLines()))).ToArray();
+            element = element.Replace("\"", "\"\"");
+            if (long.TryParse(element, out _) || double.TryParse(element, out _))
+                return $"=\"{element}\"";
+            return $"\"{element}\"";
         }
 
-        private IEnumerable<string> GetLines()
-        {
-            return new[] {Header}.Concat(rows).Select(BuildCsvRow);
-        }
-
-        private readonly List<string[]> rows;
-        private readonly Encoding encoding;
+        private readonly object?[] data;
+        private readonly string[] properties;
+        private readonly Func<object?, object?>[] getters;
     }
 }
