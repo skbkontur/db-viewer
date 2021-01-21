@@ -27,7 +27,7 @@ namespace SkbKontur.DbViewer.Helpers
             {
                 for (var j = 0; j < getters.Length; j++)
                 {
-                    sb.Append(PropertyHelpers.ToString(getters[j], data[i]));
+                    sb.Append(FormatElement(PropertyHelpers.ToString(getters[j], data[i])));
                     sb.Append(j < getters.Length - 1 ? ';' : '\n');
                 }
             }
