@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.0.16 - 2020.01.21
+- Use DownloadFileStream to be more memory efficient when downloading large files
+
 ## v1.0.4 - 2020.10.13
 - Explicitly allow sorting in SchemaDescription
 - Add validations to DbViewerApi methods
