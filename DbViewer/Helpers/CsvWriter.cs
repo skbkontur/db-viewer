@@ -15,7 +15,7 @@ namespace SkbKontur.DbViewer.Helpers
 
         public byte[] GetHeader()
         {
-            var header = $"sep=;\n{string.Join(";", properties.Select(FormatElement))}\n";
+            var header = $"{string.Join(";", properties.Select(FormatElement))}\n";
             return Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(header)).ToArray();
         }
 
