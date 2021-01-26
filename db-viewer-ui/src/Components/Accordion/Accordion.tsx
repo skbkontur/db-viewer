@@ -1,8 +1,7 @@
 import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Hint from "@skbkontur/react-ui/Hint";
-import Link from "@skbkontur/react-ui/Link";
+import { Hint, Link } from "@skbkontur/react-ui";
 import isArray from "lodash/isArray";
 import isEqual from "lodash/isEqual";
 import isPlainObject from "lodash/isPlainObject";

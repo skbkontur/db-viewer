@@ -1,5 +1,5 @@
 import { ColumnStack } from "@skbkontur/react-stack-layout";
-import Input from "@skbkontur/react-ui/Input";
+import { Input } from "@skbkontur/react-ui";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import React from "react";

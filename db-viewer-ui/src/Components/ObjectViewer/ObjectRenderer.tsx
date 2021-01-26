@@ -2,7 +2,7 @@ import EditIcon from "@skbkontur/react-icons/Edit";
 import OkIcon from "@skbkontur/react-icons/Ok";
 import UndoIcon from "@skbkontur/react-icons/Undo";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Link from "@skbkontur/react-ui/Link";
+import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import React from "react";
 

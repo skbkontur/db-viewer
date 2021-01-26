@@ -1,6 +1,5 @@
 import CopyIcon from "@skbkontur/react-icons/Copy";
-import Link from "@skbkontur/react-ui/Link";
-import Toast from "@skbkontur/react-ui/Toast";
+import { Link, Toast } from "@skbkontur/react-ui";
 import copy from "copy-to-clipboard";
 import React, { PropsWithChildren } from "react";
 

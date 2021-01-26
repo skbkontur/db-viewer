@@ -3,7 +3,7 @@ import MenuIcon from "@skbkontur/react-icons/Menu";
 import RubleIcon from "@skbkontur/react-icons/Ruble";
 import SearchIcon from "@skbkontur/react-icons/Search";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Link from "@skbkontur/react-ui/Link";
+import { Link } from "@skbkontur/react-ui";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import React from "react";

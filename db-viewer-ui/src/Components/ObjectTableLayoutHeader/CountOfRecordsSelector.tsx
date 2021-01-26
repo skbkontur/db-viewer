@@ -1,8 +1,6 @@
 import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import CellsEqualHeightIcon from "@skbkontur/react-icons/CellsEqualHeight";
-import DropdownMenu from "@skbkontur/react-ui/DropdownMenu";
-import Link from "@skbkontur/react-ui/Link";
-import MenuItem from "@skbkontur/react-ui/MenuItem";
+import { DropdownMenu, Link, MenuItem } from "@skbkontur/react-ui";
 import React from "react";
 
 interface CountOfRecordsSelectorProps {

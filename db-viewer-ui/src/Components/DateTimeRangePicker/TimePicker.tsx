@@ -1,4 +1,4 @@
-import Input from "@skbkontur/react-ui/Input";
+import { Input } from "@skbkontur/react-ui";
 import React from "react";
 
 import { Time } from "../../Domain/DataTypes/Time";
@@ -38,7 +38,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         }
     }
 
-    public handleChange = (e: React.SyntheticEvent<any>, value: string) => {
+    public handleChange = (value: string) => {
         this.setState({ value: value });
     };
 
@@ -73,7 +73,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                 width={58}
                 error={this.props.error}
                 placeholder={this.props.disabled ? undefined : this.props.defaultTime}
-                onChange={this.handleChange}
+                onValueChange={this.handleChange}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
                 warning={this.props.warning}

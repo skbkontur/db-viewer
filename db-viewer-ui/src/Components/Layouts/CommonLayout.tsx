@@ -1,6 +1,6 @@
 import ArrowChevronLeftIcon from "@skbkontur/react-icons/ArrowChevronLeft";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Loader from "@skbkontur/react-ui/Loader";
+import { Loader } from "@skbkontur/react-ui";
 import React from "react";
 import { Link } from "react-router-dom";
 

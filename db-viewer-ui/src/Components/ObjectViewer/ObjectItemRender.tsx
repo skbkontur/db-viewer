@@ -1,7 +1,4 @@
-import CurrencyInput from "@skbkontur/react-ui/CurrencyInput";
-import Input from "@skbkontur/react-ui/Input";
-import Link from "@skbkontur/react-ui/Link";
-import Select from "@skbkontur/react-ui/Select";
+import { CurrencyInput, Input, Link, Select } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import React from "react";
 
@@ -92,7 +89,7 @@ export function renderForEdit(
             <Select
                 data-tid="EnumSelect"
                 items={values.map(x => [x, String(x)])}
-                onChange={(e: any, nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
+                onValueChange={(nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
                 value={String(value)}
             />
         );
@@ -107,7 +104,7 @@ export function renderForEdit(
                 <Select
                     data-tid="BooleanSelect"
                     items={values.map(x => [x, String(x)])}
-                    onChange={(e: any, nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
+                    onValueChange={(nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
                     value={String(value)}
                 />
             );
@@ -117,45 +114,26 @@ export function renderForEdit(
             return (
                 <DateTimePicker
                     value={value != null ? new Date(String(value)) : null}
-                    onChange={(e, nextValue) => onChange(nextValue)}
+                    onChange={onChange}
                     defaultTime={""}
                 />
             );
         case "Float":
         case "Double":
         case "Decimal":
-            return (
-                <CurrencyInput
-                    value={Number(value)}
-                    onChange={(e, nextValue) => onChange(nextValue)}
-                    fractionDigits={4}
-                />
-            );
+            return <CurrencyInput value={Number(value)} onValueChange={onChange} fractionDigits={4} />;
 
         case "Byte":
         case "UInt16":
         case "UInt32":
         case "UInt64":
-            return (
-                <CurrencyInput
-                    width={300}
-                    value={Number(value)}
-                    onChange={(e, nextValue) => onChange(nextValue)}
-                    fractionDigits={0}
-                />
-            );
+            return <CurrencyInput width={300} value={Number(value)} onValueChange={onChange} fractionDigits={0} />;
         case "SByte":
         case "Int16":
         case "Int32":
         case "Int64":
             return (
-                <CurrencyInput
-                    width={300}
-                    value={Number(value)}
-                    onChange={(e, nextValue) => onChange(nextValue)}
-                    fractionDigits={0}
-                    signed
-                />
+                <CurrencyInput width={300} value={Number(value)} onValueChange={onChange} fractionDigits={0} signed />
             );
         case null:
         case undefined:
@@ -165,6 +143,6 @@ export function renderForEdit(
             if (type.indexOf("[]") !== -1) {
                 throw new Error("Пытаемся изменить массив");
             }
-            return <Input width={300} value={String(value || "")} onChange={(e, nextValue) => onChange(nextValue)} />;
+            return <Input width={300} value={String(value || "")} onValueChange={onChange} />;
     }
 }

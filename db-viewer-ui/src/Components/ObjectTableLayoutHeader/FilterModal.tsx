@@ -1,8 +1,6 @@
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { Button, Link, Modal } from "@skbkontur/react-ui";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
-import Button from "@skbkontur/react-ui/Button";
-import Link from "@skbkontur/react-ui/Link";
-import Modal from "@skbkontur/react-ui/Modal";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Link as RouterLink } from "react-router-dom";

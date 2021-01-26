@@ -1,7 +1,7 @@
 import SortDefaultIcon from "@skbkontur/react-icons/SortDefault";
 import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
-import Link from "@skbkontur/react-ui/Link";
+import { Link } from "@skbkontur/react-ui";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 

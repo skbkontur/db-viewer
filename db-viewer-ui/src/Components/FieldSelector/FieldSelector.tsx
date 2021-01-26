@@ -1,8 +1,7 @@
 import SearchIcon from "@skbkontur/react-icons/Search";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Checkbox from "@skbkontur/react-ui/Checkbox";
-import Input from "@skbkontur/react-ui/Input";
-import LayoutEvents from "@skbkontur/react-ui/lib/LayoutEvents";
+import { Checkbox, Input } from "@skbkontur/react-ui";
+import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";
 import React from "react";
 
 import styles from "./FieldSelector.less";
@@ -49,7 +48,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
     }
 
     public handleChangeText(text: string) {
-        this.setState({ searchText: text }, () => LayoutEvents.emit());
+        this.setState({ searchText: text }, () => layoutEventsEmit());
     }
 
     public handleToogle(value: boolean, fieldName: string) {
@@ -80,7 +79,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                 <Checkbox
                     data-tid={fieldDefinition.name.replace(".", "_")}
                     checked={!hiddenFields.includes(fieldDefinition.name)}
-                    onChange={(e, checked) => this.handleToogle(checked, fieldDefinition.name)}>
+                    onValueChange={checked => this.handleToogle(checked, fieldDefinition.name)}>
                     <div className={styles.content}>{fieldDefinition.caption}</div>
                 </Checkbox>
             </div>
@@ -109,7 +108,7 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
                     leftIcon={<SearchIcon />}
                     value={this.state.searchText}
                     width={300}
-                    onChange={(e, value) => this.handleChangeText(value)}
+                    onValueChange={this.handleChangeText}
                 />
                 {this.props.showSelectAllButton && (
                     <div
