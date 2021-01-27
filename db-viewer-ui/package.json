@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@skbkontur/react-icons": ">=3 <=4",
-    "@skbkontur/react-ui": ">=2 <=3",
+    "@skbkontur/react-ui": ">=2 <3",
     "react": ">=15 <=16",
     "react-dom": ">=15 <=16",
     "react-router": ">=4 <=5",
@@ -66,7 +66,7 @@
     "@babel/runtime": "^7.9.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.2",
     "@skbkontur/react-icons": "^4.3.0",
-    "@skbkontur/react-ui": "^2.0.0",
+    "@skbkontur/react-ui": "2.0.0",
     "@storybook/addon-actions": "^6.0.0-beta.32",
     "@storybook/addons": "^6.0.0-beta.32",
     "@storybook/react": "^6.0.0-beta.32",

@@ -1,6 +1,6 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Input, Select } from "@skbkontur/react-ui";
-import { tooltip, ValidationInfo, ValidationWrapperV1 } from "@skbkontur/react-ui-validations";
+import { tooltip, ValidationInfo, ValidationWrapper } from "@skbkontur/react-ui-validations";
 import React from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
@@ -65,7 +65,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                         />
                     </Fit>
                     <Fit>
-                        <ValidationWrapperV1
+                        <ValidationWrapper
                             data-tid="DateTimeValidation"
                             renderMessage={tooltip("right middle")}
                             validationInfo={this.getValidation(property, value)}>
@@ -75,14 +75,14 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                                 onValueChange={nextValue => this.updateItem(property, { value: nextValue })}
                                 value={value ? value : ""}
                             />
-                        </ValidationWrapperV1>
+                        </ValidationWrapper>
                     </Fit>
                 </ColumnStack>
             );
         }
         if (type === "Boolean") {
             return (
-                <ValidationWrapperV1
+                <ValidationWrapper
                     data-tid="BooleanValidation"
                     renderMessage={tooltip("right middle")}
                     validationInfo={this.getValidation(property, value)}>
@@ -94,12 +94,12 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                         }}
                         value={value || undefined}
                     />
-                </ValidationWrapperV1>
+                </ValidationWrapper>
             );
         }
         if (property.availableValues.length !== 0) {
             return (
-                <ValidationWrapperV1
+                <ValidationWrapper
                     data-tid="EnumValidation"
                     renderMessage={tooltip("right middle")}
                     validationInfo={this.getValidation(property, value)}>
@@ -111,11 +111,11 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                         }}
                         value={value || undefined}
                     />
-                </ValidationWrapperV1>
+                </ValidationWrapper>
             );
         }
         return (
-            <ValidationWrapperV1
+            <ValidationWrapper
                 data-tid="InputValidation"
                 renderMessage={tooltip("right middle")}
                 validationInfo={this.getValidation(property, value)}>
@@ -124,7 +124,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                     onValueChange={nextValue => this.updateItem(property, { value: nextValue })}
                     value={value || ""}
                 />
-            </ValidationWrapperV1>
+            </ValidationWrapper>
         );
     }
 

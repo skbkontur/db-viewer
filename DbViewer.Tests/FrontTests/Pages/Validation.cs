@@ -12,7 +12,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Validation(ISearchContainer container, ISelector selector)
             : base(container, selector)
         {
-            portal = container.Find<Portal>().By(selector + "[data-comp-name~='Portal']:portal div[class*='Popup-module-popup']");
+            portal = container.Find<Portal>().By(selector + "[data-comp-name~='Portal']:portal div[class*='react-ui']");
         }
 
         public IProp<bool> Active => this.ReactProperty<bool>("error");
