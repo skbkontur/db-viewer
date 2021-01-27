@@ -1,6 +1,5 @@
 import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
-import Input from "@skbkontur/react-ui/Input";
-import Loader from "@skbkontur/react-ui/Loader";
+import { Input, Loader } from "@skbkontur/react-ui";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -67,7 +66,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                                     autoFocus
                                     placeholder="Введите значение для поиска (работает R#-style поиск, например, BoxEvSt или BESE)"
                                     value={filter}
-                                    onChange={(e, val) => this.setState({ filter: val })}
+                                    onValueChange={val => this.setState({ filter: val })}
                                     width={"100%"}
                                 />
                             </Fit>

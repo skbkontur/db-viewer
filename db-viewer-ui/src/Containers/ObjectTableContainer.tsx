@@ -1,7 +1,5 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Link from "@skbkontur/react-ui/Link";
-import Loader from "@skbkontur/react-ui/Loader";
-import Paging from "@skbkontur/react-ui/Paging";
+import { Link, Loader, Paging } from "@skbkontur/react-ui";
 import isEqual from "lodash/isEqual";
 import qs from "qs";
 import React from "react";

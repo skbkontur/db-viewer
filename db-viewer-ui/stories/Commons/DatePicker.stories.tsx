@@ -18,7 +18,7 @@ storiesOf("DatePicker", module)
             {(state, onChange) => (
                 <DatePicker
                     value={state.value}
-                    onChange={(e, x) => {
+                    onChange={x => {
                         action("onChange")(x);
                         onChange({ value: x || undefined });
                     }}
@@ -32,7 +32,7 @@ storiesOf("DatePicker", module)
                 <DatePicker
                     value={state.value}
                     timeZone={TimeUtils.TimeZones.Moscow}
-                    onChange={(e, x) => {
+                    onChange={x => {
                         action("onChange")(x);
                         onChange({ value: x || undefined });
                     }}
@@ -46,7 +46,7 @@ storiesOf("DatePicker", module)
                 <DatePicker
                     value={state.value}
                     disabled
-                    onChange={(e, x) => {
+                    onChange={x => {
                         action("onChange")(x);
                         onChange({ value: x || undefined });
                     }}
@@ -60,7 +60,7 @@ storiesOf("DatePicker", module)
                 <DatePicker
                     value={state.value}
                     error
-                    onChange={(e, x) => {
+                    onChange={x => {
                         action("onChange")(x);
                         onChange({ value: x || undefined });
                     }}

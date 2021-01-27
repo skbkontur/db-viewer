@@ -1,7 +1,7 @@
 import CopyIcon from "@skbkontur/react-icons/Copy";
 import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Link from "@skbkontur/react-ui/Link";
+import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import qs from "qs";
 import React from "react";

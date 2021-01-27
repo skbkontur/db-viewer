@@ -1,4 +1,4 @@
-import UiSpinner from "@skbkontur/react-ui/Spinner";
+import { Spinner as UiSpinner } from "@skbkontur/react-ui";
 import React from "react";
 
 import styles from "./Spinner.less";

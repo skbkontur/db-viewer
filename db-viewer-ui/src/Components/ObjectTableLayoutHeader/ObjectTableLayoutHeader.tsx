@@ -3,10 +3,7 @@ import DownloadIcon from "@skbkontur/react-icons/Download";
 import FilterIcon from "@skbkontur/react-icons/Filter";
 import SettingsIcon from "@skbkontur/react-icons/Settings";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Button from "@skbkontur/react-ui/Button";
-import Link from "@skbkontur/react-ui/Link";
-import Modal from "@skbkontur/react-ui/Modal";
-import Tooltip from "@skbkontur/react-ui/Tooltip";
+import { Button, Link, Modal, Tooltip } from "@skbkontur/react-ui";
 import difference from "lodash/difference";
 import React from "react";
 

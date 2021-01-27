@@ -14,7 +14,7 @@ interface DateTimePickerProps {
     error?: boolean;
     defaultTime: Time;
     value: Nullable<Date>;
-    onChange: (e: React.SyntheticEvent<any>, value: Nullable<Date>) => void;
+    onChange: (value: Nullable<Date>) => void;
     timeZone?: TimeZone | number;
     autoFocus?: boolean;
     disabled?: boolean;
@@ -64,7 +64,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
         const date = DateUtils.convertDateToString(value, timeZoneOffset, "YYYY-MM-DD");
         const newDateTime = moment(`${date}T${newTime}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`).toDate();
-        onChange(e, newDateTime);
+        onChange(newDateTime);
     };
 
     public render(): JSX.Element {

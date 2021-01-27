@@ -1,6 +1,6 @@
 import { RowStack } from "@skbkontur/react-stack-layout";
+import { Button } from "@skbkontur/react-ui";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
-import Button from "@skbkontur/react-ui/Button";
 import { DecoratorFunction } from "@storybook/addons";
 import React from "react";
 

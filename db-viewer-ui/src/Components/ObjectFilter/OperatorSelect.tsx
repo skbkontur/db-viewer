@@ -1,4 +1,4 @@
-import Select from "@skbkontur/react-ui/Select";
+import { Select } from "@skbkontur/react-ui";
 import React from "react";
 
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
@@ -32,7 +32,7 @@ export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
             width={70}
             data-tid="OperatorSelect"
             items={availableValues.map(x => [x, operatorToString(x)] as [ObjectFieldFilterOperator, string])}
-            onChange={(e: any, nextValue: any) => {
+            onValueChange={(nextValue: any) => {
                 if (nextValue != null) {
                     onChange(nextValue);
                 }

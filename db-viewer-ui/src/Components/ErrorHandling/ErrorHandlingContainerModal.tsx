@@ -1,8 +1,6 @@
 import CopyIcon from "@skbkontur/react-icons/Copy";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import Button from "@skbkontur/react-ui/Button";
-import Link from "@skbkontur/react-ui/Link";
-import Modal from "@skbkontur/react-ui/Modal";
+import { Button, Link, Modal } from "@skbkontur/react-ui";
 import React from "react";
 
 import { CopyToClipboardToast } from "../AllowCopyToClipboard";
