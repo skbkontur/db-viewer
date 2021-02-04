@@ -32,17 +32,17 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         this.state = { value: unlessNull(props.value, emptyValue) };
     }
 
-    public componentWillReceiveProps({ value }: TimePickerProps) {
-        if (value !== this.props.value) {
-            this.setState({ value: unlessNull(value, emptyValue) });
+    public componentDidUpdate(prevProps: TimePickerProps): void {
+        if (prevProps.value !== this.props.value) {
+            this.setState({ value: unlessNull(this.props.value, emptyValue) });
         }
     }
 
-    public handleChange = (value: string) => {
+    private handleChange = (value: string) => {
         this.setState({ value: value });
     };
 
-    public handleBlur = (e: React.SyntheticEvent<any>) => {
+    private handleBlur = (e: React.SyntheticEvent<any>) => {
         const { defaultTime } = this.props;
         const { value } = this.state;
         if (DateUtils.isCorrectTime(value)) {
@@ -56,7 +56,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         }
     };
 
-    public handleFocus = () => {
+    private handleFocus = () => {
         const { defaultTime } = this.props;
         if (!DateUtils.isCorrectTime(this.state.value)) {
             this.setState({ value: defaultTime });

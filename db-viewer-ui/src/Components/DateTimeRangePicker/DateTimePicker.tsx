@@ -1,7 +1,6 @@
 import moment from "moment";
 import React from "react";
 
-import { ICanBeValidated } from "../../Domain/DataTypes/DateTimeRange";
 import { Time, TimeZone } from "../../Domain/DataTypes/Time";
 import { DateUtils } from "../../Domain/Utils/DateUtils";
 import { TimeUtils } from "../../Domain/Utils/TimeUtils";
@@ -24,34 +23,20 @@ interface DateTimePickerState {
     time: Nullable<string>;
 }
 
-export class DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState>
-    implements ICanBeValidated {
-    private datePicker: Nullable<DatePicker>;
+export class DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
     public state = {
         time: null,
     };
 
-    public componentDidMount = (): void => {
+    public componentDidMount(): void {
         const { value, timeZone } = this.props;
-
-        if (value === null || value === undefined) {
-            return;
-        }
-
         this.setTimeToState(value, timeZone);
-    };
+    }
 
-    public componentWillReceiveProps = ({ value, timeZone }: DateTimePickerProps): void => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        this.setTimeToState(value, timeZone);
-    };
-
-    public focus(): void {
-        if (this.datePicker != null) {
-            this.datePicker.focus();
+    public componentDidUpdate(prevProps: DateTimePickerProps): void {
+        const { value, timeZone } = this.props;
+        if (prevProps.value !== value || prevProps.timeZone !== timeZone) {
+            this.setTimeToState(value, timeZone);
         }
     }
 
@@ -74,7 +59,6 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
             <span>
                 <span className={styles.dateRangeItem}>
                     <DatePicker
-                        ref={el => (this.datePicker = el)}
                         data-tid="Date"
                         timeZone={timeZone}
                         value={value}
@@ -99,7 +83,11 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
         );
     }
 
-    private readonly setTimeToState = (date: Date, timeZone: Nullable<TimeZone | number>): void => {
+    private readonly setTimeToState = (date: Nullable<Date>, timeZone: Nullable<TimeZone | number>): void => {
+        if (date === null || date === undefined) {
+            return;
+        }
+
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
         const time = DateUtils.convertDateToString(date, timeZoneOffset, "HH:mm");
         this.setState({ time: time });

@@ -21,7 +21,7 @@ export class ErrorHandlingContainer extends React.Component<{}, ErrorHandlingCon
 
     public oldOnunhandledrejection: null | ((e: PromiseRejectionEvent, ...rest: any[]) => void) = null;
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         this.oldOnunhandledrejection = window.onunhandledrejection;
         window.onunhandledrejection = (e: any, ...restArgs: any[]) => {
             if (this.oldOnunhandledrejection) {
@@ -39,7 +39,7 @@ export class ErrorHandlingContainer extends React.Component<{}, ErrorHandlingCon
         };
     }
 
-    public componentWillUnmount() {
+    public componentWillUnmount(): void {
         window.onunhandledrejection = this.oldOnunhandledrejection;
     }
 
