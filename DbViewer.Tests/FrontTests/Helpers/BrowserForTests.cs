@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -36,6 +37,32 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
         {
             var newPage = InitializePage<TPage>();
             return newPage;
+        }
+
+        public string DownloadFile(string filename)
+        {
+            var url = $"http://localhost:4444/download/{WebDriver.SessionId}/{filename}";
+            var sw = Stopwatch.StartNew();
+            while (true)
+            {
+                try
+                {
+                    var request = WebRequest.CreateHttp(url);
+                    using (var response = request.GetResponse())
+                    using (var responseStream = response.GetResponseStream())
+                    using (var reader = new StreamReader(responseStream))
+                        return reader.ReadToEnd();
+                }
+                catch (WebException e)
+                {
+                    if (sw.Elapsed > TimeSpan.FromSeconds(10))
+                        throw;
+
+                    var response = (HttpWebResponse)e.Response;
+                    if (response.StatusCode != HttpStatusCode.NotFound)
+                        throw;
+                }
+            }
         }
 
         private TPage InitializePage<TPage>()

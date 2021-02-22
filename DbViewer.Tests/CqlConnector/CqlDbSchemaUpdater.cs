@@ -24,7 +24,7 @@ namespace SkbKontur.DbViewer.Tests.CqlConnector
             CreateTable<CqlUserInfo>(context, 1500);
             CreateTable<DocumentBindingsMeta>(context, 150);
             CreateTable<DocumentPrintingInfo>(context, 11000);
-            CreateTable<DocumentStorageElement>(context, 123);
+            CreateTable<CqlDocument>(context, 123);
         }
 
         private void CreateTable<T>(CqlDbContext context, int count)

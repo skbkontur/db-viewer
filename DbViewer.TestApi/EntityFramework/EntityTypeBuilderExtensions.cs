@@ -21,7 +21,8 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
         {
             var indexedProperties = ExtractPropertiesWithAttribute<IndexedAttribute>(entityTypeBuilder);
             indexedProperties = indexedProperties.Where(x => !x.GetCustomAttributes<IdentityAttribute>().Any()).ToArray();
-            entityTypeBuilder.HasIndex(indexedProperties.Select(x => x.Name).ToArray());
+            if (indexedProperties.Any())
+                entityTypeBuilder.HasIndex(indexedProperties.Select(x => x.Name).ToArray());
             return entityTypeBuilder;
         }
 

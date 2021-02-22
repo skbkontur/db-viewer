@@ -44,9 +44,9 @@ namespace SkbKontur.DbViewer.Tests.EntityFramework
 
             await context.Set<UsersTable>().AddAsync(new UsersTable
                 {
-                    Id = 1,
-                    Email = "2",
-                    Name = "3",
+                    Id = Guid.NewGuid(),
+                    ScopeId = "2",
+                    FirstName = "3",
                 });
 
             await context.SaveChangesAsync();

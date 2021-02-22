@@ -30,7 +30,7 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
             {
                 typeof(DocumentBindingsMeta),
                 typeof(DocumentPrintingInfo),
-                typeof(DocumentStorageElement),
+                typeof(CqlDocument),
                 typeof(CqlConnectorDeliveryContext)
             }.ToTypeDescriptions();
 
