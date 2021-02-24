@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 
 using FluentAssertions;
 
@@ -44,9 +45,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             adminBusinessObjectPage.FilterModal.Apply.Click();
             adminBusinessObjectPage.ItemsCountInfo.WaitTextContains("Всего 100123");
 
-            adminBusinessObjectPage.DownloadLink.Click();
-            var file = browser.DownloadFile($"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv");
-            file.Split("\n").Length.Should().Be(100125);
+            var content = DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(100125);
         }
 
         /// <summary>
@@ -64,9 +64,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 0");
             businessObjectPage.NothingFound.WaitPresence();
 
-            businessObjectPage.DownloadLink.Click();
-            var file = browser.DownloadFile($"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv");
-            file.Split("\n").Length.Should().Be(2);
+            var content = DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(2);
         }
 
         /// <summary>
@@ -85,15 +84,12 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             businessObjectPage.FilterModal.Apply.Click();
             businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 50000");
 
-            businessObjectPage.DownloadLink.Click();
-            var file = browser.DownloadFile($"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv");
-            file.Split("\n").Length.Should().Be(50002);
+            var content = DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(50002);
         }
 
         /// <summary>
         ///     Применяем фильтр с отображением всех колонок, находим 10 записей, скачиваем их, проверяем контент
-        ///     С тем же фильтром оставляем отображение только колонок Email, Id, ScopeId, LastModificationDateTime
-        ///     + делаем сортировку по email и проверяем, что в скачанном файле остались только нужные отсортированные колонки
         /// </summary>
         [Test]
         public void TestContent()
@@ -108,9 +104,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
             businessObjectPage.FilterModal.Apply.Click();
 
-            businessObjectPage.DownloadLink.Click();
-            var file = browser.DownloadFile($"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv");
-            var content = file.Split("\n");
+            var content = DownloadFile(browser, businessObjectPage);
             content.Length.Should().Be(12);
 
             var usersById = users.ToDictionary(x => x.Id.ToString(), x => x);
@@ -133,38 +127,51 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 item[6].Should().Be(FormatString("Some String"));
                 item[7].Should().Be(FormatString("False"));
             }
+        }
+
+        /// <summary>
+        ///     Применяем фильтр с отображением всех колонок, находим 10 записей
+        ///     Оставляем отображение только колонок Email, Id, ScopeId, LastModificationDateTime
+        ///     + делаем сортировку по email и проверяем, что в скачанном файле остались только нужные отсортированные колонки
+        /// </summary>
+        [Test]
+        public void TestContentSortedAndSelectColumns()
+        {
+            var users = GenerateRandomUsersAndAssertCount(10);
+            var scopeId = users[0].ScopeId;
+
+            using var browser = new BrowserForTests();
+            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+
+            businessObjectPage.OpenFilter.Click();
+            businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            businessObjectPage.FilterModal.Apply.Click();
 
             businessObjectPage.TableHeader.SortByColumn("Header_Id");
-            SetColumns(businessObjectPage, "Email", "Id", "ScopeId", "LastModificationDateTime");
+            var columns = new[] {"Email", "Id", "ScopeId", "LastModificationDateTime"};
+            businessObjectPage.FieldSettings.Click();
+            businessObjectPage.ColumnSelector.TypesSelectAll.Click();
+            foreach (var column in columns)
+                businessObjectPage.ColumnSelector.ColumnCheckboxes.GetCheckbox(column).Click();
 
-            businessObjectPage.DownloadLink.Click();
-            var file2 = browser.DownloadFile($"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm} (1).csv");
-            var content2 = file2.Split("\n");
-            content2.Length.Should().Be(12);
+            var content = DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(12);
 
-            var headerFields2 = new[] {"Id", "ScopeId", "LastModificationDateTime", "Email"};
-            var header2 = string.Join(sep, headerFields2.Select(FormatString));
-            content2[0].Should().Be(header2);
-            content2[11].Should().BeEmpty();
+            var usersById = users.ToDictionary(x => x.Id.ToString(), x => x);
+            var sep = ";";
+            var headerFields = new[] {"Id", "ScopeId", "LastModificationDateTime", "Email"};
+            var header = string.Join(sep, headerFields.Select(FormatString));
+            content[0].Should().Be(header);
+            content[11].Should().BeEmpty();
             for (var i = 1; i < 11; i++)
             {
-                var item = content2[i].Split(new[] {sep}, StringSplitOptions.None);
+                var item = content[i].Split(new[] {sep}, StringSplitOptions.None);
                 var key = item[0].Replace("\"", "").Replace("=", "");
                 var user = usersById[key];
                 item[0].Should().Be(FormatString(key));
                 item[1].Should().Be(FormatString(user.ScopeId));
                 DateTime.TryParseExact(item[2].Replace("\"", ""), "O", CultureInfo.InvariantCulture, DateTimeStyles.None, out _).Should().BeTrue();
                 item[3].Should().Be(FormatString(user.Email));
-            }
-        }
-
-        private static void SetColumns(BusinessObjectTablePage businessObjectPage, params string[] columns)
-        {
-            businessObjectPage.FieldSettings.Click();
-            businessObjectPage.ColumnSelector.TypesSelectAll.Click();
-            foreach (var column in columns)
-            {
-                businessObjectPage.ColumnSelector.ColumnCheckboxes.GetCheckbox(column).Click();
             }
         }
 
@@ -189,6 +196,18 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         private static string FormatNumber(string n)
         {
             return $"=\"{n}\"";
+        }
+
+        private static string[] DownloadFile(BrowserForTests browser, BusinessObjectTablePage businessObjectPage)
+        {
+            businessObjectPage.DownloadLink.Click();
+            var filename = $"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv";
+            Thread.Sleep(1000);
+            var file = browser.DownloadFile(filename);
+            var content = file.Split("\n");
+            if (content.Length == 1)
+                Console.WriteLine($"File Content: '{file}'");
+            return content;
         }
 
         private static int GetUserObjectsCount(string scopeId, int limit)
