@@ -1,9 +1,13 @@
 # Changelog
 
-## v1.0.18 - 2020.01.25
+## v1.1.11 - 2021.02.25
+- Update `@skbkontur/react-ui` package
+- Remove deprecated react lifecycle methods
+
+## v1.0.18 - 2021.01.25
 - Remove `sep=;` from downloaded csv since it [breaks encoding parsing](https://stackoverflow.com/questions/20395699/sep-statement-breaks-utf8-bom-in-csv-file-which-is-generated-by-xsl)
 
-## v1.0.16 - 2020.01.21
+## v1.0.16 - 2021.01.21
 - Use DownloadFileStream to be more memory efficient when downloading large files
 
 ## v1.0.4 - 2020.10.13
