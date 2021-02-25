@@ -8,6 +8,7 @@ using GroBuf;
 using JetBrains.Annotations;
 
 using SkbKontur.DbViewer.TestApi.Cql;
+using SkbKontur.DbViewer.TestApi.Impl.Document;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -77,5 +78,40 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 TimeSliceShardNumber = 42,
                 ContextContent = serializer.Serialize(new ConnectorDeliveryContext {ContextId = Guid.NewGuid().ToString()}),
             };
+
+        public static DocumentModel GetDocumentModel()
+        {
+            return new DocumentModel
+                {
+                    Id = Guid.NewGuid(),
+                    DocumentNumber = "123",
+                    DocumentDate = new DateTimeOffset(2014, 12, 11, 0, 0, 0, TimeSpan.Zero),
+                    DocumentType = DocumentType.Orders,
+                    IsLargeDocument = false,
+                    ShardNumber = 0,
+                    DocumentPrice = 10.1m,
+                    DocumentContent = new DocumentContent
+                        {
+                            OrderStatus = OrderStatus.Processed,
+                            WasRead = true,
+                            TotalAmount = 10.2m,
+                            GoodItems = new[]
+                                {
+                                    new GoodItem
+                                        {
+                                            Name = "Name of lintem",
+                                            Price = 50,
+                                            CustomDeclarationNumbers = new[] {"123/45/6", "7654/6/7"}
+                                        },
+                                    new GoodItem
+                                        {
+                                            Name = "Item 2",
+                                            Price = 50.1m,
+                                            CustomDeclarationNumbers = new[] {"224"}
+                                        }
+                                }
+                        }
+                };
+        }
     }
 }

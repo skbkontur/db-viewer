@@ -104,7 +104,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 modal.Cancel.Click();
         }
 
-        private void AssertFtpUserExistence(Guid userId, bool deletionConfirmed)
+        private static void AssertFtpUserExistence(Guid userId, bool deletionConfirmed)
         {
             if (deletionConfirmed)
             {
@@ -117,7 +117,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             Assert.That(() => GetFtpUser(userId), Is.Not.Null, "Deleted ftp user despite denying confirmation");
         }
 
-        private FtpUser CreateFtpUser()
+        private static FtpUser CreateFtpUser()
         {
             using var context = new EntityFrameworkDbContext();
 
@@ -136,7 +136,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             return ftpUser;
         }
 
-        private FtpUser GetFtpUser(Guid userId)
+        private static FtpUser? GetFtpUser(Guid userId)
         {
             using var context = new EntityFrameworkDbContext();
             return context.FtpUsers.Where(x => x.Id == userId).ToArray().SingleOrDefault();

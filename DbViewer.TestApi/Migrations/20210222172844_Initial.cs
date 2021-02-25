@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.TestApi.Impl.Document;
 
 namespace SkbKontur.DbViewer.TestApi.Migrations
 {
@@ -9,6 +9,24 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Documents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DocumentNumber = table.Column<string>(nullable: false),
+                    DocumentDate = table.Column<DateTimeOffset>(nullable: false),
+                    DocumentType = table.Column<int>(nullable: false),
+                    IsLargeDocument = table.Column<bool>(nullable: false),
+                    ShardNumber = table.Column<int>(nullable: false),
+                    DocumentPrice = table.Column<decimal>(nullable: false),
+                    DocumentContent = table.Column<DocumentContent>(type: "jsonb", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Documents", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "FtpUsers",
                 columns: table => new
@@ -45,10 +63,14 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(nullable: false),
+                    ScopeId = table.Column<string>(nullable: false),
+                    LastModificationDateTime = table.Column<DateTime>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    FirstName = table.Column<string>(nullable: false),
+                    Surname = table.Column<string>(nullable: false),
+                    Patronymic = table.Column<string>(nullable: false),
+                    IsSuperUser = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,13 +88,16 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
                 columns: new[] { "Boolean", "Integer", "String", "DateTime", "DateTimeOffset" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
+                name: "IX_Users_ScopeId",
                 table: "Users",
-                column: "Email");
+                column: "ScopeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Documents");
+
             migrationBuilder.DropTable(
                 name: "FtpUsers");
 

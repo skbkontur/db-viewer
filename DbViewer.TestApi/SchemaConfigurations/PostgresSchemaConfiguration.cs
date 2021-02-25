@@ -19,8 +19,10 @@ namespace SkbKontur.DbViewer.TestApi.SchemaConfigurations
         public SchemaDescription Description => new SchemaDescription
             {
                 AllowReadAll = true,
-                CountLimit = 10_000,
-                DownloadLimit = 100_000,
+                CountLimit = 50_000,
+                CountLimitForSuperUser = 1_000_000,
+                DownloadLimit = 50_000,
+                DownloadLimitForSuperUser = 1_000_000,
                 SchemaName = "Postgres Objects",
                 AllowDelete = true,
                 AllowEdit = true,

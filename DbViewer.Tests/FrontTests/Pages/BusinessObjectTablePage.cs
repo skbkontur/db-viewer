@@ -34,6 +34,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Link FieldSettings { get; set; }
         public Link DownloadLink { get; set; }
 
+        [Selector("Portal:portal ##ColumnSelector")]
+        public ColumnSelector ColumnSelector { get; set; }
+
         public ConfirmDeleteObjectModal ConfirmDeleteObjectModal { get; set; }
 
         public BusinessObjectTableHeader TableHeader { get; set; }

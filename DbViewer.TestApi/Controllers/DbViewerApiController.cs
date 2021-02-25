@@ -26,17 +26,17 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpPost]
         [Route("{objectIdentifier}/search")]
-        public Task<SearchResult> SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.SearchObjects(objectIdentifier, query, true);
+        public Task<SearchResult> SearchObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.SearchObjects(objectIdentifier, query, IsSuperUser());
 
         [HttpPost]
         [Route("{objectIdentifier}/count")]
-        public Task<CountResult> CountObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.CountObjects(objectIdentifier, query, true);
+        public Task<CountResult> CountObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.CountObjects(objectIdentifier, query, IsSuperUser());
 
         [HttpGet]
         [Route("{objectIdentifier}/download/{queryString}")]
         public async Task<IActionResult> DownloadObjects(string objectIdentifier, string queryString)
         {
-            var fileInfo = await impl.DownloadObjects(objectIdentifier, queryString, true).ConfigureAwait(false);
+            var fileInfo = await impl.DownloadObjects(objectIdentifier, queryString, IsSuperUser()).ConfigureAwait(false);
             return File(fileInfo.Content, fileInfo.ContentType, fileInfo.Name);
         }
 
@@ -46,11 +46,13 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
 
         [HttpDelete]
         [Route("{objectIdentifier}/delete")]
-        public Task DeleteObject(string objectIdentifier, [FromBody] ObjectReadRequest query) => impl.DeleteObject(objectIdentifier, query, true);
+        public Task DeleteObject(string objectIdentifier, [FromBody] ObjectReadRequest query) => impl.DeleteObject(objectIdentifier, query, IsSuperUser());
 
         [HttpPost]
         [Route("{objectIdentifier}/update")]
-        public Task UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query, true);
+        public Task UpdateObject(string objectIdentifier, [FromBody] ObjectUpdateRequest query) => impl.UpdateObject(objectIdentifier, query, IsSuperUser());
+
+        private bool IsSuperUser() => HttpContext.Request.Cookies.ContainsKey("isSuperUser");
 
         private readonly DbViewerApi impl;
     }

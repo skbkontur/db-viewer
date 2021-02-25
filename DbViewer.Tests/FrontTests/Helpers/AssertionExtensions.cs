@@ -36,10 +36,31 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             compoundControl.Text.Wait().That(Is.EqualTo(text));
         }
 
+        public static void WaitTextContains(this Label button, params string[] substrings)
+        {
+            button.Text.Wait().That(ContainsMany(substrings));
+        }
+
+        public static void WaitTextContains(this CompoundControl button, params string[] substrings)
+        {
+            button.Text.Wait().That(ContainsMany(substrings));
+        }
+
         public static void WaitCount<T>(this ControlListBase<T> controlList, int count)
             where T : ControlBase
         {
             controlList.Count.Wait().That(Is.EqualTo(count));
+        }
+
+        public static void WaitItems(this ControlListBase<Label> labelsList, params string[] expectedItems)
+        {
+            labelsList.Wait(x => x.Text).That(Is.EquivalentTo(expectedItems));
+        }
+
+        public static void WaitItems(this Select select, string[] items)
+        {
+            select.GetItemsList().WaitItems(items);
+            select.Click();
         }
 
         public static IValueProvider<TResult[], TResult[]> Wait<T, TResult>(this ControlListBase<T> list, Func<T, IProp<TResult>> func)
@@ -81,6 +102,25 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
                     Assertion = assertion,
                     ExceptionMatcher = exceptionMatcher,
                 });
+        }
+
+        private static ControlList<Label> GetItemsList(this Select select)
+        {
+            select.Click();
+            var portal = select.Find<Portal>().By("noscript");
+            return portal.FindList().Of<Label>("MenuItem").By("Menu");
+        }
+
+        private static IResolveConstraint ContainsMany(string[] substrings)
+        {
+            if (substrings.Length == 0)
+                throw new InvalidOperationException("Expected ContainsSubstring constraint to have at least one substring");
+
+            Constraint result = Contains.Substring(substrings[0]);
+            foreach (var substring in substrings.Skip(1))
+                result = result.And.Contains(substring);
+
+            return result;
         }
 
         private static readonly IExceptionMatcher exceptionMatcher = ExceptionMatcher.FromTypes(typeof(WebDriverException), typeof(InvalidOperationException), typeof(ElementNotFoundException));

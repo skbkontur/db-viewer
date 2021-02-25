@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -38,11 +39,16 @@ namespace SkbKontur.DbViewer.Tests.ApiTests
         private async Task<T> Request<T>(Func<HttpClient, Task<HttpResponseMessage>> func)
         {
             var baseUri = new Uri("http://localhost:5000/db-viewer/");
-            using (var handler = new HttpClientHandler())
+
+            var cookieContainer = new CookieContainer();
+            cookieContainer.Add(new Cookie("isSuperUser", "true", "/", "localhost"));
+
+            using (var handler = new HttpClientHandler {CookieContainer = cookieContainer})
             using (var client = new HttpClient(handler) {BaseAddress = baseUri})
             {
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
                 var result = await func(client);
                 var content = await result.Content.ReadAsStringAsync();
                 if (!result.IsSuccessStatusCode)

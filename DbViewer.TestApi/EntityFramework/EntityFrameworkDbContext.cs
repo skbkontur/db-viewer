@@ -11,6 +11,7 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
         public DbSet<UsersTable> Users { get; set; }
         public DbSet<FtpUser> FtpUsers { get; set; }
         public DbSet<TestTable> Tests { get; set; }
+        public DbSet<SqlDocument> Documents { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("Host=localhost;Database=my_db;Username=postgres;Password=postgres");

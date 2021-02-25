@@ -6,11 +6,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.TestApi.Impl.Document;
 
 namespace SkbKontur.DbViewer.TestApi.Migrations
 {
     [DbContext(typeof(EntityFrameworkDbContext))]
-    [Migration("20200824045006_Initial")]
+    [Migration("20210222172844_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +41,40 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
                     b.HasIndex("Login");
 
                     b.ToTable("FtpUsers");
+                });
+
+            modelBuilder.Entity("SkbKontur.DbViewer.TestApi.EntityFramework.SqlDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DocumentContent>("DocumentContent")
+                        .IsRequired()
+                        .HasColumnType("jsonb");
+
+                    b.Property<DateTimeOffset>("DocumentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("DocumentPrice")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("DocumentType")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsLargeDocument")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ShardNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Documents");
                 });
 
             modelBuilder.Entity("SkbKontur.DbViewer.TestApi.EntityFramework.TestTable", b =>
@@ -83,22 +118,39 @@ namespace SkbKontur.DbViewer.TestApi.Migrations
 
             modelBuilder.Entity("SkbKontur.DbViewer.TestApi.EntityFramework.UsersTable", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsSuperUser")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastModificationDateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Patronymic")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ScopeId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email");
+                    b.HasIndex("ScopeId");
 
                     b.ToTable("Users");
                 });

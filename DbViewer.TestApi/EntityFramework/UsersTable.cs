@@ -1,15 +1,23 @@
-﻿using SkbKontur.DbViewer.TestApi.Impl.Attributes;
+﻿using System;
+
+using SkbKontur.DbViewer.TestApi.Impl.Attributes;
 
 namespace SkbKontur.DbViewer.TestApi.EntityFramework
 {
     public class UsersTable
     {
         [Identity]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Indexed]
-        public string Email { get; set; }
+        public string ScopeId { get; set; }
 
-        public string Name { get; set; }
+        public DateTime LastModificationDateTime { get; set; }
+
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string Surname { get; set; }
+        public string Patronymic { get; set; }
+        public bool IsSuperUser { get; set; }
     }
 }

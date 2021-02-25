@@ -35,6 +35,7 @@ function AdminToolsEntryPoint() {
                     exact
                     path="/Admin"
                     render={() => {
+                        document.cookie = "isSuperUser=true";
                         localStorage.setItem("isSuperUser", "true");
                         return <Redirect to="/BusinessObjects" />;
                     }}
