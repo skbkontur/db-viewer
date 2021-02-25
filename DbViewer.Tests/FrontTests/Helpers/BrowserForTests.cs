@@ -51,15 +51,16 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
                     using (var response = request.GetResponse())
                     using (var responseStream = response.GetResponseStream())
                     using (var reader = new StreamReader(responseStream))
-                        return reader.ReadToEnd();
+                    {
+                        var content = reader.ReadToEnd();
+                        if (string.IsNullOrEmpty(content))
+                            throw new InvalidOperationException("Downloaded content was empty");
+                        return content;
+                    }
                 }
-                catch (WebException e)
+                catch (Exception)
                 {
                     if (sw.Elapsed > TimeSpan.FromSeconds(10))
-                        throw;
-
-                    var response = (HttpWebResponse)e.Response;
-                    if (response.StatusCode != HttpStatusCode.NotFound)
                         throw;
                 }
             }
