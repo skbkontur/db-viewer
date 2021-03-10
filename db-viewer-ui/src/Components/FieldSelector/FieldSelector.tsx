@@ -47,9 +47,9 @@ export class FieldSelector extends React.Component<FieldSelectorProps, FieldSele
         return memo;
     }
 
-    public handleChangeText(text: string) {
+    private readonly handleChangeText = (text: string) => {
         this.setState({ searchText: text }, () => layoutEventsEmit());
-    }
+    };
 
     public handleToogle(value: boolean, fieldName: string) {
         const { onShowField, onHideField } = this.props;
