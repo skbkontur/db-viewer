@@ -56,7 +56,7 @@ build_script:
 
 before_test:
   - cmd: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
-  - ps: Start-Process ./DbViewer.TestApi/bin/netcoreapp3.1/win-x64/SkbKontur.DbViewer.TestApi.exe
+  - ps: Start-Process ./DbViewer.TestApi/bin/netcoreapp3.1/SkbKontur.DbViewer.TestApi.exe
   - ps: Start-Process yarn start:prod
 
 test_script:
