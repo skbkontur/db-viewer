@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.1.17 - 2021.03.11
+- fix field selector filter
+
 ## v1.1.11 - 2021.02.25
 - Update `@skbkontur/react-ui` package
 - Remove deprecated react lifecycle methods
