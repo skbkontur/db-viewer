@@ -36,6 +36,11 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             compoundControl.Text.Wait().That(Is.EqualTo(text));
         }
 
+        public static void WaitText(this Select select, string text)
+        {
+            select.SelectedValueText.Wait().That(Is.EqualTo(text));
+        }
+
         public static void WaitTextContains(this Label button, params string[] substrings)
         {
             button.Text.Wait().That(ContainsMany(substrings));

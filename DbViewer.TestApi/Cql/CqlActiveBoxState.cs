@@ -20,5 +20,8 @@ namespace SkbKontur.DbViewer.TestApi.Cql
 
         [Column("is_being_observed")]
         public bool IsBeingObserved { get; set; }
+
+        [Column("content")]
+        public byte[] Content { get; set; }
     }
 }
