@@ -13,12 +13,10 @@ nuget:
   disable_publish_on_pr: true
 
 environment:
-  NODEJS_VERSION: 12
   NPM_TOKEN:
     secure: Gx5yyFrlELZY4DNW/uAuiXdhUADacNqi3LptQwldv8O61KpYyiDUniA8lBJ5jfne
 
 install:
-  - cmd: powershell Install-Product node $env:NODEJS_VERSION
   - cmd: docker-switch-linux
   - cmd: docker pull selenoid/vnc:chrome_84.0
   - cmd: docker-compose up -d
