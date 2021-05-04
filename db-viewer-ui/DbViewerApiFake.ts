@@ -2,6 +2,7 @@
 import { CountResult } from "./src/Domain/Api/DataTypes/CountResult";
 import { ObjectDescription } from "./src/Domain/Api/DataTypes/ObjectDescription";
 import { ObjectDetails } from "./src/Domain/Api/DataTypes/ObjectDetails";
+import { ObjectFieldFilterOperator } from "./src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectIdentifier } from "./src/Domain/Api/DataTypes/ObjectIdentifier";
 import { ObjectSearchRequest } from "./src/Domain/Api/DataTypes/ObjectSearchRequest";
 import { SearchResult } from "./src/Domain/Api/DataTypes/SearchResult";
@@ -126,8 +127,8 @@ export class DbViewerApiFake implements IDbViewerApi {
                     downloadLimit: 1000,
                     countLimit: 100,
                     allowReadAll: true,
-                    allowEdit: false,
-                    allowDelete: false,
+                    allowEdit: true,
+                    allowDelete: true,
                     allowSort: true,
                     countLimitForSuperUser: 1000,
                     downloadLimitForSuperUser: 10000,
@@ -147,8 +148,8 @@ export class DbViewerApiFake implements IDbViewerApi {
             identifier: "StatusReportDocumentSubscription",
             schemaDescription: {
                 allowReadAll: true,
-                allowEdit: false,
-                allowDelete: false,
+                allowEdit: true,
+                allowDelete: true,
                 allowSort: true,
                 countLimit: 10,
                 downloadLimit: 100,
@@ -171,7 +172,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         isSearchable: true,
                         isSortable: false,
                         availableValues: [],
-                        availableFilters: [],
+                        availableFilters: [ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual],
                         type: {
                             typeName: "String",
                             originalTypeName: "String",
@@ -189,7 +190,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         isSearchable: true,
                         isSortable: false,
                         availableValues: [],
-                        availableFilters: [],
+                        availableFilters: [ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual],
                         type: {
                             typeName: "String",
                             originalTypeName: "String",
@@ -207,7 +208,7 @@ export class DbViewerApiFake implements IDbViewerApi {
                         isSearchable: true,
                         isSortable: false,
                         availableValues: [],
-                        availableFilters: [],
+                        availableFilters: [ObjectFieldFilterOperator.Equals, ObjectFieldFilterOperator.DoesNotEqual],
                         type: {
                             typeName: "Nullable",
                             originalTypeName: "Nullable",
