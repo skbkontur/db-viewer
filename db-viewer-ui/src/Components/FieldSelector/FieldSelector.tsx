@@ -1,10 +1,10 @@
 import SearchIcon from "@skbkontur/react-icons/Search";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Checkbox, Input } from "@skbkontur/react-ui";
+import { Checkbox, Input, ThemeContext } from "@skbkontur/react-ui";
 import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";
 import React from "react";
 
-import styles from "./FieldSelector.less";
+import { jsStyles } from "./FieldSelector.styles";
 
 const MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS = 30;
 
@@ -21,118 +21,96 @@ interface FieldSelectorProps {
     showSelectAllButton?: boolean;
 }
 
-interface FieldSelectorState {
-    searchText: string;
+function filterFieldDefintionsByText(fieldDefinitions: FieldDefinition[], text: string): FieldDefinition[] {
+    if (!text) {
+        return fieldDefinitions;
+    }
+    return fieldDefinitions.filter(x => x.caption.toLowerCase().includes(text.toLowerCase()));
 }
 
-export class FieldSelector extends React.Component<FieldSelectorProps, FieldSelectorState> {
-    public state: FieldSelectorState = {
-        searchText: "",
+function byColumns<T>(memo: [T[], T[], T[]], item: T, index: number, array: T[]): [T[], T[], T[]] {
+    const divisor = array.length > MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS ? 3 : 2;
+    memo[index % divisor].push(item);
+    return memo;
+}
+
+export function FieldSelector({
+    fieldDefinitions,
+    hiddenFields,
+    onShowField,
+    onHideField,
+    showSelectAllButton,
+}: FieldSelectorProps) {
+    const [searchText, setSearchText] = React.useState("");
+    const theme = React.useContext(ThemeContext);
+
+    React.useEffect(() => layoutEventsEmit(), [searchText]);
+
+    const isAllFieldSelected = (fieldDefinition: FieldDefinition[]): boolean => {
+        return !fieldDefinition.map(x => x.name).some(x => hiddenFields.includes(x));
     };
 
-    public static defaultProps = {
-        showSelectAllButton: false,
-    };
-
-    public static filterFieldDefintionsByText(fieldDefinitions: FieldDefinition[], text: string): FieldDefinition[] {
-        if (!text) {
-            return fieldDefinitions;
-        }
-        return fieldDefinitions.filter(x => x.caption.toLowerCase().includes(text.toLowerCase()));
-    }
-
-    public static byColumns<T>(memo: [T[], T[], T[]], item: T, index: number, array: T[]): [T[], T[], T[]] {
-        const divisor = array.length > MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS ? 3 : 2;
-        memo[index % divisor].push(item);
-        return memo;
-    }
-
-    private readonly handleChangeText = (text: string) => {
-        this.setState({ searchText: text }, () => layoutEventsEmit());
-    };
-
-    public handleToogle(value: boolean, fieldName: string) {
-        const { onShowField, onHideField } = this.props;
-
+    const handleToggle = (value: boolean, fieldName: string) => {
         if (value) {
             onShowField([fieldName]);
         } else {
             onHideField([fieldName]);
         }
-    }
+    };
 
-    public handleSelectAll = (filteredFields: FieldDefinition[]) => {
-        const { onShowField, onHideField } = this.props;
+    const handleSelectAll = (filteredFields: FieldDefinition[]) => {
         const fields = filteredFields.map(x => x.name);
-        if (this.isAllFieldSelected(filteredFields)) {
+        if (isAllFieldSelected(filteredFields)) {
             onHideField(fields);
         } else {
             onShowField(fields);
         }
     };
 
-    public renderFieldSelector(fieldDefinition: FieldDefinition): JSX.Element {
-        const { hiddenFields } = this.props;
-
+    const renderFieldSelector = (fieldDefinition: FieldDefinition): JSX.Element => {
         return (
-            <div className={styles.field} key={fieldDefinition.name + fieldDefinition.caption}>
+            <div className={jsStyles.field()} key={fieldDefinition.name + fieldDefinition.caption}>
                 <Checkbox
                     data-tid={fieldDefinition.name.replace(".", "_")}
                     checked={!hiddenFields.includes(fieldDefinition.name)}
-                    onValueChange={checked => this.handleToogle(checked, fieldDefinition.name)}>
-                    <div className={styles.content}>{fieldDefinition.caption}</div>
+                    onValueChange={checked => handleToggle(checked, fieldDefinition.name)}>
+                    <div className={jsStyles.fieldContent()}>{fieldDefinition.caption}</div>
                 </Checkbox>
             </div>
         );
-    }
-
-    public isAllFieldSelected = (fieldDefinition: FieldDefinition[]): boolean => {
-        const { hiddenFields } = this.props;
-        return !fieldDefinition.map(x => x.name).some(x => hiddenFields.includes(x));
     };
 
-    public render(): JSX.Element {
-        const { fieldDefinitions } = this.props;
+    const fieldDefinitionsFiltered = filterFieldDefintionsByText(fieldDefinitions, searchText);
 
-        const fieldDefinitionsFiltered = FieldSelector.filterFieldDefintionsByText(
-            fieldDefinitions,
-            this.state.searchText
-        );
+    const nothingToDisplay = <span className={jsStyles.nothingToDisplay(theme)}>Ничего не найдено</span>;
+    const allFieldsSelected = isAllFieldSelected(fieldDefinitionsFiltered);
+    return (
+        <div className={jsStyles.root()}>
+            <Input
+                data-tid="FilterInput"
+                leftIcon={<SearchIcon />}
+                value={searchText}
+                width={300}
+                onValueChange={setSearchText}
+            />
+            {showSelectAllButton && (
+                <div
+                    data-tid={"TypesSelectAll"}
+                    onClick={() => handleSelectAll(fieldDefinitionsFiltered)}
+                    className={jsStyles.selectAll(theme)}>
+                    {allFieldsSelected ? "Снять выбор с найденных" : "Выбрать все найденные"}
+                </div>
+            )}
+            <RowStack data-tid="ColumnCheckboxes" className={jsStyles.fieldList()} block gap={4}>
+                {fieldDefinitionsFiltered.length === 0 ? <Fit>{nothingToDisplay}</Fit> : null}
 
-        const nothingToDisplay = <span className={styles.nothingToDisplay}>Ничего не найдено</span>;
-        const allFieldsSelected = this.isAllFieldSelected(fieldDefinitionsFiltered);
-        return (
-            <div className={styles.root}>
-                <Input
-                    data-tid="FilterInput"
-                    leftIcon={<SearchIcon />}
-                    value={this.state.searchText}
-                    width={300}
-                    onValueChange={this.handleChangeText}
-                />
-                {this.props.showSelectAllButton && (
-                    <div
-                        data-tid={"TypesSelectAll"}
-                        onClick={() => this.handleSelectAll(fieldDefinitionsFiltered)}
-                        className={styles.selectAll}>
-                        {allFieldsSelected ? "Снять выбор с найденных" : "Выбрать все найденные"}
-                    </div>
-                )}
-                <RowStack data-tid="ColumnCheckboxes" className={styles.fieldList} block gap={4}>
-                    {fieldDefinitionsFiltered.length === 0 ? <Fit>{nothingToDisplay}</Fit> : null}
-
-                    {fieldDefinitionsFiltered
-                        .reduce<[FieldDefinition[], FieldDefinition[], FieldDefinition[]]>(FieldSelector.byColumns, [
-                            [],
-                            [],
-                            [],
-                        ])
-                        .filter(column => column.some(x => x != null))
-                        .map((column, key) => (
-                            <Fit key={key}>{column.map(field => field != null && this.renderFieldSelector(field))}</Fit>
-                        ))}
-                </RowStack>
-            </div>
-        );
-    }
+                {fieldDefinitionsFiltered
+                    .reduce<[FieldDefinition[], FieldDefinition[], FieldDefinition[]]>(byColumns, [[], [], []])
+                    .filter(column => column.some(x => x != null))
+                    .map((column, key) => (
+                        <Fit key={key}>{column.map(field => field != null && renderFieldSelector(field))}</Fit>
+                    ))}
+            </RowStack>
+        </div>
+    );
 }

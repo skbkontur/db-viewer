@@ -4,8 +4,8 @@ import ReactDom from "react-dom";
 import { Switch, Redirect, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
-import { DbViewerApiFake } from "./DbViewerApiFake";
 import { DbViewerApplication, DbViewerApi, NullCustomRenderer } from "./src";
+import { DbViewerApiFake } from "./stories/Api/DbViewerApiFake";
 
 const dbViewerApiPrefix = "/db-viewer/";
 

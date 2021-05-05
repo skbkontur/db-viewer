@@ -11,7 +11,7 @@ import { infraUiDark } from "./infraUiDark";
 import { reactUiDark } from "./reactUiDark";
 
 export default {
-    title: "Themes/ObjectTable",
+    title: "Themes/ObjectTableZeroEntries",
     decorators: [StoryRouter()],
 };
 
@@ -22,9 +22,9 @@ const TableContainer = ({ theme }: { theme: Theme }) => (
             dbViewerApi={new DbViewerApiFake()}
             customRenderer={new NullCustomRenderer()}
             useErrorHandlingContainer
-            urlQuery={""}
+            urlQuery=""
             path="AdminTools/Object"
-            objectId="Object"
+            objectId="NotFound"
         />
     </ThemeContext.Provider>
 );

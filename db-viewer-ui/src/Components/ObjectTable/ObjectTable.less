@@ -7,7 +7,6 @@
 
     .cell {
         padding: 10px;
-        background-color: @primary-background;
     }
 
     .headerCell {
@@ -19,12 +18,17 @@
         border-bottom: @table-cell-border;
     }
 
-    .tableHeader {
-        background-color: @primary-background;
+    .tableHeaderRow {
+        border-bottom: @table-header-border;
+    }
 
-        .row {
-            border-bottom: @table-header-border;
-            background-color: @primary-background;
+    .container {
+        position: relative;
+        display: inline-block;
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
         }
     }
 }

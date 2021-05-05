@@ -24,7 +24,6 @@ storiesOf("ObjectTypes", module)
     .add("Default", () => (
         <ObjectTypes
             filter=""
-            getPath={x => x}
             identifierKeywords={[]}
             objects={[
                 {
@@ -42,4 +41,4 @@ storiesOf("ObjectTypes", module)
             ]}
         />
     ))
-    .add("EDI Objects", () => <ObjectTypes identifierKeywords={[]} filter="" getPath={x => x} objects={objects} />);
+    .add("EDI Objects", () => <ObjectTypes identifierKeywords={[]} filter="" objects={objects} />);

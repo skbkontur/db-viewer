@@ -1,0 +1,246 @@
+{
+    "items": [
+        {
+            "Box": {
+                "Id": "000017f6-6bdd-4f3f-a3f7-b4f9cf841118",
+                "Gln": "4680328412813",
+                "IsTest": true,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": false
+            },
+            "Id": "000017f6-6bdd-4f3f-a3f7-b4f9cf841118",
+            "ScopeId": "000017f6-6bdd-4f3f-a3f7-b4f9cf841118",
+            "LastModificationDateTime": "2020-09-24T07:42:49.3392986Z"
+        },
+        {
+            "Box": {
+                "Id": "00011b13-9239-435a-b95e-b40986d6434b",
+                "Gln": "4606038033742",
+                "IsTest": true,
+                "PartyId": "22a33296-28d0-4a21-b41d-cfeca67bd0d2",
+                "Inactive": true
+            },
+            "Id": "00011b13-9239-435a-b95e-b40986d6434b",
+            "ScopeId": "00011b13-9239-435a-b95e-b40986d6434b",
+            "LastModificationDateTime": "2020-09-24T07:43:14.2682751Z"
+        },
+        {
+            "Box": {
+                "Id": "00015e9f-c806-4011-8b90-1da164b98d9a",
+                "Gln": "4606038004896",
+                "IsTest": false,
+                "PartyId": "22a33296-28d0-4a21-b41d-cfeca67bd0d2",
+                "Inactive": true
+            },
+            "Id": "00015e9f-c806-4011-8b90-1da164b98d9a",
+            "ScopeId": "00015e9f-c806-4011-8b90-1da164b98d9a",
+            "LastModificationDateTime": "2020-09-24T07:42:56.3434565Z"
+        },
+        {
+            "Box": {
+                "Id": "0001b893-9148-4c46-a047-5c9dbfaefd85",
+                "Gln": "4680328091254",
+                "IsTest": false,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": false
+            },
+            "Id": "0001b893-9148-4c46-a047-5c9dbfaefd85",
+            "ScopeId": "0001b893-9148-4c46-a047-5c9dbfaefd85",
+            "LastModificationDateTime": "2020-09-24T07:42:46.7832356Z"
+        },
+        {
+            "Box": {
+                "Id": "0001e681-5b39-42f3-a97b-f580c331915f",
+                "Gln": "4680328145339",
+                "IsTest": true,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": false
+            },
+            "Id": "0001e681-5b39-42f3-a97b-f580c331915f",
+            "ScopeId": "0001e681-5b39-42f3-a97b-f580c331915f",
+            "LastModificationDateTime": "2020-09-24T07:42:55.8118378Z"
+        },
+        {
+            "Box": {
+                "Id": "0001fdfb-2421-4b78-8630-1ab0a9781711",
+                "Gln": "9941548461087",
+                "IsTest": true,
+                "PartyId": "0ca5290c-0a70-4e9d-a1f8-f40c3bdd17af",
+                "Inactive": false
+            },
+            "Id": "0001fdfb-2421-4b78-8630-1ab0a9781711",
+            "ScopeId": "0001fdfb-2421-4b78-8630-1ab0a9781711",
+            "LastModificationDateTime": "2020-09-24T07:43:07.1660351Z"
+        },
+        {
+            "Box": {
+                "Id": "000212ed-b9f8-4e8f-acb0-c4517b41338f",
+                "Gln": "4680328093036",
+                "IsTest": false,
+                "PartyId": "21f9c629-8054-4561-9b81-373708536993",
+                "Inactive": true
+            },
+            "Id": "000212ed-b9f8-4e8f-acb0-c4517b41338f",
+            "ScopeId": "000212ed-b9f8-4e8f-acb0-c4517b41338f",
+            "LastModificationDateTime": "2020-09-24T07:42:50.9851635Z"
+        },
+        {
+            "Box": {
+                "Id": "00024abb-e1c7-4d83-a2d3-c5c6a7b04b11",
+                "Gln": "9916412070771",
+                "IsTest": false,
+                "PartyId": "0ca5290c-0a70-4e9d-a1f8-f40c3bdd17af",
+                "Inactive": false
+            },
+            "Id": "00024abb-e1c7-4d83-a2d3-c5c6a7b04b11",
+            "ScopeId": "00024abb-e1c7-4d83-a2d3-c5c6a7b04b11",
+            "LastModificationDateTime": "2020-09-24T07:43:09.6826944Z"
+        },
+        {
+            "Box": {
+                "Id": "00029cd9-5445-4b7d-a2e8-76a4bd67e484",
+                "Gln": "4607949868973",
+                "IsTest": false,
+                "PartyId": "2ac88e0c-f27f-44fc-8230-bf9de7dd2073",
+                "Inactive": false
+            },
+            "Id": "00029cd9-5445-4b7d-a2e8-76a4bd67e484",
+            "ScopeId": "00029cd9-5445-4b7d-a2e8-76a4bd67e484",
+            "LastModificationDateTime": "2021-04-14T09:09:07.9678182Z"
+        },
+        {
+            "Box": {
+                "Id": "00039134-b4ab-4db8-a93d-dfc5e958f8b2",
+                "Gln": "4606038048005",
+                "IsTest": true,
+                "PartyId": "22a33296-28d0-4a21-b41d-cfeca67bd0d2",
+                "Inactive": true
+            },
+            "Id": "00039134-b4ab-4db8-a93d-dfc5e958f8b2",
+            "ScopeId": "00039134-b4ab-4db8-a93d-dfc5e958f8b2",
+            "LastModificationDateTime": "2020-09-24T07:42:51.6643375Z"
+        },
+        {
+            "Box": {
+                "Id": "0003cf8f-371b-49c3-99f9-332807f463e6",
+                "Gln": "4680328002052",
+                "IsTest": false,
+                "PartyId": "21f9c629-8054-4561-9b81-373708536993",
+                "Inactive": true
+            },
+            "Id": "0003cf8f-371b-49c3-99f9-332807f463e6",
+            "ScopeId": "0003cf8f-371b-49c3-99f9-332807f463e6",
+            "LastModificationDateTime": "2020-09-24T07:42:55.9474453Z"
+        },
+        {
+            "Box": {
+                "Id": "0004c0b4-6fe4-4c1e-8530-501a9bdef2e9",
+                "Gln": "4607949864074",
+                "IsTest": true,
+                "PartyId": "2ac88e0c-f27f-44fc-8230-bf9de7dd2073",
+                "Inactive": false
+            },
+            "Id": "0004c0b4-6fe4-4c1e-8530-501a9bdef2e9",
+            "ScopeId": "0004c0b4-6fe4-4c1e-8530-501a9bdef2e9",
+            "LastModificationDateTime": "2021-04-14T09:09:07.9678182Z"
+        },
+        {
+            "Box": {
+                "Id": "0004c7ed-1c32-4fce-b030-aeb90365d474",
+                "Gln": "4680328070327",
+                "IsTest": false,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": true
+            },
+            "Id": "0004c7ed-1c32-4fce-b030-aeb90365d474",
+            "ScopeId": "0004c7ed-1c32-4fce-b030-aeb90365d474",
+            "LastModificationDateTime": "2020-09-24T07:42:51.2838347Z"
+        },
+        {
+            "Box": {
+                "Id": "0004c9bd-f0d5-4289-b4af-a008249cd0a0",
+                "Gln": "4607164997045",
+                "IsTest": false,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": false
+            },
+            "Id": "0004c9bd-f0d5-4289-b4af-a008249cd0a0",
+            "ScopeId": "0004c9bd-f0d5-4289-b4af-a008249cd0a0",
+            "LastModificationDateTime": "2020-09-24T07:43:06.000685Z"
+        },
+        {
+            "Box": {
+                "Id": "0004dcf4-728d-4690-963c-099e8c4f3404",
+                "Gln": "4606038179563",
+                "IsTest": false,
+                "PartyId": "22a33296-28d0-4a21-b41d-cfeca67bd0d2",
+                "Inactive": true
+            },
+            "Id": "0004dcf4-728d-4690-963c-099e8c4f3404",
+            "ScopeId": "0004dcf4-728d-4690-963c-099e8c4f3404",
+            "LastModificationDateTime": "2020-09-24T07:43:18.626235Z"
+        },
+        {
+            "Box": {
+                "Id": "0004debd-ea2b-4b9f-86c9-38c953e752ac",
+                "Gln": "4680328394102",
+                "IsTest": false,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": true
+            },
+            "Id": "0004debd-ea2b-4b9f-86c9-38c953e752ac",
+            "ScopeId": "0004debd-ea2b-4b9f-86c9-38c953e752ac",
+            "LastModificationDateTime": "2020-09-24T07:43:07.686817Z"
+        },
+        {
+            "Box": {
+                "Id": "0004f90a-f1c2-4519-82b8-9f0393d2e635",
+                "Gln": "4680328084539",
+                "IsTest": false,
+                "PartyId": "ddf1e91b-e145-48a0-9221-b4460c19826f",
+                "Inactive": false
+            },
+            "Id": "0004f90a-f1c2-4519-82b8-9f0393d2e635",
+            "ScopeId": "0004f90a-f1c2-4519-82b8-9f0393d2e635",
+            "LastModificationDateTime": "2020-09-24T07:43:18.3953694Z"
+        },
+        {
+            "Box": {
+                "Id": "0004fe3a-5f83-4eab-9a87-6dca98c8cac1",
+                "Gln": "4606038155185",
+                "IsTest": false,
+                "PartyId": "22a33296-28d0-4a21-b41d-cfeca67bd0d2",
+                "Inactive": true
+            },
+            "Id": "0004fe3a-5f83-4eab-9a87-6dca98c8cac1",
+            "ScopeId": "0004fe3a-5f83-4eab-9a87-6dca98c8cac1",
+            "LastModificationDateTime": "2020-09-24T07:43:07.3240777Z"
+        },
+        {
+            "Box": {
+                "Id": "0005005e-9d1e-4c25-8930-6f6c4077f0ae",
+                "Gln": "4680328050305",
+                "IsTest": true,
+                "PartyId": "21f9c629-8054-4561-9b81-373708536993",
+                "Inactive": true
+            },
+            "Id": "0005005e-9d1e-4c25-8930-6f6c4077f0ae",
+            "ScopeId": "0005005e-9d1e-4c25-8930-6f6c4077f0ae",
+            "LastModificationDateTime": "2020-09-24T07:43:14.5101714Z"
+        },
+        {
+            "Box": {
+                "Id": "00050901-cc04-46e4-862f-df224371718c",
+                "Gln": "4680328299179",
+                "IsTest": true,
+                "PartyId": "21f9c629-8054-4561-9b81-373708536993",
+                "Inactive": true
+            },
+            "Id": "00050901-cc04-46e4-862f-df224371718c",
+            "ScopeId": "00050901-cc04-46e4-862f-df224371718c",
+            "LastModificationDateTime": "2020-09-24T07:42:43.4083239Z"
+        }
+    ],
+    "count": 207306,
+    "countLimit": 1000000
+}

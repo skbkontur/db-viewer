@@ -1,8 +1,8 @@
-import { RouteComponentProps } from "react-router";
+import { match } from "react-router";
 
 export class RouteUtils {
-    public static backUrl(props: RouteComponentProps) {
-        return props.match.url.endsWith("/") ? ".." : ".";
+    public static backUrl(match: match<{}>) {
+        return match.url.endsWith("/") ? ".." : ".";
     }
 
     public static goTo(path: string, url: string): string {

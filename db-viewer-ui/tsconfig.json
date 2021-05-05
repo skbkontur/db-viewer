@@ -28,7 +28,7 @@
     }
   },
   "include": [
-    "DbViewerApiFake.ts",
+    "stories/Api/DbViewerApiFake.ts",
     "index.tsx",
     "src/**/*",
     "stories/**/*",

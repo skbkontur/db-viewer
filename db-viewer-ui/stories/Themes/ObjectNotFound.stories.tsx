@@ -11,7 +11,7 @@ import { infraUiDark } from "./infraUiDark";
 import { reactUiDark } from "./reactUiDark";
 
 export default {
-    title: "Themes/ObjectDetails",
+    title: "Themes/ObjectNotFound",
     decorators: [StoryRouter()],
 };
 
@@ -23,7 +23,7 @@ const DetailsContainer = ({ theme }: { theme: Theme }) => (
             customRenderer={new NullCustomRenderer()}
             useErrorHandlingContainer
             objectQuery="Id=Id"
-            objectId="Object"
+            objectId="NotFound"
         />
     </ThemeContext.Provider>
 );

@@ -3,15 +3,14 @@ import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
 import { Link } from "@skbkontur/react-ui";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
-import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
+import { RouterLink } from "../RouterLink/RouterLink";
 
 import styles from "./ObjectTable.less";
 
@@ -54,22 +53,24 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
                     <ConfirmDeleteObjectModal onDelete={this.handleDeleteItem} onCancel={this.handleCancelDelete} />
                 )}
                 {properties.length !== 0 && items.length !== 0 ? (
-                    <AdvancedTable>
-                        <AdvancedTable.Head data-tid="TableHeader" className={styles.tableHeader}>
-                            <AdvancedTable.Row className={styles.row}>
-                                {this.renderEmpty(allowDelete ? 2 : 1)}
-                                {properties.map((item, key) => this.renderTableHeader(item, key, allowSort))}
-                            </AdvancedTable.Row>
-                        </AdvancedTable.Head>
-                        <AdvancedTable.Body data-tid="Body">
-                            {items.map((item, index) => (
-                                <AdvancedTable.Row key={index} className={styles.row} data-tid="Row">
-                                    {this.renderControls(item, index)}
-                                    {properties.map(key => this.renderCell(item, key.name, key))}
-                                </AdvancedTable.Row>
-                            ))}
-                        </AdvancedTable.Body>
-                    </AdvancedTable>
+                    <div className={styles.container}>
+                        <table>
+                            <thead data-tid="TableHeader">
+                                <tr className={styles.tableHeaderRow}>
+                                    {this.renderEmpty(allowDelete ? 2 : 1)}
+                                    {properties.map((item, key) => this.renderTableHeader(item, key, allowSort))}
+                                </tr>
+                            </thead>
+                            <tbody data-tid="Body">
+                                {items.map((item, index) => (
+                                    <tr key={index} className={styles.row} data-tid="Row">
+                                        {this.renderControls(item, index)}
+                                        {properties.map(key => this.renderCell(item, key.name, key))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <div data-tid="NothingFound">Ничего не найдено</div>
                 )}
@@ -102,9 +103,9 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         const arr: JSX.Element[] = [];
         for (let i = 0; i < count; i++) {
             arr.push(
-                <AdvancedTable.HeadCell key={i} className={styles.cell}>
+                <th key={i} className={styles.cell}>
                     &nbsp;
-                </AdvancedTable.HeadCell>
+                </th>
             );
         }
         return arr;
@@ -138,9 +139,9 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
             );
 
         return (
-            <AdvancedTable.HeadCell className={`${styles.cell} ${styles.headerCell}`} key={key}>
+            <th className={`${styles.cell} ${styles.headerCell}`} key={key}>
                 {content}
-            </AdvancedTable.HeadCell>
+            </th>
         );
     }
 
@@ -153,7 +154,7 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         }
         arr.push(
             <td key={++key} className={styles.cell}>
-                <RouterLink className={styles.routerLink} to={pathToItem} data-tid="Details">
+                <RouterLink to={pathToItem} data-tid="Details">
                     Подробности
                 </RouterLink>
             </td>

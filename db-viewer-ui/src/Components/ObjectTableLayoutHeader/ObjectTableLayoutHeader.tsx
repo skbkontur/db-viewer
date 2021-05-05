@@ -3,7 +3,7 @@ import DownloadIcon from "@skbkontur/react-icons/Download";
 import FilterIcon from "@skbkontur/react-icons/Filter";
 import SettingsIcon from "@skbkontur/react-icons/Settings";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Button, Link, Modal, Tooltip } from "@skbkontur/react-ui";
+import { Link, Tooltip } from "@skbkontur/react-ui";
 import difference from "lodash/difference";
 import React from "react";
 
@@ -15,6 +15,7 @@ import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaI
 import { FieldSelector } from "../FieldSelector/FieldSelector";
 
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
+import { DownloadLimitModal } from "./DownloadLimitModal";
 import { FilterModal } from "./FilterModal";
 import styles from "./ObjectTableLayoutHeader.less";
 import { Spinner } from "./Spinner";
@@ -120,18 +121,7 @@ export class ObjectTableLayoutHeader extends React.Component<
                     />
                 )}
                 {showDownloadModal && downloadCount && (
-                    <Modal width={500} onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
-                        <Modal.Header data-tid="Header">Слишком большой список</Modal.Header>
-                        <Modal.Body data-tid="Body">
-                            Мы умеем выгружать не более {downloadCount.countLimit} объектов из этой таблицы. Уточните
-                            запрос с помощью фильтров, чтобы записей стало меньше.
-                        </Modal.Body>
-                        <Modal.Footer panel>
-                            <Button data-tid="Cancel" onClick={onDownloadAbort}>
-                                Понятно
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+                    <DownloadLimitModal countLimit={downloadCount.countLimit} onDownloadAbort={onDownloadAbort} />
                 )}
             </RowStack>
         );

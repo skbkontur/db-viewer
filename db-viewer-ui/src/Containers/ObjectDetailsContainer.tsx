@@ -7,11 +7,12 @@ import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
-import { AllowCopyToClipboard, CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
+import { CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
+import { ObjectKeys } from "../Components/ObjectViewer/ObjectKeys";
 import { ObjectViewer } from "../Components/ObjectViewer/ObjectViewer";
 import { Condition } from "../Domain/Api/DataTypes/Condition";
 import { ObjectDescription } from "../Domain/Api/DataTypes/ObjectDescription";
@@ -108,7 +109,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         const { dbViewerApi } = this.props;
         if (objectMeta != null) {
             await dbViewerApi.deleteObject(objectMeta.identifier, { conditions: conditions });
-            this.props.history.push(RouteUtils.backUrl(this.props));
+            this.props.history.push(RouteUtils.backUrl(this.props.match));
             return;
         }
         throw new Error("Пытаемся удалить объект с типом массив");
@@ -142,7 +143,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         return (
             <CommonLayout>
                 {useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoBack">
+                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoBack">
                     Вернуться к списку объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.ContentLoader active={loading}>
@@ -167,23 +168,11 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                                 </Fit>
                             </RowStack>
                         }>
-                        <ColumnStack block gap={2}>
-                            {objectMeta?.typeMetaInformation?.properties?.map(
-                                x =>
-                                    x.isIdentity && (
-                                        <Fit>
-                                            <RowStack gap={2}>
-                                                <Fit style={{ minWidth: 140 }}>{x.name}:</Fit>
-                                                <Fit>
-                                                    <AllowCopyToClipboard data-tid={x.name}>
-                                                        {String(objectInfo[x.name])}
-                                                    </AllowCopyToClipboard>
-                                                </Fit>
-                                            </RowStack>
-                                        </Fit>
-                                    )
-                            )}
-                        </ColumnStack>
+                        <ObjectKeys
+                            keys={(objectMeta?.typeMetaInformation?.properties || [])
+                                .filter(x => x.isIdentity)
+                                .map(x => ({ name: x.name, value: String(objectInfo[x.name]) }))}
+                        />
                     </CommonLayout.GreyLineHeader>
                     <CommonLayout.Content>
                         <ColumnStack gap={4} block>
