@@ -1,4 +1,4 @@
-import { Select } from "@skbkontur/react-ui";
+import { Select, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
 
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
@@ -27,6 +27,7 @@ function operatorToString(operation: ObjectFieldFilterOperator): string {
 
 export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
     const { availableValues, value, onChange } = props;
+    const theme = React.useContext(ThemeContext);
     return (
         <Select
             width={70}
@@ -38,6 +39,7 @@ export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
                 }
             }}
             value={value || undefined}
+            renderItem={(value: any, item: any) => <span style={{ color: theme.textColorDefault }}>{item}</span>}
         />
     );
 }
