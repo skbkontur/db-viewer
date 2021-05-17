@@ -1,5 +1,5 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Input, Select } from "@skbkontur/react-ui";
+import { Input } from "@skbkontur/react-ui";
 import { tooltip, ValidationInfo, ValidationWrapper } from "@skbkontur/react-ui-validations";
 import React from "react";
 
@@ -13,7 +13,7 @@ import { validateObjectField } from "../../Domain/Utils/ValidationUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 import { FormRow } from "../FormRow/FormRow";
 
-import { OperatorSelect } from "./OperatorSelect";
+import { OperatorSelect, StyledSelect } from "./OperatorSelect";
 
 interface ObjectFilterProps {
     conditions: Condition[];
@@ -86,7 +86,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                     data-tid="BooleanValidation"
                     renderMessage={tooltip("right middle")}
                     validationInfo={this.getValidation(property, value)}>
-                    <Select
+                    <StyledSelect
                         data-tid="BooleanSelect"
                         items={[null, "true", "false"].map(x => [x, String(x)])}
                         onValueChange={(nextValue: any) => {
@@ -103,7 +103,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                     data-tid="EnumValidation"
                     renderMessage={tooltip("right middle")}
                     validationInfo={this.getValidation(property, value)}>
-                    <Select
+                    <StyledSelect
                         data-tid="EnumSelect"
                         items={[null, ...property.availableValues].map(x => [x, String(x)])}
                         onValueChange={(nextValue: any) => {

@@ -121,7 +121,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                         )}
                     </RowStack>
                 )}
-                <div>{value && !collapsedSelf && this.renderValue()}</div>
+                {value && !collapsedSelf && this.renderValue()}
             </div>
         );
     }

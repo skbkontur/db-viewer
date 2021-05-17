@@ -27,7 +27,7 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                 },
                 {
-                    test: /\.(c|le)ss$/,
+                    test: /\.css$/,
                     use: [
                         require.resolve("style-loader"),
                         {
@@ -38,7 +38,6 @@ module.exports = function (env) {
                                 },
                             },
                         },
-                        require.resolve("less-loader"),
                     ],
                 },
                 {
