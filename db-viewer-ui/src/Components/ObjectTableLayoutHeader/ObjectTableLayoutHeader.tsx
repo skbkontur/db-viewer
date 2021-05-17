@@ -17,7 +17,7 @@ import { FieldSelector } from "../FieldSelector/FieldSelector";
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { DownloadLimitModal } from "./DownloadLimitModal";
 import { FilterModal } from "./FilterModal";
-import styles from "./ObjectTableLayoutHeader.less";
+import { jsStyles } from "./ObjectTableLayoutHeader.styles";
 import { Spinner } from "./Spinner";
 
 interface ObjectTableLayoutHeaderProps {
@@ -81,12 +81,12 @@ export class ObjectTableLayoutHeader extends React.Component<
         return (
             <RowStack baseline block gap={2}>
                 <Fill />
-                <Fit className={styles.filter}>
+                <Fit className={jsStyles.filter()}>
                     <Link icon={<FilterIcon />} onClick={this.handleOpenFilterModal} data-tid="OpenFilter">
                         Фильтрация
                     </Link>
                 </Fit>
-                <Fit className={styles.countSelector}>
+                <Fit className={jsStyles.countSelector()}>
                     <CountOfRecordsSelector count={query.count} onChange={value => onChange({ count: value })} />
                 </Fit>
                 <Fit>

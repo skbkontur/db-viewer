@@ -1,13 +1,14 @@
 import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
 import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Hint, Link } from "@skbkontur/react-ui";
+import { ThemeContext, Hint, Link } from "@skbkontur/react-ui";
+import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import isArray from "lodash/isArray";
 import isEqual from "lodash/isEqual";
 import isPlainObject from "lodash/isPlainObject";
 import React from "react";
 
-import styles from "./Accordion.less";
+import { jsStyles } from "./Accordion.styles";
 
 type CaptionRenderer = (path: string[]) => null | string;
 type ValueRenderer = (target: { [key: string]: any }, path: string[]) => null | JSX.Element;
@@ -33,6 +34,8 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     public static defaultProps = {
         pathPrefix: [],
     };
+
+    private theme!: Theme;
 
     public constructor(props: TaskAccordionProps) {
         super(props);
@@ -82,21 +85,32 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
     }
 
     public render(): JSX.Element {
+        return (
+            <ThemeContext.Consumer>
+                {theme => {
+                    this.theme = theme;
+                    return this.renderMain();
+                }}
+            </ThemeContext.Consumer>
+        );
+    }
+
+    public renderMain(): JSX.Element {
         const { showToggleAll, value, title } = this.props;
         const { collapsedSelf, collapsedRecursive } = this.state;
 
         const isToggleLinkVisible = showToggleAll && this.isThereItemsToToggleAtFirstLevel();
         const showTitleBlock = title != null || isToggleLinkVisible;
         return (
-            <div className={`${title && styles.valueWrapper}`}>
+            <div className={`${title && jsStyles.valueWrapper()}`}>
                 {showTitleBlock && (
                     <RowStack
-                        className={`${styles.titleBlock} ${title && styles.hasTitle})`}
+                        className={(title && jsStyles.titleBlockHasTitle(this.theme)) || undefined}
                         inline
                         verticalAlign="baseline">
                         {this.renderTitle()}
                         {isToggleLinkVisible && (
-                            <span className={styles.toggleAllLink}>
+                            <span className={jsStyles.toggleAllLink()}>
                                 <Link
                                     data-tid="ToggleAllLink"
                                     onClick={this.toggleCollapseAll}
@@ -107,7 +121,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                         )}
                     </RowStack>
                 )}
-                {value && !collapsedSelf && this.renderValue()}
+                <div>{value && !collapsedSelf && this.renderValue()}</div>
             </div>
         );
     }
@@ -157,12 +171,12 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                     block
                     baseline
                     key={key}
-                    className={styles.stringWrapper}
+                    className={`stringWrapper ${jsStyles.stringWrapper(this.theme)}`}
                     data-tid={this.getPath(pathPrefix, key)}>
-                    <Fit data-tid="Key" className={styles.title}>
+                    <Fit data-tid="Key" className={jsStyles.title()}>
                         {this.renderItemTitle(key, [key])}:
                     </Fit>
-                    <Fill data-tid="Value" className={styles.value}>
+                    <Fill data-tid="Value" className={jsStyles.value()}>
                         {(renderValue && renderValue(value, [key])) ||
                             (Array.isArray(value[key]) ? value[key].join(", ") : String(value[key]))}
                     </Fill>
@@ -189,16 +203,19 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         const caption = renderCaption?.([]);
         return (
             <RowStack gap={1} verticalAlign="baseline">
-                <Fit data-tid="Title" className={styles.title}>
-                    <button data-tid="ToggleButton" className={styles.toggleButton} onClick={this.toggleCollapseManual}>
+                <Fit data-tid="Title" className={jsStyles.title()}>
+                    <button
+                        data-tid="ToggleButton"
+                        className={jsStyles.toggleButton()}
+                        onClick={this.toggleCollapseManual}>
                         {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
-                        <span data-tid="ToggleButtonText" className={styles.toggleButtonText}>
+                        <span data-tid="ToggleButtonText" className={jsStyles.toggleButtonText()}>
                             {title}
                         </span>
                     </button>
                 </Fit>
                 {caption && (
-                    <Fit data-tid="Caption" className={styles.mutedKeyword}>
+                    <Fit data-tid="Caption" className={jsStyles.mutedKeyword(this.theme)}>
                         {caption}
                     </Fit>
                 )}

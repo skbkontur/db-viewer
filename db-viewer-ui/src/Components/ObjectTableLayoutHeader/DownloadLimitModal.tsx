@@ -8,7 +8,7 @@ interface DownloadLimitModalProps {
     onDownloadAbort: () => void;
 }
 
-export function DownloadLimitModal({ countLimit, onDownloadAbort }: DownloadLimitModalProps) {
+export function DownloadLimitModal({ countLimit, onDownloadAbort }: DownloadLimitModalProps): JSX.Element {
     const theme = React.useContext(ThemeContext);
     return (
         <Modal width={500} onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">

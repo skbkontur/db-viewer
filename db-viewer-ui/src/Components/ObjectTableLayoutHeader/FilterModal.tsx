@@ -27,7 +27,7 @@ export function FilterModal({
     onChangeFilter,
     onApplyFilter,
     allowClose,
-}: FilterModalProps) {
+}: FilterModalProps): JSX.Element {
     const match = useRouteMatch();
     const container = React.useRef<ValidationContainer>(null);
     const theme = React.useContext(ThemeContext);

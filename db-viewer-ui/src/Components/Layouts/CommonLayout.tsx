@@ -5,16 +5,15 @@ import React from "react";
 
 import { RouterLink } from "../RouterLink/RouterLink";
 
-import styles from "./CommonLayout.less";
 import { jsStyles } from "./CommonLayout.styles";
 
 interface CommonLayoutProps {
     topRightTools?: Nullable<JSX.Element> | string;
-    children?: any;
+    children?: React.ReactNode;
     style?: any;
 }
 
-export function CommonLayout({ children, topRightTools, ...restProps }: CommonLayoutProps) {
+export function CommonLayout({ children, topRightTools, ...restProps }: CommonLayoutProps): JSX.Element {
     const theme = React.useContext(ThemeContext);
     return (
         <div className={jsStyles.commonLayout(theme)} {...restProps}>
@@ -25,13 +24,13 @@ export function CommonLayout({ children, topRightTools, ...restProps }: CommonLa
 }
 
 interface CommonLayoutContentProps {
-    children?: any;
+    children?: React.ReactNode;
     className?: void | string;
 }
 
 CommonLayout.Content = function Content({ children, ...restProps }: CommonLayoutContentProps): JSX.Element {
     return (
-        <div className={styles.content} {...restProps}>
+        <div className={jsStyles.content()} {...restProps}>
             {children}
         </div>
     );
@@ -44,10 +43,10 @@ interface CommonLayoutHeaderProps {
 
 CommonLayout.Header = function Header({ title, tools, ...restProps }: CommonLayoutHeaderProps): JSX.Element {
     return (
-        <div className={styles.header} {...restProps}>
+        <div className={jsStyles.header()} {...restProps}>
             <RowStack baseline block gap={2}>
                 <Fit>
-                    <h2 className={styles.headerTitle} data-tid="Header">
+                    <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         {title}
                     </h2>
                 </Fit>
@@ -71,28 +70,28 @@ CommonLayout.GreyLineHeader = function GreyLineHeader({
 }: CommonLayoutGreyLineHeaderProps): JSX.Element {
     const theme = React.useContext(ThemeContext);
     return (
-        <div className={`${styles.greyLineHeader} ${jsStyles.greyLineHeader(theme)}`}>
+        <div className={jsStyles.greyLineHeader(theme)}>
             <RowStack baseline block gap={2}>
                 <Fill>
-                    <h2 className={styles.headerTitle} data-tid="Header">
+                    <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         {title}
                     </h2>
                 </Fill>
                 {tools && <Fit>{tools}</Fit>}
             </RowStack>
-            {children && <div className={styles.content}>{children}</div>}
+            {children && <div className={`${jsStyles.content()} ${jsStyles.greyContent()}`}>{children}</div>}
         </div>
     );
 };
 
 interface CommonLayoutGoBackProps {
-    children?: any;
+    children?: React.ReactNode;
     to: string;
 }
 
 CommonLayout.GoBack = function CommonLayoutGoBack({ children, to }: CommonLayoutGoBackProps): JSX.Element {
     return (
-        <div className={styles.backLinkContainer}>
+        <div className={jsStyles.backLinkContainer()}>
             <RouterLink data-tid="GoBack" to={to}>
                 <ArrowChevronLeftIcon />
                 {"\u00A0"}
@@ -113,7 +112,7 @@ CommonLayout.ContentLoader = function ContentLoader(props: ContentLoaderProps): 
     const { active, children, ...restProps } = props;
 
     return (
-        <Loader className={styles.loader} active={active} type="big" {...restProps}>
+        <Loader className={jsStyles.loader()} active={active} type="big" {...restProps}>
             {children}
         </Loader>
     );

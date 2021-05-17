@@ -2,14 +2,14 @@ import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
 export const jsStyles = {
-    root() {
+    root(): string {
         return css`
             min-width: 800px;
             column-count: 3;
         `;
     },
 
-    schema(t: Theme) {
+    schema(t: Theme): string {
         return css`
             font-size: 20px;
             padding-top: 20px;
@@ -20,7 +20,7 @@ export const jsStyles = {
         `;
     },
 
-    firstLetter(t: Theme) {
+    firstLetter(t: Theme): string {
         return css`
             margin-top: 20px;
             margin-bottom: 5px;
@@ -35,14 +35,14 @@ export const jsStyles = {
         `;
     },
 
-    typeGroup() {
+    typeGroup(): string {
         return css`
             break-inside: avoid;
             page-break-inside: avoid;
         `;
     },
 
-    indexed() {
+    indexed(): string {
         return css`
             vertical-align: super;
             font-size: 9px;
@@ -50,7 +50,7 @@ export const jsStyles = {
         `;
     },
 
-    mutedKeyword(t: Theme) {
+    mutedKeyword(t: Theme): string {
         return css`
             color: ${t.textColorDisabled};
         `;

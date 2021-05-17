@@ -72,6 +72,9 @@ export class DbViewerApiFake implements IDbViewerApi {
         if (objectIdentifier === "NotFound") {
             return { meta: boxDetails.meta, object: null! };
         }
+        if (objectIdentifier === "Error") {
+            throw new Error("Not implemented");
+        }
         return boxDetails;
     }
 
