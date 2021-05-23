@@ -32,11 +32,11 @@ namespace SkbKontur.DbViewer.TestApi.Controllers
         [Route("{objectIdentifier}/count")]
         public Task<CountResult> CountObjects(string objectIdentifier, [FromBody] ObjectSearchRequest query) => impl.CountObjects(objectIdentifier, query, IsSuperUser());
 
-        [HttpGet]
-        [Route("{objectIdentifier}/download/{queryString}")]
-        public async Task<IActionResult> DownloadObjects(string objectIdentifier, string queryString)
+        [HttpPost]
+        [Route("{objectIdentifier}/download")]
+        public async Task<IActionResult> DownloadObjects(string objectIdentifier, [FromForm] string data)
         {
-            var fileInfo = await impl.DownloadObjects(objectIdentifier, queryString, IsSuperUser()).ConfigureAwait(false);
+            var fileInfo = await impl.DownloadObjects(objectIdentifier, data, IsSuperUser()).ConfigureAwait(false);
             return File(fileInfo.Content, fileInfo.ContentType, fileInfo.Name);
         }
 
