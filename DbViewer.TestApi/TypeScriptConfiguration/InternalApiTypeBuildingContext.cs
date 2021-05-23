@@ -81,13 +81,7 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
                     Result = GetMethodResult(methodInfo, buildAndImportType),
                     Body = {isUrlMethod ? GenerateGetUrlCall(methodInfo) : CreateCall(methodInfo)}
                 };
-            functionDefinition.Arguments.AddRange(
-                methodInfo.GetParameters().Select(x => new TypeScriptArgumentDeclaration
-                    {
-                        Name = x.Name,
-                        Type = buildAndImportType(x.ParameterType)
-                    })
-            );
+            functionDefinition.Arguments.AddRange(GetArguments(methodInfo, buildAndImportType));
             return new TypeScriptClassMemberDefinition
                 {
                     Name = GetMethodName(methodInfo),
@@ -224,14 +218,21 @@ namespace SkbKontur.DbViewer.TestApi.TypeScriptConfiguration
         private static TypeScriptInterfaceFunctionMember BuildApiInterfaceMember(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
         {
             var result = new TypeScriptInterfaceFunctionMember(GetMethodName(methodInfo), GetMethodResult(methodInfo, buildAndImportType));
-            result.Arguments.AddRange(
-                methodInfo.GetParameters().Select(x => new TypeScriptArgumentDeclaration
-                    {
-                        Name = x.Name,
-                        Type = buildAndImportType(x.ParameterType)
-                    })
-            );
+            result.Arguments.AddRange(GetArguments(methodInfo, buildAndImportType));
             return result;
+        }
+
+        private static TypeScriptArgumentDeclaration[] GetArguments(IMethodInfo methodInfo, Func<ITypeInfo, TypeScriptType> buildAndImportType)
+        {
+            var isUrlMethod = IsUrlMethod(methodInfo);
+            return methodInfo.GetParameters()
+                             .Where(x => !isUrlMethod || !x.ParameterType.GetAttributes(TypeInfo.From<FromFormAttribute>()).Any())
+                             .Select(x => new TypeScriptArgumentDeclaration
+                                 {
+                                     Name = x.Name,
+                                     Type = buildAndImportType(x.ParameterType)
+                                 })
+                             .ToArray();
         }
     }
 }

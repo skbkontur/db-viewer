@@ -1,5 +1,5 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Link, Loader, Paging } from "@skbkontur/react-ui";
+import { Button, Link, Loader, Paging } from "@skbkontur/react-ui";
 import isEqual from "lodash/isEqual";
 import qs from "qs";
 import React from "react";
@@ -99,7 +99,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             loading,
             objects,
             metaInformation,
-            query: { offset, count, sorts },
+            query: { offset, count, sorts, conditions, hiddenColumns },
             downloading,
             showDownloadModal,
             downloadCount,
@@ -139,6 +139,31 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                     }
                 />
                 <CommonLayout.Content>
+                    {metaInformation && (
+                        <form
+                            method="post"
+                            action={this.props.dbViewerApi.getDownloadObjectsUrl(
+                                metaInformation.identifier,
+                                JSON.stringify({
+                                    conditions: conditions,
+                                    sorts: sorts,
+                                    excludedFields: hiddenColumns,
+                                })
+                            )}>
+                            <input
+                                type="hidden"
+                                name="data"
+                                value={JSON.stringify({
+                                    conditions: conditions,
+                                    sorts: sorts,
+                                    excludedFields: hiddenColumns,
+                                })}
+                            />
+                            <Button use="link" type="submit">
+                                Download
+                            </Button>
+                        </form>
+                    )}
                     <Loader type="big" active={loading}>
                         <ColumnStack gap={4}>
                             <Fit>
