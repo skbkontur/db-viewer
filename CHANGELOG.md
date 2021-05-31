@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.x - 2021.05.31
+- Add support for dark theme using react-ui ThemeContext
+- Update supported peerDependencies versions range
+
 ## v1.1.17 - 2021.03.11
 - fix field selector filter
 

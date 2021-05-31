@@ -37,12 +37,12 @@
     "test": "mocha **/*.test.ts"
   },
   "peerDependencies": {
-    "@skbkontur/react-icons": ">=3 <=4",
-    "@skbkontur/react-ui": ">=2 <3",
+    "@skbkontur/react-icons": ">=3 <=5",
+    "@skbkontur/react-ui": ">=2 <=3",
     "react": ">=16 <=17",
     "react-dom": ">=16 <=17",
-    "react-router": ">=4 <=5",
-    "react-router-dom": ">=4 <=5"
+    "react-router": ">=5.1.0 <=6",
+    "react-router-dom": ">=5.1.0 <=6"
   },
   "dependencies": {
     "@skbkontur/react-stack-layout": "^1.0.3",
@@ -64,8 +64,8 @@
     "@babel/preset-typescript": "^7.12.7",
     "@babel/runtime": "^7.12.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@skbkontur/react-icons": "^4.4.0",
-    "@skbkontur/react-ui": "^2.13.0",
+    "@skbkontur/react-icons": "^5.0.0",
+    "@skbkontur/react-ui": "^3.0.0",
     "@storybook/addon-actions": "^6.1.15",
     "@storybook/addons": "^6.1.15",
     "@storybook/react": "^6.1.15",
