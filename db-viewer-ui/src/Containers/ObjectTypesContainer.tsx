@@ -45,15 +45,13 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
         }
     }
 
-    public getPath = (id: string): string => RouteUtils.goTo(this.props.path, id);
-
     public render(): JSX.Element {
         const { loading, objects, filter } = this.state;
 
         return (
             <CommonLayout>
                 {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)}>
+                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)}>
                     Вернуться к инструментам администратора
                 </CommonLayout.GoBack>
                 <CommonLayout.Header title="Список Объектов" />
@@ -72,7 +70,6 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                             </Fit>
                             <Fit>
                                 <ObjectTypes
-                                    getPath={this.getPath}
                                     objects={objects}
                                     filter={filter}
                                     identifierKeywords={this.props.identifierKeywords}

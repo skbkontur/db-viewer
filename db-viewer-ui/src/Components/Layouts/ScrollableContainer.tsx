@@ -1,12 +1,10 @@
 import debounce from "lodash/debounce";
 import React from "react";
 
-import styles from "./ScrollableContainer.less";
+import { jsStyles } from "./ScrollableContainer.styles";
 
 interface ScrollableContainerProps {
     className?: string;
-    style?: { [key: string]: Nullable<number | string> };
-    scrollStyle?: { [key: string]: Nullable<number | string> };
 }
 
 function top(element: HTMLElement): number {
@@ -51,10 +49,10 @@ export class ScrollableContainer extends React.Component<React.PropsWithChildren
     }
 
     public render(): JSX.Element {
-        const { children, className, style, scrollStyle = {} } = this.props;
+        const { children, className } = this.props;
         return (
-            <div ref={el => (this.root = el)} className={`${styles.container} ${className}`} style={style}>
-                <div className={`${styles.root} ${className}`} style={style} ref={el => (this.container = el)}>
+            <div ref={el => (this.root = el)} className={`${jsStyles.container()} ${className}`}>
+                <div className={`${jsStyles.root()} ${className}`} ref={el => (this.container = el)}>
                     {children}
                     {
                         <div
@@ -63,7 +61,6 @@ export class ScrollableContainer extends React.Component<React.PropsWithChildren
                                 position: "fixed",
                                 width: "100%",
                                 bottom: 0,
-                                ...scrollStyle,
                             }}
                             ref={el => (this.scrollbar = el)}>
                             <div ref={el => (this.scrollbarChild = el)} style={{ height: "1px" }} />
@@ -101,14 +98,14 @@ export class ScrollableContainer extends React.Component<React.PropsWithChildren
             return;
         }
         if (container.scrollLeft > 5) {
-            root.classList.add(styles.leftShadow);
+            root.classList.add(jsStyles.leftShadow());
         } else {
-            root.classList.remove(styles.leftShadow);
+            root.classList.remove(jsStyles.leftShadow());
         }
         if (container.scrollLeft < container.scrollWidth - container.offsetWidth - 5) {
-            root.classList.add(styles.rightShadow);
+            root.classList.add(jsStyles.rightShadow());
         } else {
-            root.classList.remove(styles.rightShadow);
+            root.classList.remove(jsStyles.rightShadow());
         }
     }
 

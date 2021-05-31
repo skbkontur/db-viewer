@@ -1,4 +1,4 @@
-import { Select } from "@skbkontur/react-ui";
+import { Select, ThemeContext, SelectProps } from "@skbkontur/react-ui";
 import React from "react";
 
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
@@ -28,7 +28,7 @@ function operatorToString(operation: ObjectFieldFilterOperator): string {
 export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
     const { availableValues, value, onChange } = props;
     return (
-        <Select
+        <StyledSelect
             width={70}
             data-tid="OperatorSelect"
             items={availableValues.map(x => [x, operatorToString(x)] as [ObjectFieldFilterOperator, string])}
@@ -38,6 +38,16 @@ export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
                 }
             }}
             value={value || undefined}
+        />
+    );
+}
+
+export function StyledSelect<TValue = {}, TItem = {}>(props: SelectProps<TValue, TItem>): JSX.Element {
+    const theme = React.useContext(ThemeContext);
+    return (
+        <Select<TValue, TItem>
+            {...(props as any)}
+            renderItem={(value: any, item: any) => <span style={{ color: theme.textColorDefault }}>{item}</span>}
         />
     );
 }

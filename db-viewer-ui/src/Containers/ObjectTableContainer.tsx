@@ -118,7 +118,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return (
             <CommonLayout>
                 {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props)} data-tid="GoToObjectsList">
+                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoToObjectsList">
                     Вернуться к списку видов объектов
                 </CommonLayout.GoBack>
                 <CommonLayout.Header

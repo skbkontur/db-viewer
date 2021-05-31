@@ -1,4 +1,4 @@
-import { CurrencyInput, Input, Link, Select } from "@skbkontur/react-ui";
+import { CurrencyInput, Input, Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import React from "react";
 
@@ -6,6 +6,7 @@ import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMeta
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { FileUtils } from "../../Domain/Utils/FileUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
+import { StyledSelect } from "../ObjectFilter/OperatorSelect";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
     return get(target, path.join("."));
@@ -86,7 +87,7 @@ export function renderForEdit(
     if (property != null && property.availableValues.length > 0) {
         const values = property.type.isNullable ? ["null", ...property.availableValues] : property.availableValues;
         return (
-            <Select
+            <StyledSelect
                 data-tid="EnumSelect"
                 items={values.map(x => [x, String(x)])}
                 onValueChange={(nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}
@@ -101,7 +102,7 @@ export function renderForEdit(
             let values = ["true", "false"];
             values = property.type.isNullable ? ["null", ...values] : values;
             return (
-                <Select
+                <StyledSelect
                     data-tid="BooleanSelect"
                     items={values.map(x => [x, String(x)])}
                     onValueChange={(nextValue: any) => onChange(nextValue === "null" ? null : nextValue)}

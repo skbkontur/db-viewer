@@ -1,18 +1,17 @@
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Button, Link, Modal } from "@skbkontur/react-ui";
+import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
-import { Link as RouterLink } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
+import { jsStyles } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal.styles";
 import { ObjectFilter } from "../ObjectFilter/ObjectFilter";
+import { RouterLink } from "../RouterLink/RouterLink";
 
-import styles from "./ObjectTableLayoutHeader.less";
-
-interface FilterModalProps extends RouteComponentProps {
+interface FilterModalProps {
     onClose: () => void;
     allowClose: boolean;
     modalEditingConditions: Condition[];
@@ -21,67 +20,71 @@ interface FilterModalProps extends RouteComponentProps {
     onChangeFilter: (x0: Condition[]) => void;
 }
 
-class FilterModalInternal extends React.Component<FilterModalProps> {
-    public container: ValidationContainer | null = null;
+export function FilterModal({
+    tableColumns,
+    onClose,
+    modalEditingConditions,
+    onChangeFilter,
+    onApplyFilter,
+    allowClose,
+}: FilterModalProps): JSX.Element {
+    const match = useRouteMatch();
+    const container = React.useRef<ValidationContainer>(null);
+    const theme = React.useContext(ThemeContext);
 
-    public handleApplyFilter = async () => {
-        const isValid = this.container != null ? await this.container.validate() : true;
+    const handleApplyFilter = async () => {
+        const isValid = container.current != null ? await container.current.validate() : true;
         if (isValid) {
-            this.props.onApplyFilter();
+            onApplyFilter();
         }
     };
-    public render(): JSX.Element {
-        const { tableColumns, onClose, modalEditingConditions, onChangeFilter, allowClose } = this.props;
-        return (
-            <Modal
-                onClose={onClose}
-                data-tid="FilterModal"
-                ignoreBackgroundClick
-                disableClose={!allowClose}
-                noClose={!allowClose}>
-                <Modal.Header>Фильтр</Modal.Header>
-                <Modal.Body>
-                    <ValidationContainer ref={el => (this.container = el)} scrollOffset={{ top: 100 }}>
-                        <ObjectFilter
-                            conditions={modalEditingConditions}
-                            onChange={onChangeFilter}
-                            tableColumns={tableColumns}
-                        />
-                    </ValidationContainer>
-                </Modal.Body>
-                <Modal.Footer panel>
-                    <RowStack baseline block gap={2}>
-                        <Fit>
-                            <Button onClick={this.handleApplyFilter} use="primary" data-tid="Apply">
-                                Применить
-                            </Button>
-                        </Fit>
-                        <Fit>
-                            {allowClose && (
-                                <Button onClick={onClose} data-tid="Close">
-                                    Закрыть
-                                </Button>
-                            )}
-                        </Fit>
-                        <Fit>
-                            {allowClose ? (
-                                <Link onClick={() => onChangeFilter([])} data-tid="Clear">
-                                    Очистить фильтр
-                                </Link>
-                            ) : (
-                                <RouterLink
-                                    className={styles.routerLink}
-                                    to={RouteUtils.backUrl(this.props)}
-                                    data-tid="GoBackToList">
-                                    Вернуться к списку видов объектов
-                                </RouterLink>
-                            )}
-                        </Fit>
-                    </RowStack>
-                </Modal.Footer>
-            </Modal>
-        );
-    }
-}
 
-export const FilterModal = withRouter(FilterModalInternal);
+    return (
+        <Modal
+            onClose={onClose}
+            data-tid="FilterModal"
+            ignoreBackgroundClick
+            disableClose={!allowClose}
+            noClose={!allowClose}>
+            <Modal.Header>
+                <span className={jsStyles.modalText(theme)}>Фильтр</span>
+            </Modal.Header>
+            <Modal.Body>
+                <ValidationContainer ref={container} scrollOffset={{ top: 100 }}>
+                    <ObjectFilter
+                        conditions={modalEditingConditions}
+                        onChange={onChangeFilter}
+                        tableColumns={tableColumns}
+                    />
+                </ValidationContainer>
+            </Modal.Body>
+            <Modal.Footer panel>
+                <RowStack baseline block gap={2}>
+                    <Fit>
+                        <Button onClick={handleApplyFilter} use="primary" data-tid="Apply">
+                            Применить
+                        </Button>
+                    </Fit>
+                    <Fit>
+                        {allowClose && (
+                            <Button onClick={onClose} data-tid="Close">
+                                Закрыть
+                            </Button>
+                        )}
+                    </Fit>
+                    <Fit>
+                        {allowClose ? (
+                            <Link onClick={() => onChangeFilter([])} data-tid="Clear">
+                                Очистить фильтр
+                            </Link>
+                        ) : (
+                            <RouterLink to={RouteUtils.backUrl(match)} data-tid="GoBackToList">
+                                Вернуться к списку видов объектов
+                            </RouterLink>
+                        )}
+                    </Fit>
+                </RowStack>
+            </Modal.Footer>
+        </Modal>
+    );
+}

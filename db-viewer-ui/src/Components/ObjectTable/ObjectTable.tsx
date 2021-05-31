@@ -1,19 +1,18 @@
 import SortDefaultIcon from "@skbkontur/react-icons/SortDefault";
 import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
-import { Link } from "@skbkontur/react-ui";
+import { Link, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
-import { AdvancedTable } from "../AdvancedTable/AdvancedTable";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
+import { RouterLink } from "../RouterLink/RouterLink";
 
-import styles from "./ObjectTable.less";
+import { jsStyles } from "./ObjectTable.styles";
 
 interface ObjectTableProps {
     customRenderer: ICustomRenderer;
@@ -28,89 +27,52 @@ interface ObjectTableProps {
     allowSort: boolean;
 }
 
-interface ObjectTableState {
-    showConfirmModal: boolean;
-    deletedIndex: number | null;
-}
+export function ObjectTable({
+    customRenderer,
+    items,
+    objectType,
+    properties,
+    onChangeSortClick,
+    onDetailsClick,
+    onDeleteClick,
+    currentSorts,
+    allowDelete,
+    allowSort,
+}: ObjectTableProps): JSX.Element {
+    const [showConfirmModal, setShowConfirmModal] = React.useState(false);
+    const [deletedIndex, setDeletedIndex] = React.useState<number | null>(null);
+    const theme = React.useContext(ThemeContext);
+    React.useEffect(() => window.scrollTo(0, 0), [items]);
 
-export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableState> {
-    public state: ObjectTableState = {
-        showConfirmModal: false,
-        deletedIndex: null,
-    };
-
-    public componentDidUpdate(prevProps: ObjectTableProps): void {
-        if (prevProps.items !== this.props.items) {
-            window.scrollTo(0, 0);
+    const handleDeleteItem = () => {
+        if (deletedIndex != null) {
+            onDeleteClick(deletedIndex);
         }
-    }
-
-    public render(): JSX.Element {
-        const { items, properties, allowDelete, allowSort } = this.props;
-
-        return (
-            <ScrollableContainer className={styles.tableWrapper}>
-                {this.state.showConfirmModal && (
-                    <ConfirmDeleteObjectModal onDelete={this.handleDeleteItem} onCancel={this.handleCancelDelete} />
-                )}
-                {properties.length !== 0 && items.length !== 0 ? (
-                    <AdvancedTable>
-                        <AdvancedTable.Head data-tid="TableHeader" className={styles.tableHeader}>
-                            <AdvancedTable.Row className={styles.row}>
-                                {this.renderEmpty(allowDelete ? 2 : 1)}
-                                {properties.map((item, key) => this.renderTableHeader(item, key, allowSort))}
-                            </AdvancedTable.Row>
-                        </AdvancedTable.Head>
-                        <AdvancedTable.Body data-tid="Body">
-                            {items.map((item, index) => (
-                                <AdvancedTable.Row key={index} className={styles.row} data-tid="Row">
-                                    {this.renderControls(item, index)}
-                                    {properties.map(key => this.renderCell(item, key.name, key))}
-                                </AdvancedTable.Row>
-                            ))}
-                        </AdvancedTable.Body>
-                    </AdvancedTable>
-                ) : (
-                    <div data-tid="NothingFound">Ничего не найдено</div>
-                )}
-            </ScrollableContainer>
-        );
-    }
-
-    private readonly handleDeleteItem = () => {
-        if (this.state.deletedIndex != null) {
-            this.props.onDeleteClick(this.state.deletedIndex);
-        }
-        this.handleCancelDelete();
+        handleCancelDelete();
     };
 
-    private readonly handleCancelDelete = () => {
-        this.setState({
-            showConfirmModal: false,
-            deletedIndex: null,
-        });
+    const handleCancelDelete = () => {
+        setShowConfirmModal(false);
+        setDeletedIndex(null);
     };
 
-    private readonly handleConfirmDeletion = (index: number) => {
-        this.setState({
-            showConfirmModal: true,
-            deletedIndex: index,
-        });
+    const handleConfirmDeletion = (index: number) => {
+        setShowConfirmModal(true);
+        setDeletedIndex(index);
     };
-
-    public renderEmpty(count: number): JSX.Element[] {
+    const renderEmpty = (count: number): JSX.Element[] => {
         const arr: JSX.Element[] = [];
         for (let i = 0; i < count; i++) {
             arr.push(
-                <AdvancedTable.HeadCell key={i} className={styles.cell}>
+                <th key={i} className={jsStyles.cell()}>
                     &nbsp;
-                </AdvancedTable.HeadCell>
+                </th>
             );
         }
         return arr;
-    }
+    };
 
-    public getIcon(name: string, currentSort: Sort[]): JSX.Element {
+    const getIcon = (name: string, currentSort: Sort[]): JSX.Element => {
         const dictionary: { [key: string]: JSX.Element } = {
             Ascending: <SortUpIcon />,
             Descending: <SortDownIcon />,
@@ -121,16 +83,16 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
         }
 
         return <SortDefaultIcon />;
-    }
+    };
 
-    public renderTableHeader(item: PropertyMetaInformation, key: number, allowSort: boolean): JSX.Element {
+    const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): JSX.Element => {
         const name = item.name;
         const content =
             item.isSortable && allowSort ? (
                 <Link
                     data-tid={`Header_${name}`}
-                    icon={this.getIcon(name, this.props.currentSorts)}
-                    onClick={() => this.props.onChangeSortClick(name)}>
+                    icon={getIcon(name, currentSorts)}
+                    onClick={() => onChangeSortClick(name)}>
                     {name}
                 </Link>
             ) : (
@@ -138,44 +100,71 @@ export class ObjectTable extends React.Component<ObjectTableProps, ObjectTableSt
             );
 
         return (
-            <AdvancedTable.HeadCell className={`${styles.cell} ${styles.headerCell}`} key={key}>
+            <th className={`${jsStyles.cell()} ${jsStyles.headerCell()}`} key={key}>
                 {content}
-            </AdvancedTable.HeadCell>
+            </th>
         );
-    }
+    };
 
-    public renderControls(item: object, index: number): JSX.Element[] {
+    const renderControls = (item: object, index: number): JSX.Element[] => {
         const arr: JSX.Element[] = [];
         let key = 0;
         let pathToItem = "";
         if (item) {
-            pathToItem = this.props.onDetailsClick(item);
+            pathToItem = onDetailsClick(item);
         }
         arr.push(
-            <td key={++key} className={styles.cell}>
-                <RouterLink className={styles.routerLink} to={pathToItem} data-tid="Details">
+            <td key={++key} className={jsStyles.cell()}>
+                <RouterLink to={pathToItem} data-tid="Details">
                     Подробности
                 </RouterLink>
             </td>
         );
-        if (this.props.allowDelete) {
+        if (allowDelete) {
             arr.push(
-                <td key={++key} className={styles.cell}>
-                    <Link onClick={() => this.handleConfirmDeletion(index)} use="danger" data-tid="Delete">
+                <td key={++key} className={jsStyles.cell()}>
+                    <Link onClick={() => handleConfirmDeletion(index)} use="danger" data-tid="Delete">
                         Удалить
                     </Link>
                 </td>
             );
         }
         return arr;
-    }
+    };
 
-    public renderCell(item: any, key: string, type: PropertyMetaInformation): JSX.Element {
-        const { customRenderer, objectType } = this.props;
+    const renderCell = (item: any, key: string, type: PropertyMetaInformation): JSX.Element => {
         return (
-            <td key={key} className={styles.cell} data-tid={key}>
+            <td key={key} className={jsStyles.cell()} data-tid={key}>
                 {renderForTableCell(item, [key], type, objectType, customRenderer)}
             </td>
         );
-    }
+    };
+
+    return (
+        <ScrollableContainer className={jsStyles.tableWrapper()}>
+            {showConfirmModal && <ConfirmDeleteObjectModal onDelete={handleDeleteItem} onCancel={handleCancelDelete} />}
+            {properties.length !== 0 && items.length !== 0 ? (
+                <div className={jsStyles.container()}>
+                    <table className={jsStyles.table()}>
+                        <thead data-tid="TableHeader">
+                            <tr className={jsStyles.tableHeaderRow(theme)}>
+                                {renderEmpty(allowDelete ? 2 : 1)}
+                                {properties.map((item, key) => renderTableHeader(item, key, allowSort))}
+                            </tr>
+                        </thead>
+                        <tbody data-tid="Body">
+                            {items.map((item, index) => (
+                                <tr key={index} className={jsStyles.row(theme)} data-tid="Row">
+                                    {renderControls(item, index)}
+                                    {properties.map(key => renderCell(item, key.name, key))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <div data-tid="NothingFound">Ничего не найдено</div>
+            )}
+        </ScrollableContainer>
+    );
 }

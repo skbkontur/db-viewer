@@ -1,6 +1,8 @@
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Button, Modal } from "@skbkontur/react-ui";
+import { Button, Modal, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
+
+import { jsStyles } from "./ConfirmDeleteObjectModal.styles";
 
 interface ConfirmDeleteObjectModalProps {
     onDelete: () => void;
@@ -8,10 +10,15 @@ interface ConfirmDeleteObjectModalProps {
 }
 
 export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteObjectModalProps): JSX.Element {
+    const theme = React.useContext(ThemeContext);
     return (
         <Modal ignoreBackgroundClick noClose data-tid="ConfirmDeleteObjectModal">
-            <Modal.Header>Подтвердите удаление объекта</Modal.Header>
-            <Modal.Body>Данные об объекте будут удалены безвозвратно</Modal.Body>
+            <Modal.Header>
+                <span className={jsStyles.modalText(theme)}>Подтвердите удаление объекта</span>
+            </Modal.Header>
+            <Modal.Body>
+                <span className={jsStyles.modalText(theme)}>Данные об объекте будут удалены безвозвратно</span>
+            </Modal.Body>
             <Modal.Footer panel>
                 <RowStack gap={2} block>
                     <Fit>

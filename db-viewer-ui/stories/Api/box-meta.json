@@ -1,0 +1,214 @@
+{
+    "typeMetaInformation": {
+        "typeName": "BoxStorageElement",
+        "originalTypeName": "BoxStorageElement",
+        "isArray": false,
+        "isNullable": false,
+        "properties": [
+            {
+                "name": "Box",
+                "isEditable": true,
+                "isIdentity": false,
+                "isSearchable": true,
+                "isSortable": true,
+                "isRequired": false,
+                "availableFilters": [
+                    "Equals",
+                    "DoesNotEqual"
+                ],
+                "availableValues": [],
+                "type": {
+                    "typeName": "Box",
+                    "originalTypeName": "Box",
+                    "isArray": false,
+                    "isNullable": false,
+                    "properties": [
+                        {
+                            "name": "Id",
+                            "isEditable": true,
+                            "isIdentity": false,
+                            "isSearchable": false,
+                            "isSortable": false,
+                            "isRequired": false,
+                            "availableFilters": null,
+                            "availableValues": [],
+                            "type": {
+                                "typeName": "String",
+                                "originalTypeName": "String",
+                                "isArray": false,
+                                "isNullable": false,
+                                "properties": [],
+                                "genericTypeArguments": []
+                            }
+                        },
+                        {
+                            "name": "Gln",
+                            "isEditable": true,
+                            "isIdentity": false,
+                            "isSearchable": true,
+                            "isSortable": true,
+                            "isRequired": false,
+                            "availableFilters": [
+                                "Equals",
+                                "DoesNotEqual"
+                            ],
+                            "availableValues": [],
+                            "type": {
+                                "typeName": "String",
+                                "originalTypeName": "String",
+                                "isArray": false,
+                                "isNullable": false,
+                                "properties": [],
+                                "genericTypeArguments": []
+                            }
+                        },
+                        {
+                            "name": "IsTest",
+                            "isEditable": true,
+                            "isIdentity": false,
+                            "isSearchable": true,
+                            "isSortable": true,
+                            "isRequired": false,
+                            "availableFilters": [
+                                "Equals",
+                                "DoesNotEqual"
+                            ],
+                            "availableValues": [],
+                            "type": {
+                                "typeName": "Boolean",
+                                "originalTypeName": "Boolean",
+                                "isArray": false,
+                                "isNullable": false,
+                                "properties": [],
+                                "genericTypeArguments": []
+                            }
+                        },
+                        {
+                            "name": "PartyId",
+                            "isEditable": true,
+                            "isIdentity": false,
+                            "isSearchable": true,
+                            "isSortable": true,
+                            "isRequired": false,
+                            "availableFilters": [
+                                "Equals",
+                                "DoesNotEqual"
+                            ],
+                            "availableValues": [],
+                            "type": {
+                                "typeName": "String",
+                                "originalTypeName": "String",
+                                "isArray": false,
+                                "isNullable": false,
+                                "properties": [],
+                                "genericTypeArguments": []
+                            }
+                        },
+                        {
+                            "name": "Inactive",
+                            "isEditable": true,
+                            "isIdentity": false,
+                            "isSearchable": true,
+                            "isSortable": true,
+                            "isRequired": false,
+                            "availableFilters": [
+                                "Equals",
+                                "DoesNotEqual"
+                            ],
+                            "availableValues": [],
+                            "type": {
+                                "typeName": "Boolean",
+                                "originalTypeName": "Boolean",
+                                "isArray": false,
+                                "isNullable": false,
+                                "properties": [],
+                                "genericTypeArguments": []
+                            }
+                        }
+                    ],
+                    "genericTypeArguments": []
+                }
+            },
+            {
+                "name": "Id",
+                "isEditable": true,
+                "isIdentity": true,
+                "isSearchable": true,
+                "isSortable": true,
+                "isRequired": false,
+                "availableFilters": [
+                    "Equals",
+                    "DoesNotEqual"
+                ],
+                "availableValues": [],
+                "type": {
+                    "typeName": "String",
+                    "originalTypeName": "String",
+                    "isArray": false,
+                    "isNullable": false,
+                    "properties": [],
+                    "genericTypeArguments": []
+                }
+            },
+            {
+                "name": "ScopeId",
+                "isEditable": true,
+                "isIdentity": true,
+                "isSearchable": true,
+                "isSortable": true,
+                "isRequired": false,
+                "availableFilters": [
+                    "Equals",
+                    "DoesNotEqual"
+                ],
+                "availableValues": [],
+                "type": {
+                    "typeName": "String",
+                    "originalTypeName": "String",
+                    "isArray": false,
+                    "isNullable": false,
+                    "properties": [],
+                    "genericTypeArguments": []
+                }
+            },
+            {
+                "name": "LastModificationDateTime",
+                "isEditable": true,
+                "isIdentity": false,
+                "isSearchable": true,
+                "isSortable": true,
+                "isRequired": false,
+                "availableFilters": [
+                    "Equals",
+                    "DoesNotEqual",
+                    "GreaterThan",
+                    "GreaterThanOrEquals",
+                    "LessThan",
+                    "LessThanOrEquals"
+                ],
+                "availableValues": [],
+                "type": {
+                    "typeName": "DateTime",
+                    "originalTypeName": "DateTime",
+                    "isArray": false,
+                    "isNullable": true,
+                    "properties": [],
+                    "genericTypeArguments": []
+                }
+            }
+        ],
+        "genericTypeArguments": []
+    },
+    "identifier": "BoxStorageElementThrift",
+    "schemaDescription": {
+        "schemaName": "Business Objects ",
+        "allowReadAll": true,
+        "allowDelete": true,
+        "allowEdit": true,
+        "allowSort": true,
+        "countLimit": 50000,
+        "countLimitForSuperUser": 1000000,
+        "downloadLimit": 50000,
+        "downloadLimitForSuperUser": 1000000
+    }
+}
