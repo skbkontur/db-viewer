@@ -56,10 +56,12 @@ module.exports = function (env) {
                 "process.env.NODE_ENV": JSON.stringify("development"),
                 "process.env.enableReactTesting": JSON.stringify(true),
             }),
-            new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new ReactRefreshWebpackPlugin(),
         ],
+        optimization: {
+            moduleIds: "named",
+        },
         mode: "development",
         devServer: {
             hot: true,
