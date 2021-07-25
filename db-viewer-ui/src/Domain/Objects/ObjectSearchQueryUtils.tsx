@@ -31,25 +31,23 @@ export class ConditionsMapper {
             return null;
         }
         const arrOfOpeators = ["<=", ">=", "!=", ">", "<", "="];
-        return paths.map(
-            (key: string): Condition => {
-                const path: string = parsedQueryString[key] || "";
-                const operator: string = arrOfOpeators.filter(val => path.includes(val))[0];
-                if (operator !== undefined) {
-                    const value: string = path.split(operator)[1];
-                    return {
-                        path: key,
-                        value: value,
-                        operator: convertOperationToString(operator),
-                    };
-                }
+        return paths.map((key: string): Condition => {
+            const path: string = parsedQueryString[key] || "";
+            const operator: string = arrOfOpeators.filter(val => path.includes(val))[0];
+            if (operator !== undefined) {
+                const value: string = path.split(operator)[1];
                 return {
                     path: key,
-                    value: parsedQueryString[key],
-                    operator: ObjectFieldFilterOperator.Equals,
+                    value: value,
+                    operator: convertOperationToString(operator),
                 };
             }
-        );
+            return {
+                path: key,
+                value: parsedQueryString[key],
+                operator: ObjectFieldFilterOperator.Equals,
+            };
+        });
     }
 
     public stringify(parsedQueryString: QueryObject, arrOfCondition: null | undefined | Condition[]): QueryObject {
