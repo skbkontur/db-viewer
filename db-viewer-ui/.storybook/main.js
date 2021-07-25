@@ -5,7 +5,7 @@ const babelConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../.babe
 
 module.exports = {
     stories: ["../stories/**/*.stories.tsx"],
-    addons: [require.resolve("@storybook/addon-actions/register")],
+    addons: [require.resolve("@storybook/addon-actions")],
     webpackFinal: config => {
         config.module.rules = [
             {
