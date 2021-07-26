@@ -58,6 +58,7 @@ before_test:
   - ps: |
         Set-Location -Path db-viewer-ui
         Start-Process yarn start:prod
+        Set-Location -Path ..
 
 test_script:
   - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
