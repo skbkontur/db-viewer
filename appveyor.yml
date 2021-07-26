@@ -45,23 +45,25 @@ before_build:
   - cmd: dotnet --info
   - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
   - cmd: dotnet tool restore
-  - cmd: yarn install --frozen-lockfile
+  - cmd: cd db-viewer-ui && yarn install --frozen-lockfile
 
 build_script:
   - cmd: dotnet build --configuration Release ./DbViewer.sln
   - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
-  - cmd: yarn build
+  - cmd: cd db-viewer-ui && yarn build
 
 before_test:
   - cmd: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
   - ps: Start-Process ./DbViewer.TestApi/bin/net5.0/SkbKontur.DbViewer.TestApi.exe
-  - ps: Start-Process yarn start:prod
+  - ps: |
+        Set-Location -Path db-viewer-ui
+        Start-Process yarn start:prod
 
 test_script:
   - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
   - cmd: git diff --exit-code
   - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
-  - cmd: yarn lint
+  - cmd: cd db-viewer-ui && yarn lint
 
 after_test:
   - ps: |
