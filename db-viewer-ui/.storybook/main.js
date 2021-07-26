@@ -6,6 +6,7 @@ const babelConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, "../.babe
 module.exports = {
     stories: ["../stories/**/*.stories.tsx"],
     addons: [require.resolve("@storybook/addon-actions")],
+    core: { builder: "webpack5" },
     webpackFinal: config => {
         config.module.rules = [
             {
@@ -18,7 +19,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loaders: [
+                use: [
                     require.resolve("style-loader"),
                     {
                         loader: require.resolve("css-loader"),
