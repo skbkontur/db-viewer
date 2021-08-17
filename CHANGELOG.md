@@ -1,6 +1,9 @@
 # Changelog
 
-## v1.2.x - 2021.05.31
+## v1.2.18 - 2021.08.17
+- Fix bug with filtering when not in first page
+
+## v1.2.3 - 2021.05.31
 - Add support for dark theme using react-ui ThemeContext
 - Update supported peerDependencies versions range
 
