@@ -157,6 +157,7 @@ export class ObjectTableLayoutHeader extends React.Component<
     private readonly handleApplyFilter = () => {
         this.props.onChange({
             conditions: this.state.modalEditingConditions.filter(x => x.value != null && x.value.trim() !== ""),
+            offset: 0,
         });
         this.setState({ showFilterModal: false });
     };
