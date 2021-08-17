@@ -140,24 +140,24 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var scopeId = Guid.NewGuid().ToString();
             CreateUsers(20, scopeId);
-            
+
             var userId = Guid.NewGuid();
             CreateUsers(1, scopeId, userId);
-            
+
             using var browser = new BrowserForTests();
-            
+
             var userBusinessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
             userBusinessObjectPage.OpenFilter.Click();
             userBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
             userBusinessObjectPage.FilterModal.Apply.Click();
-            
+
             userBusinessObjectPage.Paging[1].Click();
             userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
-            
+
             userBusinessObjectPage.OpenFilter.Click();
             userBusinessObjectPage.FilterModal.Id.ClearAndInputText(userId.ToString());
             userBusinessObjectPage.FilterModal.Apply.Click();
-            
+
             userBusinessObjectPage.ItemsCountInfo.WaitText("Записи с 0 по 1\r\n|\r\nВсего 1");
             userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
         }
