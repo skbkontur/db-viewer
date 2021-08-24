@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.20 - 2021.08.19
+- Fix front dependencies
+
 ## v1.2.18 - 2021.08.17
 - Fix bug with filtering when not in first page
 
