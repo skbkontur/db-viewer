@@ -102,7 +102,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 
         private string BaseUrl { get; } = $"http://{IpAddress}:8080/";
 
-        public static readonly IPAddress IpAddress = Dns.GetHostAddresses(Dns.GetHostName()).First(x => x.AddressFamily == AddressFamily.InterNetwork);
+        // public static readonly IPAddress IpAddress = Dns.GetHostAddresses(Dns.GetHostName()).First(x => x.AddressFamily == AddressFamily.InterNetwork);
+        public static readonly string IpAddress = "host.docker.internal";
 
         private RemoteWebDriver webDriver;
     }

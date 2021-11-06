@@ -5,7 +5,8 @@
       "84.0": {
         "image": "selenoid/vnc:chrome_84.0",
         "port": "4444",
-        "path": "/"
+        "path": "/",
+        "hosts" : ["host.docker.internal:host-gateway"]
       }
     }
   }

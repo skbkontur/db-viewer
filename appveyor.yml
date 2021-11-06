@@ -4,22 +4,25 @@ skip_commits:
   files:
     - '**/*.md'
 
-image: Visual Studio 2022
+image: Ubuntu2004
 
 init:
-  - cmd: git config --global core.autocrlf false
+  - git config --global core.autocrlf false
+  - sh: curl -sflL 'https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-ssh.sh' | bash -e -
 
 nuget:
   disable_publish_on_pr: true
 
+stack: node 14
+
 environment:
+  APPVEYOR_SSH_KEY: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDYfgI1QRePD4ATwTgDSbO0Zj5SBtGEXzzCeDlthZ2+ZkUDqaDynmCd7xxD8VLJd/PL5U11cabVuYS17RvK4AuH56yLQC/R9KcvCioyA+j2HlbjftCPcEqNrPT7ZciNPS0O61q2Ya5pXEtKcdUgr3fIkRHyucGHTIO9tt7uK4cf/MosNh0ak9pyqoxO54NlPcmMnsJqJ0TZER7/gzAsq5uyjZ4n9qPOBw6jM2E1a7jne98WwcI05miHm8GYdoLvyWCo1OJ0KVQu7jV9FAl5dYBPV88eGc+2/z65+ZBltwPMkVHuNcFC1Bm7EJjli5ULpzy6D83pksFoq2aVRxVTTC8TrcqlSrrpE9p45b5XOEE+AfOO66MwB95TVGO2CVQjxObLxwcVhDHW6zUZ4e7b1nWSw1SCmfPq1ifNnu1i2QTuYlXDuP6E4TFnUATL1yQn8ZIISakDPIBi9XStkqc0EgWUbxs0Wx8ucqSdRXo/LmIbDXctNo7k//ce9sWin2fG/7k= pavel@DESKTOP-B0BA809
   NPM_TOKEN:
     secure: Gx5yyFrlELZY4DNW/uAuiXdhUADacNqi3LptQwldv8O61KpYyiDUniA8lBJ5jfne
 
 install:
-  - cmd: docker-switch-linux
-  - cmd: docker pull selenoid/vnc:chrome_84.0
-  - cmd: docker-compose up -d
+  - docker pull selenoid/vnc:chrome_84.0
+  - docker-compose up -d
 
 before_build:
   - ps: |
@@ -42,29 +45,29 @@ before_build:
           Write-Error "Version in tag ($version) does not match version in version.json"
         }
       }
-  - cmd: dotnet --info
-  - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
-  - cmd: dotnet tool restore
-  - cmd: cd db-viewer-ui && yarn install --frozen-lockfile
+  - dotnet --info
+  - dotnet restore ./DbViewer.sln --verbosity minimal
+  - dotnet tool restore
+  - yarn --cwd db-viewer-ui install --frozen-lockfile
 
 build_script:
-  - cmd: dotnet build --configuration Release ./DbViewer.sln
-  - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
-  - cmd: cd db-viewer-ui && yarn build
+  - dotnet build --configuration Release ./DbViewer.sln
+  - dotnet pack --no-build --configuration Release ./DbViewer.sln
+  - yarn --cwd db-viewer-ui build
 
 before_test:
-  - cmd: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
-  - ps: Start-Process ./DbViewer.TestApi/bin/net6.0/SkbKontur.DbViewer.TestApi.exe
+  - dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
+  - ps: Start-Process dotnet -ArgumentList "./DbViewer.TestApi/bin/net6.0/SkbKontur.DbViewer.TestApi.dll"
   - ps: |
         Set-Location -Path db-viewer-ui
         Start-Process yarn start:prod
         Set-Location -Path ..
 
 test_script:
-  - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
-  - cmd: git diff --exit-code
-  - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
-  - cmd: cd db-viewer-ui && yarn lint
+  - dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
+  - git diff --exit-code
+  - dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
+  - yarn --cwd db-viewer-ui lint
 
 after_test:
   - ps: |
