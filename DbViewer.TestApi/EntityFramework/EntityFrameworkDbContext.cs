@@ -8,13 +8,14 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
 {
     public class EntityFrameworkDbContext : DbContext
     {
+        public const string ConnectionString = "Host=localhost;Database=my_db;Username=postgres;Password=postgres";
+
         public DbSet<UsersTable> Users { get; set; }
         public DbSet<FtpUser> FtpUsers { get; set; }
         public DbSet<TestTable> Tests { get; set; }
         public DbSet<SqlDocument> Documents { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Database=my_db;Username=postgres;Password=postgres");
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseNpgsql(ConnectionString);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
