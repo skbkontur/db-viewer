@@ -23,7 +23,7 @@ namespace SkbKontur.DbViewer.TestApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson();
-            services.AddDbContext<EntityFrameworkDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("EntityFrameworkDbContext")));
+            services.AddDbContext<EntityFrameworkDbContext>(options => options.UseNpgsql(EntityFrameworkDbContext.ConnectionString));
             services.AddSingleton<IControllerFactory>(new GroboControllerFactory());
         }
 

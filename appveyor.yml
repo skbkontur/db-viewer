@@ -4,7 +4,7 @@ skip_commits:
   files:
     - '**/*.md'
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 init:
   - cmd: git config --global core.autocrlf false
@@ -54,7 +54,7 @@ build_script:
 
 before_test:
   - cmd: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
-  - ps: Start-Process ./DbViewer.TestApi/bin/net5.0/SkbKontur.DbViewer.TestApi.exe
+  - ps: Start-Process ./DbViewer.TestApi/bin/net6.0/SkbKontur.DbViewer.TestApi.exe
   - ps: |
         Set-Location -Path db-viewer-ui
         Start-Process yarn start:prod

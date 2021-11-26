@@ -1,6 +1,4 @@
-﻿using Kontur.Selone.Properties;
-
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 using SKBKontur.SeleniumTesting;
 
@@ -20,12 +18,12 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 
         public static void WaitIncorrect(this ControlBase control)
         {
-            control.GetError().Wait().That(Is.True);
+            control.HasError.Wait().That(Is.True);
         }
 
         public static void WaitCorrect(this ControlBase control)
         {
-            control.GetError().Wait().That(Is.False);
+            control.HasError.Wait().That(Is.False);
         }
 
         public static T ClickAndGoTo<T>(this ControlBase control)
@@ -38,11 +36,6 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
         {
             control.Click();
             return (PageBase)control.GetRootContainer();
-        }
-
-        private static IProp<bool> GetError(this ControlBase control)
-        {
-            return Prop.Create(control.HasError, "error");
         }
     }
 }

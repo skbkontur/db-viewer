@@ -41,7 +41,7 @@ yarn build:types
 dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
 
 # start db-viewer
-./DbViewer.TestApi/bin/net5.0/SkbKontur.DbViewer.TestApi.exe
+./DbViewer.TestApi/bin/net6.0/SkbKontur.DbViewer.TestApi.exe
 yarn start:prod
 
 # start tests
