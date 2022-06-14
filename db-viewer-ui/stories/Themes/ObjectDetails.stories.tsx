@@ -1,4 +1,10 @@
-import { DEFAULT_THEME, DEFAULT_THEME_8PX_OLD, FLAT_THEME_8PX_OLD, ThemeContext, ThemeFactory } from "@skbkontur/react-ui";
+import {
+    DEFAULT_THEME,
+    DEFAULT_THEME_8PX_OLD,
+    FLAT_THEME_8PX_OLD,
+    ThemeContext,
+    ThemeFactory,
+} from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import React from "react";
 import StoryRouter from "storybook-react-router";
