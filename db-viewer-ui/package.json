@@ -38,7 +38,7 @@
   },
   "peerDependencies": {
     "@skbkontur/react-icons": ">=3 <=5",
-    "@skbkontur/react-ui": ">=2 <=3",
+    "@skbkontur/react-ui": ">=2 <=4",
     "react": ">=16 <=17",
     "react-dom": ">=16 <=17",
     "react-router": ">=5.1.0 <=6",
@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@skbkontur/react-stack-layout": "^1.0.3",
-    "@skbkontur/react-ui-validations": "^1.4.0",
+    "@skbkontur/react-ui-validations": "^1.8.3",
     "copy-to-clipboard": "^3.3.1",
     "decimal.js": "^10.2.1",
     "lodash": "^4.17.20",
@@ -65,8 +65,8 @@
     "@babel/preset-typescript": "^7.14.5",
     "@babel/runtime": "^7.14.8",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@skbkontur/react-icons": "^5.1.0",
-    "@skbkontur/react-ui": "^3.3.1",
+    "@skbkontur/react-icons": "^5.2.4",
+    "@skbkontur/react-ui": "^4.1.0",
     "@storybook/addon-actions": "^6.3.5",
     "@storybook/addons": "^6.3.5",
     "@storybook/builder-webpack5": "^6.3.5",
