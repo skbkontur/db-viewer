@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.2.33 - 2022-06-15
+- Update `@skbkontur/react-ui` package
+
 ## v1.2.20 - 2021.08.19
 - Fix front dependencies
 
