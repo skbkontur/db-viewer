@@ -21,7 +21,7 @@ export class DateUtils {
         return parse(date, this.datePickerFormat, new Date());
     }
 
-    private static toTimeZone(date: Date | string, timeZoneOffsetInMinutes: number): Date {
+    public static toTimeZone(date: Date | string, timeZoneOffsetInMinutes: number): Date {
         const dateDate = new Date(date);
         return addMinutes(dateDate, dateDate.getTimezoneOffset() + timeZoneOffsetInMinutes);
     }

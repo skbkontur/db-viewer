@@ -28,19 +28,20 @@ export function DateTimePicker({
     const [time, setTime] = React.useState<Nullable<string>>(null);
     React.useEffect(() => setTimeToState(value, timeZone), [value, timeZone]);
 
-    const handleTimeChange = (e: React.SyntheticEvent<any>, newTime: Time): void => {
-        if (value === null || value === undefined) {
+    const handleDateTimeChange = (newDate: Nullable<Date>, newTime: Nullable<Time>): void => {
+        if (!newDate) {
             return;
         }
-
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        const date = DateUtils.convertDateToString(value, timeZoneOffset, "yyyy-MM-dd");
-        const newDateTime = new Date(`${date}T${newTime}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
+        const date = DateUtils.convertDateToString(newDate, timeZoneOffset, "yyyy-MM-dd");
+        const newDateTime = !newTime
+            ? DateUtils.toTimeZone(new Date(date), timeZoneOffset)
+            : new Date(`${date}T${newTime}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
         onChange(newDateTime);
     };
 
     const setTimeToState = (date: Nullable<Date>, timeZone: Nullable<TimeZone | number>): void => {
-        if (date === null || date === undefined) {
+        if (!date) {
             return;
         }
 
@@ -57,7 +58,7 @@ export function DateTimePicker({
                     timeZone={timeZone}
                     value={value}
                     defaultTime={time || defaultTime}
-                    onChange={onChange}
+                    onChange={newDate => handleDateTimeChange(newDate, time)}
                     error={error}
                     disabled={disabled}
                     width={110}
@@ -70,7 +71,7 @@ export function DateTimePicker({
                     error={error}
                     defaultTime={defaultTime}
                     disabled={disabled || value === null}
-                    onChange={handleTimeChange}
+                    onChange={(_, newTime) => handleDateTimeChange(value, newTime)}
                 />
             </span>
         </span>
