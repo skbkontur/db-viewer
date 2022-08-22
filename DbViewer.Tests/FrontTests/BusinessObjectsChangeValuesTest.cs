@@ -84,16 +84,21 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var filledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentDate");
             filledDateRow.FieldValue.WaitTextContains("2014-12-11");
             filledDateRow.Edit.Click();
+
+            var expectedOffset = documentName == "CqlDocument" ? TimeSpan.Zero : DateTimeOffset.Now.Offset;
+            var expectedOffsetStr = $"+{expectedOffset:hh':'mm}";
             filledDateRow.FieldValue.Date.ClearAndInputText("13.12.2014");
-            filledDateRow.FieldValue.Time.ClearAndInputText("10:18");
+            filledDateRow.FieldValue.Time.ClearAndInputText("10:18:13.567");
+            filledDateRow.FieldValue.TimeOffsetLabel.WaitText(expectedOffsetStr);
             filledDateRow.Save.Click();
-            filledDateRow.FieldValue.WaitTextContains("2014-12-13");
+            var expectedStr = $"2014-12-13T10:18:13.567{expectedOffsetStr}";
+            filledDateRow.FieldValue.WaitTextContains(expectedStr);
 
             browser.WebDriver.Navigate().Refresh();
             filledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentDate");
-            filledDateRow.FieldValue.WaitTextContains("2014-12-13");
+            filledDateRow.FieldValue.WaitTextContains(expectedStr);
 
-            GetDocument(documentName, documentId).DocumentDate.Should().Be(new DateTimeOffset(2014, 12, 13, 10, 18, 00, 00, TimeSpan.Zero));
+            GetDocument(documentName, documentId).DocumentDate.Should().Be(new DateTimeOffset(2014, 12, 13, 10, 18, 13, 567, expectedOffset));
 
             businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             var unfilledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_DeliveryDate");
@@ -101,6 +106,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             unfilledDateRow.Edit.Click();
             unfilledDateRow.FieldValue.Date.ClearAndInputText("14.12.2014");
             unfilledDateRow.FieldValue.Time.ClearAndInputText("20:19");
+            unfilledDateRow.FieldValue.TimeZoneSelect.SelectValueByText("UTC");
             unfilledDateRow.Save.Click();
             unfilledDateRow.FieldValue.WaitText("2014-12-14T20:19:00Z");
 

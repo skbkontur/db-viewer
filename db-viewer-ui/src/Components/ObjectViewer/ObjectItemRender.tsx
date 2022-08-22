@@ -5,7 +5,7 @@ import React from "react";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { FileUtils } from "../../Domain/Utils/FileUtils";
-import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
+import { DateTimePickerWithTimeZone } from "../DateTimeRangePicker/DateTimePickerWithTimeZone";
 import { StyledSelect } from "../ObjectFilter/OperatorSelect";
 
 function getByPath(target: Nullable<{}>, path: string[]): any {
@@ -113,10 +113,11 @@ export function renderForEdit(
         case "DateTime":
         case "DateTimeOffset":
             return (
-                <DateTimePicker
-                    value={value != null ? new Date(String(value)) : null}
+                <DateTimePickerWithTimeZone
+                    value={value != null ? String(value) : null}
                     onChange={onChange}
-                    defaultTime={""}
+                    defaultTime={"00:00:00"}
+                    timeZoneEditable={type === "DateTime"}
                 />
             );
         case "Float":

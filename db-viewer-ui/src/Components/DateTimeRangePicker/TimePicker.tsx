@@ -11,6 +11,7 @@ interface TimePickerProps {
     disabled?: boolean;
     onChange: (e: React.SyntheticEvent<any>, value: Time) => void;
     warning?: boolean;
+    useSeconds?: boolean;
 }
 
 interface TimePickerState {
@@ -45,9 +46,10 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     private handleBlur = (e: React.SyntheticEvent<any>) => {
         const { defaultTime } = this.props;
         const { value } = this.state;
-        if (DateUtils.isCorrectTime(value)) {
-            this.props.onChange(e, value);
-            if (defaultTime === value) {
+        const trimmed = value.endsWith(".") || value.endsWith(":") ? value.slice(0, -1) : value;
+        if (DateUtils.isCorrectTime(trimmed)) {
+            this.props.onChange(e, trimmed);
+            if (defaultTime === trimmed) {
                 this.setState({ value: emptyValue });
             }
         } else {
@@ -64,19 +66,20 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     };
 
     public render(): JSX.Element {
+        const { disabled, warning, error, useSeconds, defaultTime } = this.props;
         return (
             <Input
                 data-tid="Input"
-                disabled={this.props.disabled}
-                mask="99:99"
+                disabled={disabled}
+                mask={useSeconds ? "99:99:99.999" : "99:99"}
                 value={this.state.value}
-                width={58}
-                error={this.props.error}
-                placeholder={this.props.disabled ? undefined : this.props.defaultTime}
+                width={useSeconds ? 96 : 58}
+                error={error}
+                placeholder={disabled ? undefined : defaultTime}
                 onValueChange={this.handleChange}
                 onBlur={this.handleBlur}
                 onFocus={this.handleFocus}
-                warning={this.props.warning}
+                warning={warning}
             />
         );
     }
