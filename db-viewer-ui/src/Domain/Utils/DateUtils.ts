@@ -14,7 +14,8 @@ export class DateUtils {
         timeZone: number | null,
         dateFormat: string = this.datePickerFormat
     ): string {
-        return format(timeZone == null ? new Date(date) : this.toTimeZone(new Date(date), timeZone), dateFormat);
+        const dateDate = timeZone == null ? new Date(date) : this.toTimeZone(new Date(date), timeZone);
+        return format(dateDate, dateFormat);
     }
 
     public static convertStringToDate(date: RussianDateFormat): Date {
