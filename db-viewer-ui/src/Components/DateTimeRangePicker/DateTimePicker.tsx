@@ -1,4 +1,3 @@
-import moment from "moment";
 import React from "react";
 
 import { Time, TimeZone } from "../../Domain/DataTypes/Time";
@@ -35,8 +34,8 @@ export function DateTimePicker({
         }
 
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        const date = DateUtils.convertDateToString(value, timeZoneOffset, "YYYY-MM-DD");
-        const newDateTime = moment(`${date}T${newTime}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`).toDate();
+        const date = DateUtils.convertDateToString(value, timeZoneOffset, "yyyy-MM-dd");
+        const newDateTime = new Date(`${date}T${newTime}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
         onChange(newDateTime);
     };
 

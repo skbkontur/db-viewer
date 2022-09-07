@@ -41,7 +41,7 @@ namespace SkbKontur.DbViewer.Helpers
                 var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK";
                 if (long.TryParse(value, out var ticks))
                     return new DateTimeOffset(ticks, TimeSpan.Zero);
-                return DateTimeOffset.ParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                return DateTimeOffset.ParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal);
             }
 
             if (type == typeof(DateTime))
@@ -49,7 +49,7 @@ namespace SkbKontur.DbViewer.Helpers
                 var format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK";
                 if (long.TryParse(value, out var ticks))
                     return new DateTime(ticks, DateTimeKind.Utc);
-                return DateTime.ParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                return DateTime.ParseExact(value, format, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
             }
 
             throw new InvalidOperationException($"Unsupported property type: {type.FullName}");

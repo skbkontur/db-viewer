@@ -1,5 +1,4 @@
 import { DatePicker as DefaultDatePicker } from "@skbkontur/react-ui";
-import moment from "moment";
 import React from "react";
 
 import { RussianDateFormat } from "../../Domain/DataTypes/DateTimeRange";
@@ -90,10 +89,10 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
     private readonly convertStringToDate = (newStringifiedDate: RussianDateFormat): Date => {
         const { timeZone } = this.props;
         const date = DateUtils.convertStringToDate(newStringifiedDate);
-        const ISODate = moment(date).format("YYYY-MM-DD");
+        const ISODate = DateUtils.convertDateToString(date, null, "yyyy-MM-dd");
         const time = this.props.defaultTime || defaultTime;
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        return moment(`${ISODate}T${time}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`).toDate();
+        return new Date(`${ISODate}T${time}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
     };
 
     private readonly convertDateToStringWithTimezone = (date: Nullable<Date | string>, timeZone?: number) => {

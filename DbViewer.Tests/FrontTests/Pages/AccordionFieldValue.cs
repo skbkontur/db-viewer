@@ -28,6 +28,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
 
         public DatePicker Date { get; set; }
         public Input Time { get; set; }
-        public Label TimeZone { get; set; }
+        public Select TimeZoneSelect { get; set; }
+        public Label TimeOffsetLabel { get; set; }
     }
 }
