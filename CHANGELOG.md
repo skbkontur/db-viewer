@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.39 - 2022-09-07
+- Replace `moment.js` with `date-fns`
+- Edit DateTime and DateTimeOffset without change of time zone when it's possible
+- Select DateTimeKind for DateTime
+
 ## v1.2.33 - 2022-06-15
 - Update `@skbkontur/react-ui` package
 
