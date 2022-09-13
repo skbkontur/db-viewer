@@ -40,7 +40,7 @@ export function DateTimePickerWithTimeZone({
             onChange(null);
             return;
         }
-        const date = DateUtils.convertDateToString(newDate, null, "yyyy-MM-dd");
+        const date = DateUtils.convertDateToString(newDate, 0, "yyyy-MM-dd");
         const newDateTime = `${date}T${newTime ?? defaultTime}${newOffset ?? ""}`;
         onChange(newDateTime);
     };
@@ -52,7 +52,7 @@ export function DateTimePickerWithTimeZone({
         const timeOffset = getTimeZoneString(dateStr);
         setOffset(timeOffset);
         const dateTimeWithoutTimezone = timeOffset ? dateStr.slice(0, -timeOffset.length) : dateStr;
-        setDate(new Date(dateTimeWithoutTimezone));
+        setDate(DateUtils.fromLocalToUtc(new Date(dateTimeWithoutTimezone)));
         setTime(DateUtils.convertDateToString(dateTimeWithoutTimezone, null, "HH:mm:ss.SSS"));
     };
 
@@ -71,7 +71,7 @@ export function DateTimePickerWithTimeZone({
                 <DatePicker
                     data-tid="Date"
                     value={date}
-                    defaultTime={time || defaultTime}
+                    defaultTime={defaultTime}
                     onChange={newDate => setDate(newDate)}
                     error={error}
                     disabled={disabled}
