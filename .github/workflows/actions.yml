@@ -6,7 +6,7 @@ on:
 
 env:
   DOTNET_VERSION: 6.0.x
-  NODE_VERSION: 14
+  NODE_VERSION: 16
   NPM_REGISTRY: https://registry.npmjs.org
 
 jobs:
