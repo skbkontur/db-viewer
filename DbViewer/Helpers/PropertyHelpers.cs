@@ -142,12 +142,19 @@ namespace SkbKontur.DbViewer.Helpers
                 {
                     Name = propertyInfo.Name,
                     AvailableFilters = propertyDescription.AvailableFilters,
-                    AvailableValues = underlyingType.IsEnum ? Enum.GetNames(underlyingType) : new string[0],
+                    AvailableValues = underlyingType.IsEnum ? Enum.GetNames(underlyingType) : Array.Empty<string>(),
                     IsEditable = propertyInfo.SetMethod != null,
                     IsIdentity = propertyDescription.IsIdentity,
                     IsRequired = propertyDescription.IsRequired,
                     IsSearchable = propertyDescription.IsSearchable,
                     IsSortable = propertyDescription.IsSortable,
+                    RequiredForFilter = propertyDescription.RequiredForFilter ?? Array.Empty<FilterRequirement>(),
+                    RequiredForSort = propertyDescription.RequiredForSort ?? new SortRequirements
+                        {
+                            RequiredFilters = Array.Empty<FilterRequirement>(),
+                            RequiredSorts = Array.Empty<string>(),
+                        },
+                    Meta = propertyDescription.Meta,
                     Type = BuildTypeMetaInformation(objectProperty, propertyType, originalPropertyType, propertyDescriptionBuilder, @object == null ? null : propertyConfigurationProvider, types),
                 };
         }

@@ -1,5 +1,6 @@
+import HelpDotIcon from "@skbkontur/react-icons/HelpDot";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Input } from "@skbkontur/react-ui";
+import { Input, Link, Tooltip } from "@skbkontur/react-ui";
 import { tooltip, ValidationInfo, ValidationWrapper } from "@skbkontur/react-ui-validations";
 import React from "react";
 
@@ -12,6 +13,7 @@ import { TimeUtils } from "../../Domain/Utils/TimeUtils";
 import { validateObjectField } from "../../Domain/Utils/ValidationUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 import { FormRow } from "../FormRow/FormRow";
+import { getMissingFilters, MissingFilters } from "../ObjectTable/TooltipContent";
 
 import { OperatorSelect, StyledSelect } from "./OperatorSelect";
 
@@ -35,8 +37,41 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         return result;
     }
 
-    public updateItem(property: PropertyMetaInformation, conditionUpdate: Partial<Condition>) {
-        const { conditions, onChange } = this.props;
+    public brokenDependency(condition: Condition, dependent: undefined | PropertyMetaInformation): boolean {
+        console.info(`brokenDependency(${condition.path}, ${dependent?.name})`);
+        if (!dependent) {
+            return false;
+        }
+
+        const requirement = dependent.requiredForFilter.find(x => x.propertyName === condition.path);
+        if (!requirement) {
+            return false;
+        }
+
+        console.info(StringUtils.isNullOrWhitespace(condition.value));
+        console.info(requirement.availableFilters.indexOf(condition.operator) === -1);
+        return (
+            StringUtils.isNullOrWhitespace(condition.value) ||
+            requirement.availableFilters.indexOf(condition.operator) === -1
+        );
+    }
+
+    public updateItem(property: PropertyMetaInformation, conditionUpdate: Partial<Condition>): void {
+        const { onChange, tableColumns } = this.props;
+
+        const thisCondition = {
+            ...(this.props.conditions.find(x => x.path === property.name) ?? this.getCondition(property)),
+            ...conditionUpdate,
+        };
+        const dependents = tableColumns.filter(x => x.requiredForFilter.find(y => y.propertyName === property.name));
+        console.info(this.props.conditions);
+        const conditions = this.props.conditions.filter(
+            x =>
+                !this.brokenDependency(
+                    thisCondition,
+                    dependents.find(d => d.name === x.path)
+                )
+        );
         const conditionIndex = conditions.findIndex(x => x.path === property.name);
         if (conditionIndex >= 0) {
             onChange([
@@ -49,7 +84,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         }
     }
 
-    public renderProperty(property: PropertyMetaInformation, value: Nullable<string>): JSX.Element {
+    public renderProperty(property: PropertyMetaInformation, value: Nullable<string>, disabled: boolean): JSX.Element {
         const type = property.type.typeName;
         if (type === "DateTime" || type === "DateTimeOffset") {
             return (
@@ -62,6 +97,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             timeZone={TimeUtils.TimeZones.UTC}
                             onChange={date => this.updateItem(property, { value: timestampToTicks(date) })}
                             value={value ? ticksToTimestamp(value) : null}
+                            disabled={disabled}
                         />
                     </Fit>
                     <Fit>
@@ -74,6 +110,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                                 data-tid={"DateTimeInTicks"}
                                 onValueChange={nextValue => this.updateItem(property, { value: nextValue })}
                                 value={value ? value : ""}
+                                disabled={disabled}
                             />
                         </ValidationWrapper>
                     </Fit>
@@ -93,6 +130,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             this.updateItem(property, { value: nextValue });
                         }}
                         value={value || undefined}
+                        disabled={disabled}
                     />
                 </ValidationWrapper>
             );
@@ -110,6 +148,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             this.updateItem(property, { value: nextValue });
                         }}
                         value={value || undefined}
+                        disabled={disabled}
                     />
                 </ValidationWrapper>
             );
@@ -123,6 +162,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                     data-tid="Input"
                     onValueChange={nextValue => this.updateItem(property, { value: nextValue })}
                     value={value || ""}
+                    disabled={disabled}
                 />
             </ValidationWrapper>
         );
@@ -135,6 +175,46 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         return validateObjectField(value);
     }
 
+    public renderRow(property: PropertyMetaInformation, condition: Condition): JSX.Element {
+        const { conditions } = this.props;
+        const missingFilters = getMissingFilters(property.requiredForFilter, conditions);
+        console.info(property.name, missingFilters);
+        return (
+            <FormRow
+                hint={property.meta}
+                key={property.name}
+                captionWidth={200}
+                caption={property.name}
+                data-tid="Filter">
+                <RowStack baseline block gap={5} data-tid={property.name}>
+                    <Fit>
+                        <OperatorSelect
+                            value={condition.operator}
+                            onChange={value => this.updateItem(property, { operator: value })}
+                            availableValues={property.availableFilters || [ObjectFieldFilterOperator.Equals]}
+                            disabled={missingFilters.length !== 0}
+                        />
+                    </Fit>
+                    <Fit>{this.renderProperty(property, condition.value, missingFilters.length !== 0)}</Fit>
+                    {missingFilters.length !== 0 && (
+                        <Fit style={{ marginLeft: -20 }}>
+                            <Tooltip
+                                render={() => (
+                                    <MissingFilters
+                                        title="Для поиска по этому полю должны быть указаны следующие фильтры:"
+                                        missingFilters={missingFilters}
+                                    />
+                                )}
+                                pos="right middle">
+                                <Link icon={<HelpDotIcon size={14} />} />
+                            </Tooltip>
+                        </Fit>
+                    )}
+                </RowStack>
+            </FormRow>
+        );
+    }
+
     public render(): JSX.Element {
         const { tableColumns } = this.props;
 
@@ -142,22 +222,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
             <ColumnStack gap={2} data-tid="ObjectFilters">
                 {tableColumns
                     .map(x => [x, this.getCondition(x)] as [PropertyMetaInformation, Condition])
-                    .map(([property, condition]) => (
-                        <FormRow key={property.name} captionWidth={200} caption={property.name} data-tid="Filter">
-                            <RowStack baseline block gap={5} data-tid={property.name}>
-                                <Fit>
-                                    <OperatorSelect
-                                        value={condition.operator}
-                                        onChange={value => this.updateItem(property, { operator: value })}
-                                        availableValues={
-                                            property.availableFilters || [ObjectFieldFilterOperator.Equals]
-                                        }
-                                    />
-                                </Fit>
-                                <Fit>{this.renderProperty(property, condition.value)}</Fit>
-                            </RowStack>
-                        </FormRow>
-                    ))}
+                    .map(([property, condition]) => this.renderRow(property, condition))}
             </ColumnStack>
         );
     }

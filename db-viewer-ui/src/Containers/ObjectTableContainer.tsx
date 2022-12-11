@@ -99,7 +99,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             loading,
             objects,
             metaInformation,
-            query: { offset, count, sorts },
+            query: { offset, count, sorts, conditions },
             downloading,
             showDownloadModal,
             downloadCount,
@@ -158,6 +158,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             objectType={metaInformation?.identifier || ""}
                                             customRenderer={this.props.customRenderer}
                                             currentSorts={sorts}
+                                            currentFilters={conditions}
                                             items={
                                                 objects.count == null
                                                     ? objects.items.slice(offset, offset + count)
@@ -394,7 +395,18 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private handleChangeSort = (columnName: string) => {
-        const { sorts } = this.state.query;
+        const { metaInformation, query } = this.state;
+
+        if (metaInformation == null) {
+            return;
+        }
+
+        const dependents = metaInformation.typeMetaInformation.properties.filter(
+            x => x.requiredForSort.requiredSorts.indexOf(columnName) !== -1
+        );
+
+        const sorts = query.sorts.filter(x => !dependents.find(d => d.name === x.path));
+
         const currentSortIndex = sorts.findIndex(x => x.path === columnName);
         if (currentSortIndex === -1) {
             this.updateQuery({

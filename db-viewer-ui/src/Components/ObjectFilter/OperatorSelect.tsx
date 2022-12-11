@@ -7,6 +7,7 @@ interface OperatorSelectProps {
     value: Nullable<ObjectFieldFilterOperator>;
     onChange: (x0: ObjectFieldFilterOperator) => void;
     availableValues: ObjectFieldFilterOperator[];
+    disabled: boolean;
 }
 
 function operatorToString(operation: ObjectFieldFilterOperator): string {
@@ -26,7 +27,7 @@ function operatorToString(operation: ObjectFieldFilterOperator): string {
 }
 
 export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
-    const { availableValues, value, onChange } = props;
+    const { availableValues, value, onChange, disabled } = props;
     return (
         <StyledSelect
             width={70}
@@ -38,6 +39,7 @@ export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
                 }
             }}
             value={value || undefined}
+            disabled={disabled}
         />
     );
 }

@@ -16,6 +16,12 @@ namespace SkbKontur.DbViewer.EntityFramework
             var result = new PropertyMetaInformation
                 {
                     Name = propertyInfo.Name,
+                    RequiredForFilter = Array.Empty<FilterRequirement>(),
+                    RequiredForSort = new SortRequirements
+                        {
+                            RequiredFilters = Array.Empty<FilterRequirement>(),
+                            RequiredSorts = Array.Empty<string>(),
+                        },
                 };
 
             if (propertyInfo.CustomAttributes.Any(x => x.AttributeType == typeof(TPrimaryKey)))
