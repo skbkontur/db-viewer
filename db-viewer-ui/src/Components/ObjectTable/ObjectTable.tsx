@@ -1,11 +1,14 @@
+import HelpDotIcon from "@skbkontur/react-icons/HelpDot";
 import SortDefaultIcon from "@skbkontur/react-icons/SortDefault";
 import SortDownIcon from "@skbkontur/react-icons/SortDown";
 import SortUpIcon from "@skbkontur/react-icons/SortUp";
-import { Link, ThemeContext } from "@skbkontur/react-ui";
+import { Tooltip, Link, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
 
+import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
+import { SortRequirements } from "../../Domain/Api/DataTypes/SortRequirements";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ScrollableContainer } from "../Layouts/ScrollableContainer";
@@ -13,6 +16,7 @@ import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
 import { RouterLink } from "../RouterLink/RouterLink";
 
 import { jsStyles } from "./ObjectTable.styles";
+import { getMissingFilters, MissingFilters, MissingSorts } from "./TooltipContent";
 
 interface ObjectTableProps {
     customRenderer: ICustomRenderer;
@@ -23,6 +27,7 @@ interface ObjectTableProps {
     onDetailsClick: (item: object) => string;
     onDeleteClick: (index: number) => Promise<void>;
     currentSorts: Sort[];
+    currentFilters: Condition[];
     allowDelete: boolean;
     allowSort: boolean;
 }
@@ -36,6 +41,7 @@ export function ObjectTable({
     onDetailsClick,
     onDeleteClick,
     currentSorts,
+    currentFilters,
     allowDelete,
     allowSort,
 }: ObjectTableProps): JSX.Element {
@@ -85,20 +91,68 @@ export function ObjectTable({
         return <SortDefaultIcon />;
     };
 
+    const getDisabledText = (requirements: SortRequirements): null | JSX.Element => {
+        const missingFilters = getMissingFilters(requirements.requiredFilters, currentFilters);
+
+        const missingSorts: string[] = [];
+        for (const sort of requirements.requiredSorts) {
+            if (!currentSorts.find(x => x.path === sort)) {
+                missingSorts.push(sort);
+            }
+        }
+
+        if (missingFilters.length === 0 && missingSorts.length === 0) {
+            return null;
+        }
+
+        return (
+            <div>
+                <MissingFilters
+                    title="Для сортировки должны быть указаны следующие фильтры:"
+                    missingFilters={missingFilters}
+                />
+                <MissingSorts
+                    title={
+                        missingFilters.length === 0
+                            ? "Для сортировки нужно предварительно отсортировать следующие колонки:"
+                            : "А также предварительно отсортированы следующие колонки:"
+                    }
+                    missingSorts={missingSorts}
+                />
+            </div>
+        );
+    };
+
+    const renderSortable = (item: PropertyMetaInformation) => {
+        const name = item.name;
+        const disabledText = getDisabledText(item.requiredForSort);
+        const link = (
+            <Link
+                data-tid={`Header_${name}`}
+                icon={getIcon(name, currentSorts)}
+                onClick={() => onChangeSortClick(name)}
+                disabled={Boolean(disabledText)}>
+                {name}
+            </Link>
+        );
+        if (!disabledText) {
+            return link;
+        }
+
+        return (
+            <div>
+                {link}
+                {"\u00A0"}
+                <Tooltip render={() => disabledText} pos="right middle">
+                    <Link icon={<HelpDotIcon size={14} />} />
+                </Tooltip>
+            </div>
+        );
+    };
+
     const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): JSX.Element => {
         const name = item.name;
-        const content =
-            item.isSortable && allowSort ? (
-                <Link
-                    data-tid={`Header_${name}`}
-                    icon={getIcon(name, currentSorts)}
-                    onClick={() => onChangeSortClick(name)}>
-                    {name}
-                </Link>
-            ) : (
-                name
-            );
-
+        const content = item.isSortable && allowSort ? renderSortable(item) : name;
         return (
             <th className={`${jsStyles.cell()} ${jsStyles.headerCell()}`} key={key}>
                 {content}

@@ -16,6 +16,12 @@ namespace SkbKontur.DbViewer.TestApi.Impl
             var result = new PropertyMetaInformation
                 {
                     Name = propertyInfo.Name,
+                    RequiredForFilter = Array.Empty<FilterRequirement>(),
+                    RequiredForSort = new SortRequirements
+                        {
+                            RequiredFilters = Array.Empty<FilterRequirement>(),
+                            RequiredSorts = Array.Empty<string>(),
+                        }
                 };
             var indexed = propertyInfo.GetCustomAttribute(typeof(IndexedAttribute)) != null;
             var required = propertyInfo.GetCustomAttribute(typeof(RequiredAttribute)) != null;

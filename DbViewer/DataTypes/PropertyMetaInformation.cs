@@ -28,6 +28,15 @@ namespace SkbKontur.DbViewer.DataTypes
         [JsonProperty("availableValues")]
         public string[] AvailableValues { get; set; }
 
+        [JsonProperty("requiredForFilter")]
+        public FilterRequirement[] RequiredForFilter { get; set; }
+
+        [JsonProperty("requiredForSort")]
+        public SortRequirements RequiredForSort { get; set; }
+
+        [JsonProperty("meta")]
+        public string? Meta { get; set; }
+
         [JsonProperty("type")]
         public TypeMetaInformation Type { get; set; }
     }
