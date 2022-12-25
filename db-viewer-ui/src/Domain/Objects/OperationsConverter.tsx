@@ -1,5 +1,12 @@
 import { ObjectFieldFilterOperator } from "../Api/DataTypes/ObjectFieldFilterOperator";
+import { ObjectFilterSortOrder } from "../Api/DataTypes/ObjectFilterSortOrder";
 
+export function convertSortToString(order: ObjectFilterSortOrder): string {
+    return order === ObjectFilterSortOrder.Ascending ? "asc" : "desc";
+}
+export function convertStringToSort(order: string): ObjectFilterSortOrder {
+    return order === "asc" ? ObjectFilterSortOrder.Ascending : ObjectFilterSortOrder.Descending;
+}
 export function convertOperationToString(operation: string): ObjectFieldFilterOperator {
     switch (operation) {
         case ">=":

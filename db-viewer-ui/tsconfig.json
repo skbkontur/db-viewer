@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "noUnusedLocals": true,
+    "downlevelIteration": true,
     "noUnusedParameters": false,
     "pretty": true,
     "skipLibCheck": true,
@@ -22,7 +23,7 @@
     "experimentalDecorators": true,
     "noImplicitReturns": true,
     "suppressImplicitAnyIndexErrors": true,
-    "lib": ["es2020", "dom"],
+    "lib": ["es2020", "dom", "dom.iterable"],
     "paths": {
       "*": ["typings/*"]
     }

@@ -3,7 +3,6 @@ import TrashIcon from "@skbkontur/react-icons/Trash";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
-import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -76,10 +75,10 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     }
 
     public getConditions(): Condition[] {
-        const query = qs.parse(this.props.objectQuery.replace(/^\?/, ""));
-        return Object.keys(query).map(x => ({
-            path: x,
-            value: String(query[x]),
+        const query = new URLSearchParams(this.props.objectQuery);
+        return [...query.entries()].map(x => ({
+            path: x[0],
+            value: x[1],
             operator: ObjectFieldFilterOperator.Equals,
         }));
     }

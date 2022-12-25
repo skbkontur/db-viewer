@@ -1,7 +1,6 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Loader, Paging } from "@skbkontur/react-ui";
 import isEqual from "lodash/isEqual";
-import qs from "qs";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
@@ -19,10 +18,8 @@ import { SearchResult } from "../Domain/Api/DataTypes/SearchResult";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
 import { ICustomRenderer } from "../Domain/Objects/CustomRenderer";
 import { ObjectSearchQuery } from "../Domain/Objects/ObjectSearchQuery";
-import { ConditionsMapper, ObjectSearchQueryUtils, SortMapper } from "../Domain/Objects/ObjectSearchQueryUtils";
+import { ObjectSearchQueryMapping } from "../Domain/Objects/ObjectSearchQueryMapping";
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
-import { QueryStringMapping } from "../Domain/QueryStringMapping/QueryStringMapping";
-import { QueryStringMappingBuilder } from "../Domain/QueryStringMapping/QueryStringMappingBuilder";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTableProps extends RouteComponentProps {
@@ -47,14 +44,6 @@ interface ObjectTableState {
     showDownloadModal: boolean;
     downloadCount?: CountResult;
 }
-
-const objectsQueryMapping: QueryStringMapping<ObjectSearchQuery> = new QueryStringMappingBuilder<ObjectSearchQuery>()
-    .mapToInteger(x => x.count, "count", 20)
-    .mapToInteger(x => x.offset, "offset", 0)
-    .mapToStringArray(x => x.hiddenColumns, "hiddenColumns", [])
-    .mapTo(x => x.sorts, new SortMapper("sort"))
-    .mapTo(x => x.conditions, new ConditionsMapper(["sort", "count", "offset", "hiddenColumns", "countLimit"]))
-    .build();
 
 function getDefaultQuery(): ObjectSearchQuery {
     return {
@@ -197,8 +186,11 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private checkForNecessityLoad(prevQuery: string): boolean {
         const { urlQuery } = this.props;
         if (prevQuery !== urlQuery) {
-            const prevState = ObjectSearchQueryUtils.normalize(this.parseQuery(prevQuery), !this.state.objects?.count);
-            const nextState = ObjectSearchQueryUtils.normalize(this.parseQuery(urlQuery), !this.state.objects?.count);
+            const prevState = ObjectSearchQueryMapping.normalize(
+                this.parseQuery(prevQuery),
+                !this.state.objects?.count
+            );
+            const nextState = ObjectSearchQueryMapping.normalize(this.parseQuery(urlQuery), !this.state.objects?.count);
             return !isEqual(nextState, prevState);
         }
         return false;
@@ -295,7 +287,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 query[prop.name] = item[prop.name];
             }
         }
-        return RouteUtils.goTo(this.props.path, `details?${qs.stringify(query)}`);
+        return RouteUtils.goTo(this.props.path, `details?${new URLSearchParams(query)}`);
     };
 
     private readonly handleOpenFilter = () => {
@@ -436,16 +428,31 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     }
 
     private getQuery(overrides: Partial<ObjectSearchQuery> = {}): string {
-        const { query } = this.state;
+        const { query, metaInformation } = this.state;
         const { path } = this.props;
-        return path + objectsQueryMapping.stringify({ ...query, ...overrides });
+        let properties: PropertyMetaInformation[] = [];
+        if (metaInformation?.typeMetaInformation?.properties) {
+            properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
+        }
+        return (
+            path +
+            ObjectSearchQueryMapping.stringify(
+                { ...query, ...overrides },
+                properties.map(x => x.name)
+            )
+        );
     }
 
     private parseQuery(urlQuery: string): ObjectSearchQuery {
-        const query = objectsQueryMapping.parse(urlQuery);
-        query.conditions = query.conditions || [];
-        query.sorts = query.sorts || [];
-        return query;
+        const { metaInformation } = this.state;
+        let properties: PropertyMetaInformation[] = [];
+        if (metaInformation?.typeMetaInformation?.properties) {
+            properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
+        }
+        return ObjectSearchQueryMapping.parse(
+            urlQuery,
+            properties.map(x => x.name)
+        );
     }
 
     private readonly goToPage = (page: number) => {
