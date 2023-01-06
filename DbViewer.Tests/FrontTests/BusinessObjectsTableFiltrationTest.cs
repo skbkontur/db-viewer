@@ -158,7 +158,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             userBusinessObjectPage.FilterModal.Id.ClearAndInputText(userId.ToString());
             userBusinessObjectPage.FilterModal.Apply.Click();
 
-            userBusinessObjectPage.ItemsCountInfo.WaitText("Записи с 0 по 1\r\n|\r\nВсего 1");
+            userBusinessObjectPage.ItemsCountInfo.Text.Wait().That(Does.StartWith("Записи с 0 по 1").And.EndsWith("Всего 1"));
             userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
         }
 

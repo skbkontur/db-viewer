@@ -8,8 +8,6 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
 {
     public class EntityFrameworkDbContext : DbContext
     {
-        public const string ConnectionString = "Host=localhost;Database=my_db;Username=postgres;Password=postgres";
-
         public DbSet<UsersTable> Users { get; set; }
         public DbSet<FtpUser> FtpUsers { get; set; }
         public DbSet<TestTable> Tests { get; set; }
@@ -26,6 +24,8 @@ namespace SkbKontur.DbViewer.TestApi.EntityFramework
                             .ApplyIndices();
             }
         }
+
+        public static readonly string ConnectionString = $"Host={Environment.GetEnvironmentVariable("POSTGRES_ADDRESS") ?? "localhost"};Database=my_db;Username=postgres;Password=postgres";
 
         public static readonly Type[] EntityTypes = typeof(EntityFrameworkDbContext)
                                                     .GetProperties(BindingFlags.Public | BindingFlags.Instance)

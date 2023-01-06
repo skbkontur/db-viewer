@@ -3,16 +3,18 @@
 const path = require("path");
 
 const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = function (env) {
+    var dir = env.dir || "public";
     return {
         context: __dirname,
         entry: { root: require.resolve("./index.tsx") },
         output: {
-            path: path.resolve(__dirname, "dist"),
-            publicPath: "/dist/",
-            filename: "[name].js",
+            path: __dirname + "/" + dir,
+            publicPath: "/",
+            filename: "[name].[hash].js",
         },
         module: {
             rules: [
@@ -58,6 +60,9 @@ module.exports = function (env) {
             }),
             new webpack.HotModuleReplacementPlugin(),
             new ReactRefreshWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                template: "./public/index.html",
+            }),
         ],
         optimization: {
             moduleIds: "named",
@@ -67,13 +72,11 @@ module.exports = function (env) {
             hot: true,
             host: "0.0.0.0",
             port: 8080,
+            disableHostCheck: true,
+            historyApiFallback: true,
             proxy: {
                 "/db-viewer/**": {
                     target: "http://localhost:5000/",
-                },
-                "*": {
-                    secure: false,
-                    bypass: () => "/public/index.html",
                 },
             },
             stats: {

@@ -2,9 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 
@@ -100,9 +98,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             }
         }
 
-        private string BaseUrl { get; } = $"http://{IpAddress}:8080/";
-
-        public static readonly IPAddress IpAddress = Dns.GetHostAddresses(Dns.GetHostName()).First(x => x.AddressFamily == AddressFamily.InterNetwork);
+        private string BaseUrl { get; } = $"http://{Environment.GetEnvironmentVariable("THIS_IP_ADDRESS") ?? "db-viewer-api"}:5000/";
 
         private RemoteWebDriver webDriver;
     }
