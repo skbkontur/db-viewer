@@ -1,14 +1,20 @@
 version: "3"
 services:
+
   cassandra:
     container_name: cassandra
     image: cassandra:3.11
+    networks:
+      - default-network
     ports:
       - 9042:9042
+
   postgres:
     container_name: postgres
     image: postgres:12.3
     restart: always
+    networks:
+      - default-network
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -16,21 +22,28 @@ services:
       PGDATA: /pg_data
     ports:
       - 5432:5432
+
   selenoid:
     container_name: selenoid
     image: aerokube/selenoid:1.10.0
-    network_mode: bridge
+    networks:
+      - default-network
     ports:
       - "4444:4444"
+    command: ["-container-network", "db-viewer_default-network"]
     volumes:
       - "./.selenoid:/etc/selenoid/"
       - "/var/run/docker.sock:/var/run/docker.sock"
+
   selenoid-ui:
     container_name: selenoid-ui
     image: aerokube/selenoid-ui:1.10.0
-    network_mode: bridge
-    links:
-      - selenoid
+    networks:
+      - default-network
     ports:
       - "8081:8081"
     command: ["--listen", ":8081", "--selenoid-uri", "http://selenoid:4444"]
+
+networks:
+  default-network:
+    driver: bridge

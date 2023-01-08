@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +38,27 @@ namespace SkbKontur.DbViewer.TestApi
                 app.UseDeveloperExceptionPage();
 
             app.UseRouting();
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseStaticFiles();
+
+            app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllers();
+
+                    if (env.WebRootFileProvider.GetFileInfo("index.html").Exists)
+                    {
+                        endpoints.MapFallbackToFile("index.html");
+                    }
+                    else
+                    {
+                        endpoints.MapFallback(context =>
+                            {
+                                var scheme = context.Request.Scheme;
+                                var host = new HostString(context.Request.Host.Host, 8080);
+                                context.Response.Redirect($"{scheme}://{host}{context.Request.GetEncodedPathAndQuery()}");
+                                return Task.CompletedTask;
+                            });
+                    }
+                });
         }
     }
 }

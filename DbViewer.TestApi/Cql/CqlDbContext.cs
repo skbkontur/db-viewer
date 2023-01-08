@@ -40,7 +40,7 @@ namespace SkbKontur.DbViewer.TestApi.Cql
             {
                 try
                 {
-                    var session = Cluster.Builder().AddContactPoint("127.0.0.1").Build().Connect();
+                    var session = Cluster.Builder().AddContactPoint(Environment.GetEnvironmentVariable("CASSANDRA_ADDRESS") ?? "127.0.0.1").Build().Connect();
                     Console.WriteLine($"Successfully connected to cassandra after {sw.Elapsed.TotalSeconds} seconds");
                     return session;
                 }

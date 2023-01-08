@@ -12,14 +12,16 @@ init:
 nuget:
   disable_publish_on_pr: true
 
+stack: node 14
+
 environment:
   NPM_TOKEN:
     secure: Gx5yyFrlELZY4DNW/uAuiXdhUADacNqi3LptQwldv8O61KpYyiDUniA8lBJ5jfne
 
 install:
-  - cmd: docker-switch-linux
-  - cmd: docker pull selenoid/vnc:chrome_84.0
-  - cmd: docker-compose up -d
+  - docker-switch-linux
+  - docker pull selenoid/vnc:chrome_84.0
+  - docker-compose up -d
 
 before_build:
   - ps: |
@@ -42,29 +44,26 @@ before_build:
           Write-Error "Version in tag ($version) does not match version in version.json"
         }
       }
-  - cmd: dotnet --info
-  - cmd: dotnet restore ./DbViewer.sln --verbosity minimal
-  - cmd: dotnet tool restore
-  - cmd: cd db-viewer-ui && yarn install --frozen-lockfile
+  - dotnet --info
+  - dotnet restore ./DbViewer.sln --verbosity minimal
+  - dotnet tool restore
+  - yarn --cwd db-viewer-ui install --frozen-lockfile
 
 build_script:
-  - cmd: dotnet build --configuration Release ./DbViewer.sln
-  - cmd: dotnet pack --no-build --configuration Release ./DbViewer.sln
-  - cmd: cd db-viewer-ui && yarn build
+  - dotnet build --configuration Release ./DbViewer.sln
+  - dotnet pack --no-build --configuration Release ./DbViewer.sln
+  - yarn --cwd db-viewer-ui build
 
 before_test:
-  - cmd: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
-  - ps: Start-Process ./DbViewer.TestApi/bin/net6.0/SkbKontur.DbViewer.TestApi.exe
-  - ps: |
-        Set-Location -Path db-viewer-ui
-        Start-Process yarn start:prod
-        Set-Location -Path ..
+  - docker build -t db-viewer-api ./DbViewer.TestApi
+  - docker run -dp 5000:5000 --name db-viewer-api --network=db-viewer_default-network -e CASSANDRA_ADDRESS=cassandra -e POSTGRES_ADDRESS=postgres db-viewer-api
+  - dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
 
 test_script:
-  - cmd: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
-  - cmd: git diff --exit-code
-  - cmd: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
-  - cmd: cd db-viewer-ui && yarn lint
+  - dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN
+  - git diff --exit-code
+  - dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
+  - yarn --cwd db-viewer-ui lint
 
 after_test:
   - ps: |
