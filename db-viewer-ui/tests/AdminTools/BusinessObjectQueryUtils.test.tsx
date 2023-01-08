@@ -1,46 +1,27 @@
 import { expect } from "chai";
 
-import { Condition } from "../../src/Domain/Api/DataTypes/Condition";
 import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilterSortOrder";
-import { Sort } from "../../src/Domain/Api/DataTypes/Sort";
-import { ConditionsMapper, SortMapper } from "../../src/Domain/Objects/ObjectSearchQueryUtils";
-import { QueryStringMapping } from "../../src/Domain/QueryStringMapping/QueryStringMapping";
-import { QueryStringMappingBuilder } from "../../src/Domain/QueryStringMapping/QueryStringMappingBuilder";
-
-interface ObjectSearchQuery {
-    conditions: Nullable<Condition[]>;
-    sorts: Nullable<Sort[]>;
-    count: Nullable<number>;
-    offset: Nullable<number>;
-    countLimit: Nullable<number>;
-    hiddenColumns: Nullable<string[]>;
-}
-
-const mapper: QueryStringMapping<ObjectSearchQuery> = new QueryStringMappingBuilder<ObjectSearchQuery>()
-    .mapToInteger(x => x.count, "count")
-    .mapToInteger(x => x.offset, "offset")
-    .mapToInteger(x => x.countLimit, "countLimit")
-    .mapToStringArray(x => x.hiddenColumns, "hiddenColumns")
-    .mapTo(x => x.sorts, new SortMapper("sort"))
-    .mapTo(x => x.conditions, new ConditionsMapper(["sort", "count", "offset", "hiddenColumns", "countLimit"]))
-    .build();
+import { ObjectSearchQuery } from "../../src/Domain/Objects/ObjectSearchQuery";
+import { ObjectSearchQueryMapping } from "../../src/Domain/Objects/ObjectSearchQueryMapping";
 
 class ObjectSearchQueryUtils {
     public static parse(search: Nullable<string>): ObjectSearchQuery {
-        return mapper.parse(search);
+        return ObjectSearchQueryMapping.parse(search ?? "", []);
     }
 
     public static stringify(query: Partial<ObjectSearchQuery>): Nullable<string> {
-        return mapper.stringify({
-            conditions: null,
-            sorts: [],
-            count: null,
-            offset: null,
-            countLimit: null,
-            hiddenColumns: null,
-            ...query,
-        });
+        return ObjectSearchQueryMapping.stringify(
+            {
+                conditions: [],
+                sorts: [],
+                count: 20,
+                offset: 0,
+                hiddenColumns: [],
+                ...query,
+            },
+            []
+        );
     }
 }
 
@@ -130,13 +111,13 @@ describe("ObjectSearchQueryUtilsTest", () => {
                         sortOrder: ObjectFilterSortOrder.Ascending,
                     },
                 ],
-                conditions: null,
+                conditions: [],
             })
         ).to.eql("?sort=path.to.object%3Aasc");
         expect(
             ObjectSearchQueryUtils.stringify({
                 sorts: [],
-                conditions: null,
+                conditions: [],
             })
         ).to.eql("");
         expect(
@@ -147,7 +128,7 @@ describe("ObjectSearchQueryUtilsTest", () => {
                         sortOrder: ObjectFilterSortOrder.Ascending,
                     },
                 ],
-                conditions: null,
+                conditions: [],
             })
         ).to.eql("");
     });

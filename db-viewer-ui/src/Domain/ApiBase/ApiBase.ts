@@ -1,5 +1,4 @@
 import { ApiError } from "./ApiError";
-import "whatwg-fetch";
 
 interface ParamsMap {
     [key: string]: null | undefined | number | string | any[] | boolean;
