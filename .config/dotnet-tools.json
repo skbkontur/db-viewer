@@ -3,19 +3,19 @@
   "isRoot": true,
   "tools": {
     "skbkontur.typescript.contractgenerator.cli": {
-      "version": "2.0.105",
+      "version": "2.0.114",
       "commands": [
         "dotnet-ts-gen"
       ]
     },
     "nbgv": {
-      "version": "3.4.244",
+      "version": "3.5.119",
       "commands": [
         "nbgv"
       ]
     },
     "jetbrains.resharper.globaltools": {
-      "version": "2021.2.2",
+      "version": "2022.3.1",
       "commands": [
         "jb"
       ]
