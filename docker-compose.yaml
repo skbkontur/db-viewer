@@ -4,6 +4,11 @@ services:
   cassandra:
     container_name: cassandra
     image: cassandra:3.11
+    healthcheck:
+      test: ["CMD", "cqlsh", "-e", "describe keyspaces"]
+      interval: 5s
+      timeout: 5s
+      retries: 60
     networks:
       - default-network
     ports:
@@ -12,6 +17,11 @@ services:
   postgres:
     container_name: postgres
     image: postgres:12.3
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 10s
+      timeout: 3s
+      retries: 3
     restart: always
     networks:
       - default-network
@@ -43,6 +53,13 @@ services:
     ports:
       - "8081:8081"
     command: ["--listen", ":8081", "--selenoid-uri", "http://selenoid:4444"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      cassandra:
+        condition: service_healthy
+      selenoid:
+        condition: service_started
 
 networks:
   default-network:
