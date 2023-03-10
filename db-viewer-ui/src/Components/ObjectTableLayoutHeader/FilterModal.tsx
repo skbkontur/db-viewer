@@ -14,6 +14,7 @@ import { RouterLink } from "../RouterLink/RouterLink";
 interface FilterModalProps {
     onClose: () => void;
     allowClose: boolean;
+    withBackUrl?: boolean;
     modalEditingConditions: Condition[];
     tableColumns: PropertyMetaInformation[];
     onApplyFilter: () => void;
@@ -26,6 +27,7 @@ export function FilterModal({
     modalEditingConditions,
     onChangeFilter,
     onApplyFilter,
+    withBackUrl,
     allowClose,
 }: FilterModalProps): JSX.Element {
     const match = useRouteMatch();
@@ -73,11 +75,12 @@ export function FilterModal({
                         )}
                     </Fit>
                     <Fit>
-                        {allowClose ? (
+                        {!allowClose && (
                             <Link onClick={() => onChangeFilter([])} data-tid="Clear">
                                 Очистить фильтр
                             </Link>
-                        ) : (
+                        )}
+                        {allowClose && withBackUrl && (
                             <RouterLink to={RouteUtils.backUrl(match)} data-tid="GoBackToList">
                                 Вернуться к списку видов объектов
                             </RouterLink>

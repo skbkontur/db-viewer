@@ -28,6 +28,7 @@ interface ObjectTableProps extends RouteComponentProps {
     useErrorHandlingContainer: boolean;
     objectId: string;
     urlQuery: string;
+    withBackLink?: boolean;
     isSuperUser: boolean;
     path: string;
 }
@@ -107,13 +108,16 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return (
             <CommonLayout>
                 {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoToObjectsList">
-                    Вернуться к списку видов объектов
-                </CommonLayout.GoBack>
+                {this.props.withBackLink && (
+                    <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoToObjectsList">
+                        Вернуться к списку видов объектов
+                    </CommonLayout.GoBack>
+                )}
                 <CommonLayout.Header
                     title={<div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>}
                     tools={
                         <ObjectTableLayoutHeader
+                            withBackLink={this.props.withBackLink}
                             query={this.state.query}
                             allowReadAll={allowReadAll}
                             properties={properties}

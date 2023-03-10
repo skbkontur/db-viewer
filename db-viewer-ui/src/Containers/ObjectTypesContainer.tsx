@@ -15,6 +15,7 @@ interface ObjectTypesProps extends RouteComponentProps {
     useErrorHandlingContainer: boolean;
     identifierKeywords: string[];
     path: string;
+    withBackLink?: boolean;
 }
 
 interface ObjectTypesState {
@@ -46,14 +47,17 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
     }
 
     public render(): JSX.Element {
+        const { match, useErrorHandlingContainer, withBackLink, identifierKeywords } = this.props;
         const { loading, objects, filter } = this.state;
 
         return (
             <CommonLayout>
-                {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)}>
-                    Вернуться к инструментам администратора
-                </CommonLayout.GoBack>
+                {useErrorHandlingContainer && <ErrorHandlingContainer />}
+                {withBackLink && (
+                    <CommonLayout.GoBack to={RouteUtils.backUrl(match)}>
+                        Вернуться к инструментам администратора
+                    </CommonLayout.GoBack>
+                )}
                 <CommonLayout.Header title="Список Объектов" />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>
@@ -72,7 +76,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                                 <ObjectTypes
                                     objects={objects}
                                     filter={filter}
-                                    identifierKeywords={this.props.identifierKeywords}
+                                    identifierKeywords={identifierKeywords}
                                 />
                             </Fit>
                         </ColumnStack>

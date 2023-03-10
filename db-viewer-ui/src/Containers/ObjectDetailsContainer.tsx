@@ -26,6 +26,7 @@ interface ObjectDetailsProps extends RouteComponentProps {
     isSuperUser: boolean;
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
+    withBackLink?: boolean;
     useErrorHandlingContainer: boolean;
 }
 
@@ -131,10 +132,10 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     };
 
     public render(): JSX.Element {
-        const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer } = this.props;
+        const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer, withBackLink } = this.props;
         const { objectInfo, objectMeta, loading } = this.state;
         if (objectInfo == null) {
-            return <ObjectNotFoundPage />;
+            return <ObjectNotFoundPage withBackUrl={withBackLink} />;
         }
 
         const { allowEdit, allowDelete } = objectMeta?.schemaDescription || { allowEdit: false, allowDelete: false };
@@ -142,9 +143,11 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         return (
             <CommonLayout>
                 {useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoBack">
-                    Вернуться к списку объектов
-                </CommonLayout.GoBack>
+                {withBackLink && (
+                    <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoBack">
+                        Вернуться к списку объектов
+                    </CommonLayout.GoBack>
+                )}
                 <CommonLayout.ContentLoader active={loading}>
                     <CommonLayout.GreyLineHeader
                         title={objectId}

@@ -8,13 +8,21 @@ import { CommonLayout } from "../Layouts/CommonLayout";
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
 import { jsStyles } from "./ObjectNotFoundPage.styles";
 
-export function ObjectNotFoundPage() {
+interface ObjectNotFoundPageProps {
+    withBackUrl?: boolean;
+}
+
+export function ObjectNotFoundPage({ withBackUrl }: ObjectNotFoundPageProps): JSX.Element {
     const match = useRouteMatch();
     const theme = React.useContext(ThemeContext);
     return (
         <div style={{ backgroundColor: theme.bgDefault }}>
             <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }}>
-                <CommonLayout.GoBack to={RouteUtils.backUrl(match)}>Вернуться к списку объектов</CommonLayout.GoBack>
+                {withBackUrl && (
+                    <CommonLayout.GoBack to={RouteUtils.backUrl(match)}>
+                        Вернуться к списку объектов
+                    </CommonLayout.GoBack>
+                )}
                 <CommonLayout.Content className={jsStyles.content()}>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         Страница не найдена
