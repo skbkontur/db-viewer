@@ -9,6 +9,7 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
+import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
 import { ObjectKeys } from "../Components/ObjectViewer/ObjectKeys";
@@ -26,7 +27,6 @@ interface ObjectDetailsProps extends RouteComponentProps {
     isSuperUser: boolean;
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
-    withBackLink?: boolean;
     useErrorHandlingContainer: boolean;
 }
 
@@ -132,10 +132,10 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     };
 
     public render(): JSX.Element {
-        const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer, withBackLink } = this.props;
+        const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer } = this.props;
         const { objectInfo, objectMeta, loading } = this.state;
         if (objectInfo == null) {
-            return <ObjectNotFoundPage withBackUrl={withBackLink} />;
+            return <ObjectNotFoundPage />;
         }
 
         const { allowEdit, allowDelete } = objectMeta?.schemaDescription || { allowEdit: false, allowDelete: false };
@@ -143,14 +143,14 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
         return (
             <CommonLayout>
                 {useErrorHandlingContainer && <ErrorHandlingContainer />}
-                {withBackLink && (
-                    <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoBack">
-                        Вернуться к списку объектов
-                    </CommonLayout.GoBack>
-                )}
                 <CommonLayout.ContentLoader active={loading}>
                     <CommonLayout.GreyLineHeader
-                        title={objectId}
+                        title={
+                            <RowStack gap={3} verticalAlign="bottom">
+                                <GoBackLink />
+                                <span>{objectId}</span>
+                            </RowStack>
+                        }
                         tools={
                             <RowStack baseline block gap={2}>
                                 <Fit>

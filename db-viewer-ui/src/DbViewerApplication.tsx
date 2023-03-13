@@ -13,7 +13,6 @@ interface DbViewerApplicationProps extends RouteComponentProps {
     identifierKeywords: string[];
     useErrorHandlingContainer: boolean;
     isSuperUser: boolean;
-    withBackLink?: boolean;
 }
 
 function DbViewerApplicationInternal({
@@ -23,7 +22,6 @@ function DbViewerApplicationInternal({
     identifierKeywords,
     useErrorHandlingContainer,
     match,
-    withBackLink = true,
 }: DbViewerApplicationProps): JSX.Element {
     return (
         <Switch>
@@ -32,7 +30,6 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/`}
                 render={() => (
                     <ObjectTypesContainer
-                        withBackLink={withBackLink}
                         useErrorHandlingContainer={useErrorHandlingContainer}
                         identifierKeywords={identifierKeywords}
                         dbViewerApi={dbViewerApi}
@@ -45,7 +42,6 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/:objectId`}
                 render={({ location, match: { params } }) => (
                     <ObjectTableContainer
-                        withBackLink={withBackLink}
                         isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
@@ -60,7 +56,6 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/:objectId/details`}
                 render={({ location, match: { params } }) => (
                     <ObjectDetailsContainer
-                        withBackLink={withBackLink}
                         isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}

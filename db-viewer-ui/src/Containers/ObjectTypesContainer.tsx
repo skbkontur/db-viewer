@@ -8,14 +8,12 @@ import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
 import { ObjectIdentifier } from "../Domain/Api/DataTypes/ObjectIdentifier";
 import { IDbViewerApi } from "../Domain/Api/DbViewerApi";
-import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
 interface ObjectTypesProps extends RouteComponentProps {
     dbViewerApi: IDbViewerApi;
     useErrorHandlingContainer: boolean;
     identifierKeywords: string[];
     path: string;
-    withBackLink?: boolean;
 }
 
 interface ObjectTypesState {
@@ -47,17 +45,12 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
     }
 
     public render(): JSX.Element {
-        const { match, useErrorHandlingContainer, withBackLink, identifierKeywords } = this.props;
+        const { useErrorHandlingContainer, identifierKeywords } = this.props;
         const { loading, objects, filter } = this.state;
 
         return (
             <CommonLayout>
                 {useErrorHandlingContainer && <ErrorHandlingContainer />}
-                {withBackLink && (
-                    <CommonLayout.GoBack to={RouteUtils.backUrl(match)}>
-                        Вернуться к инструментам администратора
-                    </CommonLayout.GoBack>
-                )}
                 <CommonLayout.Header title="Список Объектов" />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>

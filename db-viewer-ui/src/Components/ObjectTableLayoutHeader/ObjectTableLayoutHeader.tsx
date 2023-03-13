@@ -31,7 +31,6 @@ interface ObjectTableLayoutHeaderProps {
     showModalFilter: boolean;
     showDownloadModal: boolean;
     downloadCount?: CountResult;
-    withBackLink?: boolean;
 }
 
 interface ObjectTableLayoutHeaderState {
@@ -113,7 +112,6 @@ export class ObjectTableLayoutHeader extends React.Component<
                 </Fit>
                 {showFilterModal && (
                     <FilterModal
-                        withBackUrl={this.props.withBackLink}
                         allowClose={allowCloseModal}
                         onClose={this.handleCloseFilterModal}
                         modalEditingConditions={modalEditingConditions}

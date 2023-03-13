@@ -1,28 +1,18 @@
 import { ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
 
-import { RouteUtils } from "../../Domain/Utils/RouteUtils";
+import { GoBackLink } from "../GoBackLink/GoBackLink";
 import { CommonLayout } from "../Layouts/CommonLayout";
 
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
 import { jsStyles } from "./ObjectNotFoundPage.styles";
 
-interface ObjectNotFoundPageProps {
-    withBackUrl?: boolean;
-}
-
-export function ObjectNotFoundPage({ withBackUrl }: ObjectNotFoundPageProps): JSX.Element {
-    const match = useRouteMatch();
+export function ObjectNotFoundPage(): JSX.Element {
     const theme = React.useContext(ThemeContext);
     return (
         <div style={{ backgroundColor: theme.bgDefault }}>
             <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }}>
-                {withBackUrl && (
-                    <CommonLayout.GoBack to={RouteUtils.backUrl(match)}>
-                        Вернуться к списку объектов
-                    </CommonLayout.GoBack>
-                )}
+                <GoBackLink />
                 <CommonLayout.Content className={jsStyles.content()}>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         Страница не найдена

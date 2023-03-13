@@ -5,6 +5,7 @@ import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
+import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
@@ -28,7 +29,6 @@ interface ObjectTableProps extends RouteComponentProps {
     useErrorHandlingContainer: boolean;
     objectId: string;
     urlQuery: string;
-    withBackLink?: boolean;
     isSuperUser: boolean;
     path: string;
 }
@@ -108,16 +108,15 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         return (
             <CommonLayout>
                 {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                {this.props.withBackLink && (
-                    <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoToObjectsList">
-                        Вернуться к списку видов объектов
-                    </CommonLayout.GoBack>
-                )}
                 <CommonLayout.Header
-                    title={<div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>}
+                    title={
+                        <RowStack gap={3} verticalAlign="bottom">
+                            <GoBackLink />
+                            <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>
+                        </RowStack>
+                    }
                     tools={
                         <ObjectTableLayoutHeader
-                            withBackLink={this.props.withBackLink}
                             query={this.state.query}
                             allowReadAll={allowReadAll}
                             properties={properties}
