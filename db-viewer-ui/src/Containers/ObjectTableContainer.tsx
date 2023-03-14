@@ -111,7 +111,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 <CommonLayout.Header
                     title={
                         <RowStack gap={3} verticalAlign="bottom">
-                            <GoBackLink />
+                            <GoBackLink backUrl={RouteUtils.backUrl(this.props.match)} />
                             <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>
                         </RowStack>
                     }

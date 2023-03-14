@@ -132,7 +132,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
     };
 
     public render(): JSX.Element {
-        const { objectId, isSuperUser, customRenderer, useErrorHandlingContainer } = this.props;
+        const { objectId, match, isSuperUser, customRenderer, useErrorHandlingContainer } = this.props;
         const { objectInfo, objectMeta, loading } = this.state;
         if (objectInfo == null) {
             return <ObjectNotFoundPage />;
@@ -147,7 +147,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                     <CommonLayout.GreyLineHeader
                         title={
                             <RowStack gap={3} verticalAlign="bottom">
-                                <GoBackLink />
+                                <GoBackLink backUrl={RouteUtils.backUrl(match)} />
                                 <span>{objectId}</span>
                             </RowStack>
                         }
