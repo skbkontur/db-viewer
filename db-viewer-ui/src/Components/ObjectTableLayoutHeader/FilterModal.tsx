@@ -73,12 +73,11 @@ export function FilterModal({
                         )}
                     </Fit>
                     <Fit>
-                        {!allowClose && (
+                        {allowClose ? (
                             <Link onClick={() => onChangeFilter([])} data-tid="Clear">
                                 Очистить фильтр
                             </Link>
-                        )}
-                        {allowClose && (
+                        ) : (
                             <RouterLink to={RouteUtils.backUrl(match)} data-tid="GoBackToList">
                                 Вернуться к списку видов объектов
                             </RouterLink>

@@ -13,6 +13,7 @@ interface DbViewerApplicationProps extends RouteComponentProps {
     identifierKeywords: string[];
     useErrorHandlingContainer: boolean;
     isSuperUser: boolean;
+    withGoBackUrl?: boolean;
 }
 
 function DbViewerApplicationInternal({
@@ -22,6 +23,7 @@ function DbViewerApplicationInternal({
     identifierKeywords,
     useErrorHandlingContainer,
     match,
+    withGoBackUrl,
 }: DbViewerApplicationProps): JSX.Element {
     return (
         <Switch>
@@ -30,6 +32,7 @@ function DbViewerApplicationInternal({
                 path={`${match.url}/`}
                 render={() => (
                     <ObjectTypesContainer
+                        withGoBackUrl={withGoBackUrl}
                         useErrorHandlingContainer={useErrorHandlingContainer}
                         identifierKeywords={identifierKeywords}
                         dbViewerApi={dbViewerApi}
