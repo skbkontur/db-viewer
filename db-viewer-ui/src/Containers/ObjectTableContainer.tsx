@@ -99,6 +99,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
 
+        const { objectId, useErrorHandlingContainer, match, customRenderer, isSuperUser } = this.props;
+
         const { allowReadAll, allowDelete, allowSort } = metaInformation?.schemaDescription || {
             allowReadAll: false,
             allowDelete: false,
@@ -107,12 +109,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
         return (
             <CommonLayout>
-                {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
+                {useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.Header
                     title={
                         <RowStack gap={3} verticalAlign="bottom">
-                            <GoBackLink backUrl={RouteUtils.backUrl(this.props.match)} />
-                            <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>
+                            <GoBackLink backUrl={RouteUtils.backUrl(match)} />
+                            <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>
                         </RowStack>
                     }
                     tools={
@@ -148,7 +150,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                         <ObjectTable
                                             properties={this.getVisibleProperties(properties)}
                                             objectType={metaInformation?.identifier || ""}
-                                            customRenderer={this.props.customRenderer}
+                                            customRenderer={customRenderer}
                                             currentSorts={sorts}
                                             items={
                                                 objects.count == null
@@ -158,7 +160,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             onDetailsClick={this.getDetailsUrl}
                                             onDeleteClick={this.handleDeleteObject}
                                             onChangeSortClick={this.handleChangeSort}
-                                            allowDelete={this.props.isSuperUser && allowDelete}
+                                            allowDelete={isSuperUser && allowDelete}
                                             allowSort={allowSort}
                                         />
                                     )
