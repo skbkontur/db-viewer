@@ -3,18 +3,19 @@ import React from "react";
 import { useRouteMatch } from "react-router-dom";
 
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
+import { GoBackLink } from "../GoBackLink/GoBackLink";
 import { CommonLayout } from "../Layouts/CommonLayout";
 
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
 import { jsStyles } from "./ObjectNotFoundPage.styles";
 
-export function ObjectNotFoundPage() {
-    const match = useRouteMatch();
+export function ObjectNotFoundPage(): JSX.Element {
     const theme = React.useContext(ThemeContext);
+    const match = useRouteMatch();
     return (
         <div style={{ backgroundColor: theme.bgDefault }}>
             <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }}>
-                <CommonLayout.GoBack to={RouteUtils.backUrl(match)}>Вернуться к списку объектов</CommonLayout.GoBack>
+                <GoBackLink backUrl={RouteUtils.backUrl(match)} />
                 <CommonLayout.Content className={jsStyles.content()}>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         Страница не найдена

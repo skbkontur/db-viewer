@@ -5,6 +5,7 @@ import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
+import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
@@ -98,6 +99,8 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
 
+        const { objectId, useErrorHandlingContainer, match, customRenderer, isSuperUser } = this.props;
+
         const { allowReadAll, allowDelete, allowSort } = metaInformation?.schemaDescription || {
             allowReadAll: false,
             allowDelete: false,
@@ -106,12 +109,14 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
 
         return (
             <CommonLayout>
-                {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)} data-tid="GoToObjectsList">
-                    Вернуться к списку видов объектов
-                </CommonLayout.GoBack>
+                {useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.Header
-                    title={<div style={{ maxWidth: 410, wordBreak: "break-all" }}>{this.props.objectId}</div>}
+                    title={
+                        <RowStack gap={3} verticalAlign="bottom">
+                            <GoBackLink backUrl={RouteUtils.backUrl(match)} />
+                            <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>
+                        </RowStack>
+                    }
                     tools={
                         <ObjectTableLayoutHeader
                             query={this.state.query}
@@ -145,7 +150,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                         <ObjectTable
                                             properties={this.getVisibleProperties(properties)}
                                             objectType={metaInformation?.identifier || ""}
-                                            customRenderer={this.props.customRenderer}
+                                            customRenderer={customRenderer}
                                             currentSorts={sorts}
                                             items={
                                                 objects.count == null
@@ -155,7 +160,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                                             onDetailsClick={this.getDetailsUrl}
                                             onDeleteClick={this.handleDeleteObject}
                                             onChangeSortClick={this.handleChangeSort}
-                                            allowDelete={this.props.isSuperUser && allowDelete}
+                                            allowDelete={isSuperUser && allowDelete}
                                             allowSort={allowSort}
                                         />
                                     )

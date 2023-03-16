@@ -2,9 +2,10 @@ import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
 export const baseSize = 5;
+const newBaseSize = 4;
 
-const globalHorizontalPadding = 5 * baseSize;
-const globalVerticalPadding = 3 * baseSize;
+const globalHorizontalPadding = newBaseSize * 7;
+const globalVerticalPadding = newBaseSize * 10;
 
 export const jsStyles = {
     commonLayout(t: Theme): string {
@@ -16,7 +17,7 @@ export const jsStyles = {
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: ${globalVerticalPadding}px ${globalHorizontalPadding}px 0 ${globalHorizontalPadding}px;
+            padding: ${globalVerticalPadding}px ${globalHorizontalPadding}px 0;
         `;
     },
 
@@ -49,7 +50,7 @@ export const jsStyles = {
     headerTitle(): string {
         return css`
             margin: 0;
-            font-weight: 300;
+            font-weight: 700;
             font-size: 29px;
             line-height: 40px;
         `;

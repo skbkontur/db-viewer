@@ -1,9 +1,10 @@
-import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
+import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Input, Loader } from "@skbkontur/react-ui";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
+import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
 import { ObjectIdentifier } from "../Domain/Api/DataTypes/ObjectIdentifier";
@@ -15,6 +16,7 @@ interface ObjectTypesProps extends RouteComponentProps {
     useErrorHandlingContainer: boolean;
     identifierKeywords: string[];
     path: string;
+    withGoBackUrl?: boolean;
 }
 
 interface ObjectTypesState {
@@ -46,15 +48,20 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
     }
 
     public render(): JSX.Element {
+        const { useErrorHandlingContainer, identifierKeywords, withGoBackUrl, match } = this.props;
         const { loading, objects, filter } = this.state;
 
         return (
             <CommonLayout>
-                {this.props.useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.GoBack to={RouteUtils.backUrl(this.props.match)}>
-                    Вернуться к инструментам администратора
-                </CommonLayout.GoBack>
-                <CommonLayout.Header title="Список Объектов" />
+                {useErrorHandlingContainer && <ErrorHandlingContainer />}
+                <CommonLayout.Header
+                    title={
+                        <RowStack gap={3} verticalAlign="bottom">
+                            {withGoBackUrl && <GoBackLink backUrl={RouteUtils.backUrl(match)} />}
+                            <span>Список Объектов</span>
+                        </RowStack>
+                    }
+                />
                 <CommonLayout.Content>
                     <Loader type="big" active={loading}>
                         <ColumnStack block stretch>
@@ -72,7 +79,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                                 <ObjectTypes
                                     objects={objects}
                                     filter={filter}
-                                    identifierKeywords={this.props.identifierKeywords}
+                                    identifierKeywords={identifierKeywords}
                                 />
                             </Fit>
                         </ColumnStack>
