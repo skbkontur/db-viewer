@@ -69,14 +69,26 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         showDownloadModal: false,
     };
 
-    public componentDidMount() {
-        const { urlQuery } = this.props;
-        this.setState({ query: this.parseQuery(urlQuery) }, this.loadMetaAndObjectsIfNecessary);
+    public async componentDidMount() {
+        const { dbViewerApi, objectId } = this.props;
+        this.setState({ loading: true });
+        try {
+            const metaInformation = await dbViewerApi.getMeta(objectId);
+            const query = this.parseQuery(this.props.urlQuery, metaInformation);
+            this.setState({ metaInformation: metaInformation, query: query });
+            await this.loadObjectsIfAllowed(metaInformation, query);
+        } finally {
+            this.setState({ loading: false });
+        }
     }
 
     public componentDidUpdate(prevProps: ObjectTableProps) {
         if (prevProps.urlQuery !== this.props.urlQuery) {
-            this.setState({ query: this.parseQuery(this.props.urlQuery) }, () => {
+            if (!this.state.metaInformation) {
+                throw new Error("metaInformation must be loaded at this point");
+            }
+            const nextQuery = this.parseQuery(this.props.urlQuery, this.state.metaInformation);
+            this.setState({ query: nextQuery }, () => {
                 if (this.checkForNecessityLoad(prevProps.urlQuery)) {
                     this.loadObjectsWithLoader();
                 }
@@ -191,56 +203,50 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     private checkForNecessityLoad(prevQuery: string): boolean {
         const { urlQuery } = this.props;
         if (prevQuery !== urlQuery) {
+            if (!this.state.metaInformation) {
+                throw new Error("metaInformation must be loaded at this point");
+            }
             const prevState = ObjectSearchQueryMapping.normalize(
-                this.parseQuery(prevQuery),
+                this.parseQuery(prevQuery, this.state.metaInformation),
                 !this.state.objects?.count
             );
-            const nextState = ObjectSearchQueryMapping.normalize(this.parseQuery(urlQuery), !this.state.objects?.count);
+            const nextState = ObjectSearchQueryMapping.normalize(
+                this.parseQuery(urlQuery, this.state.metaInformation),
+                !this.state.objects?.count
+            );
             return !isEqual(nextState, prevState);
         }
         return false;
     }
 
-    private async loadMetaAndObjectsIfNecessary(): Promise<void> {
-        const { dbViewerApi, objectId } = this.props;
-        this.setState({ loading: true });
-        try {
-            const metaInformation = await dbViewerApi.getMeta(objectId);
-            this.setState({ metaInformation: metaInformation });
-            await this.loadObjectsIfAllowed(metaInformation);
-        } finally {
-            this.setState({ loading: false });
-        }
-    }
-
     private async loadObjectsWithLoader(): Promise<void> {
-        const meta = this.state.metaInformation;
-        if (meta == null) {
+        const { metaInformation, query } = this.state;
+        if (metaInformation == null) {
             return;
         }
 
         this.setState({ loading: true });
         try {
-            await this.loadObjectsIfAllowed(meta);
+            await this.loadObjectsIfAllowed(metaInformation, query);
         } finally {
             this.setState({ loading: false });
         }
     }
 
-    private async loadObjectsIfAllowed(meta: ObjectDescription) {
+    private async loadObjectsIfAllowed(meta: ObjectDescription, query: ObjectSearchQuery) {
         const allowReadAll = meta.schemaDescription.allowReadAll;
         const props = meta.typeMetaInformation?.properties || [];
-        const conditions = this.state.query.conditions || [];
+        const conditions = query.conditions || [];
         if (allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(conditions, props)) {
-            await this.loadObjects();
+            await this.loadObjects(query);
         } else {
             this.setState({ showModalFilter: true, objects: null });
         }
     }
 
-    private async loadObjects(): Promise<void> {
+    private async loadObjects(query: ObjectSearchQuery): Promise<void> {
         const { dbViewerApi, objectId } = this.props;
-        const { offset, count, conditions, sorts } = this.state.query;
+        const { offset, count, conditions, sorts } = query;
         const objects = await dbViewerApi.searchObjects(objectId, {
             conditions: conditions,
             sorts: sorts,
@@ -381,12 +387,12 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
     };
 
     private handleDeleteObject = async (index: number): Promise<void> => {
-        const { objects, metaInformation } = this.state;
+        const { objects, metaInformation, query } = this.state;
         const { dbViewerApi } = this.props;
         if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
             const conditions = this.getItemConditions(objects.items[index]);
             await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
-            await this.loadObjects();
+            await this.loadObjects(query);
         }
     };
 
@@ -448,8 +454,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     }
 
-    private parseQuery(urlQuery: string): ObjectSearchQuery {
-        const { metaInformation } = this.state;
+    private parseQuery(urlQuery: string, metaInformation: ObjectDescription): ObjectSearchQuery {
         let properties: PropertyMetaInformation[] = [];
         if (metaInformation?.typeMetaInformation?.properties) {
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
