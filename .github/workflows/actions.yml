@@ -1,0 +1,155 @@
+on:
+  push:
+    paths-ignore:
+      - "**/*.md"
+    pull_request:
+
+env:
+  DOTNET_VERSION: 6.0.x
+  NODE_VERSION: 14
+  NPM_REGISTRY: https://registry.npmjs.org
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: ${{ env.NPM_REGISTRY }}
+
+      - name: Install dependencies
+        run: dotnet restore ./DbViewer.sln --verbosity minimal && dotnet tool restore
+
+      - name: Install node dependencies
+        run: yarn --cwd db-viewer-ui install --frozen-lockfile
+      
+      - name: Pull docker images
+        run: docker pull selenoid/vnc:chrome_84.0
+
+      - name: Build dotnet
+        run: dotnet build --configuration Release ./DbViewer.sln
+
+      - name: Build front
+        run: yarn --cwd db-viewer-ui build
+
+      - name: Check C# code style
+        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN && git diff --exit-code
+
+      - name: Check front code
+        run: yarn --cwd db-viewer-ui lint
+
+      - name: Build docker-compose environment
+        run: docker-compose up -d
+      
+      - name: Run db-viewer api
+        run: docker build -t db-viewer-api ./DbViewer.TestApi && docker run -dp 5000:5000 --name db-viewer-api --network=db-viewer_default-network -e CASSANDRA_ADDRESS=cassandra -e POSTGRES_ADDRESS=postgres db-viewer-api
+
+      - name: Run EntityFramework migrations
+        run: dotnet ef database update --project ./DbViewer.TestApi/DbViewer.TestApi.csproj --no-build --configuration Release
+
+      - name: Run tests
+        run: dotnet test --no-build --configuration Release ./DbViewer.Tests/DbViewer.Tests.csproj
+
+      - name: Stop docker containers
+        if: always()
+        run: docker rm -f db-viewer-api && docker-compose down
+
+  publish:
+    runs-on: windows-2019
+    needs: test
+    if: startsWith(github.event.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: ${{ env.NPM_REGISTRY }}
+
+      - name: Install dependencies
+        run: dotnet restore ./DbViewer.sln --verbosity minimal && dotnet tool restore
+
+      - name: Install node dependencies
+        run: yarn --cwd db-viewer-ui install --frozen-lockfile
+
+      - name: Build dotnet
+        run: dotnet build --configuration Release ./DbViewer.sln
+
+      - name: Check version
+        run: |
+          $ErrorActionPreference = "Stop"
+          $tagName = "${{ github.ref_name }}"
+          $version = $tagName.Substring(1)
+          Write-Host "Will publish nuget package for $tagName tag" -ForegroundColor "Green"
+          if ($tagName -match '^v\d+\.\d+-release') # tag name starts with 'vX.Y-release' (e.g. use 'v4.2-release.1' tag for the first patch for release v4.2)
+          {
+            $version = $version.Substring(0, $version.IndexOf("-release"))
+            echo "SHOULD_CREATE_RELEASE=true" >> $env:GITHUB_ENV
+            Write-Host "Will create release for $tagName tag" -ForegroundColor "Green"
+          }
+          $matchVersion = Select-String -Path ./version.json -Pattern "`"version`": `"$version`""
+          if ($matchVersion -eq $null)
+          {
+            Write-Error "Version in tag ($version) does not match version in version.json"
+          }
+
+      - name: Pack dotnet
+        run: dotnet pack --no-build --configuration Release ./DbViewer.sln
+
+      - name: Build front
+        run: yarn --cwd db-viewer-ui build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: |
+            **/*.nupkg
+            **/*.tgz
+          if-no-files-found: error
+
+      - name: Publish NuGet
+        run: dotnet nuget push "**/*.nupkg" --source https://api.nuget.org/v3/index.json --no-symbols --api-key $env:NUGET_API_KEY
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+      - name: Publish NPM
+        run: |
+          npm whoami
+          $fileNames = Get-ChildItem -Path "db-viewer-ui/dist" -Recurse -Include *.tgz
+          foreach ($file in $fileNames)
+          {
+            Write-Host "Will publish npm package $($file.Name)" -ForegroundColor "Green"
+            npm publish $file.FullName --quiet
+          }
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        if: ${{ env.SHOULD_CREATE_RELEASE == 'true' }}
+        with:
+          fail_on_unmatched_files: true
+          draft: false
+          prerelease: false
+          files: |
+            **/*.nupkg
+            **/*.tgz
