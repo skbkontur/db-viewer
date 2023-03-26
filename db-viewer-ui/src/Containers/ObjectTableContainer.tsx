@@ -1,5 +1,5 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Link, Loader, Paging } from "@skbkontur/react-ui";
+import { Button, Link, Loader, Paging } from "@skbkontur/react-ui";
 import isEqual from "lodash/isEqual";
 import React from "react";
 import { RouteComponentProps, withRouter } from "react-router";
@@ -8,6 +8,7 @@ import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlin
 import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
+import { DownloadButton } from "../Components/ObjectTableLayoutHeader/DownloadButton";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
 import { Condition } from "../Domain/Api/DataTypes/Condition";
 import { CountResult } from "../Domain/Api/DataTypes/CountResult";
@@ -89,7 +90,7 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             loading,
             objects,
             metaInformation,
-            query: { offset, count, sorts },
+            query: { offset, count, sorts, conditions, hiddenColumns },
             downloading,
             showDownloadModal,
             downloadCount,
@@ -133,6 +134,14 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                     }
                 />
                 <CommonLayout.Content>
+                    {metaInformation && (
+                        <DownloadButton
+                            action={this.props.dbViewerApi.getDownloadObjectsUrl(metaInformation.identifier, "")}
+                            conditions={conditions}
+                            sorts={sorts}
+                            hiddenColumns={hiddenColumns}
+                        />
+                    )}
                     <Loader type="big" active={loading}>
                         <ColumnStack gap={4}>
                             <Fit>
