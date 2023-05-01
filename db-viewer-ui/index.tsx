@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 import { DbViewerApplication, DbViewerApi, NullCustomRenderer } from "./src";
 import { DbViewerApiFake } from "./stories/Api/DbViewerApiFake";
 
+import "./index.css";
+
 const dbViewerApiPrefix = "/db-viewer/";
 
 export const dbViewerApi = process.env.API === "fake" ? new DbViewerApiFake() : new DbViewerApi(dbViewerApiPrefix);
