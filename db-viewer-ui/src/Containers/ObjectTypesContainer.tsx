@@ -56,7 +56,7 @@ class ObjectTypesContainerInternal extends React.Component<ObjectTypesProps, Obj
                 {useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.Header
                     title={
-                        <RowStack gap={3} verticalAlign="bottom">
+                        <RowStack gap={3} verticalAlign="center">
                             {withGoBackUrl && <GoBackLink backUrl={RouteUtils.backUrl(match)} />}
                             <span>Список Объектов</span>
                         </RowStack>

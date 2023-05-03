@@ -123,8 +123,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             <CommonLayout>
                 {useErrorHandlingContainer && <ErrorHandlingContainer />}
                 <CommonLayout.Header
+                    verticalAlign="center"
                     title={
-                        <RowStack gap={3} verticalAlign="bottom">
+                        <RowStack gap={3} verticalAlign="center">
                             <GoBackLink backUrl={RouteUtils.backUrl(match)} />
                             <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>
                         </RowStack>

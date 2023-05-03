@@ -146,7 +146,7 @@ class ObjectDetailsContainerInternal extends React.Component<ObjectDetailsProps,
                 <CommonLayout.ContentLoader active={loading}>
                     <CommonLayout.GreyLineHeader
                         title={
-                            <RowStack gap={3} verticalAlign="bottom">
+                            <RowStack gap={3} verticalAlign="center">
                                 <GoBackLink backUrl={RouteUtils.backUrl(match)} />
                                 <span>{objectId}</span>
                             </RowStack>

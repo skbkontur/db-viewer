@@ -79,7 +79,7 @@ export class ObjectTableLayoutHeader extends React.Component<
         const allowCloseModal =
             allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties);
         return (
-            <RowStack baseline block gap={2}>
+            <RowStack baseline block gap={2} className={jsStyles.header()}>
                 <Fill />
                 <Fit className={jsStyles.filter()}>
                     <Link icon={<FilterIcon />} onClick={this.handleOpenFilterModal} data-tid="OpenFilter">

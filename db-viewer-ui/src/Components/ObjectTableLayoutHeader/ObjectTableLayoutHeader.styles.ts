@@ -7,6 +7,12 @@ export const jsStyles = {
         `;
     },
 
+    header(): string {
+        return css`
+            margin-top: 4px;
+        `;
+    },
+
     countSelector(): string {
         return css`
             padding: 10px;

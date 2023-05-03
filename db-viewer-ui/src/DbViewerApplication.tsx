@@ -1,5 +1,6 @@
 import React from "react";
-import { Route, RouteComponentProps, Switch, withRouter } from "react-router";
+import { Route, Switch } from "react-router";
+import { useRouteMatch } from "react-router-dom";
 
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
 import { ObjectTableContainer } from "./Containers/ObjectTableContainer";
@@ -7,7 +8,7 @@ import { ObjectTypesContainer } from "./Containers/ObjectTypesContainer";
 import { IDbViewerApi } from "./Domain/Api/DbViewerApi";
 import { ICustomRenderer } from "./Domain/Objects/CustomRenderer";
 
-interface DbViewerApplicationProps extends RouteComponentProps {
+interface DbViewerApplicationProps {
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     identifierKeywords: string[];
@@ -16,15 +17,15 @@ interface DbViewerApplicationProps extends RouteComponentProps {
     withGoBackUrl?: boolean;
 }
 
-function DbViewerApplicationInternal({
+export const DbViewerApplication = ({
     dbViewerApi,
     customRenderer,
     isSuperUser,
     identifierKeywords,
     useErrorHandlingContainer,
-    match,
     withGoBackUrl,
-}: DbViewerApplicationProps): JSX.Element {
+}: DbViewerApplicationProps): JSX.Element => {
+    const match = useRouteMatch();
     return (
         <Switch>
             <Route
@@ -70,6 +71,4 @@ function DbViewerApplicationInternal({
             />
         </Switch>
     );
-}
-
-export const DbViewerApplication = withRouter(DbViewerApplicationInternal);
+};

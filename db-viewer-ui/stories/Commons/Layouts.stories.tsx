@@ -34,7 +34,7 @@ function SpaceFiller(props: { width?: number | string; height?: number | string 
     );
 }
 storiesOf("Layouts", module)
-    .addDecorator(StoryRouter() as any)
+    .addDecorator(StoryRouter() as never)
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
@@ -59,6 +59,7 @@ storiesOf("Layouts", module)
         <div style={{ height: 300 }}>
             <CommonLayout>
                 <CommonLayout.Header
+                    verticalAlign="center"
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>
