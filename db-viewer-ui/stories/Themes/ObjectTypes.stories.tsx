@@ -7,7 +7,8 @@ import {
 } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import React from "react";
-import StoryRouter from "storybook-react-router";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { withRouter } from "storybook-addon-react-router-v6";
 
 import { ObjectTypesContainer } from "../../src/Containers/ObjectTypesContainer";
 import { DbViewerApiFake } from "../Api/DbViewerApiFake";
@@ -16,17 +17,25 @@ import { reactUiDark } from "./reactUiDark";
 
 export default {
     title: "Themes/ObjectTypes",
-    decorators: [StoryRouter()],
+    decorators: [withRouter],
 };
 
 const TypesContainer = ({ theme }: { theme: Theme }) => (
     <ThemeContext.Provider value={theme}>
-        <ObjectTypesContainer
-            useErrorHandlingContainer
-            identifierKeywords={["Cql", "StorageElement"]}
-            dbViewerApi={new DbViewerApiFake()}
-            path="/AdminTools"
-        />
+        <MemoryRouter initialEntries={["/AdminTools"]}>
+            <Routes>
+                <Route
+                    path="/AdminTools"
+                    element={
+                        <ObjectTypesContainer
+                            useErrorHandlingContainer
+                            identifierKeywords={["Cql", "StorageElement"]}
+                            dbViewerApi={new DbViewerApiFake()}
+                        />
+                    }
+                />
+            </Routes>
+        </MemoryRouter>
     </ThemeContext.Provider>
 );
 

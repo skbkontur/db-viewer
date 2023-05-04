@@ -1,8 +1,9 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import StoryRouter from "storybook-react-router";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { ObjectTypes } from "../../src/Components/ObjectTypes/ObjectTypes";
+import { ObjectIdentifier } from "../../src/Domain/Api/DataTypes/ObjectIdentifier";
 import { SchemaDescription } from "../../src/Domain/Api/DataTypes/SchemaDescription";
 
 import objects from "./Responses/objects.json";
@@ -20,11 +21,8 @@ const schema: SchemaDescription = {
 };
 
 storiesOf("ObjectTypes", module)
-    .addDecorator(StoryRouter() as any)
     .add("Default", () => (
-        <ObjectTypes
-            filter=""
-            identifierKeywords={[]}
+        <TypesContainer
             objects={[
                 {
                     identifier: "table 1",
@@ -41,4 +39,17 @@ storiesOf("ObjectTypes", module)
             ]}
         />
     ))
-    .add("EDI Objects", () => <ObjectTypes identifierKeywords={[]} filter="" objects={objects} />);
+    .add("EDI Objects", () => <TypesContainer objects={objects} />);
+
+function TypesContainer({ objects }: { objects: ObjectIdentifier[] }): JSX.Element {
+    return (
+        <MemoryRouter initialEntries={["/AdminTools"]}>
+            <Routes>
+                <Route
+                    path="/AdminTools"
+                    element={<ObjectTypes identifierKeywords={[]} filter="" objects={objects} />}
+                />
+            </Routes>
+        </MemoryRouter>
+    );
+}
