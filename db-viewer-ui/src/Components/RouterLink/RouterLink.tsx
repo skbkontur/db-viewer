@@ -10,11 +10,11 @@ interface RouterLinkProps {
     className?: string;
 }
 
-export function RouterLink({ to, children, className }: RouterLinkProps): JSX.Element {
+export const RouterLink = ({ to, children, className }: RouterLinkProps): JSX.Element => {
     const theme = React.useContext(ThemeContext);
     return (
         <Link className={`${className} ${jsStyles.routerLink(theme)}`} to={to}>
             {children}
         </Link>
     );
-}
+};
