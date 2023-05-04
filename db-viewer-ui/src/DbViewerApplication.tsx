@@ -1,6 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router";
-import { useRouteMatch } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
 import { ObjectTableContainer } from "./Containers/ObjectTableContainer";
@@ -25,50 +24,41 @@ export const DbViewerApplication = ({
     useErrorHandlingContainer,
     withGoBackUrl,
 }: DbViewerApplicationProps): JSX.Element => {
-    const match = useRouteMatch();
     return (
-        <Switch>
+        <Routes>
             <Route
-                exact
-                path={`${match.url}/`}
-                render={() => (
+                path="/"
+                element={
                     <ObjectTypesContainer
                         withGoBackUrl={withGoBackUrl}
                         useErrorHandlingContainer={useErrorHandlingContainer}
                         identifierKeywords={identifierKeywords}
                         dbViewerApi={dbViewerApi}
-                        path={`${match.url}`}
                     />
-                )}
+                }
             />
             <Route
-                exact
-                path={`${match.url}/:objectId`}
-                render={({ location, match: { params } }) => (
+                path=":objectId"
+                element={
                     <ObjectTableContainer
                         isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         useErrorHandlingContainer={useErrorHandlingContainer}
-                        urlQuery={location.search || ""}
-                        path={`${match.url}/${params.objectId}`}
-                        objectId={params.objectId || ""}
                     />
-                )}
+                }
             />
             <Route
-                path={`${match.url}/:objectId/details`}
-                render={({ location, match: { params } }) => (
+                path=":objectId/details"
+                element={
                     <ObjectDetailsContainer
                         isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         useErrorHandlingContainer={useErrorHandlingContainer}
-                        objectId={params.objectId || ""}
-                        objectQuery={location.search || ""}
                     />
-                )}
+                }
             />
-        </Switch>
+        </Routes>
     );
 };

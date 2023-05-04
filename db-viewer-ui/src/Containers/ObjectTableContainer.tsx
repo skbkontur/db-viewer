@@ -1,8 +1,7 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Loader, Paging } from "@skbkontur/react-ui";
-import isEqual from "lodash/isEqual";
-import React from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
@@ -23,290 +22,154 @@ import { ObjectSearchQueryMapping } from "../Domain/Objects/ObjectSearchQueryMap
 import { PropertyMetaInformationUtils } from "../Domain/Objects/PropertyMetaInformationUtils";
 import { RouteUtils } from "../Domain/Utils/RouteUtils";
 
-interface ObjectTableProps extends RouteComponentProps {
+interface ObjectTableProps {
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     useErrorHandlingContainer: boolean;
-    objectId: string;
-    urlQuery: string;
     isSuperUser: boolean;
-    path: string;
 }
 
-interface ObjectTableState {
-    objects: null | SearchResult;
-    loading: boolean;
-    showModalFilter: boolean;
-    metaInformation: null | ObjectDescription;
-    displaySearchFilter: boolean;
-    displayShowFilter: boolean;
-    query: ObjectSearchQuery;
-    downloading: boolean;
-    showDownloadModal: boolean;
-    downloadCount?: CountResult;
-}
+const getDefaultQuery = () => ({
+    conditions: [],
+    offset: 0,
+    count: 20,
+    hiddenColumns: [],
+    sorts: [],
+});
 
-function getDefaultQuery(): ObjectSearchQuery {
-    return {
-        conditions: [],
-        offset: 0,
-        count: 20,
-        hiddenColumns: [],
-        sorts: [],
-    };
-}
+export const ObjectTableContainer = ({
+    dbViewerApi,
+    customRenderer,
+    useErrorHandlingContainer,
+    isSuperUser,
+}: ObjectTableProps): JSX.Element => {
+    const { search, pathname } = useLocation();
+    const navigate = useNavigate();
+    const { objectId = "" } = useParams<"objectId">();
 
-class ObjectTableContainerInternal extends React.Component<ObjectTableProps, ObjectTableState> {
-    public state: ObjectTableState = {
-        objects: null,
-        loading: false,
-        metaInformation: null,
-        query: getDefaultQuery(),
-        displaySearchFilter: false,
-        displayShowFilter: false,
-        showModalFilter: false,
-        downloading: false,
-        showDownloadModal: false,
-    };
+    const [objects, setObjects] = useState<SearchResult | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [showModalFilter, setShowModalFilter] = useState(false);
+    const [metaInformation, setMetaInformation] = useState<ObjectDescription | null>(null);
+    const [query, setQuery] = useState<ObjectSearchQuery>(getDefaultQuery());
+    const [downloading, setDownloading] = useState(false);
+    const [showDownloadModal, setShowDownloadModal] = useState(false);
+    const [downloadCount, setDownloadCount] = useState<CountResult | undefined>(undefined);
 
-    public async componentDidMount() {
-        const { dbViewerApi, objectId } = this.props;
-        this.setState({ loading: true });
-        try {
-            const metaInformation = await dbViewerApi.getMeta(objectId);
-            const query = this.parseQuery(this.props.urlQuery, metaInformation);
-            this.setState({ metaInformation: metaInformation, query: query });
-            await this.loadObjectsIfAllowed(metaInformation, query);
-        } finally {
-            this.setState({ loading: false });
-        }
-    }
+    const didMount = useRef(false);
 
-    public componentDidUpdate(prevProps: ObjectTableProps) {
-        if (prevProps.urlQuery !== this.props.urlQuery) {
-            if (!this.state.metaInformation) {
-                throw new Error("metaInformation must be loaded at this point");
-            }
-            const nextQuery = this.parseQuery(this.props.urlQuery, this.state.metaInformation);
-            this.setState({ query: nextQuery }, () => {
-                if (this.checkForNecessityLoad(prevProps.urlQuery)) {
-                    this.loadObjectsWithLoader();
-                }
-            });
-        }
-    }
-
-    public render(): JSX.Element {
-        const {
-            loading,
-            objects,
-            metaInformation,
-            query: { offset, count, sorts },
-            downloading,
-            showDownloadModal,
-            downloadCount,
-        } = this.state;
-        let properties: PropertyMetaInformation[] = [];
-        if (metaInformation?.typeMetaInformation?.properties) {
-            properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
-        }
-
-        const { objectId, useErrorHandlingContainer, match, customRenderer, isSuperUser } = this.props;
-
-        const { allowReadAll, allowDelete, allowSort } = metaInformation?.schemaDescription || {
-            allowReadAll: false,
-            allowDelete: false,
-            allowSort: false,
+    useEffect(() => {
+        loadData();
+        return () => {
+            didMount.current = false;
         };
+    }, []);
 
-        return (
-            <CommonLayout>
-                {useErrorHandlingContainer && <ErrorHandlingContainer />}
-                <CommonLayout.Header
-                    verticalAlign="center"
-                    title={
-                        <RowStack gap={3} verticalAlign="center">
-                            <GoBackLink backUrl={RouteUtils.backUrl(match)} />
-                            <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>
-                        </RowStack>
-                    }
-                    tools={
-                        <ObjectTableLayoutHeader
-                            query={this.state.query}
-                            allowReadAll={allowReadAll}
-                            properties={properties}
-                            onChange={this.handleChangeModalFilter}
-                            onDownloadClick={this.handleCheckCount}
-                            onDownloadAbort={this.handleCloseDownloadModal}
-                            downloading={downloading}
-                            showDownloadModal={showDownloadModal}
-                            showModalFilter={this.state.showModalFilter}
-                            downloadCount={downloadCount}
-                        />
-                    }
-                />
-                <CommonLayout.Content>
-                    <Loader type="big" active={loading}>
-                        <ColumnStack gap={4}>
-                            <Fit>
-                                {objects &&
-                                    this.renderItemsCount(
-                                        offset,
-                                        count,
-                                        objects.count || objects.items.length,
-                                        objects.countLimit
-                                    )}
-                            </Fit>
-                            <Fit style={{ maxWidth: "inherit" }}>
-                                {objects != null && objects.items && objects.items.length > 0 ? (
-                                    properties && (
-                                        <ObjectTable
-                                            properties={this.getVisibleProperties(properties)}
-                                            objectType={metaInformation?.identifier || ""}
-                                            customRenderer={customRenderer}
-                                            currentSorts={sorts}
-                                            items={
-                                                objects.count == null
-                                                    ? objects.items.slice(offset, offset + count)
-                                                    : objects.items
-                                            }
-                                            onDetailsClick={this.getDetailsUrl}
-                                            onDeleteClick={this.handleDeleteObject}
-                                            onChangeSortClick={this.handleChangeSort}
-                                            allowDelete={isSuperUser && allowDelete}
-                                            allowSort={allowSort}
-                                        />
-                                    )
-                                ) : (
-                                    <RowStack block gap={1} baseline data-tid="NothingFound">
-                                        <Fit>Ничего не найдено</Fit>
-                                        <Fit>
-                                            <Link onClick={() => this.updateQuery(getDefaultQuery())}>
-                                                Сбросьте фильтр
-                                            </Link>
-                                        </Fit>
-                                        <Fit>или</Fit>
-                                        <Fit>
-                                            <Link onClick={this.handleOpenFilter}>измените</Link>
-                                        </Fit>
-                                        <Fit>параметры фильтрации</Fit>
-                                    </RowStack>
-                                )}
-                            </Fit>
-                            <Fit>{this.renderPageNavigation()}</Fit>
-                        </ColumnStack>
-                    </Loader>
-                </CommonLayout.Content>
-            </CommonLayout>
-        );
-    }
-
-    private checkForNecessityLoad(prevQuery: string): boolean {
-        const { urlQuery } = this.props;
-        if (prevQuery !== urlQuery) {
-            if (!this.state.metaInformation) {
+    useEffect(() => {
+        if (!metaInformation) {
+            if (didMount.current) {
                 throw new Error("metaInformation must be loaded at this point");
             }
-            const prevState = ObjectSearchQueryMapping.normalize(
-                this.parseQuery(prevQuery, this.state.metaInformation),
-                !this.state.objects?.count
-            );
-            const nextState = ObjectSearchQueryMapping.normalize(
-                this.parseQuery(urlQuery, this.state.metaInformation),
-                !this.state.objects?.count
-            );
-            return !isEqual(nextState, prevState);
+            return;
         }
-        return false;
+        const nextQuery = parseQuery(search, metaInformation);
+        setQuery(nextQuery);
+        loadObjectsWithLoader();
+        didMount.current = true;
+    }, [search]);
+
+    function handleChangeModalFilter(value: Nullable<Partial<ObjectSearchQuery>>): void {
+        if (!value) {
+            updateQuery(getDefaultQuery());
+        } else {
+            updateQuery(value);
+        }
     }
 
-    private async loadObjectsWithLoader(): Promise<void> {
-        const { metaInformation, query } = this.state;
-        if (metaInformation == null) {
+    const handleCheckCount = async (): Promise<void> => {
+        if (!metaInformation) {
             return;
         }
 
-        this.setState({ loading: true });
+        setDownloading(true);
         try {
-            await this.loadObjectsIfAllowed(metaInformation, query);
-        } finally {
-            this.setState({ loading: false });
-        }
-    }
+            const { conditions, sorts, hiddenColumns } = query;
 
-    private async loadObjectsIfAllowed(meta: ObjectDescription, query: ObjectSearchQuery) {
-        const allowReadAll = meta.schemaDescription.allowReadAll;
-        const props = meta.typeMetaInformation?.properties || [];
-        const conditions = query.conditions || [];
-        if (allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(conditions, props)) {
-            await this.loadObjects(query);
-        } else {
-            this.setState({ showModalFilter: true, objects: null });
-        }
-    }
+            const newQuery = {
+                conditions: conditions,
+                sorts: sorts,
+                excludedFields: hiddenColumns,
+            };
+            const downloadResult = await dbViewerApi.countObjects(metaInformation.identifier, newQuery);
 
-    private async loadObjects(query: ObjectSearchQuery): Promise<void> {
-        const { dbViewerApi, objectId } = this.props;
-        const { offset, count, conditions, sorts } = query;
-        const objects = await dbViewerApi.searchObjects(objectId, {
-            conditions: conditions,
-            sorts: sorts,
-            excludedFields: [],
-            offset: offset,
-            count: count,
-        });
-        this.setState({ objects: objects });
-    }
-
-    private getVisibleProperties(properties: PropertyMetaInformation[]): PropertyMetaInformation[] {
-        return properties.filter(item => !this.state.query.hiddenColumns.includes(item.name));
-    }
-
-    private readonly updateQuery = (queryUpdate: Partial<ObjectSearchQuery>) => {
-        let offset = queryUpdate.offset ?? this.state.query.offset;
-        if (offset !== 0 && queryUpdate.count) {
-            offset = Math.floor(offset / queryUpdate.count) * queryUpdate.count;
-        }
-        this.setState(
-            {
-                showModalFilter: false,
-                query: {
-                    ...this.state.query,
-                    ...queryUpdate,
-                    offset: offset,
-                },
-            },
-            this.updateRoute
-        );
-    };
-
-    private readonly getItemConditions = (item: object): Condition[] => {
-        const properties = this.state.metaInformation?.typeMetaInformation.properties || [];
-        return properties
-            .filter(x => x.isIdentity)
-            .map(x => ({
-                value: item[x.name],
-                path: x.name,
-                operator: ObjectFieldFilterOperator.Equals,
-            }));
-    };
-
-    private readonly getDetailsUrl = (item: object): string => {
-        const properties = this.state.metaInformation?.typeMetaInformation.properties || [];
-        const query = {};
-        for (const prop of properties) {
-            if (prop.isIdentity) {
-                query[prop.name] = item[prop.name];
+            const count = downloadResult.count ?? 0;
+            if (count > downloadResult.countLimit) {
+                setDownloading(false);
+                setShowDownloadModal(true);
+                setDownloadCount(downloadResult);
+                return;
             }
+
+            window.location.href = dbViewerApi.getDownloadObjectsUrl(
+                metaInformation.identifier,
+                JSON.stringify(newQuery)
+            );
+        } finally {
+            setDownloading(false);
         }
-        return RouteUtils.goTo(this.props.path, `details?${new URLSearchParams(query)}`);
     };
 
-    private readonly handleOpenFilter = () => {
-        this.setState({ showModalFilter: true });
+    const handleDeleteObject = async (index: number): Promise<void> => {
+        if (objects?.items && objects.items.length >= index && metaInformation) {
+            const conditions = getItemConditions(objects.items[index]);
+            await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
+            await loadObjects(query);
+        }
     };
 
-    private renderItemsCount(offset: number, countPerPage: number, count: number, countLimit: number): JSX.Element {
+    const handleChangeSort = (columnName: string) => {
+        const { sorts } = query;
+        const currentSortIndex = sorts.findIndex(x => x.path === columnName);
+        if (currentSortIndex === -1) {
+            updateQuery({
+                sorts: [
+                    ...sorts,
+                    {
+                        path: columnName,
+                        sortOrder: ObjectFilterSortOrder.Ascending,
+                    },
+                ],
+            });
+            return;
+        }
+
+        const currentSortOrder = sorts[currentSortIndex].sortOrder;
+        if (currentSortOrder === ObjectFilterSortOrder.Ascending) {
+            updateQuery({
+                sorts: [
+                    ...sorts.slice(0, currentSortIndex),
+                    {
+                        path: columnName,
+                        sortOrder: ObjectFilterSortOrder.Descending,
+                    },
+                    ...sorts.slice(currentSortIndex + 1),
+                ],
+            });
+            return;
+        }
+
+        if (currentSortOrder === ObjectFilterSortOrder.Descending) {
+            updateQuery({
+                sorts: [...sorts.slice(0, currentSortIndex), ...sorts.slice(currentSortIndex + 1)],
+            });
+        }
+    };
+
+    const goToPage = (page: number) => {
+        navigate(getQuery(query, { offset: (page - 1) * query.count }));
+    };
+
+    function renderItemsCount(offset: number, countPerPage: number, count: number, countLimit: number): JSX.Element {
         const total = count > countLimit ? countLimit : count;
         const firstNumber = Math.min(total, offset);
         const lastNumber = Math.min(total, offset + countPerPage);
@@ -322,12 +185,9 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
         );
     }
 
-    private renderPageNavigation(): null | JSX.Element {
-        const {
-            objects,
-            query: { offset, count },
-        } = this.state;
-        if (objects == null) {
+    function renderPageNavigation(): null | JSX.Element {
+        const { offset, count } = query;
+        if (!objects) {
             return null;
         }
         const trueCount = objects.count || objects.items.length;
@@ -340,122 +200,206 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
                 data-tid="Paging"
                 activePage={Math.floor(offset / count) + 1}
                 pagesCount={Math.ceil(totalCount / count)}
-                onPageChange={this.goToPage}
+                onPageChange={goToPage}
             />
         );
     }
 
-    private readonly handleChangeModalFilter = (value: Nullable<Partial<ObjectSearchQuery>>) => {
-        if (value == null) {
-            this.updateQuery(getDefaultQuery());
-        } else {
-            this.updateQuery(value);
+    const { offset, count, sorts } = query;
+    let properties: PropertyMetaInformation[] = [];
+    if (metaInformation?.typeMetaInformation?.properties) {
+        properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
+    }
+
+    const { allowReadAll, allowDelete, allowSort } = metaInformation?.schemaDescription || {
+        allowReadAll: false,
+        allowDelete: false,
+        allowSort: false,
+    };
+    return (
+        <CommonLayout>
+            {useErrorHandlingContainer && <ErrorHandlingContainer />}
+            <CommonLayout.Header
+                verticalAlign="center"
+                title={
+                    <RowStack gap={3} verticalAlign="center">
+                        <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />
+                        <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>
+                    </RowStack>
+                }
+                tools={
+                    <ObjectTableLayoutHeader
+                        query={query}
+                        allowReadAll={allowReadAll}
+                        properties={properties}
+                        onChange={handleChangeModalFilter}
+                        onDownloadClick={handleCheckCount}
+                        onDownloadAbort={() => setShowDownloadModal(false)}
+                        downloading={downloading}
+                        showDownloadModal={showDownloadModal}
+                        showModalFilter={showModalFilter}
+                        downloadCount={downloadCount}
+                    />
+                }
+            />
+            <CommonLayout.Content>
+                <Loader type="big" active={loading}>
+                    <ColumnStack gap={4}>
+                        <Fit>
+                            {objects &&
+                                renderItemsCount(
+                                    offset,
+                                    count,
+                                    objects.count || objects.items.length,
+                                    objects.countLimit
+                                )}
+                        </Fit>
+                        <Fit style={{ maxWidth: "inherit" }}>
+                            {objects?.items && objects.items.length > 0 ? (
+                                properties && (
+                                    <ObjectTable
+                                        properties={getVisibleProperties(properties)}
+                                        objectType={metaInformation?.identifier || ""}
+                                        customRenderer={customRenderer}
+                                        currentSorts={sorts}
+                                        items={
+                                            objects.count == null
+                                                ? objects.items.slice(offset, offset + count)
+                                                : objects.items
+                                        }
+                                        onDetailsClick={getDetailsUrl}
+                                        onDeleteClick={handleDeleteObject}
+                                        onChangeSortClick={handleChangeSort}
+                                        allowDelete={isSuperUser && allowDelete}
+                                        allowSort={allowSort}
+                                    />
+                                )
+                            ) : (
+                                <RowStack block gap={1} baseline data-tid="NothingFound">
+                                    <Fit>Ничего не найдено</Fit>
+                                    <Fit>
+                                        <Link onClick={() => updateQuery(getDefaultQuery())}>Сбросьте фильтр</Link>
+                                    </Fit>
+                                    <Fit>или</Fit>
+                                    <Fit>
+                                        <Link onClick={() => setShowModalFilter(true)}>измените</Link>
+                                    </Fit>
+                                    <Fit>параметры фильтрации</Fit>
+                                </RowStack>
+                            )}
+                        </Fit>
+                        <Fit>{renderPageNavigation()}</Fit>
+                    </ColumnStack>
+                </Loader>
+            </CommonLayout.Content>
+        </CommonLayout>
+    );
+
+    async function loadData() {
+        setLoading(true);
+        try {
+            const metaInformation = await dbViewerApi.getMeta(objectId);
+            const query = parseQuery(search, metaInformation);
+            setMetaInformation(metaInformation);
+            setQuery(query);
+            await loadObjectsIfAllowed(metaInformation, query);
+        } finally {
+            setLoading(false);
         }
-    };
+    }
 
-    private readonly handleCloseDownloadModal = () => {
-        this.setState({ showDownloadModal: false });
-    };
-
-    private readonly handleCheckCount = async (): Promise<void> => {
-        const { metaInformation } = this.state;
+    async function loadObjectsWithLoader(): Promise<void> {
         if (!metaInformation) {
             return;
         }
-
-        this.setState({ downloading: true });
+        setLoading(true);
         try {
-            const { dbViewerApi } = this.props;
-            const { conditions, sorts, hiddenColumns } = this.state.query;
-
-            const query = {
-                conditions: conditions,
-                sorts: sorts,
-                excludedFields: hiddenColumns,
-            };
-            const downloadResult = await dbViewerApi.countObjects(metaInformation.identifier, query);
-
-            const count = downloadResult.count ?? 0;
-            if (count > downloadResult.countLimit) {
-                this.setState({ downloading: false, showDownloadModal: true, downloadCount: downloadResult });
-                return;
-            }
-
-            window.location.href = dbViewerApi.getDownloadObjectsUrl(metaInformation.identifier, JSON.stringify(query));
+            await loadObjectsIfAllowed(metaInformation, query);
         } finally {
-            this.setState({ downloading: false });
+            setLoading(false);
         }
-    };
-
-    private handleDeleteObject = async (index: number): Promise<void> => {
-        const { objects, metaInformation, query } = this.state;
-        const { dbViewerApi } = this.props;
-        if (objects != null && objects.items != null && objects.items.length >= index && metaInformation != null) {
-            const conditions = this.getItemConditions(objects.items[index]);
-            await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
-            await this.loadObjects(query);
-        }
-    };
-
-    private handleChangeSort = (columnName: string) => {
-        const { sorts } = this.state.query;
-        const currentSortIndex = sorts.findIndex(x => x.path === columnName);
-        if (currentSortIndex === -1) {
-            this.updateQuery({
-                sorts: [
-                    ...sorts,
-                    {
-                        path: columnName,
-                        sortOrder: ObjectFilterSortOrder.Ascending,
-                    },
-                ],
-            });
-            return;
-        }
-
-        const currentSortOrder = sorts[currentSortIndex].sortOrder;
-        if (currentSortOrder === ObjectFilterSortOrder.Ascending) {
-            this.updateQuery({
-                sorts: [
-                    ...sorts.slice(0, currentSortIndex),
-                    {
-                        path: columnName,
-                        sortOrder: ObjectFilterSortOrder.Descending,
-                    },
-                    ...sorts.slice(currentSortIndex + 1),
-                ],
-            });
-            return;
-        }
-
-        if (currentSortOrder === ObjectFilterSortOrder.Descending) {
-            this.updateQuery({
-                sorts: [...sorts.slice(0, currentSortIndex), ...sorts.slice(currentSortIndex + 1)],
-            });
-        }
-    };
-
-    private updateRoute() {
-        this.props.history.push(this.getQuery());
     }
 
-    private getQuery(overrides: Partial<ObjectSearchQuery> = {}): string {
-        const { query, metaInformation } = this.state;
-        const { path } = this.props;
+    async function loadObjectsIfAllowed(meta: ObjectDescription, query: ObjectSearchQuery) {
+        const allowReadAll = meta.schemaDescription.allowReadAll;
+        const props = meta.typeMetaInformation?.properties || [];
+        const conditions = query.conditions || [];
+        if (allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(conditions, props)) {
+            await loadObjects(query);
+        } else {
+            setShowModalFilter(true);
+            setObjects(null);
+        }
+    }
+
+    async function loadObjects(query: ObjectSearchQuery): Promise<void> {
+        const { offset, count, conditions, sorts } = query;
+        const objects = await dbViewerApi.searchObjects(objectId, {
+            conditions: conditions,
+            sorts: sorts,
+            excludedFields: [],
+            offset: offset,
+            count: count,
+        });
+        setObjects(objects);
+    }
+
+    function getVisibleProperties(properties: PropertyMetaInformation[]): PropertyMetaInformation[] {
+        return properties.filter(({ name }) => !query.hiddenColumns.includes(name));
+    }
+
+    function updateQuery(queryUpdate: Partial<ObjectSearchQuery>) {
+        let offset = queryUpdate.offset ?? query.offset;
+        if (offset !== 0 && queryUpdate.count) {
+            offset = Math.floor(offset / queryUpdate.count) * queryUpdate.count;
+        }
+        setShowModalFilter(false);
+        const newQuery = {
+            ...query,
+            ...queryUpdate,
+            offset,
+        };
+        setQuery(newQuery);
+        navigate(getQuery(newQuery));
+    }
+
+    function getItemConditions(item: object): Condition[] {
+        const properties = metaInformation?.typeMetaInformation.properties || [];
+        return properties
+            .filter(x => x.isIdentity)
+            .map(x => ({
+                value: item[x.name],
+                path: x.name,
+                operator: ObjectFieldFilterOperator.Equals,
+            }));
+    }
+
+    function getDetailsUrl(item: object): string {
+        const properties = metaInformation?.typeMetaInformation.properties || [];
+        const query = {};
+        for (const prop of properties) {
+            if (prop.isIdentity) {
+                query[prop.name] = item[prop.name];
+            }
+        }
+        return RouteUtils.goTo(pathname, `details?${new URLSearchParams(query)}`);
+    }
+
+    function getQuery(newQuery: ObjectSearchQuery, overrides: Partial<ObjectSearchQuery> = {}): string {
         let properties: PropertyMetaInformation[] = [];
         if (metaInformation?.typeMetaInformation?.properties) {
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
         }
         return (
-            path +
+            pathname +
             ObjectSearchQueryMapping.stringify(
-                { ...query, ...overrides },
+                { ...newQuery, ...overrides },
                 properties.map(x => x.name)
             )
         );
     }
 
-    private parseQuery(urlQuery: string, metaInformation: ObjectDescription): ObjectSearchQuery {
+    function parseQuery(urlQuery: string, metaInformation: ObjectDescription): ObjectSearchQuery {
         let properties: PropertyMetaInformation[] = [];
         if (metaInformation?.typeMetaInformation?.properties) {
             properties = PropertyMetaInformationUtils.getProperties(metaInformation.typeMetaInformation.properties);
@@ -465,10 +409,4 @@ class ObjectTableContainerInternal extends React.Component<ObjectTableProps, Obj
             properties.map(x => x.name)
         );
     }
-
-    private readonly goToPage = (page: number) => {
-        this.props.history.push(this.getQuery({ offset: (page - 1) * this.state.query.count }));
-    };
-}
-
-export const ObjectTableContainer = withRouter(ObjectTableContainerInternal);
+};
