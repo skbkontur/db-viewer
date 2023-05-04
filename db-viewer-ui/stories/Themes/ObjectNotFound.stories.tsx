@@ -7,7 +7,8 @@ import {
 } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import React from "react";
-import StoryRouter from "storybook-react-router";
+import { MemoryRouter, Route } from "react-router";
+import { Routes } from "react-router-dom";
 
 import { NullCustomRenderer } from "../../src";
 import { ObjectDetailsContainer } from "../../src/Containers/ObjectDetailsContainer";
@@ -17,19 +18,25 @@ import { reactUiDark } from "./reactUiDark";
 
 export default {
     title: "Themes/ObjectNotFound",
-    decorators: [StoryRouter()],
 };
 
 const DetailsContainer = ({ theme }: { theme: Theme }) => (
     <ThemeContext.Provider value={theme}>
-        <ObjectDetailsContainer
-            isSuperUser
-            dbViewerApi={new DbViewerApiFake()}
-            customRenderer={new NullCustomRenderer()}
-            useErrorHandlingContainer
-            objectQuery="Id=Id"
-            objectId="NotFound"
-        />
+        <MemoryRouter initialEntries={["/NotFound?Id=Id"]}>
+            <Routes>
+                <Route
+                    path="/:objectId"
+                    element={
+                        <ObjectDetailsContainer
+                            isSuperUser
+                            dbViewerApi={new DbViewerApiFake()}
+                            customRenderer={new NullCustomRenderer()}
+                            useErrorHandlingContainer
+                        />
+                    }
+                />
+            </Routes>
+        </MemoryRouter>
     </ThemeContext.Provider>
 );
 
