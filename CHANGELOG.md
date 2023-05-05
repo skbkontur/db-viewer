@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.4 - 2023.05.05
+- Update "react-router-dom" package to v6
+
 ## v1.3 - 2023.03.26
 - Remove `qs` and `decimal.js` packages, change query string format
 - Switch to using github-actions
