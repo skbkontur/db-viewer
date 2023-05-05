@@ -1,6 +1,6 @@
 import { ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { GoBackLink } from "../GoBackLink/GoBackLink";
@@ -9,13 +9,13 @@ import { CommonLayout } from "../Layouts/CommonLayout";
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
 import { jsStyles } from "./ObjectNotFoundPage.styles";
 
-export function ObjectNotFoundPage(): JSX.Element {
+export const ObjectNotFoundPage = (): JSX.Element => {
     const theme = React.useContext(ThemeContext);
-    const match = useRouteMatch();
+    const { pathname } = useLocation();
     return (
         <div style={{ backgroundColor: theme.bgDefault }}>
             <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }}>
-                <GoBackLink backUrl={RouteUtils.backUrl(match)} />
+                <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />
                 <CommonLayout.Content className={jsStyles.content()}>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         Страница не найдена
@@ -55,4 +55,4 @@ export function ObjectNotFoundPage(): JSX.Element {
             </svg>
         </div>
     );
-}
+};

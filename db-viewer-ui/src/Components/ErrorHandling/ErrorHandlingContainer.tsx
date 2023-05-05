@@ -43,6 +43,7 @@ export class ErrorHandlingContainer extends React.Component<{}, ErrorHandlingCon
         window.onunhandledrejection = this.oldOnunhandledrejection;
     }
 
+    private handleHideModal = () => this.setState({ showModal: false });
     public render(): JSX.Element {
         const { isFatal, showModal, stack, error } = this.state;
         const { message, serverErrorType, serverStackTrace } = (error || {}) as ApiErrorInfo;
@@ -51,7 +52,7 @@ export class ErrorHandlingContainer extends React.Component<{}, ErrorHandlingCon
                 {showModal && (
                     <ErrorHandlingContainerModal
                         canClose={!isFatal}
-                        onClose={() => this.setState({ showModal: false })}
+                        onClose={this.handleHideModal}
                         message={serverErrorType + ": " + message}
                         stack={stack}
                         serverStack={serverStackTrace}

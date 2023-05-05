@@ -7,7 +7,7 @@ import { Link } from "@skbkontur/react-ui";
 import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import StoryRouter from "storybook-react-router";
+import { withRouter } from "storybook-addon-react-router-v6";
 
 import { CommonLayout } from "../../src/Components/Layouts/CommonLayout";
 import { ScrollableContainer } from "../../src/Components/Layouts/ScrollableContainer";
@@ -34,7 +34,7 @@ function SpaceFiller(props: { width?: number | string; height?: number | string 
     );
 }
 storiesOf("Layouts", module)
-    .addDecorator(StoryRouter() as any)
+    .addDecorator(withRouter)
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
@@ -59,6 +59,7 @@ storiesOf("Layouts", module)
         <div style={{ height: 300 }}>
             <CommonLayout>
                 <CommonLayout.Header
+                    verticalAlign="center"
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>

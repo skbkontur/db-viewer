@@ -1,13 +1,13 @@
 import { storiesOf } from "@storybook/react";
 import React from "react";
-import StoryRouter from "storybook-react-router";
+import { withRouter } from "storybook-addon-react-router-v6";
 
+import { NullCustomRenderer } from "../../src";
 import { ObjectTable } from "../../src/Components/ObjectTable/ObjectTable";
 import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { PropertyMetaInformation } from "../../src/Domain/Api/DataTypes/PropertyMetaInformation";
 import { TypeMetaInformation } from "../../src/Domain/Api/DataTypes/TypeMetaInformation";
-import { NullCustomRenderer } from "../../src/Domain/Objects/CustomRenderer";
 
 async function deleteObject(_index: number): Promise<void> {
     // Ничего не делаем
@@ -51,7 +51,7 @@ const indexed: PropertyMetaInformation = {
 };
 
 storiesOf("ObjectTable", module)
-    .addDecorator(StoryRouter() as any)
+    .addDecorator(withRouter)
     .add("Default", () => (
         <ObjectTable
             items={[{ id: { gln: "2125215-151256125-12521" }, lastEditedTime: "12521512521", boxId: "12365126126" }]}

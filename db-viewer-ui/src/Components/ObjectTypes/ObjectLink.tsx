@@ -1,7 +1,7 @@
 import { ThemeContext } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { RouterLink } from "../RouterLink/RouterLink";
@@ -39,14 +39,14 @@ function ObjectLinkInternal({ identifier, keywords, theme }: ObjectLinkInternalP
     return <ObjectLinkInternal identifier={identifier} keywords={rest} theme={theme} />;
 }
 
-export function ObjectLink({ identifier, keywords }: ObjectIdentifierProps) {
+export const ObjectLink = ({ identifier, keywords }: ObjectIdentifierProps): JSX.Element => {
     const theme = React.useContext(ThemeContext);
-    const match = useRouteMatch();
+    const { pathname } = useLocation();
     return (
         <div data-tid="ObjectItem">
-            <RouterLink to={RouteUtils.goTo(match.url, identifier)} data-tid="ObjectLink">
+            <RouterLink to={RouteUtils.goTo(pathname, identifier)} data-tid="ObjectLink">
                 <ObjectLinkInternal identifier={identifier} keywords={keywords} theme={theme} />
             </RouterLink>
         </div>
     );
-}
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, RouteComponentProps, Switch, withRouter } from "react-router";
+import { Routes, Route } from "react-router-dom";
 
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
 import { ObjectTableContainer } from "./Containers/ObjectTableContainer";
@@ -7,7 +7,7 @@ import { ObjectTypesContainer } from "./Containers/ObjectTypesContainer";
 import { IDbViewerApi } from "./Domain/Api/DbViewerApi";
 import { ICustomRenderer } from "./Domain/Objects/CustomRenderer";
 
-interface DbViewerApplicationProps extends RouteComponentProps {
+interface DbViewerApplicationProps {
     dbViewerApi: IDbViewerApi;
     customRenderer: ICustomRenderer;
     identifierKeywords: string[];
@@ -16,60 +16,49 @@ interface DbViewerApplicationProps extends RouteComponentProps {
     withGoBackUrl?: boolean;
 }
 
-function DbViewerApplicationInternal({
+export const DbViewerApplication = ({
     dbViewerApi,
     customRenderer,
     isSuperUser,
     identifierKeywords,
     useErrorHandlingContainer,
-    match,
     withGoBackUrl,
-}: DbViewerApplicationProps): JSX.Element {
+}: DbViewerApplicationProps): JSX.Element => {
     return (
-        <Switch>
+        <Routes>
             <Route
-                exact
-                path={`${match.url}/`}
-                render={() => (
+                path="/"
+                element={
                     <ObjectTypesContainer
                         withGoBackUrl={withGoBackUrl}
                         useErrorHandlingContainer={useErrorHandlingContainer}
                         identifierKeywords={identifierKeywords}
                         dbViewerApi={dbViewerApi}
-                        path={`${match.url}`}
                     />
-                )}
+                }
             />
             <Route
-                exact
-                path={`${match.url}/:objectId`}
-                render={({ location, match: { params } }) => (
+                path=":objectId"
+                element={
                     <ObjectTableContainer
                         isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         useErrorHandlingContainer={useErrorHandlingContainer}
-                        urlQuery={location.search || ""}
-                        path={`${match.url}/${params.objectId}`}
-                        objectId={params.objectId || ""}
                     />
-                )}
+                }
             />
             <Route
-                path={`${match.url}/:objectId/details`}
-                render={({ location, match: { params } }) => (
+                path=":objectId/details"
+                element={
                     <ObjectDetailsContainer
                         isSuperUser={isSuperUser}
                         dbViewerApi={dbViewerApi}
                         customRenderer={customRenderer}
                         useErrorHandlingContainer={useErrorHandlingContainer}
-                        objectId={params.objectId || ""}
-                        objectQuery={location.search || ""}
                     />
-                )}
+                }
             />
-        </Switch>
+        </Routes>
     );
-}
-
-export const DbViewerApplication = withRouter(DbViewerApplicationInternal);
+};

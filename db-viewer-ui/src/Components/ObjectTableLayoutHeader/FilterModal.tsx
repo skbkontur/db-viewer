@@ -2,7 +2,7 @@ import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useLocation } from "react-router";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
@@ -20,20 +20,20 @@ interface FilterModalProps {
     onChangeFilter: (x0: Condition[]) => void;
 }
 
-export function FilterModal({
+export const FilterModal = ({
     tableColumns,
     onClose,
     modalEditingConditions,
     onChangeFilter,
     onApplyFilter,
     allowClose,
-}: FilterModalProps): JSX.Element {
-    const match = useRouteMatch();
+}: FilterModalProps): JSX.Element => {
+    const { pathname } = useLocation();
     const container = React.useRef<ValidationContainer>(null);
     const theme = React.useContext(ThemeContext);
 
     const handleApplyFilter = async () => {
-        const isValid = container.current != null ? await container.current.validate() : true;
+        const isValid = (await container.current?.validate()) ?? true;
         if (isValid) {
             onApplyFilter();
         }
@@ -78,7 +78,7 @@ export function FilterModal({
                                 Очистить фильтр
                             </Link>
                         ) : (
-                            <RouterLink to={RouteUtils.backUrl(match)} data-tid="GoBackToList">
+                            <RouterLink to={RouteUtils.backUrl(pathname)} data-tid="GoBackToList">
                                 Вернуться к списку видов объектов
                             </RouterLink>
                         )}
@@ -87,4 +87,4 @@ export function FilterModal({
             </Modal.Footer>
         </Modal>
     );
-}
+};

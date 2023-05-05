@@ -41,6 +41,16 @@ export class ErrorHandlingContainerModal extends React.Component<
         }
     };
 
+    private handleCopyStack = () => {
+        const { stack } = this.props;
+        this.copyData(stack);
+    };
+
+    private handleCopyServerStack = () => {
+        const { serverStack } = this.props;
+        this.copyData(serverStack);
+    };
+
     public render(): JSX.Element {
         return (
             <ThemeContext.Consumer>
@@ -87,7 +97,7 @@ export class ErrorHandlingContainerModal extends React.Component<
                                             <h4 className={jsStyles.header()}>Client stack trace</h4>
                                         </Fit>
                                         <Fit>
-                                            <Link icon={<CopyIcon />} onClick={() => this.copyData(stack)}>
+                                            <Link icon={<CopyIcon />} onClick={this.handleCopyStack}>
                                                 Скопировать
                                             </Link>
                                         </Fit>
@@ -106,7 +116,7 @@ export class ErrorHandlingContainerModal extends React.Component<
                                             <h4 className={jsStyles.header()}>Server stack trace</h4>
                                         </Fit>
                                         <Fit>
-                                            <Link icon={<CopyIcon />} onClick={() => this.copyData(serverStack)}>
+                                            <Link icon={<CopyIcon />} onClick={this.handleCopyServerStack}>
                                                 Скопировать
                                             </Link>
                                         </Fit>

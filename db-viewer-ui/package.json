@@ -43,8 +43,7 @@
     "@skbkontur/react-ui": ">=2 <=4",
     "react": ">=16 <=17",
     "react-dom": ">=16 <=17",
-    "react-router": ">=5.1.0 <=6",
-    "react-router-dom": ">=5.1.0 <=6"
+    "react-router-dom": ">=6"
   },
   "dependencies": {
     "@skbkontur/react-stack-layout": "^1.0.3",
@@ -79,7 +78,6 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router": "^5.1.16",
     "@types/react-router-dom": "^5.1.8",
-    "@types/storybook-react-router": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
     "babel-loader": "^8.2.2",
@@ -99,10 +97,9 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-refresh": "^0.10.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^6.11.1",
     "rimraf": "^3.0.2",
-    "storybook-react-router": "^1.0.8",
+    "storybook-addon-react-router-v6": "^0.3.6",
     "style-loader": "^3.2.1",
     "typescript": "^4.3.5",
     "url-loader": "^4.1.1",

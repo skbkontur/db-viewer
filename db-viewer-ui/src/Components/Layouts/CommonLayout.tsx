@@ -1,7 +1,7 @@
 import ArrowChevronLeftIcon from "@skbkontur/react-icons/ArrowChevronLeft";
-import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { Fill, Fit, RowStack, VerticalAlign } from "@skbkontur/react-stack-layout";
 import { Loader, ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import React, { CSSProperties } from "react";
 
 import { RouterLink } from "../RouterLink/RouterLink";
 
@@ -10,7 +10,7 @@ import { jsStyles } from "./CommonLayout.styles";
 interface CommonLayoutProps {
     topRightTools?: Nullable<JSX.Element> | string;
     children?: React.ReactNode;
-    style?: any;
+    style?: CSSProperties;
 }
 
 export function CommonLayout({ children, topRightTools, ...restProps }: CommonLayoutProps): JSX.Element {
@@ -38,13 +38,14 @@ CommonLayout.Content = function Content({ children, ...restProps }: CommonLayout
 
 interface CommonLayoutHeaderProps {
     title: string | JSX.Element;
+    verticalAlign?: VerticalAlign;
     tools?: JSX.Element;
 }
 
-CommonLayout.Header = function Header({ title, tools, ...restProps }: CommonLayoutHeaderProps): JSX.Element {
+CommonLayout.Header = function Header({ title, tools, verticalAlign }: CommonLayoutHeaderProps): JSX.Element {
     return (
-        <div className={jsStyles.header()} {...restProps}>
-            <RowStack baseline block gap={2}>
+        <div className={jsStyles.header()}>
+            <RowStack verticalAlign={verticalAlign ?? "baseline"} block gap={2}>
                 <Fit>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         {title}

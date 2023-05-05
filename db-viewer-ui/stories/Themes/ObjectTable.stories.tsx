@@ -7,7 +7,7 @@ import {
 } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import React from "react";
-import StoryRouter from "storybook-react-router";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 import { NullCustomRenderer } from "../../src";
 import { ObjectTableContainer } from "../../src/Containers/ObjectTableContainer";
@@ -17,20 +17,25 @@ import { reactUiDark } from "./reactUiDark";
 
 export default {
     title: "Themes/ObjectTable",
-    decorators: [StoryRouter()],
 };
 
 const TableContainer = ({ theme }: { theme: Theme }) => (
     <ThemeContext.Provider value={theme}>
-        <ObjectTableContainer
-            isSuperUser
-            dbViewerApi={new DbViewerApiFake()}
-            customRenderer={new NullCustomRenderer()}
-            useErrorHandlingContainer
-            urlQuery={""}
-            path="AdminTools/Object"
-            objectId="Object"
-        />
+        <MemoryRouter initialEntries={["/AdminTools/Object/Object"]}>
+            <Routes>
+                <Route
+                    path="/AdminTools/Object/:objectId"
+                    element={
+                        <ObjectTableContainer
+                            isSuperUser
+                            dbViewerApi={new DbViewerApiFake()}
+                            customRenderer={new NullCustomRenderer()}
+                            useErrorHandlingContainer
+                        />
+                    }
+                />
+            </Routes>
+        </MemoryRouter>
     </ThemeContext.Provider>
 );
 
