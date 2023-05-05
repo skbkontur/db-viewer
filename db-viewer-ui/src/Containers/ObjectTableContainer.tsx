@@ -1,6 +1,6 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Loader, Paging } from "@skbkontur/react-ui";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
@@ -57,26 +57,16 @@ export const ObjectTableContainer = ({
     const [showDownloadModal, setShowDownloadModal] = useState(false);
     const [downloadCount, setDownloadCount] = useState<CountResult | undefined>(undefined);
 
-    const didMount = useRef(false);
-
     useEffect(() => {
         loadData();
-        return () => {
-            didMount.current = false;
-        };
     }, []);
 
     useEffect(() => {
-        if (!metaInformation) {
-            if (didMount.current) {
-                throw new Error("metaInformation must be loaded at this point");
-            }
-            return;
+        if (metaInformation) {
+            const nextQuery = parseQuery(search, metaInformation);
+            setQuery(nextQuery);
+            setShouldLoadObjects(true);
         }
-        const nextQuery = parseQuery(search, metaInformation);
-        setQuery(nextQuery);
-        setShouldLoadObjects(true);
-        didMount.current = true;
     }, [search]);
 
     useEffect(() => {
