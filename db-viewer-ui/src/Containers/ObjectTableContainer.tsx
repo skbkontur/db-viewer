@@ -53,6 +53,7 @@ export const ObjectTableContainer = ({
     const [metaInformation, setMetaInformation] = useState<ObjectDescription | null>(null);
     const [query, setQuery] = useState<ObjectSearchQuery>(getDefaultQuery());
     const [downloading, setDownloading] = useState(false);
+    const [shouldLoadObjects, setShouldLoadObjects] = useState(false);
     const [showDownloadModal, setShowDownloadModal] = useState(false);
     const [downloadCount, setDownloadCount] = useState<CountResult | undefined>(undefined);
 
@@ -74,11 +75,15 @@ export const ObjectTableContainer = ({
         }
         const nextQuery = parseQuery(search, metaInformation);
         setQuery(nextQuery);
+        setShouldLoadObjects(true);
         didMount.current = true;
     }, [search]);
 
     useEffect(() => {
-        loadObjectsWithLoader();
+        if (shouldLoadObjects) {
+            setShouldLoadObjects(false);
+            loadObjectsWithLoader();
+        }
     }, [query]);
 
     function handleChangeModalFilter(value: Nullable<Partial<ObjectSearchQuery>>): void {
@@ -125,7 +130,7 @@ export const ObjectTableContainer = ({
     const handleDeleteObject = async (index: number): Promise<void> => {
         if (objects?.items && objects.items.length >= index && metaInformation) {
             const conditions = getItemConditions(objects.items[index]);
-            await dbViewerApi.deleteObject(metaInformation.identifier, { conditions: conditions });
+            await dbViewerApi.deleteObject(metaInformation.identifier, { conditions });
             await loadObjects(query);
         }
     };
@@ -335,14 +340,13 @@ export const ObjectTableContainer = ({
         }
     }
 
-    async function loadObjects(query: ObjectSearchQuery): Promise<void> {
-        const { offset, count, conditions, sorts } = query;
+    async function loadObjects({ offset, count, conditions, sorts }: ObjectSearchQuery): Promise<void> {
         const objects = await dbViewerApi.searchObjects(objectId, {
-            conditions: conditions,
-            sorts: sorts,
+            conditions,
+            sorts,
+            offset,
+            count,
             excludedFields: [],
-            offset: offset,
-            count: count,
         });
         setObjects(objects);
     }
