@@ -31,9 +31,10 @@ function renderObject(
         return <span style={{ color: "#a0a0a0" }}>{String(result)}</span>;
     }
 
+    const handleDownload = () => download(objectType, path, result);
     if (property.type.typeName === "Byte[]") {
         return (
-            <Link data-tid="DownloadLink" onClick={() => download(objectType, path, result)}>
+            <Link data-tid="DownloadLink" onClick={handleDownload}>
                 Скачать
             </Link>
         );

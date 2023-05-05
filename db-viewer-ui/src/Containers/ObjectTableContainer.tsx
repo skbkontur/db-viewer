@@ -135,6 +135,10 @@ export const ObjectTableContainer = ({
         }
     };
 
+    const handleResetQuery = () => updateQuery(getDefaultQuery());
+    const handleOpenFilter = () => setShowModalFilter(true);
+    const handleCloseDownloadModal = () => setShowDownloadModal(false);
+
     const handleChangeSort = (columnName: string) => {
         const { sorts } = query;
         const currentSortIndex = sorts.findIndex(x => x.path === columnName);
@@ -224,6 +228,7 @@ export const ObjectTableContainer = ({
         allowDelete: false,
         allowSort: false,
     };
+
     return (
         <CommonLayout>
             {useErrorHandlingContainer && <ErrorHandlingContainer />}
@@ -242,7 +247,7 @@ export const ObjectTableContainer = ({
                         properties={properties}
                         onChange={handleChangeModalFilter}
                         onDownloadClick={handleCheckCount}
-                        onDownloadAbort={() => setShowDownloadModal(false)}
+                        onDownloadAbort={handleCloseDownloadModal}
                         downloading={downloading}
                         showDownloadModal={showDownloadModal}
                         showModalFilter={showModalFilter}
@@ -286,11 +291,11 @@ export const ObjectTableContainer = ({
                                 <RowStack block gap={1} baseline data-tid="NothingFound">
                                     <Fit>Ничего не найдено</Fit>
                                     <Fit>
-                                        <Link onClick={() => updateQuery(getDefaultQuery())}>Сбросьте фильтр</Link>
+                                        <Link onClick={handleResetQuery}>Сбросьте фильтр</Link>
                                     </Fit>
                                     <Fit>или</Fit>
                                     <Fit>
-                                        <Link onClick={() => setShowModalFilter(true)}>измените</Link>
+                                        <Link onClick={handleOpenFilter}>измените</Link>
                                     </Fit>
                                     <Fit>параметры фильтрации</Fit>
                                 </RowStack>

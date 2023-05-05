@@ -97,6 +97,13 @@ export const ObjectDetailsContainer = ({
         throw new Error("Пытаемся удалить объект с типом массив");
     };
 
+    const handleCopyObject = () => {
+        CopyToClipboardToast.copyText(JSON.stringify(objectInfo, null, 4));
+    };
+
+    const handleTryDeleteObject = () => setShowConfirmModal(true);
+    const handleCancelDelete = () => setShowConfirmModal(false);
+
     if (!objectInfo) {
         return <ObjectNotFoundPage />;
     }
@@ -116,19 +123,13 @@ export const ObjectDetailsContainer = ({
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fit>
-                                <Link
-                                    icon={<CopyIcon />}
-                                    onClick={() => CopyToClipboardToast.copyText(JSON.stringify(objectInfo, null, 4))}
-                                    data-tid="Copy">
+                                <Link icon={<CopyIcon />} onClick={handleCopyObject} data-tid="Copy">
                                     Скопировать
                                 </Link>
                             </Fit>
                             <Fit>
                                 {allowDelete && isSuperUser && (
-                                    <Link
-                                        icon={<TrashIcon />}
-                                        onClick={() => setShowConfirmModal(true)}
-                                        data-tid="Delete">
+                                    <Link icon={<TrashIcon />} onClick={handleTryDeleteObject} data-tid="Delete">
                                         Удалить
                                     </Link>
                                 )}
@@ -157,7 +158,7 @@ export const ObjectDetailsContainer = ({
                     </ColumnStack>
                 </CommonLayout.Content>
                 {showConfirmModal && allowDelete && isSuperUser && (
-                    <ConfirmDeleteObjectModal onDelete={handleDelete} onCancel={() => setShowConfirmModal(false)} />
+                    <ConfirmDeleteObjectModal onDelete={handleDelete} onCancel={handleCancelDelete} />
                 )}
             </CommonLayout.ContentLoader>
         </CommonLayout>
