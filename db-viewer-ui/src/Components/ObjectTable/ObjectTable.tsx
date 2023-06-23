@@ -1,6 +1,6 @@
-import SortDefaultIcon from "@skbkontur/react-icons/SortDefault";
-import SortDownIcon from "@skbkontur/react-icons/SortDown";
-import SortUpIcon from "@skbkontur/react-icons/SortUp";
+import { UiFilterSortADefaultIcon } from "@skbkontur/icons/esm/icons/UiFilterSortADefaultIcon";
+import { UiFilterSortAHighToLowIcon } from "@skbkontur/icons/esm/icons/UiFilterSortAHighToLowIcon";
+import { UiFilterSortALowToHighIcon } from "@skbkontur/icons/esm/icons/UiFilterSortALowToHighIcon";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
 
@@ -74,15 +74,15 @@ export function ObjectTable({
 
     const getIcon = (name: string, currentSort: Sort[]): JSX.Element => {
         const dictionary: { [key: string]: JSX.Element } = {
-            Ascending: <SortUpIcon />,
-            Descending: <SortDownIcon />,
+            Ascending: <UiFilterSortALowToHighIcon />,
+            Descending: <UiFilterSortAHighToLowIcon />,
         };
         const currentSortOrder = currentSort.find(x => x.path === name)?.sortOrder;
         if (currentSortOrder) {
             return dictionary[currentSortOrder];
         }
 
-        return <SortDefaultIcon />;
+        return <UiFilterSortADefaultIcon />;
     };
 
     const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): JSX.Element => {

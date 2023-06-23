@@ -1,4 +1,4 @@
-import CopyIcon from "@skbkontur/react-icons/Copy";
+import { CopyIcon } from "@skbkontur/icons/esm/icons/CopyIcon";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";

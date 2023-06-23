@@ -1,4 +1,4 @@
-import ArrowChevronLeftIcon from "@skbkontur/react-icons/ArrowChevronLeft";
+import { ArrowCLeftIcon } from "@skbkontur/icons/esm/icons/ArrowCLeftIcon";
 import { Fill, Fit, RowStack, VerticalAlign } from "@skbkontur/react-stack-layout";
 import { Loader, ThemeContext } from "@skbkontur/react-ui";
 import React, { CSSProperties } from "react";
@@ -94,7 +94,7 @@ CommonLayout.GoBack = function CommonLayoutGoBack({ children, to }: CommonLayout
     return (
         <div className={jsStyles.backLinkContainer()}>
             <RouterLink data-tid="GoBack" to={to}>
-                <ArrowChevronLeftIcon />
+                <ArrowCLeftIcon />
                 {"\u00A0"}
                 {children}
             </RouterLink>

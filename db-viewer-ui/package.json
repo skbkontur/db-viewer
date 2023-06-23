@@ -39,7 +39,6 @@
     "test": "mocha **/*.test.ts"
   },
   "peerDependencies": {
-    "@skbkontur/react-icons": ">=3 <=5",
     "@skbkontur/react-ui": ">=2 <=4",
     "react": ">=16 <=17",
     "react-dom": ">=16 <=17",
@@ -63,7 +62,7 @@
     "@babel/preset-typescript": "^7.14.5",
     "@babel/runtime": "^7.14.8",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
-    "@skbkontur/react-icons": "^5.2.4",
+    "@skbkontur/icons": "^1.0.3",
     "@skbkontur/react-ui": "^4.1.0",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addons": "^6.5.16",

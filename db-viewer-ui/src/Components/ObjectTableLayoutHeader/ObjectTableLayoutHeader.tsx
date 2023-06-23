@@ -1,7 +1,7 @@
-import ClearIcon from "@skbkontur/react-icons/Clear";
-import DownloadIcon from "@skbkontur/react-icons/Download";
-import FilterIcon from "@skbkontur/react-icons/Filter";
-import SettingsIcon from "@skbkontur/react-icons/Settings";
+import { NetDownloadIcon } from "@skbkontur/icons/esm/icons/NetDownloadIcon";
+import { SettingsGearIcon } from "@skbkontur/icons/esm/icons/SettingsGearIcon";
+import { UiFilterFunnelIcon } from "@skbkontur/icons/esm/icons/UiFilterFunnelIcon";
+import { XCircleIcon } from "@skbkontur/icons/esm/icons/XCircleIcon";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Tooltip } from "@skbkontur/react-ui";
 import difference from "lodash/difference";
@@ -82,7 +82,7 @@ export class ObjectTableLayoutHeader extends React.Component<
             <RowStack baseline block gap={2} className={jsStyles.header()}>
                 <Fill />
                 <Fit className={jsStyles.filter()}>
-                    <Link icon={<FilterIcon />} onClick={this.handleOpenFilterModal} data-tid="OpenFilter">
+                    <Link icon={<UiFilterFunnelIcon />} onClick={this.handleOpenFilterModal} data-tid="OpenFilter">
                         Фильтрация
                     </Link>
                 </Fit>
@@ -90,20 +90,20 @@ export class ObjectTableLayoutHeader extends React.Component<
                     <CountOfRecordsSelector count={query.count} onChange={value => onChange({ count: value })} />
                 </Fit>
                 <Fit>
-                    <Link icon={<ClearIcon />} onClick={() => onChange(null)} data-tid="ClearFilter">
+                    <Link icon={<XCircleIcon />} onClick={() => onChange(null)} data-tid="ClearFilter">
                         Очистить фильтр
                     </Link>
                 </Fit>
                 <Fit>
                     <Tooltip render={() => this.renderFieldSelectorTooltipContent()} pos="bottom right" trigger="click">
-                        <Link icon={<SettingsIcon />} data-tid="FieldSettings">
+                        <Link icon={<SettingsGearIcon />} data-tid="FieldSettings">
                             Настроить поля
                         </Link>
                     </Tooltip>
                 </Fit>
                 <Fit>
                     <Link
-                        icon={downloading ? <Spinner /> : <DownloadIcon />}
+                        icon={downloading ? <Spinner /> : <NetDownloadIcon />}
                         onClick={onDownloadClick}
                         disabled={downloading}
                         data-tid="DownloadLink">

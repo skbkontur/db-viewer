@@ -1,7 +1,7 @@
-import AddIcon from "@skbkontur/react-icons/Add";
-import MenuIcon from "@skbkontur/react-icons/Menu";
-import RubleIcon from "@skbkontur/react-icons/Ruble";
-import SearchIcon from "@skbkontur/react-icons/Search";
+import { MoneyCurrencyRubleIcon } from "@skbkontur/icons/esm/icons/MoneyCurrencyRubleIcon";
+import { PlusIcon } from "@skbkontur/icons/esm/icons/PlusIcon";
+import { SearchLoupeIcon } from "@skbkontur/icons/esm/icons/SearchLoupeIcon";
+import { UiMenuBars3HIcon } from "@skbkontur/icons/esm/icons/UiMenuBars3HIcon";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import { action } from "@storybook/addon-actions";
@@ -64,12 +64,12 @@ storiesOf("Layouts", module)
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fit>
-                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
@@ -91,12 +91,12 @@ storiesOf("Layouts", module)
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
@@ -140,12 +140,12 @@ storiesOf("Layouts", module)
                     tools={
                         <RowStack baseline block gap={2}>
                             <Fit>
-                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
@@ -168,12 +168,12 @@ storiesOf("Layouts", module)
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
@@ -196,12 +196,12 @@ storiesOf("Layouts", module)
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
@@ -232,22 +232,22 @@ storiesOf("Layouts", module)
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <Link icon={<SearchIcon />} onClick={action("tool1")}>
+                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
                                     Инструмент 1
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<AddIcon />} onClick={action("tool2")}>
+                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
                                     Инструмент 2
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<MenuIcon />} onClick={action("tool3")}>
+                                <Link icon={<UiMenuBars3HIcon />} onClick={action("tool3")}>
                                     Инструмент 3
                                 </Link>
                             </Fit>
                             <Fit>
-                                <Link icon={<RubleIcon />} onClick={action("tool4")}>
+                                <Link icon={<MoneyCurrencyRubleIcon />} onClick={action("tool4")}>
                                     Инструмент 4
                                 </Link>
                             </Fit>
