@@ -56,34 +56,6 @@ CommonLayout.Header = function Header({
     return (
         <div className={`${jsStyles.header()} ${borderBottom ? jsStyles.borderBottom(theme) : ""}`}>
             <RowStack verticalAlign={verticalAlign ?? "baseline"} block gap={2}>
-                <Fit>
-                    <h2 className={jsStyles.headerTitle()} data-tid="Header">
-                        {title}
-                    </h2>
-                </Fit>
-                {tools && <Fill>{tools}</Fill>}
-            </RowStack>
-            {children && <div className={`${jsStyles.content()} ${jsStyles.headerContent()}`}>{children}</div>}
-        </div>
-    );
-};
-
-interface CommonLayoutGreyLineHeaderProps {
-    "data-tid"?: Nullable<string>;
-    children?: Nullable<JSX.Element>;
-    title: string | JSX.Element;
-    tools?: null | JSX.Element;
-}
-
-CommonLayout.GreyLineHeader = function GreyLineHeader({
-    children,
-    title,
-    tools,
-}: CommonLayoutGreyLineHeaderProps): JSX.Element {
-    const theme = React.useContext(ThemeContext);
-    return (
-        <div className={jsStyles.greyLineHeader(theme)}>
-            <RowStack baseline block gap={2}>
                 <Fill>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         {title}

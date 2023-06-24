@@ -220,11 +220,10 @@ export const ObjectTableContainer = ({
 
     return (
         <CommonLayout withArrow>
-            {useErrorHandlingContainer && <ErrorHandlingContainer />}
             <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />
+            {useErrorHandlingContainer && <ErrorHandlingContainer />}
             <CommonLayout.Header
-                verticalAlign="center"
-                title={<div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>}
+                title={<div style={{ maxWidth: 410, minWidth: 200 }}>{objectId}</div>}
                 tools={
                     <ObjectTableLayoutHeader
                         query={query}

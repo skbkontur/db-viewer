@@ -37,7 +37,7 @@ storiesOf("Layouts", module)
     .addDecorator(withRouter)
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
-            <CommonLayout>
+            <CommonLayout withArrow>
                 <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
@@ -111,7 +111,7 @@ storiesOf("Layouts", module)
     ))
     .add("TitledWithBackToPrevious", () => (
         <div style={{ height: 300 }}>
-            <CommonLayout>
+            <CommonLayout withArrow>
                 <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.Header title="Заголовок раздела" />
                 <CommonLayout.Content>
@@ -120,77 +120,12 @@ storiesOf("Layouts", module)
             </CommonLayout>
         </div>
     ))
-    .add("GreyLineTitledWithBackToPrevious", () => (
+    .add("TitledWithBackToPreviousWithRightAlignedToolsAndContent", () => (
         <div style={{ height: 300 }}>
-            <CommonLayout>
+            <CommonLayout withArrow>
                 <CommonLayout.GoBack to="/AdminTools" />
-                <CommonLayout.GreyLineHeader title="Заголовок раздела" />
-                <CommonLayout.Content>
-                    <SpaceFiller height="100%" />
-                </CommonLayout.Content>
-            </CommonLayout>
-        </div>
-    ))
-    .add("GreyLineTitledWithBackToPreviousWithTools", () => (
-        <div style={{ height: 300 }}>
-            <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools" />
-                <CommonLayout.GreyLineHeader
-                    title="Заголовок раздела"
-                    tools={
-                        <RowStack baseline block gap={2}>
-                            <Fit>
-                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
-                                    Инструмент 1
-                                </Link>
-                            </Fit>
-                            <Fit>
-                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
-                                    Инструмент 1
-                                </Link>
-                            </Fit>
-                        </RowStack>
-                    }
-                />
-                <CommonLayout.Content>
-                    <SpaceFiller height="100%" />
-                </CommonLayout.Content>
-            </CommonLayout>
-        </div>
-    ))
-    .add("GreyLineTitledWithBackToPreviousWithRightAlignedTools", () => (
-        <div style={{ height: 300 }}>
-            <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools" />
-                <CommonLayout.GreyLineHeader
-                    title="Заголовок раздела"
-                    tools={
-                        <RowStack baseline block gap={2}>
-                            <Fill />
-                            <Fit>
-                                <Link icon={<SearchLoupeIcon />} onClick={action("tool1")}>
-                                    Инструмент 1
-                                </Link>
-                            </Fit>
-                            <Fit>
-                                <Link icon={<PlusIcon />} onClick={action("tool2")}>
-                                    Инструмент 1
-                                </Link>
-                            </Fit>
-                        </RowStack>
-                    }
-                />
-                <CommonLayout.Content>
-                    <SpaceFiller height="100%" />
-                </CommonLayout.Content>
-            </CommonLayout>
-        </div>
-    ))
-    .add("GreyLineTitledWithBackToPreviousWithRightAlignedToolsAndContent", () => (
-        <div style={{ height: 300 }}>
-            <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools" />
-                <CommonLayout.GreyLineHeader
+                <CommonLayout.Header
+                    borderBottom
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>
@@ -212,18 +147,18 @@ storiesOf("Layouts", module)
                         <div>Content line 2</div>
                         <div>Content line 3</div>
                     </div>
-                </CommonLayout.GreyLineHeader>
+                </CommonLayout.Header>
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
                 </CommonLayout.Content>
             </CommonLayout>
         </div>
     ))
-    .add("GreyLineTitledWithBackToPreviousWithRightAlignedToolsAndContentAndLongHeaderText", () => (
+    .add("TitledWithBackToPreviousWithRightAlignedToolsAndContentAndLongHeaderText", () => (
         <div style={{ height: 300 }}>
-            <CommonLayout>
+            <CommonLayout withArrow>
                 <CommonLayout.GoBack to="/AdminTools" />
-                <CommonLayout.GreyLineHeader
+                <CommonLayout.Header
                     title={
                         "Заголовок 636716756516841227_DdDoc_then_EdiDoc__04.09.2018" +
                         "636716756516841227_DdDoc_then_EdiDoc__04.09.2018"
@@ -258,7 +193,7 @@ storiesOf("Layouts", module)
                         <div>Content line 2</div>
                         <div>Content line 3</div>
                     </div>
-                </CommonLayout.GreyLineHeader>
+                </CommonLayout.Header>
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
                 </CommonLayout.Content>

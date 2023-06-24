@@ -36,17 +36,6 @@ export const jsStyles = {
         `;
     },
 
-    greyLineHeader(t: Theme): string {
-        return css`
-            background-color: ${t.bgDisabled};
-            padding: ${2 * baseSize}px ${globalHorizontalPadding}px;
-            margin-left: ${-globalHorizontalPadding}px;
-            margin-right: ${-globalHorizontalPadding}px;
-            margin-bottom: ${3 * baseSize}px;
-            word-break: break-all;
-        `;
-    },
-
     headerContent(): string {
         return css`
             margin-top: ${3 * newBaseSize}px;
@@ -73,7 +62,8 @@ export const jsStyles = {
 
     header(): string {
         return css`
-            margin-bottom: ${3 * baseSize}px;
+            margin-bottom: ${5 * newBaseSize}px;
+            word-break: break-all;
         `;
     },
 
