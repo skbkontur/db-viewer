@@ -38,7 +38,7 @@ storiesOf("Layouts", module)
     .add("BackToPreviousViewLayout", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
                 </CommonLayout.Content>
@@ -112,7 +112,7 @@ storiesOf("Layouts", module)
     .add("TitledWithBackToPrevious", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.Header title="Заголовок раздела" />
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
@@ -123,7 +123,7 @@ storiesOf("Layouts", module)
     .add("GreyLineTitledWithBackToPrevious", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.GreyLineHeader title="Заголовок раздела" />
                 <CommonLayout.Content>
                     <SpaceFiller height="100%" />
@@ -134,7 +134,7 @@ storiesOf("Layouts", module)
     .add("GreyLineTitledWithBackToPreviousWithTools", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.GreyLineHeader
                     title="Заголовок раздела"
                     tools={
@@ -161,7 +161,7 @@ storiesOf("Layouts", module)
     .add("GreyLineTitledWithBackToPreviousWithRightAlignedTools", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.GreyLineHeader
                     title="Заголовок раздела"
                     tools={
@@ -189,7 +189,7 @@ storiesOf("Layouts", module)
     .add("GreyLineTitledWithBackToPreviousWithRightAlignedToolsAndContent", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.GreyLineHeader
                     title="Заголовок раздела"
                     tools={
@@ -222,7 +222,7 @@ storiesOf("Layouts", module)
     .add("GreyLineTitledWithBackToPreviousWithRightAlignedToolsAndContentAndLongHeaderText", () => (
         <div style={{ height: 300 }}>
             <CommonLayout>
-                <CommonLayout.GoBack to="/AdminTools">Назад в google</CommonLayout.GoBack>
+                <CommonLayout.GoBack to="/AdminTools" />
                 <CommonLayout.GreyLineHeader
                     title={
                         "Заголовок 636716756516841227_DdDoc_then_EdiDoc__04.09.2018" +

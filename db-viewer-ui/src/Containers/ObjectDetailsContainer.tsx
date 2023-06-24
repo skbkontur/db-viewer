@@ -1,6 +1,6 @@
 import { CopyIcon } from "@skbkontur/icons/esm/icons/CopyIcon";
 import { TrashCanIcon } from "@skbkontur/icons/esm/icons/TrashCanIcon";
-import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { ColumnStack, Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import React, { useEffect, useState } from "react";
@@ -9,7 +9,6 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
-import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
 import { ObjectKeys } from "../Components/ObjectViewer/ObjectKeys";
@@ -110,18 +109,16 @@ export const ObjectDetailsContainer = ({
 
     const { allowEdit, allowDelete } = objectMeta?.schemaDescription || { allowEdit: false, allowDelete: false };
     return (
-        <CommonLayout>
+        <CommonLayout withArrow>
             {useErrorHandlingContainer && <ErrorHandlingContainer />}
+            <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />
             <CommonLayout.ContentLoader active={loading}>
-                <CommonLayout.GreyLineHeader
-                    title={
-                        <RowStack gap={3} verticalAlign="center">
-                            <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />
-                            <span>{objectId}</span>
-                        </RowStack>
-                    }
+                <CommonLayout.Header
+                    borderBottom
+                    title={objectId}
                     tools={
                         <RowStack baseline block gap={2}>
+                            <Fill />
                             <Fit>
                                 <Link icon={<CopyIcon />} onClick={handleCopyObject} data-tid="Copy">
                                     Скопировать
@@ -141,11 +138,11 @@ export const ObjectDetailsContainer = ({
                             .filter(x => x.isIdentity)
                             .map(x => ({ name: x.name, value: String(objectInfo[x.name]) }))}
                     />
-                </CommonLayout.GreyLineHeader>
+                </CommonLayout.Header>
                 <CommonLayout.Content>
                     <ColumnStack gap={4} block>
                         <Fit style={{ maxWidth: "100%" }}>
-                            {objectMeta != null && (
+                            {objectMeta && (
                                 <ObjectViewer
                                     objectInfo={objectInfo}
                                     objectMeta={objectMeta}

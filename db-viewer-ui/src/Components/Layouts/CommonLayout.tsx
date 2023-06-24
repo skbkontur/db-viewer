@@ -1,4 +1,4 @@
-import { ArrowCLeftIcon } from "@skbkontur/icons/esm/icons/ArrowCLeftIcon";
+import { ArrowALeftIcon24Regular } from "@skbkontur/icons/esm/icons/ArrowALeftIcon";
 import { Fill, Fit, RowStack, VerticalAlign } from "@skbkontur/react-stack-layout";
 import { Loader, ThemeContext } from "@skbkontur/react-ui";
 import React, { CSSProperties } from "react";
@@ -10,13 +10,14 @@ import { jsStyles } from "./CommonLayout.styles";
 interface CommonLayoutProps {
     topRightTools?: Nullable<JSX.Element> | string;
     children?: React.ReactNode;
+    withArrow?: boolean;
     style?: CSSProperties;
 }
 
-export function CommonLayout({ children, topRightTools, ...restProps }: CommonLayoutProps): JSX.Element {
+export function CommonLayout({ children, topRightTools, withArrow, ...restProps }: CommonLayoutProps): JSX.Element {
     const theme = React.useContext(ThemeContext);
     return (
-        <div className={jsStyles.commonLayout(theme)} {...restProps}>
+        <div className={`${jsStyles.commonLayout(theme)} ${withArrow ? jsStyles.withArrow() : ""}`} {...restProps}>
             {topRightTools && <div className={jsStyles.topRightTools()}>{topRightTools}</div>}
             {children}
         </div>
@@ -40,11 +41,20 @@ interface CommonLayoutHeaderProps {
     title: string | JSX.Element;
     verticalAlign?: VerticalAlign;
     tools?: JSX.Element;
+    children?: JSX.Element;
+    borderBottom?: boolean;
 }
 
-CommonLayout.Header = function Header({ title, tools, verticalAlign }: CommonLayoutHeaderProps): JSX.Element {
+CommonLayout.Header = function Header({
+    title,
+    tools,
+    verticalAlign,
+    children,
+    borderBottom,
+}: CommonLayoutHeaderProps): JSX.Element {
+    const theme = React.useContext(ThemeContext);
     return (
-        <div className={jsStyles.header()}>
+        <div className={`${jsStyles.header()} ${borderBottom ? jsStyles.borderBottom(theme) : ""}`}>
             <RowStack verticalAlign={verticalAlign ?? "baseline"} block gap={2}>
                 <Fit>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
@@ -53,6 +63,7 @@ CommonLayout.Header = function Header({ title, tools, verticalAlign }: CommonLay
                 </Fit>
                 {tools && <Fill>{tools}</Fill>}
             </RowStack>
+            {children && <div className={`${jsStyles.content()} ${jsStyles.headerContent()}`}>{children}</div>}
         </div>
     );
 };
@@ -80,25 +91,21 @@ CommonLayout.GreyLineHeader = function GreyLineHeader({
                 </Fill>
                 {tools && <Fit>{tools}</Fit>}
             </RowStack>
-            {children && <div className={`${jsStyles.content()} ${jsStyles.greyContent()}`}>{children}</div>}
+            {children && <div className={`${jsStyles.content()} ${jsStyles.headerContent()}`}>{children}</div>}
         </div>
     );
 };
 
 interface CommonLayoutGoBackProps {
-    children?: React.ReactNode;
     to: string;
 }
 
-CommonLayout.GoBack = function CommonLayoutGoBack({ children, to }: CommonLayoutGoBackProps): JSX.Element {
+CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProps): JSX.Element {
+    const theme = React.useContext(ThemeContext);
     return (
-        <div className={jsStyles.backLinkContainer()}>
-            <RouterLink data-tid="GoBack" to={to}>
-                <ArrowCLeftIcon />
-                {"\u00A0"}
-                {children}
-            </RouterLink>
-        </div>
+        <RouterLink data-tid="GoBack" to={to} className={jsStyles.backLink()}>
+            <ArrowALeftIcon24Regular color={theme.gray} className={jsStyles.backLinkIcon()} />
+        </RouterLink>
     );
 };
 
