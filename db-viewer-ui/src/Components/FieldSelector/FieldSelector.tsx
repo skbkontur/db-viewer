@@ -1,4 +1,4 @@
-import { SearchLoupeIcon } from "@skbkontur/icons/esm/icons/SearchLoupeIcon";
+import { SearchLoupeIcon16Regular } from "@skbkontur/icons";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Checkbox, Input, ThemeContext } from "@skbkontur/react-ui";
 import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";
@@ -88,7 +88,7 @@ export function FieldSelector({
         <div className={jsStyles.root()}>
             <Input
                 data-tid="FilterInput"
-                leftIcon={<SearchLoupeIcon />}
+                leftIcon={<SearchLoupeIcon16Regular />}
                 value={searchText}
                 width={300}
                 onValueChange={setSearchText}

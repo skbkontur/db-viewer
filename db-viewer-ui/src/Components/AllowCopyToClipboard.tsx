@@ -1,4 +1,4 @@
-import { CopyIcon } from "@skbkontur/icons/esm/icons/CopyIcon";
+import { CopyIcon16Regular } from "@skbkontur/icons";
 import { Link, Toast } from "@skbkontur/react-ui";
 import copy from "copy-to-clipboard";
 import React, { PropsWithChildren } from "react";
@@ -19,7 +19,7 @@ export class AllowCopyToClipboard extends React.Component<PropsWithChildren<{}>>
         return (
             <span>
                 <span ref={x => (this.children = x)}>{this.props.children}</span>{" "}
-                <Link icon={<CopyIcon />} onClick={this.handleCopy} />
+                <Link icon={<CopyIcon16Regular />} onClick={this.handleCopy} />
             </span>
         );
     }

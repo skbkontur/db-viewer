@@ -1,7 +1,4 @@
-import { MoneyCurrencyRubleIcon } from "@skbkontur/icons/esm/icons/MoneyCurrencyRubleIcon";
-import { PlusIcon } from "@skbkontur/icons/esm/icons/PlusIcon";
-import { SearchLoupeIcon } from "@skbkontur/icons/esm/icons/SearchLoupeIcon";
-import { UiMenuBars3HIcon } from "@skbkontur/icons/esm/icons/UiMenuBars3HIcon";
+import { MoneyCurrencyRubleIcon, PlusIcon, SearchLoupeIcon, UiMenuBars3HIcon } from "@skbkontur/icons";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import { action } from "@storybook/addon-actions";

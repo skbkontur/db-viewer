@@ -39,6 +39,7 @@
     "test": "mocha **/*.test.ts"
   },
   "peerDependencies": {
+    "@skbkontur/icons": "1.x",
     "@skbkontur/react-ui": ">=2 <=4",
     "react": ">=16 <=17",
     "react-dom": ">=16 <=17",

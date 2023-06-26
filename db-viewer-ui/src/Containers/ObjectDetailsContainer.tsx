@@ -1,5 +1,4 @@
-import { CopyIcon } from "@skbkontur/icons/esm/icons/CopyIcon";
-import { TrashCanIcon } from "@skbkontur/icons/esm/icons/TrashCanIcon";
+import { CopyIcon16Regular, TrashCanIcon16Regular } from "@skbkontur/icons";
 import { ColumnStack, Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
@@ -120,13 +119,16 @@ export const ObjectDetailsContainer = ({
                         <RowStack baseline block gap={2}>
                             <Fill />
                             <Fit>
-                                <Link icon={<CopyIcon />} onClick={handleCopyObject} data-tid="Copy">
+                                <Link icon={<CopyIcon16Regular />} onClick={handleCopyObject} data-tid="Copy">
                                     Скопировать
                                 </Link>
                             </Fit>
                             <Fit>
                                 {allowDelete && isSuperUser && (
-                                    <Link icon={<TrashCanIcon />} onClick={handleTryDeleteObject} data-tid="Delete">
+                                    <Link
+                                        icon={<TrashCanIcon16Regular />}
+                                        onClick={handleTryDeleteObject}
+                                        data-tid="Delete">
                                         Удалить
                                     </Link>
                                 )}

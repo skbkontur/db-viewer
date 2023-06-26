@@ -1,4 +1,4 @@
-import { CopyIcon } from "@skbkontur/icons/esm/icons/CopyIcon";
+import { CopyIcon16Regular } from "@skbkontur/icons";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
@@ -97,7 +97,7 @@ export class ErrorHandlingContainerModal extends React.Component<
                                             <h4 className={jsStyles.header()}>Client stack trace</h4>
                                         </Fit>
                                         <Fit>
-                                            <Link icon={<CopyIcon />} onClick={this.handleCopyStack}>
+                                            <Link icon={<CopyIcon16Regular />} onClick={this.handleCopyStack}>
                                                 Скопировать
                                             </Link>
                                         </Fit>
@@ -116,7 +116,7 @@ export class ErrorHandlingContainerModal extends React.Component<
                                             <h4 className={jsStyles.header()}>Server stack trace</h4>
                                         </Fit>
                                         <Fit>
-                                            <Link icon={<CopyIcon />} onClick={this.handleCopyServerStack}>
+                                            <Link icon={<CopyIcon16Regular />} onClick={this.handleCopyServerStack}>
                                                 Скопировать
                                             </Link>
                                         </Fit>

@@ -1,5 +1,4 @@
-import { ArrowShapeTriangleADownIcon } from "@skbkontur/icons/esm/icons/ArrowShapeTriangleADownIcon";
-import { CounterIcon } from "@skbkontur/icons/esm/icons/CounterIcon";
+import { ArrowShapeTriangleADownIcon16Regular, CounterIcon16Regular } from "@skbkontur/icons";
 import { DropdownMenu, Link, MenuItem } from "@skbkontur/react-ui";
 import React from "react";
 
@@ -26,10 +25,10 @@ export class CountOfRecordsSelector extends React.Component<CountOfRecordsSelect
                 data-tid="CountDropdown"
                 menuWidth={200}
                 caption={
-                    <Link data-tid="CurrentCount" icon={<CounterIcon />}>
+                    <Link data-tid="CurrentCount" icon={<CounterIcon16Regular />}>
                         {this.props.count} записей на странице
                         {"\u00A0"}
-                        <ArrowShapeTriangleADownIcon />
+                        <ArrowShapeTriangleADownIcon16Regular />
                     </Link>
                 }>
                 {[20, 50, 100].map(this.renderLinkDropdownItem)}
