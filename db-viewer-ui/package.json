@@ -39,11 +39,11 @@
     "test": "mocha **/*.test.ts"
   },
   "peerDependencies": {
-    "@skbkontur/icons": "1.x",
+    "@skbkontur/icons": ">=1 <2",
     "@skbkontur/react-ui": ">=2 <=4",
-    "react": ">=16 <=17",
-    "react-dom": ">=16 <=17",
-    "react-router-dom": ">=6"
+    "react": ">=16 <=18",
+    "react-dom": ">=16 <=18",
+    "react-router-dom": ">=6 <7"
   },
   "dependencies": {
     "@skbkontur/react-stack-layout": "^1.0.3",
