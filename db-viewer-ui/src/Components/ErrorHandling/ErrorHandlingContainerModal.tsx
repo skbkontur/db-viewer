@@ -1,4 +1,4 @@
-import { CopyIcon16Regular } from "@skbkontur/icons";
+import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";

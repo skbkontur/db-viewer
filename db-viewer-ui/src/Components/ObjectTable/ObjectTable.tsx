@@ -1,8 +1,6 @@
-import {
-    UiFilterSortADefaultIcon16Regular,
-    UiFilterSortAHighToLowIcon16Regular,
-    UiFilterSortALowToHighIcon16Regular,
-} from "@skbkontur/icons";
+import { UiFilterSortADefaultIcon16Regular } from "@skbkontur/icons/UiFilterSortADefaultIcon16Regular";
+import { UiFilterSortAHighToLowIcon16Regular } from "@skbkontur/icons/UiFilterSortAHighToLowIcon16Regular";
+import { UiFilterSortALowToHighIcon16Regular } from "@skbkontur/icons/UiFilterSortALowToHighIcon16Regular";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
 

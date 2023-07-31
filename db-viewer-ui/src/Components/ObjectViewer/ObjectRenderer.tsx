@@ -1,4 +1,6 @@
-import { ArrowDUturnLeftDownIcon16Regular, CheckAIcon16Regular, ToolPencilLineIcon16Regular } from "@skbkontur/icons";
+import { ArrowDUturnLeftDownIcon16Regular } from "@skbkontur/icons/ArrowDUturnLeftDownIcon16Regular";
+import { CheckAIcon16Regular } from "@skbkontur/icons/CheckAIcon16Regular";
+import { ToolPencilLineIcon16Regular } from "@skbkontur/icons/ToolPencilLineIcon16Regular";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";

@@ -1,4 +1,5 @@
-import { CopyIcon16Regular, TrashCanIcon16Regular } from "@skbkontur/icons";
+import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
+import { TrashCanIcon16Regular } from "@skbkontur/icons/TrashCanIcon16Regular";
 import { ColumnStack, Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";

@@ -1,4 +1,4 @@
-import { SearchLoupeIcon16Regular } from "@skbkontur/icons";
+import { SearchLoupeIcon16Regular } from "@skbkontur/icons/SearchLoupeIcon16Regular";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Checkbox, Input, ThemeContext } from "@skbkontur/react-ui";
 import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";

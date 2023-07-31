@@ -1,4 +1,4 @@
-import { ArrowALeftIcon24Regular } from "@skbkontur/icons";
+import { ArrowALeftIcon24Regular } from "@skbkontur/icons/ArrowALeftIcon24Regular";
 import { Fill, Fit, RowStack, VerticalAlign } from "@skbkontur/react-stack-layout";
 import { Loader, ThemeContext } from "@skbkontur/react-ui";
 import React, { CSSProperties } from "react";

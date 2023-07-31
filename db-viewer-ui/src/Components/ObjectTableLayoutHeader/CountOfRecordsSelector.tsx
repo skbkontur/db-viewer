@@ -1,4 +1,5 @@
-import { ArrowShapeTriangleADownIcon16Regular, CounterIcon16Regular } from "@skbkontur/icons";
+import { ArrowShapeTriangleADownIcon16Regular } from "@skbkontur/icons/ArrowShapeTriangleADownIcon16Regular";
+import { CounterIcon16Regular } from "@skbkontur/icons/CounterIcon16Regular";
 import { DropdownMenu, Link, MenuItem } from "@skbkontur/react-ui";
 import React from "react";
 

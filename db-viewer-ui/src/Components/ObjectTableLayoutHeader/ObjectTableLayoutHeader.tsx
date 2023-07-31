@@ -1,9 +1,7 @@
-import {
-    NetDownloadIcon16Regular,
-    SettingsGearIcon16Regular,
-    UiFilterFunnelIcon16Regular,
-    XCircleIcon16Regular,
-} from "@skbkontur/icons";
+import { NetDownloadIcon16Regular } from "@skbkontur/icons/NetDownloadIcon16Regular";
+import { SettingsGearIcon16Regular } from "@skbkontur/icons/SettingsGearIcon16Regular";
+import { UiFilterFunnelIcon16Regular } from "@skbkontur/icons/UiFilterFunnelIcon16Regular";
+import { XCircleIcon16Regular } from "@skbkontur/icons/XCircleIcon16Regular";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Tooltip } from "@skbkontur/react-ui";
 import difference from "lodash/difference";

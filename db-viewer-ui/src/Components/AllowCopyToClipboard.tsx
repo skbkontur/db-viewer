@@ -1,4 +1,4 @@
-import { CopyIcon16Regular } from "@skbkontur/icons";
+import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
 import { Link, Toast } from "@skbkontur/react-ui";
 import copy from "copy-to-clipboard";
 import React, { PropsWithChildren } from "react";
