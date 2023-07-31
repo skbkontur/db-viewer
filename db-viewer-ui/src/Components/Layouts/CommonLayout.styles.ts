@@ -76,11 +76,11 @@ export const jsStyles = {
     backLink(): string {
         return css`
             position: absolute;
-            left: 2px;
+            left: ${newBaseSize * 3}px;
             opacity: 0.7;
             height: ${newBaseSize * 7}px;
             width: ${newBaseSize * 7}px;
-            padding: ${newBaseSize * 2}px 0 ${newBaseSize * 2}px ${newBaseSize * 2}px;
+            padding: ${newBaseSize * 2}px 0;
             display: flex;
             align-items: center;
             justify-content: center;
