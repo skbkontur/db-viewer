@@ -22,10 +22,10 @@ export default {
 
 const DetailsContainer = ({ theme }: { theme: Theme }) => (
     <ThemeContext.Provider value={theme}>
-        <MemoryRouter initialEntries={["/Object?Id=Id"]}>
+        <MemoryRouter initialEntries={["/OrderNumber2000-0000-000-0"]}>
             <Routes>
                 <Route
-                    path="/Object"
+                    path="/:objectId"
                     element={
                         <ObjectDetailsContainer
                             isSuperUser

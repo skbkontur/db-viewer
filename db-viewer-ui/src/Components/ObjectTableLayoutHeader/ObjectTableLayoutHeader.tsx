@@ -2,7 +2,7 @@ import { NetDownloadIcon16Regular } from "@skbkontur/icons/NetDownloadIcon16Regu
 import { SettingsGearIcon16Regular } from "@skbkontur/icons/SettingsGearIcon16Regular";
 import { UiFilterFunnelIcon16Regular } from "@skbkontur/icons/UiFilterFunnelIcon16Regular";
 import { XCircleIcon16Regular } from "@skbkontur/icons/XCircleIcon16Regular";
-import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Tooltip } from "@skbkontur/react-ui";
 import difference from "lodash/difference";
 import React from "react";
@@ -79,8 +79,7 @@ export class ObjectTableLayoutHeader extends React.Component<
         const allowCloseModal =
             allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties);
         return (
-            <RowStack baseline block gap={2}>
-                <Fill />
+            <RowStack baseline block gap={2} style={{ flexWrap: "wrap" }}>
                 <Fit className={jsStyles.filter()}>
                     <Link
                         icon={<UiFilterFunnelIcon16Regular />}

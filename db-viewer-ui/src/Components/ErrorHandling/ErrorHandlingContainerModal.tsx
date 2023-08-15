@@ -97,9 +97,9 @@ export class ErrorHandlingContainerModal extends React.Component<
                                             <h4 className={jsStyles.header()}>Client stack trace</h4>
                                         </Fit>
                                         <Fit>
-                                            <Link icon={<CopyIcon16Regular />} onClick={this.handleCopyStack}>
+                                            <Button icon={<CopyIcon16Regular />} onClick={this.handleCopyStack}>
                                                 Скопировать
-                                            </Link>
+                                            </Button>
                                         </Fit>
                                     </RowStack>
                                 )}

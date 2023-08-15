@@ -59,7 +59,6 @@ storiesOf("Layouts", module)
         <div style={{ height: 300 }}>
             <CommonLayout>
                 <CommonLayout.Header
-                    verticalAlign="center"
                     title="Заголовок раздела"
                     tools={
                         <RowStack baseline block gap={2}>

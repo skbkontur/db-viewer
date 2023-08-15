@@ -1,7 +1,7 @@
 import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
 import { TrashCanIcon16Regular } from "@skbkontur/icons/TrashCanIcon16Regular";
-import { ColumnStack, Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Link } from "@skbkontur/react-ui";
+import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { Button } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
@@ -117,21 +117,25 @@ export const ObjectDetailsContainer = ({
                     borderBottom
                     title={objectId}
                     tools={
-                        <RowStack baseline block gap={2}>
-                            <Fill />
+                        <RowStack block baseline gap={2}>
                             <Fit>
-                                <Link icon={<CopyIcon16Regular />} onClick={handleCopyObject} data-tid="Copy">
+                                <Button
+                                    use="link"
+                                    icon={<CopyIcon16Regular />}
+                                    onClick={handleCopyObject}
+                                    data-tid="Copy">
                                     Скопировать
-                                </Link>
+                                </Button>
                             </Fit>
                             <Fit>
                                 {allowDelete && isSuperUser && (
-                                    <Link
+                                    <Button
+                                        use="link"
                                         icon={<TrashCanIcon16Regular />}
                                         onClick={handleTryDeleteObject}
                                         data-tid="Delete">
                                         Удалить
-                                    </Link>
+                                    </Button>
                                 )}
                             </Fit>
                         </RowStack>

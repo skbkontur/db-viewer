@@ -223,7 +223,7 @@ export const ObjectTableContainer = ({
             <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />
             {useErrorHandlingContainer && <ErrorHandlingContainer />}
             <CommonLayout.Header
-                title={<div style={{ maxWidth: 410, minWidth: 200 }}>{objectId}</div>}
+                title={objectId}
                 tools={
                     <ObjectTableLayoutHeader
                         query={query}
