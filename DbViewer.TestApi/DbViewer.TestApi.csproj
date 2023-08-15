@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="GroboContainer" Version="1.2.60" />
     <PackageReference Include="GroBuf" Version="1.7.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.20" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
