@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Threading;
 
 using NUnit.Framework;
 
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
@@ -67,7 +69,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
         private TPage InitializePage<TPage>()
         {
             var newPage = (TPage)Activator.CreateInstance(typeof(TPage), WebDriver);
-            (newPage as PageBase).WaitLoaded();
+            // (newPage as PageBase).WaitLoaded();
             return newPage;
         }
 
@@ -83,16 +85,14 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
                 if (webDriver != null) return webDriver;
 
                 var wdHub = "http://localhost:4444/wd/hub";
-                ChromeOptions options = new ChromeOptions();
+                var options = new ChromeOptions();
 
-                options.AddAdditionalCapability(CapabilityType.Platform, "Windows 10", true);
-                options.AddAdditionalCapability("name", TestContext.CurrentContext.Test.Name, true);
-                options.AddAdditionalCapability("maxDuration", 10800, true);
-
-                var caps = (DesiredCapabilities)options.ToCapabilities();
-                caps.SetCapability("enableVNC", true);
-
-                webDriver = new RemoteWebDriver(new Uri(wdHub), caps, TimeSpan.FromMinutes(1));
+                var selenoidOptions = new Dictionary<string, object> {{"enableVNC", true}};
+                options.AddAdditionalOption("selenoid:options", selenoidOptions);
+                options.AddAdditionalOption(CapabilityType.Platform, "Windows 10");
+                options.AddAdditionalOption("name", TestContext.CurrentContext.Test.Name);
+                options.AddAdditionalOption("maxDuration", 10800);
+                webDriver = new RemoteWebDriver(new Uri(wdHub), options.ToCapabilities(), TimeSpan.FromMinutes(1));
                 webDriver.Manage().Window.Size = new Size(1280, 1024);
                 return webDriver;
             }
