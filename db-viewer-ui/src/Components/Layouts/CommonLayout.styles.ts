@@ -21,6 +21,12 @@ export const jsStyles = {
         `;
     },
 
+    withArrow(): string {
+        return css`
+            padding: ${globalVerticalPadding}px ${newBaseSize * 12}px 0;
+        `;
+    },
+
     topRightTools(): string {
         return css`
             position: absolute;
@@ -30,20 +36,9 @@ export const jsStyles = {
         `;
     },
 
-    greyLineHeader(t: Theme): string {
+    headerContent(): string {
         return css`
-            background-color: ${t.bgDisabled};
-            padding: ${2 * baseSize}px ${globalHorizontalPadding}px;
-            margin-left: ${-globalHorizontalPadding}px;
-            margin-right: ${-globalHorizontalPadding}px;
-            margin-bottom: ${3 * baseSize}px;
-            word-break: break-all;
-        `;
-    },
-
-    greyContent(): string {
-        return css`
-            margin-top: ${2 * baseSize}px;
+            margin-top: ${3 * newBaseSize}px;
         `;
     },
 
@@ -52,7 +47,10 @@ export const jsStyles = {
             margin: 0;
             font-weight: 700;
             font-size: 29px;
-            line-height: 40px;
+            flex-grow: 1;
+            line-height: 48px;
+            word-break: break-all;
+            white-space: pre-wrap;
         `;
     },
 
@@ -65,16 +63,49 @@ export const jsStyles = {
         `;
     },
 
-    header(): string {
+    headerWrapper(): string {
         return css`
-            margin-bottom: ${3 * baseSize}px;
+            margin-bottom: ${5 * newBaseSize}px;
+            word-break: break-all;
         `;
     },
 
-    backLinkContainer(): string {
+    header(): string {
         return css`
-            margin-bottom: ${3 * baseSize}px;
-            margin-left: -4px;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: ${newBaseSize * 2}px;
+            white-space: nowrap;
+        `;
+    },
+
+    borderBottom(t: Theme): string {
+        return css`
+            border-bottom: 2px solid ${t.grayXLight};
+        `;
+    },
+
+    backLink(): string {
+        return css`
+            position: absolute;
+            left: 0;
+            height: ${newBaseSize * 12}px;
+            width: ${newBaseSize * 12}px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        `;
+    },
+
+    backLinkIcon(t: Theme): string {
+        return css`
+            display: block;
+            color: #757575;
+
+            &:hover {
+                color: ${t.textColorDefault};
+            }
         `;
     },
 

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
-import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTable } from "../Components/ObjectTable/ObjectTable";
 import { ObjectTableLayoutHeader } from "../Components/ObjectTableLayoutHeader/ObjectTableLayoutHeader";
@@ -220,16 +219,11 @@ export const ObjectTableContainer = ({
     };
 
     return (
-        <CommonLayout>
+        <CommonLayout withArrow>
+            <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />
             {useErrorHandlingContainer && <ErrorHandlingContainer />}
             <CommonLayout.Header
-                verticalAlign="center"
-                title={
-                    <RowStack gap={3} verticalAlign="center">
-                        <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />
-                        <div style={{ maxWidth: 410, wordBreak: "break-all" }}>{objectId}</div>
-                    </RowStack>
-                }
+                title={objectId}
                 tools={
                     <ObjectTableLayoutHeader
                         query={query}

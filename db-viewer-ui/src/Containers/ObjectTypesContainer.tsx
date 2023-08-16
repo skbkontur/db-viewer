@@ -1,10 +1,9 @@
-import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
+import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
 import { Input, Loader } from "@skbkontur/react-ui";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
-import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectTypes } from "../Components/ObjectTypes/ObjectTypes";
 import { ObjectIdentifier } from "../Domain/Api/DataTypes/ObjectIdentifier";
@@ -35,16 +34,10 @@ export const ObjectTypesContainer = ({
     }, []);
 
     return (
-        <CommonLayout>
+        <CommonLayout withArrow={withGoBackUrl}>
             {useErrorHandlingContainer && <ErrorHandlingContainer />}
-            <CommonLayout.Header
-                title={
-                    <RowStack gap={3} verticalAlign="center">
-                        {withGoBackUrl && <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />}
-                        <span>Список Объектов</span>
-                    </RowStack>
-                }
-            />
+            {withGoBackUrl && <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />}
+            <CommonLayout.Header title="Список Объектов" />
             <CommonLayout.Content>
                 <Loader type="big" active={loading}>
                     <ColumnStack block stretch>
@@ -55,7 +48,7 @@ export const ObjectTypesContainer = ({
                                 placeholder="Введите значение для поиска (работает R#-style поиск, например, BoxEvSt или BESE)"
                                 value={filter}
                                 onValueChange={setFilter}
-                                width={"100%"}
+                                width="100%"
                             />
                         </Fit>
                         <Fit>

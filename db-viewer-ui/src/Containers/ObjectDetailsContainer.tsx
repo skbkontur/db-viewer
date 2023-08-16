@@ -1,7 +1,7 @@
-import CopyIcon from "@skbkontur/react-icons/Copy";
-import TrashIcon from "@skbkontur/react-icons/Trash";
+import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
+import { TrashCanIcon16Regular } from "@skbkontur/icons/TrashCanIcon16Regular";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Link } from "@skbkontur/react-ui";
+import { Button } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
@@ -9,7 +9,6 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
-import { GoBackLink } from "../Components/GoBackLink/GoBackLink";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";
 import { ObjectNotFoundPage } from "../Components/ObjectNotFoundPage/ObjectNotFoundPage";
 import { ObjectKeys } from "../Components/ObjectViewer/ObjectKeys";
@@ -110,28 +109,33 @@ export const ObjectDetailsContainer = ({
 
     const { allowEdit, allowDelete } = objectMeta?.schemaDescription || { allowEdit: false, allowDelete: false };
     return (
-        <CommonLayout>
+        <CommonLayout withArrow>
             {useErrorHandlingContainer && <ErrorHandlingContainer />}
+            <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />
             <CommonLayout.ContentLoader active={loading}>
-                <CommonLayout.GreyLineHeader
-                    title={
-                        <RowStack gap={3} verticalAlign="center">
-                            <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />
-                            <span>{objectId}</span>
-                        </RowStack>
-                    }
+                <CommonLayout.Header
+                    borderBottom
+                    title={objectId}
                     tools={
-                        <RowStack baseline block gap={2}>
+                        <RowStack block baseline gap={2}>
                             <Fit>
-                                <Link icon={<CopyIcon />} onClick={handleCopyObject} data-tid="Copy">
+                                <Button
+                                    use="link"
+                                    icon={<CopyIcon16Regular />}
+                                    onClick={handleCopyObject}
+                                    data-tid="Copy">
                                     Скопировать
-                                </Link>
+                                </Button>
                             </Fit>
                             <Fit>
                                 {allowDelete && isSuperUser && (
-                                    <Link icon={<TrashIcon />} onClick={handleTryDeleteObject} data-tid="Delete">
+                                    <Button
+                                        use="link"
+                                        icon={<TrashCanIcon16Regular />}
+                                        onClick={handleTryDeleteObject}
+                                        data-tid="Delete">
                                         Удалить
-                                    </Link>
+                                    </Button>
                                 )}
                             </Fit>
                         </RowStack>
@@ -141,11 +145,11 @@ export const ObjectDetailsContainer = ({
                             .filter(x => x.isIdentity)
                             .map(x => ({ name: x.name, value: String(objectInfo[x.name]) }))}
                     />
-                </CommonLayout.GreyLineHeader>
+                </CommonLayout.Header>
                 <CommonLayout.Content>
                     <ColumnStack gap={4} block>
                         <Fit style={{ maxWidth: "100%" }}>
-                            {objectMeta != null && (
+                            {objectMeta && (
                                 <ObjectViewer
                                     objectInfo={objectInfo}
                                     objectMeta={objectMeta}

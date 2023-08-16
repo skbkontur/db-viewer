@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5 - 2023.08.16
+- Redesign back link arrows 
+- Update dotnet and selenoid
+- Header is now responsive
+
 ## v1.4 - 2023.05.05
 - Update "react-router-dom" package to v6
 

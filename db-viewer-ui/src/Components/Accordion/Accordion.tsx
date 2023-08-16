@@ -1,5 +1,5 @@
-import ArrowTriangleDownIcon from "@skbkontur/react-icons/ArrowTriangleDown";
-import ArrowTriangleRightIcon from "@skbkontur/react-icons/ArrowTriangleRight";
+import { ArrowShapeTriangleADownIcon16Regular } from "@skbkontur/icons/ArrowShapeTriangleADownIcon16Regular";
+import { ArrowShapeTriangleARightIcon16Regular } from "@skbkontur/icons/ArrowShapeTriangleARightIcon16Regular";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { ThemeContext, Hint, Link } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
@@ -208,7 +208,11 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
                         data-tid="ToggleButton"
                         className={jsStyles.toggleButton()}
                         onClick={this.toggleCollapseManual}>
-                        {collapsedSelf ? <ArrowTriangleRightIcon /> : <ArrowTriangleDownIcon />}
+                        {collapsedSelf ? (
+                            <ArrowShapeTriangleARightIcon16Regular />
+                        ) : (
+                            <ArrowShapeTriangleADownIcon16Regular />
+                        )}
                         <span data-tid="ToggleButtonText" className={jsStyles.toggleButtonText()}>
                             {title}
                         </span>

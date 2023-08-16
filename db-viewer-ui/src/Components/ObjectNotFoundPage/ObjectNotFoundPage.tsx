@@ -3,7 +3,6 @@ import React from "react";
 import { useLocation } from "react-router";
 
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
-import { GoBackLink } from "../GoBackLink/GoBackLink";
 import { CommonLayout } from "../Layouts/CommonLayout";
 
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
@@ -14,8 +13,8 @@ export const ObjectNotFoundPage = (): JSX.Element => {
     const { pathname } = useLocation();
     return (
         <div style={{ backgroundColor: theme.bgDefault }}>
-            <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }}>
-                <GoBackLink backUrl={RouteUtils.backUrl(pathname)} />
+            <CommonLayout data-tid="ObjectNotFoundPage" style={{ display: "block", height: "initial" }} withArrow>
+                <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />
                 <CommonLayout.Content className={jsStyles.content()}>
                     <h2 className={jsStyles.headerTitle()} data-tid="Header">
                         Страница не найдена

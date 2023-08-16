@@ -1,6 +1,6 @@
-import EditIcon from "@skbkontur/react-icons/Edit";
-import OkIcon from "@skbkontur/react-icons/Ok";
-import UndoIcon from "@skbkontur/react-icons/Undo";
+import { ArrowDUturnLeftDownIcon16Regular } from "@skbkontur/icons/ArrowDUturnLeftDownIcon16Regular";
+import { CheckAIcon16Regular } from "@skbkontur/icons/CheckAIcon16Regular";
+import { ToolPencilLineIcon16Regular } from "@skbkontur/icons/ToolPencilLineIcon16Regular";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
@@ -51,19 +51,22 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
                 <Fill />
                 {canEdit && !editableMode && (
                     <Fit>
-                        <Link icon={<EditIcon />} onClick={this.handleClick} data-tid="Edit" />
+                        <Link icon={<ToolPencilLineIcon16Regular />} onClick={this.handleClick} data-tid="Edit" />
                     </Fit>
                 )}
                 {canEdit && editableMode && (
                     <Fit>
-                        <Link icon={<OkIcon />} onClick={this.handleSaveChanges} data-tid="Save">
+                        <Link icon={<CheckAIcon16Regular />} onClick={this.handleSaveChanges} data-tid="Save">
                             Сохранить
                         </Link>
                     </Fit>
                 )}
                 {canEdit && editableMode && (
                     <Fit>
-                        <Link icon={<UndoIcon />} onClick={this.handleCancelChanges} data-tid="Cancel">
+                        <Link
+                            icon={<ArrowDUturnLeftDownIcon16Regular />}
+                            onClick={this.handleCancelChanges}
+                            data-tid="Cancel">
                             Отменить
                         </Link>
                     </Fit>

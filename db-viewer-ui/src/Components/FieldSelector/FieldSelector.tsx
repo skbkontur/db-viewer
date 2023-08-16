@@ -1,4 +1,4 @@
-import SearchIcon from "@skbkontur/react-icons/Search";
+import { SearchLoupeIcon16Regular } from "@skbkontur/icons/SearchLoupeIcon16Regular";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Checkbox, Input, ThemeContext } from "@skbkontur/react-ui";
 import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";
@@ -40,7 +40,7 @@ export function FieldSelector({
     onShowField,
     onHideField,
     showSelectAllButton,
-}: FieldSelectorProps) {
+}: FieldSelectorProps): JSX.Element {
     const [searchText, setSearchText] = React.useState("");
     const theme = React.useContext(ThemeContext);
 
@@ -88,7 +88,7 @@ export function FieldSelector({
         <div className={jsStyles.root()}>
             <Input
                 data-tid="FilterInput"
-                leftIcon={<SearchIcon />}
+                leftIcon={<SearchLoupeIcon16Regular />}
                 value={searchText}
                 width={300}
                 onValueChange={setSearchText}
