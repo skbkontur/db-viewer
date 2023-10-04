@@ -14,7 +14,7 @@ export function timestampToTicks(timeStr: Nullable<string> | Nullable<Date>): Nu
     } else {
         commonTime = BigInt(timeStr.getTime());
     }
-    return (commonTime * BigInt(10000) + offset + BigInt(end)).toString();
+    return (commonTime * BigInt(10000) + offset + BigInt(Math.round(end))).toString();
 }
 
 export function ticksToTimestamp(timeStr: Nullable<string>): Nullable<Date> {
