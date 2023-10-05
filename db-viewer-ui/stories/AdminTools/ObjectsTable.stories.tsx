@@ -1,4 +1,3 @@
-import { storiesOf } from "@storybook/react";
 import React from "react";
 import { withRouter } from "storybook-addon-react-router-v6";
 
@@ -50,47 +49,51 @@ const indexed: PropertyMetaInformation = {
     availableValues: [],
 };
 
-storiesOf("ObjectTable", module)
-    .addDecorator(withRouter)
-    .add("Default", () => (
-        <ObjectTable
-            items={[{ id: { gln: "2125215-151256125-12521" }, lastEditedTime: "12521512521", boxId: "12365126126" }]}
-            properties={[
-                { ...nonIndexed, name: "id.gln" },
-                { ...nonIndexed, name: "boxId" },
-                { ...indexed, name: "lastEditedTime", isSortable: true },
-            ]}
-            onDetailsClick={() => "scopeId/id"}
-            onChangeSortClick={emptyMethod}
-            objectType="Type"
-            customRenderer={new NullCustomRenderer()}
-            onDeleteClick={deleteObject}
-            currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
-            allowDelete
-            allowSort
-        />
-    ))
-    .add("Без удаления", () => (
-        <ObjectTable
-            items={[
-                {
-                    id: { gln: "2125215-151256125-12521" },
-                    lastEditedTime: "12521512521",
-                    boxId: "12365126126",
-                },
-            ]}
-            properties={[
-                { ...indexed, name: "id.gln", isSortable: true },
-                { ...indexed, name: "boxId", isSortable: true },
-                { ...nonIndexed, name: "lastEditedTime" },
-            ]}
-            onDetailsClick={() => "scopeId/id"}
-            onChangeSortClick={emptyMethod}
-            onDeleteClick={deleteObject}
-            objectType="Type"
-            customRenderer={new NullCustomRenderer()}
-            currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
-            allowDelete={false}
-            allowSort
-        />
-    ));
+export default {
+    title: "ObjectTable",
+    decorators: [withRouter],
+};
+
+export const Default = (): React.ReactElement => (
+    <ObjectTable
+        items={[{ id: { gln: "2125215-151256125-12521" }, lastEditedTime: "12521512521", boxId: "12365126126" }]}
+        properties={[
+            { ...nonIndexed, name: "id.gln" },
+            { ...nonIndexed, name: "boxId" },
+            { ...indexed, name: "lastEditedTime", isSortable: true },
+        ]}
+        onDetailsClick={() => "scopeId/id"}
+        onChangeSortClick={emptyMethod}
+        objectType="Type"
+        customRenderer={new NullCustomRenderer()}
+        onDeleteClick={deleteObject}
+        currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
+        allowDelete
+        allowSort
+    />
+);
+
+export const WithoutDeleting = (): React.ReactElement => (
+    <ObjectTable
+        items={[
+            {
+                id: { gln: "2125215-151256125-12521" },
+                lastEditedTime: "12521512521",
+                boxId: "12365126126",
+            },
+        ]}
+        properties={[
+            { ...indexed, name: "id.gln", isSortable: true },
+            { ...indexed, name: "boxId", isSortable: true },
+            { ...nonIndexed, name: "lastEditedTime" },
+        ]}
+        onDetailsClick={() => "scopeId/id"}
+        onChangeSortClick={emptyMethod}
+        onDeleteClick={deleteObject}
+        objectType="Type"
+        customRenderer={new NullCustomRenderer()}
+        currentSorts={[{ path: "BoxId", sortOrder: ObjectFilterSortOrder.Descending }]}
+        allowDelete={false}
+        allowSort
+    />
+);

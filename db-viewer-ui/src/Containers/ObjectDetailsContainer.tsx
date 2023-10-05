@@ -32,7 +32,7 @@ export const ObjectDetailsContainer = ({
     dbViewerApi,
     customRenderer,
     useErrorHandlingContainer,
-}: ObjectDetailsProps): JSX.Element => {
+}: ObjectDetailsProps): React.ReactElement => {
     const { search, pathname } = useLocation();
     const navigate = useNavigate();
     const { objectId = "" } = useParams<"objectId">();

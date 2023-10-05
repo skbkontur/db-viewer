@@ -36,7 +36,7 @@ export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectR
         value: undefined,
     };
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { path, target, property, objectType, customRenderer } = this.props;
         const value = this.state.editableMode ? this.state.value : getByPath(target, path);
         const { editableMode } = this.state;

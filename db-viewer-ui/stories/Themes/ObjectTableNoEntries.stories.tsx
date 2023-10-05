@@ -39,7 +39,7 @@ const TableContainer = ({ theme }: { theme: Theme }) => (
     </ThemeContext.Provider>
 );
 
-export const Default = (): JSX.Element => <TableContainer theme={DEFAULT_THEME} />;
-export const Flat = (): JSX.Element => <TableContainer theme={FLAT_THEME_8PX_OLD} />;
-export const Old = (): JSX.Element => <TableContainer theme={DEFAULT_THEME_8PX_OLD} />;
-export const Dark = (): JSX.Element => <TableContainer theme={ThemeFactory.create(reactUiDark)} />;
+export const Default = (): React.ReactElement => <TableContainer theme={DEFAULT_THEME} />;
+export const Flat = (): React.ReactElement => <TableContainer theme={FLAT_THEME_8PX_OLD} />;
+export const Old = (): React.ReactElement => <TableContainer theme={DEFAULT_THEME_8PX_OLD} />;
+export const Dark = (): React.ReactElement => <TableContainer theme={ThemeFactory.create(reactUiDark)} />;

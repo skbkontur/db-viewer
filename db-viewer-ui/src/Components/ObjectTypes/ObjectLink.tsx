@@ -39,7 +39,7 @@ function ObjectLinkInternal({ identifier, keywords, theme }: ObjectLinkInternalP
     return <ObjectLinkInternal identifier={identifier} keywords={rest} theme={theme} />;
 }
 
-export const ObjectLink = ({ identifier, keywords }: ObjectIdentifierProps): JSX.Element => {
+export const ObjectLink = ({ identifier, keywords }: ObjectIdentifierProps): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
     const { pathname } = useLocation();
     return (

@@ -33,7 +33,7 @@ const AdminToolsEntryPoint = () => (
     </BrowserRouter>
 );
 
-function AdminRedirect(): JSX.Element {
+function AdminRedirect(): React.ReactElement {
     document.cookie = "isSuperUser=true";
     localStorage.setItem("isSuperUser", "true");
     return <Navigate to="/BusinessObjects" replace />;

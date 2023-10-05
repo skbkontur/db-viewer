@@ -7,13 +7,18 @@ import { RouterLink } from "../RouterLink/RouterLink";
 import { jsStyles } from "./CommonLayout.styles";
 
 interface CommonLayoutProps {
-    topRightTools?: Nullable<JSX.Element> | string;
+    topRightTools?: Nullable<React.ReactElement> | string;
     children?: React.ReactNode;
     withArrow?: boolean;
     style?: CSSProperties;
 }
 
-export function CommonLayout({ children, topRightTools, withArrow, ...restProps }: CommonLayoutProps): JSX.Element {
+export function CommonLayout({
+    children,
+    topRightTools,
+    withArrow,
+    ...restProps
+}: CommonLayoutProps): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
         <div className={`${jsStyles.commonLayout(theme)} ${withArrow ? jsStyles.withArrow() : ""}`} {...restProps}>
@@ -28,7 +33,7 @@ interface CommonLayoutContentProps {
     className?: void | string;
 }
 
-CommonLayout.Content = function Content({ children, ...restProps }: CommonLayoutContentProps): JSX.Element {
+CommonLayout.Content = function Content({ children, ...restProps }: CommonLayoutContentProps): React.ReactElement {
     return (
         <div className={jsStyles.content()} {...restProps}>
             {children}
@@ -37,13 +42,18 @@ CommonLayout.Content = function Content({ children, ...restProps }: CommonLayout
 };
 
 interface CommonLayoutHeaderProps {
-    title: string | JSX.Element;
-    tools?: JSX.Element;
-    children?: JSX.Element;
+    title: string | React.ReactElement;
+    tools?: React.ReactElement;
+    children?: React.ReactElement;
     borderBottom?: boolean;
 }
 
-CommonLayout.Header = function Header({ title, tools, children, borderBottom }: CommonLayoutHeaderProps): JSX.Element {
+CommonLayout.Header = function Header({
+    title,
+    tools,
+    children,
+    borderBottom,
+}: CommonLayoutHeaderProps): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
         <div className={`${jsStyles.headerWrapper()} ${borderBottom ? jsStyles.borderBottom(theme) : ""}`}>
@@ -62,7 +72,7 @@ interface CommonLayoutGoBackProps {
     to: string;
 }
 
-CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProps): JSX.Element {
+CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProps): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
         <RouterLink data-tid="GoBack" to={to} className={jsStyles.backLink()}>
@@ -78,7 +88,7 @@ interface ContentLoaderProps {
     caption?: string;
 }
 
-CommonLayout.ContentLoader = function ContentLoader(props: ContentLoaderProps): JSX.Element {
+CommonLayout.ContentLoader = function ContentLoader(props: ContentLoaderProps): React.ReactElement {
     const { active, children, ...restProps } = props;
 
     return (

@@ -9,7 +9,7 @@ interface ConfirmDeleteObjectModalProps {
     onCancel: () => void;
 }
 
-export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteObjectModalProps): JSX.Element {
+export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteObjectModalProps): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
         <Modal ignoreBackgroundClick noClose data-tid="ConfirmDeleteObjectModal">

@@ -63,7 +63,7 @@ export class ObjectTableLayoutHeader extends React.Component<
         }
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const {
             query,
             allowReadAll,
@@ -129,7 +129,7 @@ export class ObjectTableLayoutHeader extends React.Component<
         );
     }
 
-    private renderFieldSelectorTooltipContent(): null | JSX.Element {
+    private renderFieldSelectorTooltipContent(): null | React.ReactElement {
         const { query, properties, onChange } = this.props;
         const { hiddenColumns } = query;
         if (properties.length === 0) {

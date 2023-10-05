@@ -29,7 +29,7 @@ const clouds = [
     />,
 ];
 
-export const CloudsFar = (): JSX.Element => {
+export const CloudsFar = (): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
     return (
         <svg
@@ -68,7 +68,7 @@ export const CloudsFar = (): JSX.Element => {
     );
 };
 
-export const CloudsMed = (): JSX.Element => {
+export const CloudsMed = (): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
     return (
         <svg

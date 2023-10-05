@@ -22,7 +22,7 @@ export const ObjectTypesContainer = ({
     useErrorHandlingContainer,
     identifierKeywords,
     withGoBackUrl,
-}: ObjectTypesProps): JSX.Element => {
+}: ObjectTypesProps): React.ReactElement => {
     const [loading, setLoading] = useState(false);
     const { pathname } = useLocation();
     const [objects, setObjects] = useState<ObjectIdentifier[]>([]);

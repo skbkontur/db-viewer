@@ -23,7 +23,7 @@ export const DbViewerApplication = ({
     identifierKeywords,
     useErrorHandlingContainer,
     withGoBackUrl,
-}: DbViewerApplicationProps): JSX.Element => {
+}: DbViewerApplicationProps): React.ReactElement => {
     return (
         <Routes>
             <Route

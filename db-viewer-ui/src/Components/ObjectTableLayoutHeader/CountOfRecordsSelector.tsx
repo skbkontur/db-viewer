@@ -9,7 +9,7 @@ interface CountOfRecordsSelectorProps {
 }
 
 export class CountOfRecordsSelector extends React.Component<CountOfRecordsSelectorProps> {
-    public renderLinkDropdownItem = (count: number): null | string | JSX.Element => {
+    public renderLinkDropdownItem = (count: number): null | string | React.ReactElement => {
         if (count === this.props.count) {
             return null;
         }
@@ -20,7 +20,7 @@ export class CountOfRecordsSelector extends React.Component<CountOfRecordsSelect
         );
     };
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <DropdownMenu
                 data-tid="CountDropdown"

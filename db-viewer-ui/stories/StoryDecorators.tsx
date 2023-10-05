@@ -33,7 +33,7 @@ class ValidationContainerWithSubmitButtonWrapper extends React.Component<
         }
     };
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <ValidationContainer ref={x => (this.container = x)}>
                 <div>

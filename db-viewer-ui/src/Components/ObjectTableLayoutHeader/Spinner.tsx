@@ -8,7 +8,7 @@ interface SpinnerProps {
 }
 
 export class Spinner extends React.Component<SpinnerProps> {
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <span className={jsStyles.root()}>
                 <UiSpinner type="mini" caption={this.props.caption || ""} />

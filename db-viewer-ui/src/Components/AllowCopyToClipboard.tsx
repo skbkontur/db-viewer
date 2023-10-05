@@ -15,7 +15,7 @@ export class CopyToClipboardToast {
 export class AllowCopyToClipboard extends React.Component<PropsWithChildren<{}>> {
     public children: null | HTMLSpanElement = null;
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <span>
                 <span ref={x => (this.children = x)}>{this.props.children}</span>{" "}

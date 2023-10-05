@@ -16,7 +16,7 @@ interface ObjectViewerProps {
 }
 
 export class ObjectViewer extends React.Component<ObjectViewerProps> {
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { objectInfo } = this.props;
         return (
             <div>

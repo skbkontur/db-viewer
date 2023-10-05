@@ -25,7 +25,7 @@ function renderObject(
     path: string[],
     property: PropertyMetaInformation,
     objectType: string
-): string | JSX.Element {
+): string | React.ReactElement {
     const result = typeof target === "object" ? getByPath(target, path) : null;
     if (result == null) {
         return <span style={{ color: "#a0a0a0" }}>{String(result)}</span>;
@@ -49,7 +49,7 @@ export function renderForTableCell(
     property: PropertyMetaInformation,
     objectType: string,
     customRenderer: ICustomRenderer
-): string | JSX.Element {
+): string | React.ReactElement {
     const customRender = customRenderer.renderTableCell(target, path, property, objectType);
     if (customRender) {
         return customRender;
@@ -64,7 +64,7 @@ export function renderForDetails(
     property: PropertyMetaInformation,
     objectType: string,
     customRenderer: ICustomRenderer
-): string | JSX.Element {
+): string | React.ReactElement {
     const customRender = customRenderer.renderDetails(target, path, property, objectType);
     if (customRender) {
         return customRender;
@@ -79,7 +79,7 @@ export function renderForEdit(
     objectType: string,
     onChange: (value: any) => void,
     customRenderer: ICustomRenderer
-): string | JSX.Element {
+): string | React.ReactElement {
     const customEdit = customRenderer.renderEdit(value, property, objectType, onChange);
     if (customEdit) {
         return customEdit;

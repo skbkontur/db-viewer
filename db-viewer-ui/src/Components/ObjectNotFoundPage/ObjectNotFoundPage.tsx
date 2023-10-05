@@ -8,7 +8,7 @@ import { CommonLayout } from "../Layouts/CommonLayout";
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
 import { jsStyles } from "./ObjectNotFoundPage.styles";
 
-export const ObjectNotFoundPage = (): JSX.Element => {
+export const ObjectNotFoundPage = (): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
     const { pathname } = useLocation();
     return (

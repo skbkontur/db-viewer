@@ -1,5 +1,4 @@
 import { action } from "@storybook/addon-actions";
-import { storiesOf } from "@storybook/react";
 import React from "react";
 
 import { DatePicker } from "../../src/Components/DateTimeRangePicker/DatePicker";
@@ -12,59 +11,65 @@ function getInitialValue(value: Date): { value: Date } {
     };
 }
 
-storiesOf("DatePicker", module)
-    .add("Default", () => (
-        <WithState initial={getInitialValue(new Date())}>
-            {(state, onChange) => (
-                <DatePicker
-                    value={state.value}
-                    onChange={x => {
-                        action("onChange")(x);
-                        onChange({ value: x || undefined });
-                    }}
-                />
-            )}
-        </WithState>
-    ))
-    .add("Default [timezone=Moscow]", () => (
-        <WithState initial={getInitialValue(new Date())}>
-            {(state, onChange) => (
-                <DatePicker
-                    value={state.value}
-                    timeZone={TimeUtils.TimeZones.Moscow}
-                    onChange={x => {
-                        action("onChange")(x);
-                        onChange({ value: x || undefined });
-                    }}
-                />
-            )}
-        </WithState>
-    ))
-    .add("Disabled", () => (
-        <WithState initial={getInitialValue(new Date())}>
-            {(state, onChange) => (
-                <DatePicker
-                    value={state.value}
-                    disabled
-                    onChange={x => {
-                        action("onChange")(x);
-                        onChange({ value: x || undefined });
-                    }}
-                />
-            )}
-        </WithState>
-    ))
-    .add("With error", () => (
-        <WithState initial={getInitialValue(new Date())}>
-            {(state, onChange) => (
-                <DatePicker
-                    value={state.value}
-                    error
-                    onChange={x => {
-                        action("onChange")(x);
-                        onChange({ value: x || undefined });
-                    }}
-                />
-            )}
-        </WithState>
-    ));
+export default {
+    title: "DatePicker",
+};
+
+export const Default = (): React.ReactElement => (
+    <WithState initial={getInitialValue(new Date())}>
+        {(state, onChange) => (
+            <DatePicker
+                value={state.value}
+                onChange={x => {
+                    action("onChange")(x);
+                    onChange({ value: x || undefined });
+                }}
+            />
+        )}
+    </WithState>
+);
+
+export const DefaultWithTimezoneMoscow = (): React.ReactElement => (
+    <WithState initial={getInitialValue(new Date())}>
+        {(state, onChange) => (
+            <DatePicker
+                value={state.value}
+                timeZone={TimeUtils.TimeZones.Moscow}
+                onChange={x => {
+                    action("onChange")(x);
+                    onChange({ value: x || undefined });
+                }}
+            />
+        )}
+    </WithState>
+);
+
+export const Disabled = (): React.ReactElement => (
+    <WithState initial={getInitialValue(new Date())}>
+        {(state, onChange) => (
+            <DatePicker
+                value={state.value}
+                disabled
+                onChange={x => {
+                    action("onChange")(x);
+                    onChange({ value: x || undefined });
+                }}
+            />
+        )}
+    </WithState>
+);
+
+export const WithError = (): React.ReactElement => (
+    <WithState initial={getInitialValue(new Date())}>
+        {(state, onChange) => (
+            <DatePicker
+                value={state.value}
+                error
+                onChange={x => {
+                    action("onChange")(x);
+                    onChange({ value: x || undefined });
+                }}
+            />
+        )}
+    </WithState>
+);

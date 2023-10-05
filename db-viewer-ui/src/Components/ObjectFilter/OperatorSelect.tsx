@@ -25,7 +25,7 @@ function operatorToString(operation: ObjectFieldFilterOperator): string {
     return "=";
 }
 
-export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
+export function OperatorSelect(props: OperatorSelectProps): React.ReactElement {
     const { availableValues, value, onChange } = props;
     return (
         <StyledSelect
@@ -42,7 +42,7 @@ export function OperatorSelect(props: OperatorSelectProps): JSX.Element {
     );
 }
 
-export function StyledSelect<TValue = {}, TItem = {}>(props: SelectProps<TValue, TItem>): JSX.Element {
+export function StyledSelect<TValue = {}, TItem = {}>(props: SelectProps<TValue, TItem>): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
         <Select<TValue, TItem>

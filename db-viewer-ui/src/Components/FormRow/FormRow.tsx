@@ -5,7 +5,7 @@ import React from "react";
 import { jsStyles } from "./FormRow.styles";
 
 export interface FormRowProps {
-    caption?: string | JSX.Element;
+    caption?: string | React.ReactElement;
     captionWidth?: number;
     children?: React.ReactNode;
 }

@@ -37,7 +37,7 @@ export function ObjectTypes({ objects, filter, identifierKeywords }: ObjectTypes
         return objects.filter(item => StringUtils.checkWordByCase(item.identifier, filter));
     };
 
-    const renderTypes = (objects: ObjectIdentifier[], displayGroups: boolean): JSX.Element => {
+    const renderTypes = (objects: ObjectIdentifier[], displayGroups: boolean): React.ReactElement => {
         if (!displayGroups) {
             return (
                 <div className={jsStyles.root()} data-tid="ObjectsList">
