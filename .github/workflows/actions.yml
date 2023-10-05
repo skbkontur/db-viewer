@@ -32,7 +32,7 @@ jobs:
         run: dotnet restore ./DbViewer.sln --verbosity minimal && dotnet tool restore
 
       - name: Install node dependencies
-        run: yarn --cwd db-viewer-ui install --frozen-lockfile
+        run: cd ./db-viewer-ui && yarn set version berry && yarn install --immutable
       
       - name: Pull docker images
         run: docker pull selenoid/vnc:chrome_84.0
@@ -47,7 +47,7 @@ jobs:
         run: yarn --cwd db-viewer-ui build
 
       - name: Check C# code style
-        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN && git diff --exit-code
+        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN && git diff --exit-code -- ':!db-viewer-ui'
 
       - name: Check front code
         run: yarn --cwd db-viewer-ui lint
