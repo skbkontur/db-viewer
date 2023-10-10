@@ -35,7 +35,7 @@ jobs:
         run: cd ./db-viewer-ui && yarn set version berry && yarn install --immutable
       
       - name: Pull docker images
-        run: docker pull selenoid/vnc:chrome_84.0
+        run: docker pull selenoid/vnc:chrome_112.0
 
       - name: Build dotnet
         run: dotnet build --configuration Release ./DbViewer.sln

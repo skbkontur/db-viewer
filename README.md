@@ -24,7 +24,7 @@ See [DbViewerApplication](https://github.com/skbkontur/db-viewer/blob/master/db-
 
 ```
 # needed for browser tests
-docker pull selenoid/vnc:chrome_84.0
+docker pull selenoid/vnc:chrome_112.0
 
 # start databases
 docker-compose up -d

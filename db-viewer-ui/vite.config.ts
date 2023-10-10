@@ -21,6 +21,12 @@ export default defineConfig(({ mode }) => ({
         globals: false,
         environment: "jsdom",
     },
+    esbuild: {
+        keepNames: true,
+        minifyIdentifiers: false,
+        minifySyntax: true,
+        minifyWhitespace: true,
+    },
     build: {
         outDir: "../DbViewer.TestApi/wwwroot",
         chunkSizeWarningLimit: 1024,

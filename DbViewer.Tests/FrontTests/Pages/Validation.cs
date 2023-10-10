@@ -1,6 +1,4 @@
-﻿using Kontur.Selone.Properties;
-
-using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
+﻿using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 
 using SKBKontur.SeleniumTesting;
 using SKBKontur.SeleniumTesting.Controls;
@@ -12,10 +10,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Validation(ISearchContainer container, ISelector selector)
             : base(container, selector)
         {
-            portal = container.Find<Portal>().By(selector + "[data-comp-name~='Portal']:portal div[class*='react-ui']");
+            portal = container.Find<Portal>().By(selector + "[data-comp-name*='Portal']:portal div[class*='react-ui']");
         }
-
-        public IProp<bool> Active => this.ReactProperty<bool>("error");
 
         public void ExpectIsOpenedWithMessage(string message = null)
         {
