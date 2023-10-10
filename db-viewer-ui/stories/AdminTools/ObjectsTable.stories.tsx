@@ -8,7 +8,7 @@ import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilt
 import { PropertyMetaInformation } from "../../src/Domain/Api/DataTypes/PropertyMetaInformation";
 import { TypeMetaInformation } from "../../src/Domain/Api/DataTypes/TypeMetaInformation";
 
-async function deleteObject(_index: number): Promise<void> {
+async function deleteObject(): Promise<void> {
     // Ничего не делаем
 }
 
