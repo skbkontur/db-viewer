@@ -20,7 +20,7 @@
   ],
   "author": "Den Mukhametianov, Pavel Vostretsov",
   "scripts": {
-    "build": "run-s build:prep build:vite \"build:copy:*\" build:copy:meta build:patch build:pack",
+    "build": "run-s build:prep build:vite \"build:copy:*\" build:patch build:pack",
     "build:prep": "run-s build:types build:clean build:tsc",
     "build:clean": "rimraf dist ../DbViewer.TestApi/wwwroot ../DbViewer.TestApi/bin/net6.0/wwwroot",
     "build:tsc": "tsc --project tsconfig.prod.json",
