@@ -44,10 +44,10 @@ jobs:
         run: dotnet pack --no-build --configuration Release ./DbViewer.sln
 
       - name: Build front
-        run: yarn --cwd db-viewer-ui build:test
+        run: yarn --cwd db-viewer-ui build
 
       - name: Check C# code style
-        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN && git diff --exit-code -- ':!db-viewer-ui'
+        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN && git diff --exit-code -- ':!./db-viewer-ui/.yarn'
 
       - name: Check front code
         run: yarn --cwd db-viewer-ui lint
@@ -102,9 +102,6 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ env.NPM_REGISTRY }}
           
-      - name: Build front for production
-        run: yarn --cwd db-viewer-ui build:prod
-        
       - name: Check version
         run: |
           tagName="${{github.ref_name}}"
