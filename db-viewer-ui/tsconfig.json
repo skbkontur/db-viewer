@@ -11,7 +11,7 @@
     "noUnusedParameters": false,
     "pretty": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ESNext",
+    "target": "ES5",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "skipLibCheck": true,
