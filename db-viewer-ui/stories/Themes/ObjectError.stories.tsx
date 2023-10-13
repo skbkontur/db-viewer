@@ -39,7 +39,7 @@ const ErrorContainer = ({ theme }: { theme: Theme }) => (
     </ThemeContext.Provider>
 );
 
-export const Default = (): JSX.Element => <ErrorContainer theme={DEFAULT_THEME} />;
-export const Flat = (): JSX.Element => <ErrorContainer theme={FLAT_THEME_8PX_OLD} />;
-export const Old = (): JSX.Element => <ErrorContainer theme={DEFAULT_THEME_8PX_OLD} />;
-export const Dark = (): JSX.Element => <ErrorContainer theme={ThemeFactory.create(reactUiDark)} />;
+export const Default = (): React.ReactElement => <ErrorContainer theme={DEFAULT_THEME} />;
+export const Flat = (): React.ReactElement => <ErrorContainer theme={FLAT_THEME_8PX_OLD} />;
+export const Old = (): React.ReactElement => <ErrorContainer theme={DEFAULT_THEME_8PX_OLD} />;
+export const Dark = (): React.ReactElement => <ErrorContainer theme={ThemeFactory.create(reactUiDark)} />;

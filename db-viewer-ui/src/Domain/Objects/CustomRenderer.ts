@@ -1,3 +1,5 @@
+import { ReactElement } from "react";
+
 import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformation";
 
 export interface ICustomRenderer {
@@ -6,33 +8,33 @@ export interface ICustomRenderer {
         path: string[],
         property: PropertyMetaInformation,
         objectType: string
-    ) => null | string | JSX.Element;
+    ) => null | string | ReactElement;
 
     renderDetails: (
         target: any,
         path: string[],
         property: PropertyMetaInformation,
         objectType: string
-    ) => null | string | JSX.Element;
+    ) => null | string | ReactElement;
 
     renderEdit: (
         value: any,
         property: PropertyMetaInformation,
         objectType: string,
         onChange: (value: any) => void
-    ) => null | string | JSX.Element;
+    ) => null | string | ReactElement;
 }
 
 export class NullCustomRenderer implements ICustomRenderer {
-    public renderTableCell(): null | string | JSX.Element {
+    public renderTableCell(): null | string | ReactElement {
         return null;
     }
 
-    public renderDetails(): null | string | JSX.Element {
+    public renderDetails(): null | string | ReactElement {
         return null;
     }
 
-    public renderEdit(): null | string | JSX.Element {
+    public renderEdit(): null | string | ReactElement {
         return null;
     }
 }

@@ -38,7 +38,7 @@ export function ObjectTable({
     currentSorts,
     allowDelete,
     allowSort,
-}: ObjectTableProps): JSX.Element {
+}: ObjectTableProps): React.ReactElement {
     const [showConfirmModal, setShowConfirmModal] = React.useState(false);
     const [deletedIndex, setDeletedIndex] = React.useState<number | null>(null);
     const theme = React.useContext(ThemeContext);
@@ -60,8 +60,8 @@ export function ObjectTable({
         setShowConfirmModal(true);
         setDeletedIndex(index);
     };
-    const renderEmpty = (count: number): JSX.Element[] => {
-        const arr: JSX.Element[] = [];
+    const renderEmpty = (count: number): React.ReactElement[] => {
+        const arr: React.ReactElement[] = [];
         for (let i = 0; i < count; i++) {
             arr.push(
                 <th key={i} className={jsStyles.cell()}>
@@ -72,8 +72,8 @@ export function ObjectTable({
         return arr;
     };
 
-    const getIcon = (name: string, currentSort: Sort[]): JSX.Element => {
-        const dictionary: { [key: string]: JSX.Element } = {
+    const getIcon = (name: string, currentSort: Sort[]): React.ReactElement => {
+        const dictionary: { [key: string]: React.ReactElement } = {
             Ascending: <UiFilterSortALowToHighIcon16Regular />,
             Descending: <UiFilterSortAHighToLowIcon16Regular />,
         };
@@ -85,7 +85,7 @@ export function ObjectTable({
         return <UiFilterSortADefaultIcon16Regular />;
     };
 
-    const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): JSX.Element => {
+    const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): React.ReactElement => {
         const name = item.name;
         const content =
             item.isSortable && allowSort ? (
@@ -106,8 +106,8 @@ export function ObjectTable({
         );
     };
 
-    const renderControls = (item: object, index: number): JSX.Element[] => {
-        const arr: JSX.Element[] = [];
+    const renderControls = (item: object, index: number): React.ReactElement[] => {
+        const arr: React.ReactElement[] = [];
         let key = 0;
         let pathToItem = "";
         if (item) {
@@ -132,7 +132,7 @@ export function ObjectTable({
         return arr;
     };
 
-    const renderCell = (item: any, key: string, type: PropertyMetaInformation): JSX.Element => {
+    const renderCell = (item: any, key: string, type: PropertyMetaInformation): React.ReactElement => {
         return (
             <td key={key} className={jsStyles.cell()} data-tid={key}>
                 {renderForTableCell(item, [key], type, objectType, customRenderer)}

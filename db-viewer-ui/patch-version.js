@@ -20,7 +20,7 @@ async function setPackageVersion(packageDirectory) {
         throw versionText.stderr;
     }
 
-    const npmPackageVersion = versionText.stdout;
+    const npmPackageVersion = versionText.stdout.trim();
     console.log(`Setting package version to ${npmPackageVersion}`);
     const result = await execAsync(`npm version ${npmPackageVersion} --no-git-tag-version --allow-same-version`, {
         cwd: packageDirectory,

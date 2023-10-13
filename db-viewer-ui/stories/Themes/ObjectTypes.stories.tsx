@@ -39,7 +39,7 @@ const TypesContainer = ({ theme }: { theme: Theme }) => (
     </ThemeContext.Provider>
 );
 
-export const Default = (): JSX.Element => <TypesContainer theme={DEFAULT_THEME} />;
-export const Flat = (): JSX.Element => <TypesContainer theme={FLAT_THEME_8PX_OLD} />;
-export const Old = (): JSX.Element => <TypesContainer theme={DEFAULT_THEME_8PX_OLD} />;
-export const Dark = (): JSX.Element => <TypesContainer theme={ThemeFactory.create(reactUiDark)} />;
+export const Default = (): React.ReactElement => <TypesContainer theme={DEFAULT_THEME} />;
+export const Flat = (): React.ReactElement => <TypesContainer theme={FLAT_THEME_8PX_OLD} />;
+export const Old = (): React.ReactElement => <TypesContainer theme={DEFAULT_THEME_8PX_OLD} />;
+export const Dark = (): React.ReactElement => <TypesContainer theme={ThemeFactory.create(reactUiDark)} />;

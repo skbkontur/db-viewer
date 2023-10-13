@@ -11,7 +11,7 @@ import React from "react";
 import { jsStyles } from "./Accordion.styles";
 
 type CaptionRenderer = (path: string[]) => null | string;
-type ValueRenderer = (target: { [key: string]: any }, path: string[]) => null | JSX.Element;
+type ValueRenderer = (target: { [key: string]: any }, path: string[]) => null | React.ReactElement;
 
 export interface TaskAccordionProps {
     renderCaption: null | CaptionRenderer;
@@ -84,7 +84,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         }
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <ThemeContext.Consumer>
                 {theme => {
@@ -95,7 +95,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         );
     }
 
-    public renderMain(): JSX.Element {
+    public renderMain(): React.ReactElement {
         const { showToggleAll, value, title } = this.props;
         const { collapsedSelf, collapsedRecursive } = this.state;
 
@@ -126,7 +126,7 @@ export class Accordion extends React.Component<TaskAccordionProps, TaskAccordion
         );
     }
 
-    public renderValue(): JSX.Element[] {
+    public renderValue(): React.ReactElement[] {
         const { value, renderCaption, renderValue, pathPrefix = [], defaultCollapsed } = this.props;
         const { collapsedRecursive, isForced } = this.state;
         const keys = Object.keys(value);

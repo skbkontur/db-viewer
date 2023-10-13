@@ -27,7 +27,7 @@ export const FilterModal = ({
     onChangeFilter,
     onApplyFilter,
     allowClose,
-}: FilterModalProps): JSX.Element => {
+}: FilterModalProps): React.ReactElement => {
     const { pathname } = useLocation();
     const container = React.useRef<ValidationContainer>(null);
     const theme = React.useContext(ThemeContext);

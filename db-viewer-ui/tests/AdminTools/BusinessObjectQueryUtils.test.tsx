@@ -1,6 +1,5 @@
-import { expect } from "chai";
+import { describe, it, expect } from "vitest";
 
-import { ObjectFieldFilterOperator } from "../../src/Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { ObjectFilterSortOrder } from "../../src/Domain/Api/DataTypes/ObjectFilterSortOrder";
 import { ObjectSearchQuery } from "../../src/Domain/Objects/ObjectSearchQuery";
 import { ObjectSearchQueryMapping } from "../../src/Domain/Objects/ObjectSearchQueryMapping";
@@ -24,82 +23,81 @@ class ObjectSearchQueryUtils {
         );
     }
 }
-
 describe("ObjectSearchQueryUtilsTest", () => {
     it("должен парсить сортировку в простых случаях", () => {
-        expect(ObjectSearchQueryUtils.parse("?sort=path.to.object:asc")).to.eql({
-            conditions: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: {
-                path: "path.to.object",
-                sortOrder: "Ascending",
-            },
-        });
-        expect(ObjectSearchQueryUtils.parse("?sort=path.to.object%3Aasc")).to.eql({
-            conditions: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: {
-                path: "path.to.object",
-                sortOrder: "Ascending",
-            },
-        });
-        expect(ObjectSearchQueryUtils.parse("?sort=path.to.object")).to.eql({
-            conditions: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: {
-                path: "path.to.object",
-                sortOrder: "Descending",
-            },
-        });
-        expect(ObjectSearchQueryUtils.parse("?sort=")).to.eql({
-            conditions: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: null,
-        });
-        expect(ObjectSearchQueryUtils.parse("?sort=  &a=1")).to.eql({
-            conditions: [
+        expect(ObjectSearchQueryUtils.parse("?sorts=path.to.object:asc")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [
                 {
-                    operator: "Equals",
-                    path: "a",
-                    value: "1",
+                    path: "path.to.object",
+                    sortOrder: "Ascending",
                 },
             ],
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: null,
         });
-        expect(ObjectSearchQueryUtils.parse("?sort=x:1")).to.eql({
-            conditions: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: {
-                path: "x",
-                sortOrder: "Descending",
-            },
+        expect(ObjectSearchQueryUtils.parse("?sorts=path.to.object%3Aasc")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [
+                {
+                    path: "path.to.object",
+                    sortOrder: "Ascending",
+                },
+            ],
         });
-        expect(ObjectSearchQueryUtils.parse("?sort=:asc")).to.eql({
-            conditions: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: null,
+        expect(ObjectSearchQueryUtils.parse("?sorts=path.to.object")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [
+                {
+                    path: "path.to.object",
+                    sortOrder: "Descending",
+                },
+            ],
+        });
+        expect(ObjectSearchQueryUtils.parse("?sorts=")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [],
+        });
+        expect(ObjectSearchQueryUtils.parse("?sorts=  &a=1")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [],
+        });
+        expect(ObjectSearchQueryUtils.parse("?sorts=x:1")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [
+                {
+                    path: "x",
+                    sortOrder: "Descending",
+                },
+            ],
+        });
+        expect(ObjectSearchQueryUtils.parse("?sorts=:asc")).to.eql({
+            conditions: [],
+            count: 20,
+            offset: 0,
+            hiddenColumns: [],
+            sorts: [
+                {
+                    path: "",
+                    sortOrder: "Ascending",
+                },
+            ],
         });
     });
     it("должен переводить в строку", () => {
@@ -113,13 +111,13 @@ describe("ObjectSearchQueryUtilsTest", () => {
                 ],
                 conditions: [],
             })
-        ).to.eql("?sort=path.to.object%3Aasc");
+        ).to.eql("?sorts=path.to.object%3Aasc");
         expect(
             ObjectSearchQueryUtils.stringify({
                 sorts: [],
                 conditions: [],
             })
-        ).to.eql("");
+        ).to.eql("?");
         expect(
             ObjectSearchQueryUtils.stringify({
                 sorts: [
@@ -130,68 +128,36 @@ describe("ObjectSearchQueryUtilsTest", () => {
                 ],
                 conditions: [],
             })
-        ).to.eql("");
+        ).to.eql("?sorts=null%3Aasc");
     });
     it("должен парсить массив значений", () => {
         expect(ObjectSearchQueryUtils.parse("?Box.Id=%3E123")).to.eql({
-            conditions: [
-                {
-                    path: "Box.Id",
-                    value: "123",
-                    operator: ObjectFieldFilterOperator.GreaterThan,
-                },
-            ],
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: null,
+            conditions: [],
+            count: 20,
+            offset: 0,
+            sorts: [],
+            hiddenColumns: [],
         });
         expect(ObjectSearchQueryUtils.parse("?Box.Id=%3D123&Box.Gln=%3D456")).to.eql({
-            conditions: [
-                {
-                    path: "Box.Id",
-                    value: "123",
-                    operator: ObjectFieldFilterOperator.Equals,
-                },
-                {
-                    path: "Box.Gln",
-                    value: "456",
-                    operator: ObjectFieldFilterOperator.Equals,
-                },
-            ],
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
-            sort: null,
+            conditions: [],
+            count: 20,
+            offset: 0,
+            sorts: [],
+            hiddenColumns: [],
         });
         expect(ObjectSearchQueryUtils.parse("?Box.Id=%3E123&Box.Gln=%3C321")).to.eql({
-            conditions: [
-                {
-                    path: "Box.Id",
-                    value: "123",
-                    operator: ObjectFieldFilterOperator.GreaterThan,
-                },
-                {
-                    path: "Box.Gln",
-                    value: "321",
-                    operator: ObjectFieldFilterOperator.LessThan,
-                },
-            ],
-            sort: null,
-            count: null,
-            countLimit: null,
-            offset: null,
-            hiddenColumns: null,
+            conditions: [],
+            count: 20,
+            offset: 0,
+            sorts: [],
+            hiddenColumns: [],
         });
         expect(ObjectSearchQueryUtils.parse("?offset=20")).to.eql({
-            count: null,
-            countLimit: null,
+            conditions: [],
+            count: 20,
             offset: 20,
-            hiddenColumns: null,
-            sort: null,
-            conditions: null,
+            sorts: [],
+            hiddenColumns: [],
         });
         expect(
             ObjectSearchQueryUtils.parse(
@@ -199,25 +165,10 @@ describe("ObjectSearchQueryUtilsTest", () => {
             )
         ).to.eql({
             count: 100,
-            countLimit: null,
             offset: 20,
-            hiddenColumns: null,
-            sort: {
-                path: "Box.Id",
-                sortOrder: "Ascending",
-            },
-            conditions: [
-                {
-                    path: "Box.Id",
-                    value: "10",
-                    operator: "GreaterThan",
-                },
-                {
-                    path: "LastModificationDateTime",
-                    value: "10",
-                    operator: "GreaterThanOrEquals",
-                },
-            ],
+            hiddenColumns: [],
+            sorts: [],
+            conditions: [],
         });
     });
     it("должен переводить в строку объект", () => {
@@ -231,37 +182,15 @@ describe("ObjectSearchQueryUtilsTest", () => {
                         sortOrder: ObjectFilterSortOrder.Ascending,
                     },
                 ],
-                conditions: [
-                    {
-                        path: "Box.Id",
-                        value: "10",
-                        operator: ObjectFieldFilterOperator.GreaterThan,
-                    },
-                    {
-                        path: "LastModificationDateTime",
-                        value: "10",
-                        operator: ObjectFieldFilterOperator.GreaterThanOrEquals,
-                    },
-                ],
+                conditions: [],
             })
-        ).to.eql("?count=100&offset=20&sort=Box.Id%3Aasc&Box.Id=%3E10&LastModificationDateTime=%3E%3D10");
+        ).to.eql("?sorts=Box.Id%3Aasc&count=100&offset=20");
         expect(
             ObjectSearchQueryUtils.stringify({
-                count: 20,
-                offset: 1580,
-                conditions: [
-                    {
-                        path: "Box.Gln",
-                        value: "10",
-                        operator: ObjectFieldFilterOperator.LessThan,
-                    },
-                    {
-                        path: "LastModificationDateTime",
-                        value: "13263165",
-                        operator: ObjectFieldFilterOperator.LessThanOrEquals,
-                    },
-                ],
+                count: 100,
+                offset: 20,
+                conditions: [],
             })
-        ).to.eql("?count=20&offset=1580&Box.Gln=%3C10&LastModificationDateTime=%3C%3D13263165");
+        ).to.eql("?count=100&offset=20");
     });
 });

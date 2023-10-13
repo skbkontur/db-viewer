@@ -24,7 +24,7 @@ export function DateTimePickerWithTimeZone({
     onChange,
     disabled,
     timeZoneEditable,
-}: DateTimePickerWithTimeZone): JSX.Element {
+}: DateTimePickerWithTimeZone): React.ReactElement {
     const [time, setTime] = React.useState<Nullable<string>>(null);
     const [offset, setOffset] = React.useState<Nullable<string>>(null);
     const [date, setDate] = React.useState<Nullable<Date>>(null);

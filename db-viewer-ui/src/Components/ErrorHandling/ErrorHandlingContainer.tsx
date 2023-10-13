@@ -44,7 +44,7 @@ export class ErrorHandlingContainer extends React.Component<{}, ErrorHandlingCon
     }
 
     private handleHideModal = () => this.setState({ showModal: false });
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { isFatal, showModal, stack, error } = this.state;
         const { message, serverErrorType, serverStackTrace } = (error || {}) as ApiErrorInfo;
         return (

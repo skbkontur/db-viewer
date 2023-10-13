@@ -48,7 +48,7 @@ export class ScrollableContainer extends React.Component<React.PropsWithChildren
         window.removeEventListener("resize", this.handlePageResize);
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { children, className } = this.props;
         return (
             <div ref={el => (this.root = el)} className={`${jsStyles.container()} ${className}`}>

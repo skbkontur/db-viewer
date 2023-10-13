@@ -65,7 +65,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         }
     };
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { disabled, warning, error, useSeconds, defaultTime } = this.props;
         return (
             <Input

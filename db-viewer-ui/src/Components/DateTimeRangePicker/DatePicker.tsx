@@ -56,7 +56,7 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
         }
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { minDate, maxDate, timeZone } = this.props;
 
         return (

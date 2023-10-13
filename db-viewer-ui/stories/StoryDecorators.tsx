@@ -1,10 +1,9 @@
 import { RowStack } from "@skbkontur/react-stack-layout";
 import { Button } from "@skbkontur/react-ui";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
-import { DecoratorFunction } from "@storybook/addons";
 import React from "react";
 
-export function ValidationContainerWithSubmitButton(): DecoratorFunction<React.ReactElement<unknown>> {
+export function ValidationContainerWithSubmitButton() {
     return function ValidationContainerWithSubmitButtonDecorator(
         story: () => React.ReactNode
     ): React.ReactElement<unknown> {
@@ -34,7 +33,7 @@ class ValidationContainerWithSubmitButtonWrapper extends React.Component<
         }
     };
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <ValidationContainer ref={x => (this.container = x)}>
                 <div>

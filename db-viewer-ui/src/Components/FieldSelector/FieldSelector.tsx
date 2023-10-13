@@ -40,7 +40,7 @@ export function FieldSelector({
     onShowField,
     onHideField,
     showSelectAllButton,
-}: FieldSelectorProps): JSX.Element {
+}: FieldSelectorProps): React.ReactElement {
     const [searchText, setSearchText] = React.useState("");
     const theme = React.useContext(ThemeContext);
 
@@ -67,7 +67,7 @@ export function FieldSelector({
         }
     };
 
-    const renderFieldSelector = (fieldDefinition: FieldDefinition): JSX.Element => {
+    const renderFieldSelector = (fieldDefinition: FieldDefinition): React.ReactElement => {
         return (
             <div className={jsStyles.field()} key={fieldDefinition.name + fieldDefinition.caption}>
                 <Checkbox

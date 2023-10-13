@@ -49,7 +49,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         }
     }
 
-    public renderProperty(property: PropertyMetaInformation, value: Nullable<string>): JSX.Element {
+    public renderProperty(property: PropertyMetaInformation, value: Nullable<string>): React.ReactElement {
         const type = property.type.typeName;
         if (type === "DateTime" || type === "DateTimeOffset") {
             return (
@@ -135,7 +135,7 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
         return validateObjectField(value);
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         const { tableColumns } = this.props;
 
         return (

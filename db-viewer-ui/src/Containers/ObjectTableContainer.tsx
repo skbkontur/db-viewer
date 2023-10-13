@@ -41,7 +41,7 @@ export const ObjectTableContainer = ({
     customRenderer,
     useErrorHandlingContainer,
     isSuperUser,
-}: ObjectTableProps): JSX.Element => {
+}: ObjectTableProps): React.ReactElement => {
     const { search, pathname } = useLocation();
     const navigate = useNavigate();
     const { objectId = "" } = useParams<"objectId">();
@@ -170,7 +170,12 @@ export const ObjectTableContainer = ({
         navigate(getQuery(query, { offset: (page - 1) * query.count }));
     };
 
-    function renderItemsCount(offset: number, countPerPage: number, count: number, countLimit: number): JSX.Element {
+    function renderItemsCount(
+        offset: number,
+        countPerPage: number,
+        count: number,
+        countLimit: number
+    ): React.ReactElement {
         const total = count > countLimit ? countLimit : count;
         const firstNumber = Math.min(total, offset);
         const lastNumber = Math.min(total, offset + countPerPage);
@@ -186,7 +191,7 @@ export const ObjectTableContainer = ({
         );
     }
 
-    function renderPageNavigation(): null | JSX.Element {
+    function renderPageNavigation(): null | React.ReactElement {
         const { offset, count } = query;
         if (!objects) {
             return null;

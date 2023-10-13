@@ -51,7 +51,7 @@ export class ErrorHandlingContainerModal extends React.Component<
         this.copyData(serverStack);
     };
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return (
             <ThemeContext.Consumer>
                 {theme => {
@@ -62,7 +62,7 @@ export class ErrorHandlingContainerModal extends React.Component<
         );
     }
 
-    private renderMain(): JSX.Element {
+    private renderMain(): React.ReactElement {
         const { canClose, message, onClose, serverStack, stack } = this.props;
 
         const { showStack } = this.state;

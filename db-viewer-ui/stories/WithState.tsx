@@ -2,7 +2,11 @@ import React from "react";
 
 interface WithStateProps<S> {
     initial: S;
-    children: (state: S, setState: (update: Partial<S>) => void, replaceState: (update: S) => void) => JSX.Element;
+    children: (
+        state: S,
+        setState: (update: Partial<S>) => void,
+        replaceState: (update: S) => void
+    ) => React.ReactElement;
 }
 
 interface WithStateState<S> {
@@ -17,7 +21,7 @@ export class WithState<S> extends React.Component<WithStateProps<S>, WithStateSt
         this.state = { state: props.initial };
     }
 
-    public render(): JSX.Element {
+    public render(): React.ReactElement {
         return this.props.children(
             this.state.state,
             (x: Partial<S>) => {

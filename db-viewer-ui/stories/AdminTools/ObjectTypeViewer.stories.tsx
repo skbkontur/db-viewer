@@ -1,33 +1,36 @@
 import { action } from "@storybook/addon-actions";
-import { storiesOf } from "@storybook/react";
 import React from "react";
 
+import { NullCustomRenderer } from "../../src";
 import { ObjectViewer } from "../../src/Components/ObjectViewer/ObjectViewer";
-import { NullCustomRenderer } from "../../src/Domain/Objects/CustomRenderer";
 
 import Ordrsp2MetaData from "./Responses/Ordrsp2MetaData.json";
 import Ordrsp2Object from "./Responses/Ordrsp2Object.json";
 
-storiesOf("ObjectTypeViewer", module)
-    .add("Ordrsp2", () => (
-        <ObjectViewer
-            customRenderer={new NullCustomRenderer()}
-            objectInfo={Ordrsp2Object}
-            objectMeta={Ordrsp2MetaData}
-            onChange={async () => {
-                action("change");
-            }}
-            allowEdit
-        />
-    ))
-    .add("Без редактирования", () => (
-        <ObjectViewer
-            customRenderer={new NullCustomRenderer()}
-            objectInfo={Ordrsp2Object}
-            objectMeta={Ordrsp2MetaData}
-            onChange={async () => {
-                action("change");
-            }}
-            allowEdit={false}
-        />
-    ));
+export default {
+    title: "ObjectTypeViewer",
+};
+
+export const Ordrsp2 = (): React.ReactElement => (
+    <ObjectViewer
+        customRenderer={new NullCustomRenderer()}
+        objectInfo={Ordrsp2Object}
+        objectMeta={Ordrsp2MetaData}
+        onChange={async () => {
+            action("change");
+        }}
+        allowEdit
+    />
+);
+
+export const WithoutEditing = (): React.ReactElement => (
+    <ObjectViewer
+        customRenderer={new NullCustomRenderer()}
+        objectInfo={Ordrsp2Object}
+        objectMeta={Ordrsp2MetaData}
+        onChange={async () => {
+            action("change");
+        }}
+        allowEdit={false}
+    />
+);

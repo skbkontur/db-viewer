@@ -1,4 +1,3 @@
-import { storiesOf } from "@storybook/react";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
@@ -20,28 +19,32 @@ const schema: SchemaDescription = {
     downloadLimitForSuperUser: 10000,
 };
 
-storiesOf("ObjectTypes", module)
-    .add("Default", () => (
-        <TypesContainer
-            objects={[
-                {
-                    identifier: "table 1",
-                    schemaDescription: schema,
-                },
-                {
-                    identifier: "Table 3",
-                    schemaDescription: schema,
-                },
-                {
-                    identifier: "table 2",
-                    schemaDescription: schema,
-                },
-            ]}
-        />
-    ))
-    .add("EDI Objects", () => <TypesContainer objects={objects} />);
+export default {
+    title: "ObjectTypes",
+};
 
-function TypesContainer({ objects }: { objects: ObjectIdentifier[] }): JSX.Element {
+export const Default = (): React.ReactElement => (
+    <TypesContainer
+        objects={[
+            {
+                identifier: "table 1",
+                schemaDescription: schema,
+            },
+            {
+                identifier: "Table 3",
+                schemaDescription: schema,
+            },
+            {
+                identifier: "table 2",
+                schemaDescription: schema,
+            },
+        ]}
+    />
+);
+
+export const EdiObjects = (): React.ReactElement => <TypesContainer objects={objects} />;
+
+function TypesContainer({ objects }: { objects: ObjectIdentifier[] }): React.ReactElement {
     return (
         <MemoryRouter initialEntries={["/AdminTools"]}>
             <Routes>
