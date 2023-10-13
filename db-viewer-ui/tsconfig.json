@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowJs": false,
-    "esModuleInterop": false,
     "baseUrl": "./",
     "rootDir": "./",
     "outDir": "./dist",
@@ -11,7 +10,8 @@
     "noUnusedParameters": false,
     "pretty": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES5",
+    "target": "ES2015",
+    "module": "commonjs",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "skipLibCheck": true,
@@ -23,7 +23,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
