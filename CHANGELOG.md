@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.6 - 2023.10.13
+- Update yarn to v3
+- Change webpack to vite
+- Add js tests
+- Update chrome to v112
+
 ## v1.5 - 2023.08.16
 - Redesign back link arrows 
 - Update dotnet and selenoid
