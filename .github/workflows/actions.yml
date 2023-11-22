@@ -6,7 +6,7 @@ on:
 
 env:
   DOTNET_VERSION: 6.0.x
-  NODE_VERSION: 16
+  NODE_VERSION: 20
   NPM_REGISTRY: https://registry.npmjs.org
 
 jobs:
@@ -31,8 +31,11 @@ jobs:
       - name: Install dependencies
         run: dotnet restore ./DbViewer.sln --verbosity minimal && dotnet tool restore
 
+      - name: Install yarn
+        run: corepack enable && corepack prepare yarn@4.0.2 --activate
+
       - name: Install node dependencies
-        run: cd ./db-viewer-ui && yarn set version berry && yarn install --immutable
+        run: corepack yarn --cwd cassandra-distributed-task-queue-ui --immutable
       
       - name: Pull docker images
         run: docker pull selenoid/vnc:chrome_112.0
@@ -102,6 +105,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ env.NPM_REGISTRY }}
           
+      - name: Install yarn
+        run: corepack enable && corepack prepare yarn@4.0.2 --activate
+        
+      - name: Install node dependencies
+        run: corepack yarn --cwd cassandra-distributed-task-queue-ui --immutable
+        
       - name: Check version
         run: |
           tagName="${{github.ref_name}}"
