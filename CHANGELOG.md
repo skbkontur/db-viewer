@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.7 - 2023.11.22
+- Update yarn to v4
+- Update node to v20
+- Fix build error
+
 ## v1.6 - 2023.10.13
 - Update yarn to v3
 - Change webpack to vite
