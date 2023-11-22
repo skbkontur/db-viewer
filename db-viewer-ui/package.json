@@ -90,5 +90,5 @@
     "vite": "^4.4.9",
     "vitest": "^0.30.1"
   },
-  "packageManager": "yarn@3.6.4"
+  "packageManager": "yarn@4.0.2+sha256.825003a0f561ad09a3b1ac4a3b3ea6207af2796d54f62a9420520915721f5186"
 }
