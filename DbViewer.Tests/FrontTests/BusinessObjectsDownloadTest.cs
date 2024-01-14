@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
-using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -20,99 +21,98 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что не супер-разработчик/разработчик не может скачать больше 50000 объектов
         /// </summary>
         [Test]
-        public void TestRestrictionsForManyItems()
+        public async Task TestRestrictionsForManyItems()
         {
             var totalCount = 100123;
             var scopeId = GenerateRandomUsersAndAssertCount(totalCount)[0].ScopeId;
 
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await using var browser = new Browser();
+            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
-            businessObjectPage.FilterModal.Apply.Click();
-            businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 50000+");
+            await businessObjectPage.OpenFilter.Click();
+            await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            await businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 50000+");
 
-            businessObjectPage.DownloadLink.Click();
-            businessObjectPage.DownloadLimitModal.Header.WaitText("Слишком большой список");
-            businessObjectPage.DownloadLimitModal.Body.WaitText("Мы умеем выгружать не более 50000 объектов из этой таблицы. Уточните запрос с помощью фильтров, чтобы записей стало меньше.");
-            businessObjectPage.DownloadLimitModal.Cancel.Click();
+            await businessObjectPage.DownloadLink.Click();
+            await businessObjectPage.DownloadLimitModal.Header.WaitText("Слишком большой список");
+            await businessObjectPage.DownloadLimitModal.Body.WaitText("Мы умеем выгружать не более 50000 объектов из этой таблицы. Уточните запрос с помощью фильтров, чтобы записей стало меньше.");
+            await businessObjectPage.DownloadLimitModal.Cancel.Click();
 
-            var adminBusinessObjectPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("UsersTable");
+            var adminBusinessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("UsersTable");
 
-            adminBusinessObjectPage.OpenFilter.Click();
-            adminBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
-            adminBusinessObjectPage.FilterModal.Apply.Click();
-            adminBusinessObjectPage.ItemsCountInfo.WaitTextContains("Всего 100123");
+            await adminBusinessObjectPage.OpenFilter.Click();
+            await adminBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            await adminBusinessObjectPage.FilterModal.Apply.Click();
+            await adminBusinessObjectPage.ItemsCountInfo.WaitTextContains("Всего 100123");
 
-            var content = DownloadFile(browser, businessObjectPage);
-            content.Length.Should().Be(100125);
+            var content = await DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(100124);
         }
 
         /// <summary>
         ///     Проверяем скачивание файла с пустым списком объектов
         /// </summary>
         [Test]
-        public void TestEmptyList()
+        public async Task TestEmptyList()
         {
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await using var browser = new Browser();
+            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.ScopeId.ClearAndInputText(Guid.NewGuid().ToString());
-            businessObjectPage.FilterModal.Apply.Click();
-            businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 0");
-            businessObjectPage.NothingFound.WaitPresence();
+            await businessObjectPage.OpenFilter.Click();
+            await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(Guid.NewGuid().ToString());
+            await businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 0");
+            await businessObjectPage.NothingFound.WaitPresence();
 
-            var content = DownloadFile(browser, businessObjectPage);
-            content.Length.Should().Be(2);
+            var content = await DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(1);
         }
 
         /// <summary>
         ///     Проверяем, что не супер-разработчик/разработчик может скачать 50000 объектов
         /// </summary>
         [Test]
-        public void TestRestrictionsFor50000Items()
+        public async Task TestRestrictionsFor50000Items()
         {
             var scopeId = GenerateRandomUsersAndAssertCount(50000)[0].ScopeId;
 
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await using var browser = new Browser();
+            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
-            businessObjectPage.FilterModal.Apply.Click();
-            businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 50000");
+            await businessObjectPage.OpenFilter.Click();
+            await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            await businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.ItemsCountInfo.WaitTextContains("Всего 50000");
 
-            var content = DownloadFile(browser, businessObjectPage);
-            content.Length.Should().Be(50002);
+            var content = await DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(50001);
         }
 
         /// <summary>
         ///     Применяем фильтр с отображением всех колонок, находим 10 записей, скачиваем их, проверяем контент
         /// </summary>
         [Test]
-        public void TestContent()
+        public async Task TestContent()
         {
             var users = GenerateRandomUsersAndAssertCount(10);
             var scopeId = users[0].ScopeId;
 
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await using var browser = new Browser();
+            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
-            businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.OpenFilter.Click();
+            await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            await businessObjectPage.FilterModal.Apply.Click();
 
-            var content = DownloadFile(browser, businessObjectPage);
-            content.Length.Should().Be(12);
+            var content = await DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(11);
 
             var usersById = users.ToDictionary(x => x.Id.ToString(), x => x);
             var sep = ";";
             var headerFields = new[] {"Id", "ScopeId", "LastModificationDateTime", "Email", "FirstName", "Surname", "Patronymic", "IsSuperUser"};
             var header = string.Join(sep, headerFields.Select(FormatString));
             content[0].Should().Be(header);
-            content[11].Should().BeEmpty();
             for (var i = 1; i < 11; i++)
             {
                 var item = content[i].Split(new[] {sep}, StringSplitOptions.None);
@@ -135,34 +135,33 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     + делаем сортировку по email и проверяем, что в скачанном файле остались только нужные отсортированные колонки
         /// </summary>
         [Test]
-        public void TestContentSortedAndSelectColumns()
+        public async Task TestContentSortedAndSelectColumns()
         {
             var users = GenerateRandomUsersAndAssertCount(10);
             var scopeId = users[0].ScopeId;
 
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await using var browser = new Browser();
+            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
-            businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.OpenFilter.Click();
+            await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            await businessObjectPage.FilterModal.Apply.Click();
 
-            businessObjectPage.TableHeader.SortByColumn("Header_Id");
+            await businessObjectPage.TableHeader.SortByColumn("Header_Id");
             var columns = new[] {"Email", "Id", "ScopeId", "LastModificationDateTime"};
-            businessObjectPage.FieldSettings.Click();
-            businessObjectPage.ColumnSelector.TypesSelectAll.Click();
+            await businessObjectPage.FieldSettings.Click();
+            await businessObjectPage.ColumnSelector.TypesSelectAll.Click();
             foreach (var column in columns)
-                businessObjectPage.ColumnSelector.ColumnCheckboxes.GetCheckbox(column).Click();
+                await businessObjectPage.ColumnSelector.ColumnCheckboxes.GetCheckbox(column).Click();
 
-            var content = DownloadFile(browser, businessObjectPage);
-            content.Length.Should().Be(12);
+            var content = await DownloadFile(browser, businessObjectPage);
+            content.Length.Should().Be(11);
 
             var usersById = users.ToDictionary(x => x.Id.ToString(), x => x);
             var sep = ";";
             var headerFields = new[] {"Id", "ScopeId", "LastModificationDateTime", "Email"};
             var header = string.Join(sep, headerFields.Select(FormatString));
             content[0].Should().Be(header);
-            content[11].Should().BeEmpty();
             for (var i = 1; i < 11; i++)
             {
                 var item = content[i].Split(new[] {sep}, StringSplitOptions.None);
@@ -198,15 +197,21 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             return $"=\"{n}\"";
         }
 
-        private static string[] DownloadFile(BrowserForTests browser, BusinessObjectTablePage businessObjectPage)
+        private static async Task<string[]> DownloadFile(Browser browser, PwBusinessObjectTablePage businessObjectPage)
         {
-            businessObjectPage.DownloadLink.Click();
+            var waitForDownloadTask = browser.Page.WaitForDownloadAsync();
+            await businessObjectPage.DownloadLink.Click();
+            var download = await waitForDownloadTask;
+
             var filename = $"UsersTable-{DateTime.UtcNow:yyyy-MM-dd-HHmm}.csv";
-            Thread.Sleep(1000);
-            var file = browser.DownloadFile(filename);
-            var content = file.Split("\n");
+            download.SuggestedFilename.Should().Be(filename);
+
+            var fullName = $"{TestContext.CurrentContext.TestDirectory}/Files/{download.SuggestedFilename}";
+            await download.SaveAsAsync(fullName);
+
+            var content = await File.ReadAllLinesAsync(fullName);
             if (content.Length == 1)
-                Console.WriteLine($"File Content: '{file}'");
+                Console.WriteLine($"File Content: '{content[0]}'");
             return content;
         }
 

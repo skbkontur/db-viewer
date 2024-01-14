@@ -1,17 +1,17 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 using FluentAssertions;
-
-using JetBrains.Annotations;
 
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.Cql;
-using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -25,80 +25,80 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Удаляем объект, пытаемся в таблице снова поискать его по Id - не находим
         /// </summary>
         [Test]
-        public void TestSuperUserCanEditOrDeleteObject()
+        public async Task TestSuperUserCanEditOrDeleteObject()
         {
             var document = CqlDocumentsForTests.GetCqlDocumentPrintingInfo();
             using (var context = new CqlDbContext())
                 context.GetTable<DocumentPrintingInfo>().Insert(document).SetTimestamp(DateTimeOffset.UtcNow).Execute();
 
-            using var browser = new BrowserForTests();
-            var printingInfoPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
-            printingInfoPage.OpenFilter.Click();
-            printingInfoPage.FilterModal.GetFilter("Id").Input.ClearAndInputText(document.Id.ToString());
-            printingInfoPage.FilterModal.Apply.Click();
+            await using var browser = new Browser();
+            var printingInfoPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await printingInfoPage.OpenFilter.Click();
+            await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
+            await printingInfoPage.FilterModal.Apply.Click();
 
-            var detailsPage = printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
+            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
 
             var id = detailsPage.RootAccordion.FindField("Id");
-            id.Edit.WaitAbsence();
+            await id.Edit.WaitAbsence();
 
             var partyId = detailsPage.RootAccordion.FindField("PartyId");
-            partyId.Edit.WaitAbsence();
+            await partyId.Edit.WaitAbsence();
 
             var fileId = detailsPage.RootAccordion.FindField("FileId");
-            fileId.Edit.Click();
-            fileId.FieldValue.Input.ClearAndInputText("Abc");
-            fileId.Save.Click();
-            fileId.Value.WaitText("Abc");
+            await fileId.Edit.Click();
+            await fileId.FieldValue.Input.ClearAndInputText("Abc");
+            await fileId.Save.Click();
+            await fileId.Value.WaitText("Abc");
 
             var status = detailsPage.RootAccordion.FindField("Status");
-            status.Edit.Click();
-            status.FieldValue.EnumSelect.WaitText("Finished");
-            status.FieldValue.EnumSelect.WaitItems(new[] {"Unknown", "Pending", "Failed", "Finished"});
-            status.FieldValue.EnumSelect.SelectValueByText("Failed");
-            status.Save.Click();
-            status.Value.WaitText("Failed");
+            await status.Edit.Click();
+            await status.FieldValue.EnumSelect.WaitText("Finished");
+            await status.FieldValue.EnumSelect.WaitItems(new[] {"Unknown", "Pending", "Failed", "Finished"});
+            await status.FieldValue.EnumSelect.SelectValueByText("Failed");
+            await status.Save.Click();
+            await status.Value.WaitText("Failed");
 
             var timestamp = detailsPage.RootAccordion.FindField("Timestamp");
-            timestamp.Edit.Click();
-            timestamp.FieldValue.Date.ClearAndInputText("13.12.2013");
-            timestamp.Save.Click();
-            timestamp.Value.Text.Wait().That(Does.StartWith("2013-12-13"));
+            await timestamp.Edit.Click();
+            await timestamp.FieldValue.Date.ClearAndInputText("13.12.2013");
+            await timestamp.Save.Click();
+            await timestamp.Value.Expect().ToHaveTextAsync(new Regex("^2013-12-13T.*"));
 
             document.FileId = "Abc";
             document.Status = DocumentPrintingStatus.Failed;
 
-            detailsPage = browser.Refresh(detailsPage);
-            CheckDocumentPrintingInfoFields(detailsPage, document);
+            detailsPage = await browser.Refresh(detailsPage);
+            await CheckDocumentPrintingInfoFields(detailsPage, document);
 
-            detailsPage.Delete.Click();
-            printingInfoPage = detailsPage.ConfirmDeleteObjectModal.Delete.ClickAndGoTo<BusinessObjectTablePage>();
-            printingInfoPage.OpenFilter.Click();
-            printingInfoPage.FilterModal.GetFilter("Id").Input.ClearAndInputText(document.Id.ToString());
-            printingInfoPage.FilterModal.Apply.Click();
-            printingInfoPage.NothingFound.WaitPresence();
-            printingInfoPage.BusinessObjectItems.WaitAbsence();
+            await detailsPage.Delete.Click();
+            printingInfoPage = await detailsPage.ConfirmDeleteObjectModal.Delete.ClickAndGoTo<PwBusinessObjectTablePage>();
+            await printingInfoPage.OpenFilter.Click();
+            await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
+            await printingInfoPage.FilterModal.Apply.Click();
+            await printingInfoPage.NothingFound.WaitPresence();
+            await printingInfoPage.BusinessObjectItems.WaitAbsence();
         }
 
         /// <summary>
         ///     Заходим на страницу подробного описания объекта с правами разработчика, не видим кнопок изменить и удалить
         /// </summary>
         [Test]
-        public void TestNonSuperUserCantEditOrDeleteObject()
+        public async Task TestNonSuperUserCantEditOrDeleteObject()
         {
             var document = CqlDocumentsForTests.GetCqlDocumentPrintingInfo();
             using (var context = new CqlDbContext())
                 context.GetTable<DocumentPrintingInfo>().Insert(document).SetTimestamp(DateTimeOffset.UtcNow).Execute();
 
-            using var browser = new BrowserForTests();
-            var printingInfoPage = browser.SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
-            printingInfoPage.OpenFilter.Click();
-            printingInfoPage.FilterModal.GetFilter("Id").Input.ClearAndInputText(document.Id.ToString());
-            printingInfoPage.FilterModal.Apply.Click();
+            await using var browser = new Browser();
+            var printingInfoPage = await browser.SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await printingInfoPage.OpenFilter.Click();
+            await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
+            await printingInfoPage.FilterModal.Apply.Click();
 
-            var detailsPage = printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
-            detailsPage.RootAccordion.FindField("PartyId").Edit.WaitAbsence();
-            detailsPage.Delete.WaitAbsence();
+            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            await detailsPage.RootAccordion.FindField("PartyId").Edit.WaitAbsence();
+            await detailsPage.Delete.WaitAbsence();
         }
 
         /// <summary>
@@ -106,25 +106,25 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Должен найти объект, ссылка должна вести на подробное описание объекта
         /// </summary>
         [Test]
-        public void TestLinkFromFindShouldReferToDetailPage()
+        public async Task TestLinkFromFindShouldReferToDetailPage()
         {
             var document = CqlDocumentsForTests.GetCqlDocumentPrintingInfo();
             using (var context = new CqlDbContext())
                 context.GetTable<DocumentPrintingInfo>().Insert(document).SetTimestamp(DateTimeOffset.UtcNow).Execute();
 
-            using var browser = new BrowserForTests();
-            var printingInfoPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
-            printingInfoPage.BusinessObjectItems.Count.Wait().That(Is.GreaterThan(0));
-            printingInfoPage.OpenFilter.Click();
-            printingInfoPage.FilterModal.GetFilter("Id").Input.ClearAndInputText(document.Id.ToString());
-            printingInfoPage.FilterModal.Apply.Click();
+            await using var browser = new Browser();
+            var printingInfoPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await printingInfoPage.BusinessObjectItems.Expect().Not.ToHaveCountAsync(0);
+            await printingInfoPage.OpenFilter.Click();
+            await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
+            await printingInfoPage.FilterModal.Apply.Click();
 
-            printingInfoPage.BusinessObjectItems.WaitCount(1);
-            printingInfoPage.BusinessObjectItems[0].FindColumn("Id").WaitText(document.Id.ToString());
-            var detailsPage = printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
-            detailsPage.Header.WaitPresence();
+            await printingInfoPage.BusinessObjectItems.WaitCount(1);
+            await printingInfoPage.BusinessObjectItems[0].FindColumn("Id").WaitText(document.Id.ToString());
+            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            await detailsPage.Header.WaitPresence();
 
-            CheckDocumentPrintingInfoFields(detailsPage, document);
+            await CheckDocumentPrintingInfoFields(detailsPage, document);
         }
 
         /// <summary>
@@ -132,44 +132,49 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     В строке Content должна быть ссылка скачать. Проверяем, что при нажатии скачиваются правильные байты
         /// </summary>
         [Test]
-        public void TestDownloadByteContent()
+        public async Task TestDownloadByteContent()
         {
             var content = string.Join("\n", new[] {"this is large file content"}.Concat(Enumerable.Range(0, 10000).Select(i => (i % 256).ToString())));
             var blobId = Guid.NewGuid();
             using (var context = new CqlDbContext())
-                context.GetTable<CqlActiveBoxState>().Insert(new CqlActiveBoxState
+                await context.GetTable<CqlActiveBoxState>().Insert(new CqlActiveBoxState
                     {
                         PartitionKey = "0",
                         LastProcessedEventId = "0",
                         BoxId = blobId,
                         Content = Encoding.UTF8.GetBytes(content),
-                    }).SetTimestamp(DateTimeOffset.UtcNow).Execute();
+                    }).SetTimestamp(DateTimeOffset.UtcNow).ExecuteAsync();
 
-            using var browser = new BrowserForTests();
+            await using var browser = new Browser();
 
-            var tempFileStoragePage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("CqlActiveBoxState");
-            tempFileStoragePage.OpenFilter.Click();
-            tempFileStoragePage.FilterModal.GetFilter("PartitionKey").Input.ClearAndInputText("0");
-            tempFileStoragePage.FilterModal.GetFilter("BoxId").Input.ClearAndInputText(blobId.ToString());
-            tempFileStoragePage.FilterModal.Apply.Click();
-            tempFileStoragePage.BusinessObjectItems.WaitCount(1);
+            var tempFileStoragePage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("CqlActiveBoxState");
+            await tempFileStoragePage.OpenFilter.Click();
+            await (await tempFileStoragePage.FilterModal.GetFilter("PartitionKey")).Input.ClearAndInputText("0");
+            await (await tempFileStoragePage.FilterModal.GetFilter("BoxId")).Input.ClearAndInputText(blobId.ToString());
+            await tempFileStoragePage.FilterModal.Apply.Click();
+            await tempFileStoragePage.BusinessObjectItems.WaitCount(1);
 
-            var detailsPage = tempFileStoragePage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
-            detailsPage.RootAccordion.FindField("Content").FieldValue.DownloadLink.Click();
+            var detailsPage = await tempFileStoragePage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
 
-            Thread.Sleep(1000);
-            var file = browser.DownloadFile("CqlActiveBoxState-Content-dGhpcy.bin");
-            file.Should().Be(content);
+            var waitForDownloadTask = tempFileStoragePage.Page.WaitForDownloadAsync();
+            await detailsPage.RootAccordion.FindField("Content").FieldValue.DownloadLink.Click();
+            var download = await waitForDownloadTask;
+
+            download.SuggestedFilename.Should().Be("CqlActiveBoxState-Content-dGhpcy.bin");
+
+            var filename = $"{TestContext.CurrentContext.TestDirectory}/Files/{download.SuggestedFilename}";
+            await download.SaveAsAsync(filename);
+            (await File.ReadAllTextAsync(filename)).Should().Be(content);
         }
 
-        private static void CheckDocumentPrintingInfoFields([NotNull] BusinessObjectDetailsPage page, [NotNull] DocumentPrintingInfo document)
+        private static async Task CheckDocumentPrintingInfoFields(PwBusinessObjectDetailsPage page, DocumentPrintingInfo document)
         {
-            page.RootAccordion.FindField("Id").Value.WaitText(document.Id.ToString());
-            page.RootAccordion.FindField("PartyId").Value.WaitText(document.PartyId);
-            page.RootAccordion.FindField("FileNameWithoutExtension").Value.WaitText(document.FileNameWithoutExtension);
-            page.RootAccordion.FindField("FileExtension").Value.WaitText(document.FileExtension);
-            page.RootAccordion.FindField("FileId").Value.WaitText(document.FileId);
-            page.RootAccordion.FindField("Status").Value.WaitText(document.Status.ToString());
+            await page.RootAccordion.FindField("Id").Value.WaitText(document.Id.ToString());
+            await page.RootAccordion.FindField("PartyId").Value.WaitText(document.PartyId);
+            await page.RootAccordion.FindField("FileNameWithoutExtension").Value.WaitText(document.FileNameWithoutExtension);
+            await page.RootAccordion.FindField("FileExtension").Value.WaitText(document.FileExtension);
+            await page.RootAccordion.FindField("FileId").Value.WaitText(document.FileId);
+            await page.RootAccordion.FindField("Status").Value.WaitText(document.Status.ToString());
         }
     }
 }
