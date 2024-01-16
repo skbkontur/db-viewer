@@ -2650,6 +2650,7 @@ __metadata:
   resolution: "@skbkontur/db-viewer-ui@workspace:."
   dependencies:
     "@skbkontur/icons": "npm:^1.3.0"
+    "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
     "@skbkontur/react-ui": "npm:^4.1.0"
     "@skbkontur/react-ui-validations": "npm:^1.8.3"
@@ -2702,6 +2703,32 @@ __metadata:
   version: 1.5.0
   resolution: "@skbkontur/icons@npm:1.5.0"
   checksum: 1a721bf6a5d8366fbc89e6e48fd483a22dd4e52d1c14e9c327e71539c04a7e993d37daa8b4ea553593b2a9a2f47adcd0907ac661322e22005e4dc356e4cb14ea
+  languageName: node
+  linkType: hard
+
+"@skbkontur/react-selenium-testing@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@skbkontur/react-selenium-testing@npm:0.2.1"
+  dependencies:
+    "@skbkontur/react-sorge": "npm:^0.2.1"
+  checksum: cb0bade94b68b95f22611f5f3bd17f3ff6d36cc8f499b40bdc0894ad5fa98259c687844386af4cdec18f4c9b94088d06e5eb4647794742fcac6e7daaeef81e7f
+  languageName: node
+  linkType: hard
+
+"@skbkontur/react-sorge@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@skbkontur/react-sorge@npm:0.2.1"
+  dependencies:
+    semver: "npm:7.3.5"
+  peerDependencies:
+    react: ">=16.7 <=17.0"
+    react-dom: ">=16.7 <=17.0"
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: c29a029c2cfff29c1e067a7c5e9477692a3759d222eeb15a5c9d5bfdab666605b179d39430283d872acececf0142bcdccf3e942124ee75a26a680a7c485b2afb
   languageName: node
   linkType: hard
 
@@ -10104,6 +10131,17 @@ __metadata:
   bin:
     semver: bin/semver
   checksum: fca14418a174d4b4ef1fecb32c5941e3412d52a4d3d85165924ce3a47fbc7073372c26faf7484ceb4bbc2bde25880c6b97e492473dc7e9708fdfb1c6a02d546e
+  languageName: node
+  linkType: hard
+
+"semver@npm:7.3.5":
+  version: 7.3.5
+  resolution: "semver@npm:7.3.5"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 22854378594943f2988ee853c02a7471dd02eba7bf75e286b98538114590a148dd59b22775edf42fcfb354438f304b8f32a53c136d228e99068ac52c60259324
   languageName: node
   linkType: hard
 

@@ -69,7 +69,6 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         const { disabled, warning, error, useSeconds, defaultTime } = this.props;
         return (
             <Input
-                data-tid="Input"
                 disabled={disabled}
                 mask={useSeconds ? "99:99:99.999" : "99:99"}
                 value={this.state.value}

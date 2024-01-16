@@ -11,9 +11,9 @@ export default defineConfig(({ mode }) => {
             : {
                   "process.env.API": isDevMode ? "'fake'" : "'real'",
                   "process.env.enableReactTesting": "true",
-                  global: "window",
               },
         server: {
+            host: "0.0.0.0",
             proxy: {
                 "/db-viewer": "http://localhost:5000",
             },
