@@ -11,7 +11,6 @@ export default defineConfig(({ mode }) => {
             : {
                   "process.env.API": isDevMode ? "'fake'" : "'real'",
                   "process.env.enableReactTesting": "true",
-                  global: "window",
               },
         server: {
             proxy: {
