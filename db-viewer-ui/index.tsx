@@ -1,4 +1,6 @@
-import "./react-selenium-testing";
+import "./react-selenium-prep";
+import "@skbkontur/react-selenium-testing";
+
 import React from "react";
 import ReactDom from "react-dom";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
