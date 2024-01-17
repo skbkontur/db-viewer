@@ -4,7 +4,7 @@ interface ParamsMap {
     [key: string]: null | undefined | number | string | any[] | boolean;
 }
 
-function getExceptionInfo(exception: object, path: string): string {
+function getExceptionInfo(exception: any, path: string): string {
     return (
         exception["Exception" + path] ||
         exception["exception" + path] ||

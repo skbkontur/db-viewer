@@ -369,6 +369,8 @@ export const ObjectTableContainer = ({
         return properties
             .filter(x => x.isIdentity)
             .map(x => ({
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 value: item[x.name],
                 path: x.name,
                 operator: ObjectFieldFilterOperator.Equals,
@@ -380,6 +382,8 @@ export const ObjectTableContainer = ({
         const query = {};
         for (const prop of properties) {
             if (prop.isIdentity) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 query[prop.name] = item[prop.name];
             }
         }
