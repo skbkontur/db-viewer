@@ -10,8 +10,8 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.Cql;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -31,13 +31,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.GetTable<DocumentPrintingInfo>().Insert(document).SetTimestamp(DateTimeOffset.UtcNow).Execute();
 
-            await using var browser = new Browser();
-            var printingInfoPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await using var browser = new BrowserForTests();
+            var printingInfoPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
             await printingInfoPage.OpenFilter.Click();
             await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
             await printingInfoPage.FilterModal.Apply.Click();
 
-            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
 
             var id = detailsPage.RootAccordion.FindField("Id");
             await id.Edit.WaitAbsence();
@@ -72,7 +72,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             await CheckDocumentPrintingInfoFields(detailsPage, document);
 
             await detailsPage.Delete.Click();
-            printingInfoPage = await detailsPage.ConfirmDeleteObjectModal.Delete.ClickAndGoTo<PwBusinessObjectTablePage>();
+            printingInfoPage = await detailsPage.ConfirmDeleteObjectModal.Delete.ClickAndGoTo<BusinessObjectTablePage>();
             await printingInfoPage.OpenFilter.Click();
             await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
             await printingInfoPage.FilterModal.Apply.Click();
@@ -90,13 +90,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.GetTable<DocumentPrintingInfo>().Insert(document).SetTimestamp(DateTimeOffset.UtcNow).Execute();
 
-            await using var browser = new Browser();
-            var printingInfoPage = await browser.SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await using var browser = new BrowserForTests();
+            var printingInfoPage = await browser.SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
             await printingInfoPage.OpenFilter.Click();
             await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
             await printingInfoPage.FilterModal.Apply.Click();
 
-            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
             await detailsPage.RootAccordion.FindField("PartyId").Edit.WaitAbsence();
             await detailsPage.Delete.WaitAbsence();
         }
@@ -112,8 +112,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.GetTable<DocumentPrintingInfo>().Insert(document).SetTimestamp(DateTimeOffset.UtcNow).Execute();
 
-            await using var browser = new Browser();
-            var printingInfoPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await using var browser = new BrowserForTests();
+            var printingInfoPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
             await printingInfoPage.BusinessObjectItems.Expect().Not.ToHaveCountAsync(0);
             await printingInfoPage.OpenFilter.Click();
             await (await printingInfoPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(document.Id.ToString());
@@ -121,7 +121,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
 
             await printingInfoPage.BusinessObjectItems.WaitCount(1);
             await printingInfoPage.BusinessObjectItems[0].FindColumn("Id").WaitText(document.Id.ToString());
-            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            var detailsPage = await printingInfoPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
             await detailsPage.Header.WaitPresence();
 
             await CheckDocumentPrintingInfoFields(detailsPage, document);
@@ -145,16 +145,16 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                         Content = Encoding.UTF8.GetBytes(content),
                     }).SetTimestamp(DateTimeOffset.UtcNow).ExecuteAsync();
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var tempFileStoragePage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("CqlActiveBoxState");
+            var tempFileStoragePage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("CqlActiveBoxState");
             await tempFileStoragePage.OpenFilter.Click();
             await (await tempFileStoragePage.FilterModal.GetFilter("PartitionKey")).Input.ClearAndInputText("0");
             await (await tempFileStoragePage.FilterModal.GetFilter("BoxId")).Input.ClearAndInputText(blobId.ToString());
             await tempFileStoragePage.FilterModal.Apply.Click();
             await tempFileStoragePage.BusinessObjectItems.WaitCount(1);
 
-            var detailsPage = await tempFileStoragePage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            var detailsPage = await tempFileStoragePage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
 
             var waitForDownloadTask = tempFileStoragePage.Page.WaitForDownloadAsync();
             await detailsPage.RootAccordion.FindField("Content").FieldValue.DownloadLink.Click();
@@ -167,7 +167,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             (await File.ReadAllTextAsync(filename)).Should().Be(content);
         }
 
-        private static async Task CheckDocumentPrintingInfoFields(PwBusinessObjectDetailsPage page, DocumentPrintingInfo document)
+        private static async Task CheckDocumentPrintingInfoFields(BusinessObjectDetailsPage page, DocumentPrintingInfo document)
         {
             await page.RootAccordion.FindField("Id").Value.WaitText(document.Id.ToString());
             await page.RootAccordion.FindField("PartyId").Value.WaitText(document.PartyId);

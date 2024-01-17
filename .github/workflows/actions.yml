@@ -37,8 +37,8 @@ jobs:
       - name: Install node dependencies
         run: corepack yarn --cwd db-viewer-ui --immutable
       
-      - name: Pull docker images
-        run: docker pull selenoid/vnc:chrome_112.0
+      # - name: Pull docker images
+      #   run: docker pull selenoid/vnc:chrome_112.0
 
       - name: Build dotnet
         run: dotnet build --configuration Release ./DbViewer.sln

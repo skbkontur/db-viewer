@@ -12,8 +12,8 @@ using GroBuf.DataMembersExtracters;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.Cql;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -33,8 +33,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocument(printingInfo);
 
-            await using var browser = new Browser();
-            var showTableEntriesPage = await browser.SwitchTo<PwBusinessObjectTablePage>("DocumentPrintingInfo");
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await browser.SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
 
             await showTableEntriesPage.OpenFilter.Click();
             await showTableEntriesPage.FilterModal.Apply.Click();
@@ -74,8 +74,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(documents);
 
-            await using var browser = new Browser();
-            var showTableEntriesPage = await browser.SwitchTo<PwBusinessObjectTablePage>("DocumentBindingsMeta");
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await browser.SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
             await showTableEntriesPage.OpenFilter.Click();
             await (await showTableEntriesPage.FilterModal.GetFilter("BindingType")).EnumSelect.SelectValueByText("ByPriceList");
             await (await showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId")).Input.ClearAndInputText(firstPartnerPartyId);
@@ -146,8 +146,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(documents);
 
-            await using var browser = new Browser();
-            var showTableEntriesPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("DocumentBindingsMeta");
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
             await showTableEntriesPage.OpenFilter.Click();
             await (await showTableEntriesPage.FilterModal.GetFilter("BindingType")).EnumSelect.SelectValueByText("ByPriceList");
             await (await showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId")).Input.ClearAndInputText(firstPartnerPartyId);
@@ -187,8 +187,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(documents);
 
-            await using var browser = new Browser();
-            var showTableEntriesPage = await browser.SwitchTo<PwBusinessObjectTablePage>("CqlActiveBoxState");
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await browser.SwitchTo<BusinessObjectTablePage>("CqlActiveBoxState");
             await showTableEntriesPage.OpenFilter.Click();
             await (await showTableEntriesPage.FilterModal.GetFilter("PartitionKey")).Input.ClearAndInputText(id);
             await showTableEntriesPage.FilterModal.Apply.Click();
@@ -226,8 +226,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(new[] {document, document2});
 
-            await using var browser = new Browser();
-            var showTableEntriesPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("CqlConnectorDeliveryContext");
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("CqlConnectorDeliveryContext");
             await showTableEntriesPage.OpenFilter.Click();
             await (await showTableEntriesPage.FilterModal.GetFilter("TimeSliceId")).DateTimeInTicks.ClearAndInputText(document.TimeSliceId.UtcTicks.ToString());
             await (await showTableEntriesPage.FilterModal.GetFilter("TimeSliceShardNumber")).Input.ClearAndInputText(document.TimeSliceShardNumber.ToString());

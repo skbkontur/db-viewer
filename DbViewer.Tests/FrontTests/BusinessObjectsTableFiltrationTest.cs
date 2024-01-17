@@ -8,8 +8,8 @@ using GroBuf.DataMembersExtracters;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -46,13 +46,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                 await context.SaveChangesAsync();
             }
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var usersPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            var usersPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("UsersTable");
             await usersPage.TableHeader.WaitPresence();
             await usersPage.TableHeader.SortByColumn("Header_Id");
 
-            var largeObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("TestTable");
+            var largeObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("TestTable");
             await largeObjectPage.TableHeader.WaitPresence();
             await largeObjectPage.TableHeader.WaitNotSortable("Header_Index");
             await largeObjectPage.TableHeader.WaitNotSortable("Header_String");
@@ -67,9 +67,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             CreateUsers(1, Guid.NewGuid().ToString());
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var userBusinessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
             await userBusinessObjectPage.OpenFilter.Click();
             var filter = await userBusinessObjectPage.FilterModal.GetFilter("ScopeId");
             await filter.Input.ClearAndInputText("<script>");
@@ -95,8 +95,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var filtrationGuid = Guid.NewGuid();
             CreateUsers(1, scopeId, filtrationGuid);
 
-            await using var browser = new Browser();
-            var userBusinessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
             await userBusinessObjectPage.OpenFilter.Click();
             await userBusinessObjectPage.FilterModal.Id.ClearAndInputText(filtrationGuid.ToString());
             await userBusinessObjectPage.FilterModal.Apply.Click();
@@ -118,8 +118,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var filtrationGuid = Guid.NewGuid();
             CreateUsers(1, scopeId, filtrationGuid);
 
-            await using var browser = new Browser();
-            var userBusinessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
             await userBusinessObjectPage.OpenFilter.Click();
             await userBusinessObjectPage.FilterModal.Id.ClearAndInputText(filtrationGuid.ToString());
             await userBusinessObjectPage.FilterModal.Apply.Click();
@@ -143,9 +143,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var userId = Guid.NewGuid();
             CreateUsers(1, scopeId, userId);
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var userBusinessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
             await userBusinessObjectPage.OpenFilter.Click();
             await userBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
             await userBusinessObjectPage.FilterModal.Apply.Click();

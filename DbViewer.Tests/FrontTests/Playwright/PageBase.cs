@@ -5,13 +5,13 @@ using Microsoft.Playwright;
 namespace SkbKontur.DbViewer.Tests.FrontTests.Playwright
 {
     [MeansImplicitUse(ImplicitUseTargetFlags.Members | ImplicitUseTargetFlags.WithInheritors)]
-    public class PwControlBase
+    public class PageBase
     {
-        public PwControlBase(ILocator locator)
+        public PageBase(IPage page)
         {
-            Locator = locator;
+            Page = page;
         }
 
-        public ILocator Locator { get; }
+        public IPage Page { get; }
     }
 }

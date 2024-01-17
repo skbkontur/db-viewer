@@ -3,11 +3,12 @@
 using Microsoft.Playwright;
 
 using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class FilterModal : PwControlBase
+    public class FilterModal : ControlBase
     {
         public FilterModal(ILocator locator)
             : base(locator)
@@ -20,16 +21,16 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
         }
 
         [Selector("##ObjectFilters ##Filter")]
-        public PwControlList<BusinessObjectFilter> ObjectFilters { get; set; }
+        public ControlList<BusinessObjectFilter> ObjectFilters { get; set; }
 
-        public PwButton Apply { get; set; }
-        public PwLink Clear { get; set; }
+        public Button Apply { get; set; }
+        public Link Clear { get; set; }
 
         [Selector("##Id ##Input")]
-        public PwInput Id { get; set; }
+        public Input Id { get; set; }
 
         [Selector("##ScopeId ##Input")]
 
-        public PwInput ScopeId { get; set; }
+        public Input ScopeId { get; set; }
     }
 }

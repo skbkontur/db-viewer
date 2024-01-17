@@ -6,7 +6,7 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class BusinessObjectTableHeader : PwControlBase
+    public class BusinessObjectTableHeader : ControlBase
     {
         public BusinessObjectTableHeader(ILocator locator)
             : base(locator)

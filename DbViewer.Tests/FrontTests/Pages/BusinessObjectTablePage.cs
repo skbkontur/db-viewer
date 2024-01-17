@@ -1,23 +1,20 @@
-﻿using OpenQA.Selenium.Remote;
+﻿using Microsoft.Playwright;
 
 using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Controls;
 using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
-
-using SKBKontur.SeleniumTesting;
-using SKBKontur.SeleniumTesting.Controls;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
 {
-    [AutoFillControls]
     [PageRoute("BusinessObjects/{id}")]
     public class BusinessObjectTablePage : PageBase
     {
-        public BusinessObjectTablePage(RemoteWebDriver webDriver)
-            : base(webDriver)
+        public BusinessObjectTablePage(IPage page)
+            : base(page)
         {
         }
 
-        [LoadingComplete]
         public Label Header { get; set; }
 
         public Link GoBack { get; set; }
@@ -26,7 +23,10 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Label ItemsCountInfo { get; set; }
 
         public Link OpenFilter { get; set; }
+
+        [Selector("portal=FilterModal")]
         public FilterModal FilterModal { get; set; }
+
         public DownloadLimitModal DownloadLimitModal { get; set; }
 
         public CountDropdown CountDropdown { get; set; }
@@ -34,15 +34,15 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Link FieldSettings { get; set; }
         public Link DownloadLink { get; set; }
 
-        [Selector("Portal:portal ##ColumnSelector")]
+        [Selector("portal=Tooltip__root ##ColumnSelector")]
         public ColumnSelector ColumnSelector { get; set; }
 
+        [Selector("portal=ConfirmDeleteObjectModal")]
         public ConfirmDeleteObjectModal ConfirmDeleteObjectModal { get; set; }
 
         public BusinessObjectTableHeader TableHeader { get; set; }
 
-        [Selector("##Body")]
-        [ChildSelector("##Row")]
+        [Selector("##Body ##Row")]
         public ControlList<BusinessObjectTableRow> BusinessObjectItems { get; set; }
 
         public Paging Paging { get; set; }

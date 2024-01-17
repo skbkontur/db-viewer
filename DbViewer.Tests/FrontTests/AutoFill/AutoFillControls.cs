@@ -8,10 +8,10 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.AutoFill
 {
-    public class PwAutoFill
+    public static class AutoFillControls
     {
         public static TPage InitializePage<TPage>(IPage page)
-            where TPage : PwPageBase
+            where TPage : PageBase
         {
             var newPage = (TPage)Activator.CreateInstance(typeof(TPage), page)!;
             InitializeControls(newPage, newPage.Page, null);
@@ -23,7 +23,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.AutoFill
             var properties = instance
                              .GetType()
                              .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                             .Where(p => p.CanWrite && typeof(PwControlBase).IsAssignableFrom(p.PropertyType) && !p.GetCustomAttributes<SkipAutoFillAttribute>().Any());
+                             .Where(p => p.CanWrite && typeof(ControlBase).IsAssignableFrom(p.PropertyType));
 
             foreach (var property in properties)
             {
@@ -34,11 +34,11 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.AutoFill
             }
         }
 
-        public static ILocator LocatorForProperty(PropertyInfo property, IPage page, ILocator? parent)
+        private static ILocator LocatorForProperty(PropertyInfo property, IPage page, ILocator? parent)
         {
             var selector = property
                            .GetCustomAttributes<SelectorAttribute>()
-                           .Select(x => x.Selector.ToString())
+                           .Select(x => x.Selector)
                            .FirstOrDefault();
 
             if (string.IsNullOrEmpty(selector))

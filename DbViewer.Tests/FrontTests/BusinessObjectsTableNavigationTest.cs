@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -22,13 +22,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var scopeId = Guid.NewGuid().ToString();
             CreateFtpUsers(21, scopeId);
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var businessObjectsPage = await browser.SwitchTo<PwBusinessObjectsPage>();
+            var businessObjectsPage = await browser.SwitchTo<BusinessObjectsPage>();
             await businessObjectsPage.FilterInput.ClearAndInputText("FtpUser");
             var ftpUsersLink = await businessObjectsPage.ObjectGroups[0].ObjectsList.GetItemWithText(x => x.ObjectLink, "FtpUser");
 
-            var ftpUsersPage = await ftpUsersLink.ObjectLink.ClickAndGoTo<PwBusinessObjectTablePage>();
+            var ftpUsersPage = await ftpUsersLink.ObjectLink.ClickAndGoTo<BusinessObjectTablePage>();
             await ftpUsersPage.OpenFilter.Click();
             await (await ftpUsersPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(scopeId);
             await ftpUsersPage.FilterModal.Apply.Click();
@@ -53,9 +53,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var scopeId = Guid.NewGuid().ToString();
             CreateFtpUsers(51, scopeId);
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var ftpUsersPage = await browser.SwitchTo<PwBusinessObjectTablePage>("FtpUser");
+            var ftpUsersPage = await browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
             await ftpUsersPage.OpenFilter.Click();
             await (await ftpUsersPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(scopeId);
             await ftpUsersPage.FilterModal.Apply.Click();

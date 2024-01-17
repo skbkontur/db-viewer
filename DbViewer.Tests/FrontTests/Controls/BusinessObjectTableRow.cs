@@ -4,21 +4,21 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class BusinessObjectTableRow : PwControlBase
+    public class BusinessObjectTableRow : ControlBase
     {
         public BusinessObjectTableRow(ILocator locator)
             : base(locator)
         {
         }
 
-        public PwLink Details { get; set; }
-        public PwLink Delete { get; set; }
-        public PwLabel Id { get; set; }
-        public PwLabel ScopeId { get; set; }
+        public Link Details { get; set; }
+        public Link Delete { get; set; }
+        public Label Id { get; set; }
+        public Label ScopeId { get; set; }
 
-        public PwLabel FindColumn(string tid)
+        public Label FindColumn(string tid)
         {
-            return new PwLabel(Locator.GetByTestId(tid));
+            return new Label(Locator.GetByTestId(tid));
         }
     }
 }

@@ -2,8 +2,8 @@
 
 using NUnit.Framework;
 
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -16,9 +16,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestSearch()
         {
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var businessObjectsPage = await browser.SwitchTo<PwBusinessObjectsPage>();
+            var businessObjectsPage = await browser.SwitchTo<BusinessObjectsPage>();
             await businessObjectsPage.FilterInput.ClearAndInputText("CI");
             await businessObjectsPage.ObjectGroups.WaitCount(1);
 
@@ -47,9 +47,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestSearchIndexedField()
         {
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var businessObjects = await browser.SwitchTo<PwBusinessObjectsPage>();
+            var businessObjects = await browser.SwitchTo<BusinessObjectsPage>();
             await businessObjects.FilterInput.ClearAndInputText("UsersTable");
             await businessObjects.ObjectGroups.WaitCount(1);
 
@@ -66,9 +66,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestSearchLink()
         {
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var businessObjectsPage = await browser.SwitchTo<PwBusinessObjectsPage>();
+            var businessObjectsPage = await browser.SwitchTo<BusinessObjectsPage>();
             await businessObjectsPage.FilterInput.ClearAndInputText("DocumentPrintingInfo");
             await businessObjectsPage.ObjectGroups.WaitCount(1);
             await businessObjectsPage.ObjectGroups[0].ObjectsList.WaitCount(1);
@@ -82,11 +82,11 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestLinkShouldReferToShowTablePage()
         {
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var businessObjectsPage = await browser.SwitchTo<PwBusinessObjectsPage>();
+            var businessObjectsPage = await browser.SwitchTo<BusinessObjectsPage>();
             var link = await businessObjectsPage.FindBusinessObjectLink("CQL Objects", "DocumentPrintingInfo");
-            var page = await link.ClickAndGoTo<PwBusinessObjectTablePage>();
+            var page = await link.ClickAndGoTo<BusinessObjectTablePage>();
             await page.Header.WaitText("DocumentPrintingInfo");
         }
     }

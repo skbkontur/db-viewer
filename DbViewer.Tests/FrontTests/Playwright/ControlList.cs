@@ -6,29 +6,29 @@ using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Playwright
 {
-    public class PwControlList<TControl> : PwControlBase
-        where TControl : PwControlBase
+    public class ControlList<TControl> : ControlBase
+        where TControl : ControlBase
     {
-        public PwControlList(ILocator locator)
+        public ControlList(ILocator locator)
             : base(locator)
         {
         }
 
-        public PwControlList<T> Select<T>(Func<TControl, T> selector)
-            where T : PwControlBase
+        public ControlList<T> Select<T>(Func<TControl, T> selector)
+            where T : ControlBase
         {
             var dummyControl = (TControl)Activator.CreateInstance(typeof(TControl), Locator)!;
-            PwAutoFill.InitializeControls(dummyControl, Locator.Page, Locator);
+            AutoFillControls.InitializeControls(dummyControl, Locator.Page, Locator);
 
-            return new PwControlList<T>(selector(dummyControl).Locator);
+            return new ControlList<T>(selector(dummyControl).Locator);
         }
 
-        public PwControlList<TControl> Where(Func<TControl, ILocator> predicate)
+        public ControlList<TControl> Where(Func<TControl, ILocator> predicate)
         {
             var dummyControl = (TControl)Activator.CreateInstance(typeof(TControl), Locator)!;
-            PwAutoFill.InitializeControls(dummyControl, Locator.Page, null);
+            AutoFillControls.InitializeControls(dummyControl, Locator.Page, null);
 
-            return new PwControlList<TControl>(Locator.Filter(new LocatorFilterOptions
+            return new ControlList<TControl>(Locator.Filter(new LocatorFilterOptions
                 {
                     Has = predicate(dummyControl)
                 }));
@@ -40,7 +40,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Playwright
             {
                 var controlLocator = Locator.Nth(index);
                 var control = (TControl)Activator.CreateInstance(typeof(TControl), controlLocator)!;
-                PwAutoFill.InitializeControls(control, Locator.Page, controlLocator);
+                AutoFillControls.InitializeControls(control, Locator.Page, controlLocator);
                 return control;
             }
         }

@@ -13,8 +13,8 @@ using NUnit.Framework;
 using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.TestApi.EntityFramework;
 using SkbKontur.DbViewer.TestApi.Impl.Document;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -36,8 +36,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var filledNumberRow = businessObjectEditingPage.RootAccordion.FindField("DocumentNumber");
             await filledNumberRow.FieldValue.WaitText("123");
@@ -77,8 +77,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var filledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentDate");
             await filledDateRow.FieldValue.WaitTextContains("2014-12-11");
@@ -125,8 +125,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var filledEnumRow = businessObjectEditingPage.RootAccordion.FindField("DocumentType");
             await filledEnumRow.FieldValue.WaitText("Orders");
@@ -167,8 +167,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var booleanRow = businessObjectEditingPage.RootAccordion.FindField("IsLargeDocument");
             await booleanRow.FieldValue.WaitText("false");
@@ -209,8 +209,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var integerRow = businessObjectEditingPage.RootAccordion.FindField("ShardNumber");
             await integerRow.FieldValue.WaitText("0");
@@ -267,8 +267,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
@@ -317,8 +317,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var documentId = CreateDocument(documentName);
 
-            await using var browser = new Browser();
-            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var row = businessObjectEditingPage.RootAccordion.FindField("id");
             await row.Edit.WaitAbsence();

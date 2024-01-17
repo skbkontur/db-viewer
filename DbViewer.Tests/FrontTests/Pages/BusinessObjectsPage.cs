@@ -1,19 +1,19 @@
-﻿using OpenQA.Selenium.Remote;
+﻿using System.Threading.Tasks;
+
+using Microsoft.Playwright;
 
 using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Controls;
 using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
-
-using SKBKontur.SeleniumTesting;
-using SKBKontur.SeleniumTesting.Controls;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
 {
-    [AutoFillControls]
     [PageRoute("BusinessObjects")]
     public class BusinessObjectsPage : PageBase
     {
-        public BusinessObjectsPage(RemoteWebDriver webDriver)
-            : base(webDriver)
+        public BusinessObjectsPage(IPage page)
+            : base(page)
         {
         }
 
@@ -21,14 +21,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
         public Link BackLink { get; set; }
         public Input FilterInput { get; set; }
 
-        [LoadingComplete]
-        [ChildSelector("##ObjectGroup")]
+        [Selector("##ObjectGroups ##ObjectGroup")]
         public ControlList<BusinessObjectGroup> ObjectGroups { get; set; }
 
-        public Link FindBusinessObjectLink(string groupName, string objectName)
+        public async Task<Link> FindBusinessObjectLink(string groupName, string objectName)
         {
-            var businessObjectsList = ObjectGroups.GetItemWithText(x => x.Name.Text, groupName).ObjectsList;
-            return businessObjectsList.GetItemWithText(x => x.ObjectLink.Text, objectName).ObjectLink;
+            var businessObjectsList = (await ObjectGroups.GetItemWithText(x => x.Name, groupName)).ObjectsList;
+            return (await businessObjectsList.GetItemWithText(x => x.ObjectLink, objectName)).ObjectLink;
         }
     }
 }

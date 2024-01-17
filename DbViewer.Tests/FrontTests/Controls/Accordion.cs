@@ -5,7 +5,7 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class Accordion : PwControlBase
+    public class Accordion : ControlBase
     {
         public Accordion(ILocator locator)
             : base(locator)
@@ -15,7 +15,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
         public AccordionRow FindField(string id)
         {
             var row = new AccordionRow(Locator.GetByTestId(id));
-            PwAutoFill.InitializeControls(row, Locator.Page, row.Locator);
+            AutoFillControls.InitializeControls(row, Locator.Page, row.Locator);
 
             return row;
         }
@@ -23,7 +23,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
         public AccordionToggle FindAccordionToggle(string id)
         {
             var toggle = new AccordionToggle(Locator.GetByTestId(id));
-            PwAutoFill.InitializeControls(toggle, Locator.Page, toggle.Locator);
+            AutoFillControls.InitializeControls(toggle, Locator.Page, toggle.Locator);
 
             return toggle;
         }

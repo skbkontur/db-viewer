@@ -5,25 +5,25 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class BusinessObjectFilter : PwControlBase
+    public class BusinessObjectFilter : ControlBase
     {
         public BusinessObjectFilter(ILocator locator)
             : base(locator)
         {
         }
 
-        public PwLabel FormCaption { get; set; }
-        public PwSelect OperatorSelect { get; set; }
-        public PwSelect EnumSelect { get; set; }
-        public PwSelect BooleanSelect { get; set; }
-        public PwInput Input { get; set; }
+        public Label FormCaption { get; set; }
+        public Select OperatorSelect { get; set; }
+        public Select EnumSelect { get; set; }
+        public Select BooleanSelect { get; set; }
+        public Input Input { get; set; }
 
         [Selector("portal=InputValidation")]
         public Validation InputValidation { get; set; }
 
         public Validation DateTimeValidation { get; set; }
-        public PwDatePicker Date { get; set; }
-        public PwInput Time { get; set; }
-        public PwInput DateTimeInTicks { get; set; }
+        public DatePicker Date { get; set; }
+        public Input Time { get; set; }
+        public Input DateTimeInTicks { get; set; }
     }
 }

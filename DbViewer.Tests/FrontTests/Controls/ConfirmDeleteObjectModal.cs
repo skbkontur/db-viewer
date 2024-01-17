@@ -4,14 +4,14 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class ConfirmDeleteObjectModal : PwControlBase
+    public class ConfirmDeleteObjectModal : ControlBase
     {
         public ConfirmDeleteObjectModal(ILocator locator)
             : base(locator)
         {
         }
 
-        public PwButton Delete { get; set; }
-        public PwButton Cancel { get; set; }
+        public Button Delete { get; set; }
+        public Button Cancel { get; set; }
     }
 }

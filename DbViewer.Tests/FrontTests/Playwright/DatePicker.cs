@@ -2,9 +2,9 @@
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Playwright
 {
-    public class PwLink : PwControlBase
+    public class DatePicker : ControlBase
     {
-        public PwLink(ILocator locator)
+        public DatePicker(ILocator locator)
             : base(locator)
         {
         }

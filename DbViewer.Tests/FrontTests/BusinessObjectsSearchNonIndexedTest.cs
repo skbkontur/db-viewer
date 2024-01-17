@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.Cql;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -17,14 +17,14 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestValidation()
         {
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var businessObjectsPage = await browser.SwitchTo<PwBusinessObjectsPage>();
+            var businessObjectsPage = await browser.SwitchTo<BusinessObjectsPage>();
             await businessObjectsPage.FilterInput.ClearAndInputText("ApiClientThrift");
             await (await businessObjectsPage.ObjectGroups.Single()).Name.WaitText("Business Array Objects");
             await businessObjectsPage.ObjectGroups[0].ObjectsList.WaitCount(1);
             var link = await businessObjectsPage.ObjectGroups[0].ObjectsList.GetItemWithText(x => x.ObjectLink, "ApiClientThrift");
-            var searchPage = await link.ObjectLink.ClickAndGoTo<PwBusinessObjectTablePage>();
+            var searchPage = await link.ObjectLink.ClickAndGoTo<BusinessObjectTablePage>();
 
             await searchPage.Header.WaitText("ApiClientThrift");
             var id = await searchPage.FilterModal.GetFilter("Id");
@@ -76,16 +76,16 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var lastEventId = Guid.NewGuid().ToString("D");
             CreateApiClient(objectId, lastEventId);
 
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var searchPage = await browser.SwitchTo<PwBusinessObjectTablePage>("ApiClientThrift");
+            var searchPage = await browser.SwitchTo<BusinessObjectTablePage>("ApiClientThrift");
             await (await searchPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText(objectId);
             await (await searchPage.FilterModal.GetFilter("ScopeId")).Input.ClearAndInputText("scopeId");
             await (await searchPage.FilterModal.GetFilter("ArrayIndex")).Input.ClearAndInputText("arrayIndex");
             await searchPage.FilterModal.Apply.Click();
             await searchPage.BusinessObjectItems.WaitCount(1);
 
-            var detailsPage = await searchPage.BusinessObjectItems[0].Details.ClickAndGoTo<PwBusinessObjectDetailsPage>();
+            var detailsPage = await searchPage.BusinessObjectItems[0].Details.ClickAndGoTo<BusinessObjectDetailsPage>();
             await detailsPage.RootAccordion.FindField("Id").FieldValue.WaitText(objectId);
             await detailsPage.RootAccordion.FindField("ScopeId").FieldValue.WaitText("scopeId");
             await detailsPage.RootAccordion.FindField("ArrayIndex").FieldValue.WaitText("arrayIndex");
@@ -98,9 +98,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestObjectNotFound()
         {
-            await using var browser = new Browser();
+            await using var browser = new BrowserForTests();
 
-            var searchPage = await browser.SwitchTo<PwBusinessObjectTablePage>("ApiClientThrift");
+            var searchPage = await browser.SwitchTo<BusinessObjectTablePage>("ApiClientThrift");
             await searchPage.Header.WaitText("ApiClientThrift");
             await (await searchPage.FilterModal.GetFilter("Id")).Input.ClearAndInputText("123");
             await (await searchPage.FilterModal.GetFilter("ScopeId")).Input.ClearAndInputText("123");

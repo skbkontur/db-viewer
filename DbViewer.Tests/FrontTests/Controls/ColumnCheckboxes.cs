@@ -4,16 +4,16 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class ColumnCheckboxes : PwControlBase
+    public class ColumnCheckboxes : ControlBase
     {
         public ColumnCheckboxes(ILocator locator)
             : base(locator)
         {
         }
 
-        public PwCheckbox GetCheckbox(string tid)
+        public Checkbox GetCheckbox(string tid)
         {
-            return new PwCheckbox(Locator.GetByTestId(tid));
+            return new Checkbox(Locator.GetByTestId(tid));
         }
     }
 }

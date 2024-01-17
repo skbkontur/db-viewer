@@ -9,8 +9,8 @@ using FluentAssertions;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -26,8 +26,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var totalCount = 100123;
             var scopeId = GenerateRandomUsersAndAssertCount(totalCount)[0].ScopeId;
 
-            await using var browser = new Browser();
-            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
 
             await businessObjectPage.OpenFilter.Click();
             await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
@@ -39,7 +39,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             await businessObjectPage.DownloadLimitModal.Body.WaitText("Мы умеем выгружать не более 50000 объектов из этой таблицы. Уточните запрос с помощью фильтров, чтобы записей стало меньше.");
             await businessObjectPage.DownloadLimitModal.Cancel.Click();
 
-            var adminBusinessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            var adminBusinessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("UsersTable");
 
             await adminBusinessObjectPage.OpenFilter.Click();
             await adminBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
@@ -56,8 +56,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         [Test]
         public async Task TestEmptyList()
         {
-            await using var browser = new Browser();
-            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
 
             await businessObjectPage.OpenFilter.Click();
             await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(Guid.NewGuid().ToString());
@@ -77,8 +77,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var scopeId = GenerateRandomUsersAndAssertCount(50000)[0].ScopeId;
 
-            await using var browser = new Browser();
-            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
 
             await businessObjectPage.OpenFilter.Click();
             await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
@@ -98,8 +98,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var users = GenerateRandomUsersAndAssertCount(10);
             var scopeId = users[0].ScopeId;
 
-            await using var browser = new Browser();
-            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
 
             await businessObjectPage.OpenFilter.Click();
             await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
@@ -140,8 +140,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var users = GenerateRandomUsersAndAssertCount(10);
             var scopeId = users[0].ScopeId;
 
-            await using var browser = new Browser();
-            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("UsersTable");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
 
             await businessObjectPage.OpenFilter.Click();
             await businessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
@@ -197,7 +197,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             return $"=\"{n}\"";
         }
 
-        private static async Task<string[]> DownloadFile(Browser browser, PwBusinessObjectTablePage businessObjectPage)
+        private static async Task<string[]> DownloadFile(BrowserForTests browser, BusinessObjectTablePage businessObjectPage)
         {
             var waitForDownloadTask = browser.Page.WaitForDownloadAsync();
             await businessObjectPage.DownloadLink.Click();

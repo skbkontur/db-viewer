@@ -5,17 +5,17 @@ using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    public class BusinessObjectGroup : PwControlBase
+    public class BusinessObjectGroup : ControlBase
     {
         public BusinessObjectGroup(ILocator locator)
             : base(locator)
         {
         }
 
-        public PwLabel Name { get; set; }
-        public PwLabel IndexedLabel { get; set; }
+        public Label Name { get; set; }
+        public Label IndexedLabel { get; set; }
 
         [Selector("##ObjectsList ##ObjectItem")]
-        public PwControlList<BusinessObjectItem> ObjectsList { get; set; }
+        public ControlList<BusinessObjectItem> ObjectsList { get; set; }
     }
 }

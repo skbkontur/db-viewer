@@ -2,9 +2,9 @@
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Playwright
 {
-    public class PwButton : PwControlBase
+    public class Button : ControlBase
     {
-        public PwButton(ILocator locator)
+        public Button(ILocator locator)
             : base(locator)
         {
         }

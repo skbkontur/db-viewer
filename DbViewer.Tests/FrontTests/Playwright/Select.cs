@@ -4,14 +4,14 @@ using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Playwright
 {
-    public class PwSelect : PwControlBase
+    public class Select : ControlBase
     {
-        public PwSelect(ILocator locator)
+        public Select(ILocator locator)
             : base(locator)
         {
         }
 
         [Selector("portal=Select__menu ##MenuItem__root")]
-        public PwControlList<PwLabel> Items { get; set; }
+        public ControlList<Label> Items { get; set; }
     }
 }

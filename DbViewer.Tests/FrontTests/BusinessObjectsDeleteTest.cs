@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 using ConfirmDeleteObjectModal = SkbKontur.DbViewer.Tests.FrontTests.Controls.ConfirmDeleteObjectModal;
 
@@ -23,8 +23,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var ftpUser = CreateFtpUser();
 
-            await using var browser = new Browser();
-            var businessObjectPage = await browser.SwitchTo<PwBusinessObjectTablePage>("FtpUser");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
 
             await businessObjectPage.OpenFilter.Click();
             await (await businessObjectPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(ftpUser.Login);
@@ -45,8 +45,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var ftpUser = CreateFtpUser();
 
-            await using var browser = new Browser();
-            var businessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectTablePage>("FtpUser");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("FtpUser");
 
             await businessObjectPage.OpenFilter.Click();
             await (await businessObjectPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(ftpUser.Login);
@@ -70,8 +70,8 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var ftpUser = CreateFtpUser();
 
-            await using var browser = new Browser();
-            var detailsPage = await browser.SwitchTo<PwBusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
+            await using var browser = new BrowserForTests();
+            var detailsPage = await browser.SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
             await detailsPage.Delete.WaitAbsence();
         }
 
@@ -86,13 +86,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         {
             var ftpUser = CreateFtpUser();
 
-            await using var browser = new Browser();
-            var detailsPage = await (await browser.LoginAsSuperUser()).SwitchTo<PwBusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
+            await using var browser = new BrowserForTests();
+            var detailsPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
             await detailsPage.Delete.Click();
             await ConfirmDeletion(detailsPage.ConfirmDeleteObjectModal, confirmDeletion);
 
             if (confirmDeletion)
-                detailsPage.GoTo<PwBusinessObjectTablePage>();
+                detailsPage.GoTo<BusinessObjectTablePage>();
 
             AssertFtpUserExistence(ftpUser.Id, confirmDeletion);
         }
