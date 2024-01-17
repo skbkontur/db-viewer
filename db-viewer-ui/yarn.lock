@@ -2516,7 +2516,7 @@ __metadata:
     "@skbkontur/icons": "npm:^1.7.3"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
-    "@skbkontur/react-ui": "npm:^4.1.0"
+    "@skbkontur/react-ui": "npm:^4.19.0"
     "@skbkontur/react-ui-validations": "npm:^1.8.3"
     "@storybook/addon-actions": "npm:^7.6.8"
     "@storybook/addons": "npm:^7.6.8"
@@ -2559,6 +2559,13 @@ __metadata:
     react-router-dom: ">=6 <7"
   languageName: unknown
   linkType: soft
+
+"@skbkontur/global-object@npm:^0.4.2":
+  version: 0.4.4
+  resolution: "@skbkontur/global-object@npm:0.4.4"
+  checksum: bb5724cc6c6a5ac9ab516bb7e72e5e53963f481e8c0599e20f01fe3ac5c6623fab7e32b91d0d180a134954637de5658dbba1579ebe1940973f93b63720f570cd
+  languageName: node
+  linkType: hard
 
 "@skbkontur/icons@npm:^1.7.3":
   version: 1.7.3
@@ -2617,12 +2624,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/react-ui@npm:^4.1.0":
-  version: 4.16.0
-  resolution: "@skbkontur/react-ui@npm:4.16.0"
+"@skbkontur/react-ui@npm:^4.19.0":
+  version: 4.19.0
+  resolution: "@skbkontur/react-ui@npm:4.19.0"
   dependencies:
     "@babel/runtime": "npm:7.16.5"
     "@emotion/css": "npm:^11.7.1"
+    "@skbkontur/global-object": "npm:^0.4.2"
     eventemitter3: "npm:^4.0.7"
     invariant: "npm:2.2.4"
     lodash.debounce: "npm:^4.0.8"
@@ -2630,7 +2638,6 @@ __metadata:
     lodash.throttle: "npm:^4.1.1"
     normalize-wheel: "npm:^1.0.1"
     prop-types: "npm:^15.8.0"
-    raf: "npm:^3.4.1"
     react-focus-lock: "npm:^2.7.1"
     react-input-mask: "npm:2.0.4"
     react-is: "npm:^17.0.2"
@@ -2642,7 +2649,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9"
     react-dom: ">=16.9"
-  checksum: 661338701cf80b5540f17ddfa9317dcd74c0a34e44131b9705dca306483037873c80373d77e51c4699dcf56f8dcd3ec3f2033698ccc9f190816e63c6370e4c4d
+  checksum: d0ffa777aab5f90efeaae56de1c0fe22452f1793c2e3232c5e453ae3c9712682a801e8227be6c41dc3d0fd1c480178a79190e16f32afc4023fe5ad0c8daa40b0
   languageName: node
   linkType: hard
 
@@ -8808,13 +8815,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"performance-now@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "performance-now@npm:2.1.0"
-  checksum: 534e641aa8f7cba160f0afec0599b6cecefbb516a2e837b512be0adbe6c1da5550e89c78059c7fabc5c9ffdf6627edabe23eb7c518c4500067a898fa65c2b550
-  languageName: node
-  linkType: hard
-
 "picocolors@npm:^1.0.0":
   version: 1.0.0
   resolution: "picocolors@npm:1.0.0"
@@ -9137,15 +9137,6 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: 72900df0616e473e824202113c3df6abae59150dfb73ed13273503127235320e9c8ca4aaaaccfd58cf417c6ca92a6e68ee9a5c3182886ae949a768639b388a7b
-  languageName: node
-  linkType: hard
-
-"raf@npm:^3.4.1":
-  version: 3.4.1
-  resolution: "raf@npm:3.4.1"
-  dependencies:
-    performance-now: "npm:^2.1.0"
-  checksum: 4c4b4c826b09d2aec6ca809f1a3c3c12136e7ec8d13fbb91f495dd2c99cd43345240e003da3bfd16036a432e635049fc6d9f69f9187f5f22ea88bb146ec75881
   languageName: node
   linkType: hard
 
