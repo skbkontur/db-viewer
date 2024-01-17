@@ -1,10 +1,4 @@
-import {
-    DEFAULT_THEME,
-    DARK_THEME,
-    THEME_2022,
-    THEME_2022_DARK,
-    ThemeContext,
-} from "@skbkontur/react-ui";
+import { DEFAULT_THEME, DARK_THEME, THEME_2022, THEME_2022_DARK, ThemeContext } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import React from "react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";

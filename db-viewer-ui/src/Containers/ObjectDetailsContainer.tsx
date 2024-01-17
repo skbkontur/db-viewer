@@ -143,6 +143,8 @@ export const ObjectDetailsContainer = ({
                     <ObjectKeys
                         keys={(objectMeta?.typeMetaInformation?.properties || [])
                             .filter(x => x.isIdentity)
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
                             .map(x => ({ name: x.name, value: String(objectInfo[x.name]) }))}
                     />
                 </CommonLayout.Header>
