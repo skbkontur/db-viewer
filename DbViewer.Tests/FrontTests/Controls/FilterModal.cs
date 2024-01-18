@@ -30,7 +30,6 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
         public Input Id { get; set; }
 
         [Selector("##ScopeId ##Input")]
-
         public Input ScopeId { get; set; }
     }
 }

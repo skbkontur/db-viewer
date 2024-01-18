@@ -11,7 +11,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,9 +36,6 @@ jobs:
 
       - name: Install node dependencies
         run: corepack yarn --cwd db-viewer-ui --immutable
-      
-      # - name: Pull docker images
-      #   run: docker pull selenoid/vnc:chrome_112.0
 
       - name: Build dotnet
         run: dotnet build --configuration Release ./DbViewer.sln
@@ -59,7 +56,7 @@ jobs:
         run: yarn --cwd db-viewer-ui lint
 
       - name: Build docker-compose environment
-        run: docker-compose up -d
+        run: docker compose up -d --wait
       
       - name: Run db-viewer api
         run: docker build -t db-viewer-api ./DbViewer.TestApi && docker run -dp 5000:5000 --name db-viewer-api --network=db-viewer_default-network -e CASSANDRA_ADDRESS=cassandra -e POSTGRES_ADDRESS=postgres db-viewer-api

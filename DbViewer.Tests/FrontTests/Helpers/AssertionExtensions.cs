@@ -145,7 +145,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
             return browser.GoTo<TPage>();
         }
 
-        public static async Task<TPage> RefreshUntil<TPage>(this BrowserForTests browser, TPage page, Func<TPage, Task<bool>> conditionFunc, string cause = null, int timeout = 30000, int waitTimeout = 100)
+        public static async Task<TPage> RefreshUntil<TPage>(this BrowserForTests browser, TPage page, Func<TPage, Task<bool>> conditionFunc, string? cause = null, int timeout = 30000, int waitTimeout = 100)
             where TPage : PageBase
         {
             var w = Stopwatch.StartNew();

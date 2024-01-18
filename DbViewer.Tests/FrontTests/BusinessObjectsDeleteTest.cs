@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.Tests.FrontTests.Controls;
 using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-
-using ConfirmDeleteObjectModal = SkbKontur.DbViewer.Tests.FrontTests.Controls.ConfirmDeleteObjectModal;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests
 {
@@ -92,7 +91,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             await ConfirmDeletion(detailsPage.ConfirmDeleteObjectModal, confirmDeletion);
 
             if (confirmDeletion)
-                detailsPage.GoTo<BusinessObjectTablePage>();
+                await detailsPage.GoTo<BusinessObjectTablePage>().Header.WaitText("FtpUser");
 
             AssertFtpUserExistence(ftpUser.Id, confirmDeletion);
         }
