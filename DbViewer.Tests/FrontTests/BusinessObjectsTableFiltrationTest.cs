@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using GroBuf;
 using GroBuf.DataMembersExtracters;
@@ -19,9 +20,9 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Разрешаем сортировать в обычных бизнес объектах, запрещаем в больших
         /// </summary>
         [Test]
-        public void TestAllowSort()
+        public async Task TestAllowSort()
         {
-            using (var context = new EntityFrameworkDbContext())
+            await using (var context = new EntityFrameworkDbContext())
             {
                 var serializer = new Serializer(new AllPropertiesExtractor());
                 var customer = new Customer {Age = 1, Name = "13"};
@@ -42,45 +43,43 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
                         FirstName = "3",
                         ScopeId = "scopeId",
                     });
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
 
-            using var browser = new BrowserForTests();
+            await using var browser = new BrowserForTests();
 
-            var usersPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("UsersTable");
-            usersPage = browser.RefreshUntil(usersPage, x => x.BusinessObjectItems.IsPresent.Get());
-            usersPage.TableHeader.WaitPresence();
-            usersPage.TableHeader.SortByColumn("Header_Id");
+            var usersPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await usersPage.TableHeader.WaitPresence();
+            await usersPage.TableHeader.SortByColumn("Header_Id");
 
-            var largeObjectPage = browser.SwitchTo<BusinessObjectTablePage>("TestTable");
-            largeObjectPage = browser.RefreshUntil(largeObjectPage, x => x.BusinessObjectItems.IsPresent.Get());
-            largeObjectPage.TableHeader.WaitPresence();
-            largeObjectPage.TableHeader.WaitNotSortable("Header_Index");
-            largeObjectPage.TableHeader.WaitNotSortable("Header_String");
-            largeObjectPage.TableHeader.WaitNotSortable("Header_DateTime");
+            var largeObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("TestTable");
+            await largeObjectPage.TableHeader.WaitPresence();
+            await largeObjectPage.TableHeader.WaitNotSortable("Header_Index");
+            await largeObjectPage.TableHeader.WaitNotSortable("Header_String");
+            await largeObjectPage.TableHeader.WaitNotSortable("Header_DateTime");
         }
 
         /// <summary>
         ///     Проверяем, что при некорректные символы и пустые строки корректно обрабатываются
         /// </summary>
         [Test]
-        public void TestInputValidation()
+        public async Task TestInputValidation()
         {
             CreateUsers(1, Guid.NewGuid().ToString());
 
-            using var browser = new BrowserForTests();
+            await using var browser = new BrowserForTests();
 
-            var userBusinessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
-            userBusinessObjectPage.OpenFilter.Click();
-            var filter = userBusinessObjectPage.FilterModal.GetFilter("ScopeId");
-            filter.Input.ClearAndInputText("<script>");
-            userBusinessObjectPage.FilterModal.Apply.Click();
-            filter.InputValidation.ExpectIsOpenedWithMessage("Некорректный символ: '<'");
-            filter.Input.ClearAndInputText("    ");
-            userBusinessObjectPage.FilterModal.Apply.Click();
-            userBusinessObjectPage.FilterModal.WaitAbsence();
-            userBusinessObjectPage.NothingFound.WaitAbsence();
-            userBusinessObjectPage.BusinessObjectItems.Count.Wait().That(Is.GreaterThan(0));
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await userBusinessObjectPage.OpenFilter.Click();
+            var filter = await userBusinessObjectPage.FilterModal.GetFilter("ScopeId");
+            await filter.Input.ClearAndInputText("<script>");
+            await userBusinessObjectPage.FilterModal.Apply.Click();
+            await filter.InputValidation.ExpectIsOpenedWithMessage("Некорректный символ: '<'");
+            await filter.Input.ClearAndInputText("    ");
+            await userBusinessObjectPage.FilterModal.Apply.Click();
+            await userBusinessObjectPage.FilterModal.WaitAbsence();
+            await userBusinessObjectPage.NothingFound.WaitAbsence();
+            await userBusinessObjectPage.BusinessObjectItems.Expect().Not.ToHaveCountAsync(0);
         }
 
         /// <summary>
@@ -88,7 +87,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Генерим уникальный гуид и по нему фильтруем список объектов и проверяем что находится именно он
         /// </summary>
         [Test]
-        public void TestTableFiltration()
+        public async Task TestTableFiltration()
         {
             var scopeId = Guid.NewGuid().ToString();
             CreateUsers(21, scopeId);
@@ -96,14 +95,14 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var filtrationGuid = Guid.NewGuid();
             CreateUsers(1, scopeId, filtrationGuid);
 
-            using var browser = new BrowserForTests();
-            var userBusinessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
-            userBusinessObjectPage.OpenFilter.Click();
-            userBusinessObjectPage.FilterModal.Id.ClearAndInputText(filtrationGuid.ToString());
-            userBusinessObjectPage.FilterModal.Apply.Click();
+            await using var browser = new BrowserForTests();
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await userBusinessObjectPage.OpenFilter.Click();
+            await userBusinessObjectPage.FilterModal.Id.ClearAndInputText(filtrationGuid.ToString());
+            await userBusinessObjectPage.FilterModal.Apply.Click();
 
-            userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
-            userBusinessObjectPage.BusinessObjectItems[0].Id.WaitText(filtrationGuid.ToString());
+            await userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
+            await userBusinessObjectPage.BusinessObjectItems[0].Id.WaitText(filtrationGuid.ToString());
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Убираем поле ID из таблицы, провеям что такого ID на странице нет, проверяем, что ScopeId есть
         /// </summary>
         [Test]
-        public void TestTableSettingField()
+        public async Task TestTableSettingField()
         {
             var scopeId = Guid.NewGuid().ToString();
             CreateUsers(21, scopeId);
@@ -119,24 +118,24 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var filtrationGuid = Guid.NewGuid();
             CreateUsers(1, scopeId, filtrationGuid);
 
-            using var browser = new BrowserForTests();
-            var userBusinessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
-            userBusinessObjectPage.OpenFilter.Click();
-            userBusinessObjectPage.FilterModal.Id.ClearAndInputText(filtrationGuid.ToString());
-            userBusinessObjectPage.FilterModal.Apply.Click();
+            await using var browser = new BrowserForTests();
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await userBusinessObjectPage.OpenFilter.Click();
+            await userBusinessObjectPage.FilterModal.Id.ClearAndInputText(filtrationGuid.ToString());
+            await userBusinessObjectPage.FilterModal.Apply.Click();
 
-            userBusinessObjectPage.FieldSettings.Click();
-            userBusinessObjectPage.ColumnSelector.ColumnCheckboxes.GetCheckbox("Id").Click();
-            userBusinessObjectPage.Header.Click();
-            userBusinessObjectPage.BusinessObjectItems[0].Id.WaitAbsence();
-            userBusinessObjectPage.BusinessObjectItems[0].ScopeId.WaitText(scopeId);
+            await userBusinessObjectPage.FieldSettings.Click();
+            await userBusinessObjectPage.ColumnSelector.ColumnCheckboxes.GetCheckbox("Id").Click();
+            await userBusinessObjectPage.Header.Click();
+            await userBusinessObjectPage.BusinessObjectItems[0].Id.WaitAbsence();
+            await userBusinessObjectPage.BusinessObjectItems[0].ScopeId.WaitText(scopeId);
         }
 
         /// <summary>
         ///     Проверяем, что при фильтрации не с первой страницы пейджинга сбрасывается offset и находятся бизнес объекты
         /// </summary>
         [Test]
-        public void TestFiltrationWhenNotFirstPage()
+        public async Task TestFiltrationWhenNotFirstPage()
         {
             var scopeId = Guid.NewGuid().ToString();
             CreateUsers(20, scopeId);
@@ -144,22 +143,22 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             var userId = Guid.NewGuid();
             CreateUsers(1, scopeId, userId);
 
-            using var browser = new BrowserForTests();
+            await using var browser = new BrowserForTests();
 
-            var userBusinessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
-            userBusinessObjectPage.OpenFilter.Click();
-            userBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
-            userBusinessObjectPage.FilterModal.Apply.Click();
+            var userBusinessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("UsersTable");
+            await userBusinessObjectPage.OpenFilter.Click();
+            await userBusinessObjectPage.FilterModal.ScopeId.ClearAndInputText(scopeId);
+            await userBusinessObjectPage.FilterModal.Apply.Click();
 
-            userBusinessObjectPage.Paging[1].Click();
-            userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
+            await userBusinessObjectPage.Paging.Pages[1].Click();
+            await userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
 
-            userBusinessObjectPage.OpenFilter.Click();
-            userBusinessObjectPage.FilterModal.Id.ClearAndInputText(userId.ToString());
-            userBusinessObjectPage.FilterModal.Apply.Click();
+            await userBusinessObjectPage.OpenFilter.Click();
+            await userBusinessObjectPage.FilterModal.Id.ClearAndInputText(userId.ToString());
+            await userBusinessObjectPage.FilterModal.Apply.Click();
 
-            userBusinessObjectPage.ItemsCountInfo.Text.Wait().That(Does.StartWith("Записи с 0 по 1").And.EndsWith("Всего 1"));
-            userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
+            await userBusinessObjectPage.ItemsCountInfo.WaitText("Записи с 0 по 1|Всего 1");
+            await userBusinessObjectPage.BusinessObjectItems.WaitCount(1);
         }
 
         private static void CreateUsers(int count, string scopeId, Guid? id = null)

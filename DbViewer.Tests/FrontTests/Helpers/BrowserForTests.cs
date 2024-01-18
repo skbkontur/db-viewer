@@ -1,141 +1,94 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Net;
 using System.Reflection;
-using System.Threading;
+using System.Threading.Tasks;
+
+using Microsoft.Playwright;
 
 using NUnit.Framework;
 
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
-
-using SkbKontur.DbViewer.Tests.FrontTests.Pages;
-
-using SKBKontur.SeleniumTesting;
+using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 {
-    public class BrowserForTests : IDisposable
+    public class BrowserForTests : IAsyncDisposable
     {
-        public void Dispose()
+        public async Task<TPage> SwitchToUri<TPage>(Uri uri)
+            where TPage : PageBase
         {
-            WebDriver.Dispose();
-        }
-
-        public TPage SwitchToUri<TPage>(Uri uri)
-        {
-            WebDriver.Navigate().GoToUrl(MakeAbsolute(uri));
-            var newPage = InitializePage<TPage>();
-            return newPage;
+            await Page.GotoAsync(MakeAbsolute(uri).ToString());
+            return AutoFillControls.InitializePage<TPage>(Page);
         }
 
         public TPage GoTo<TPage>()
+            where TPage : PageBase
         {
-            var newPage = InitializePage<TPage>();
+            var newPage = AutoFillControls.InitializePage<TPage>(Page);
             return newPage;
         }
 
-        public string DownloadFile(string filename)
+        public async ValueTask DisposeAsync()
         {
-            var url = $"http://localhost:4444/download/{WebDriver.SessionId}/{filename}";
-            var sw = Stopwatch.StartNew();
-            while (true)
+            if (context != null)
             {
-                try
-                {
-                    var request = WebRequest.CreateHttp(url);
-                    using (var response = request.GetResponse())
-                    using (var responseStream = response.GetResponseStream())
-                    using (var reader = new StreamReader(responseStream))
+                await context.Tracing.StopAsync(new TracingStopOptions
                     {
-                        var content = reader.ReadToEnd();
-                        if (string.IsNullOrEmpty(content))
-                            throw new InvalidOperationException("Downloaded content was empty");
-                        return content;
-                    }
-                }
-                catch (Exception)
-                {
-                    if (sw.Elapsed > TimeSpan.FromSeconds(10))
-                        throw;
-                }
+                        Path = $"{TestContext.CurrentContext.TestDirectory}/out/{TestContext.CurrentContext.Test.Name}.zip"
+                    });
             }
-        }
 
-        private TPage InitializePage<TPage>()
-        {
-            var newPage = (TPage)Activator.CreateInstance(typeof(TPage), WebDriver);
-            (newPage as PageBase).WaitLoaded();
-            return newPage;
+            if (page != null)
+                await page.CloseAsync();
+
+            if (context != null)
+            {
+                await context.CloseAsync();
+            }
         }
 
         private Uri MakeAbsolute(Uri uri)
         {
-            return uri.IsAbsoluteUri ? uri : new Uri(new Uri(BaseUrl), uri);
+            return uri.IsAbsoluteUri ? uri : new Uri(new Uri(baseUrl), uri);
         }
 
-        public RemoteWebDriver WebDriver
+        public IPage Page
         {
             get
             {
-                if (webDriver != null) return webDriver;
+                if (page != null)
+                    return page;
 
-                var wdHub = "http://localhost:4444/wd/hub";
-                var options = new ChromeOptions();
+                context = PlaywrightSetup.Browser.NewContextAsync(new BrowserNewContextOptions
+                    {
+                        Locale = "en-US",
+                        TimezoneId = "Europe/London"
+                    }).GetAwaiter().GetResult();
+                context.Tracing.StartAsync(new TracingStartOptions
+                    {
+                        Screenshots = true,
+                        Snapshots = true,
+                        Sources = true,
+                        Name = TestContext.CurrentContext.Test.Name
+                    }).GetAwaiter().GetResult();
 
-                var selenoidOptions = new Dictionary<string, object> {{"enableVNC", true}};
-                options.AddAdditionalOption("selenoid:options", selenoidOptions);
-                options.AddAdditionalOption(CapabilityType.Platform, "Windows 10");
-                options.AddAdditionalOption("name", TestContext.CurrentContext.Test.Name);
-                options.AddAdditionalOption("maxDuration", 10800);
-                webDriver = new RemoteWebDriver(new Uri(wdHub), options.ToCapabilities(), TimeSpan.FromMinutes(1));
-                webDriver.Manage().Window.Size = new Size(1280, 1024);
-                return webDriver;
+                return page = context.NewPageAsync().GetAwaiter().GetResult();
             }
         }
 
-        private string BaseUrl { get; } = $"http://{Environment.GetEnvironmentVariable("THIS_IP_ADDRESS") ?? "db-viewer-api"}:5000/";
+        private const string baseUrl = "http://localhost:5000/";
 
-        private RemoteWebDriver webDriver;
+        private IPage? page;
+        private IBrowserContext? context;
     }
 
     public static class AttributeNavigationExtensions
     {
-        public static TPage Refresh<TPage>(this BrowserForTests browser, TPage page)
-            where TPage : PageBase
+        public static ILocatorAssertions Expect(this ControlBase controlBase)
         {
-            browser.WebDriver.Navigate().Refresh();
-            return browser.GoTo<TPage>();
+            return Assertions.Expect(controlBase.Locator);
         }
 
-        public static TPage RefreshUntil<TPage>(this BrowserForTests browser, TPage page, Func<TPage, bool> conditionFunc, string cause = null, int timeout = 65000, int waitTimeout = 100)
-            where TPage : PageBase
-        {
-            var w = Stopwatch.StartNew();
-            if (conditionFunc(page))
-                return page;
-            do
-            {
-                page = browser.Refresh(page);
-                if (conditionFunc(page))
-                    return page;
-                Thread.Sleep(waitTimeout);
-            } while (w.ElapsedMilliseconds < timeout);
-            Assert.Fail(cause ?? $"Не смогли дождаться страницу за {timeout} мс");
-            return default;
-        }
-
-        public static BrowserForTests LoginAsSuperUser(this BrowserForTests browser)
-        {
-            browser.SwitchToUri<BusinessObjectsPage>(new Uri("Admin", UriKind.Relative));
-            return browser;
-        }
-
-        public static TPage SwitchTo<TPage>(this BrowserForTests browser, params string[] templateParameters)
+        public static Task<TPage> SwitchTo<TPage>(this BrowserForTests browser, params string[] templateParameters)
             where TPage : PageBase
         {
             return browser.SwitchToUri<TPage>(new Uri(GetPageRoute<TPage>(templateParameters), UriKind.Relative));

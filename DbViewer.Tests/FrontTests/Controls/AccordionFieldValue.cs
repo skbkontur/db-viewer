@@ -1,15 +1,14 @@
-﻿using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+﻿using Microsoft.Playwright;
 
-using SKBKontur.SeleniumTesting;
-using SKBKontur.SeleniumTesting.Controls;
+using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
-namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
+namespace SkbKontur.DbViewer.Tests.FrontTests.Controls
 {
-    [AutoFillControls]
-    public class AccordionFieldValue : CompoundControl
+    public class AccordionFieldValue : ControlBase
     {
-        public AccordionFieldValue(ISearchContainer container, ISelector selector)
-            : base(container, selector)
+        public AccordionFieldValue(ILocator locator)
+            : base(locator)
         {
         }
 

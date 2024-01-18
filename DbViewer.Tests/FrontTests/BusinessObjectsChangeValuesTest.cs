@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Cassandra.Data.Linq;
 
@@ -8,8 +9,6 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
 using NUnit.Framework;
-
-using OpenQA.Selenium;
 
 using SkbKontur.DbViewer.TestApi.Cql;
 using SkbKontur.DbViewer.TestApi.EntityFramework;
@@ -33,38 +32,38 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что заданные значения сохраняются
         /// </summary>
         [Test]
-        public void TestChangeOrganizationName()
+        public async Task TestChangeOrganizationName()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var filledNumberRow = businessObjectEditingPage.RootAccordion.FindField("DocumentNumber");
-            filledNumberRow.FieldValue.WaitText("123");
-            filledNumberRow.Edit.Click();
-            filledNumberRow.FieldValue.Input.ClearAndInputText("2qwe123QWE2");
-            filledNumberRow.Save.Click();
-            filledNumberRow.FieldValue.WaitText("2qwe123QWE2");
+            await filledNumberRow.FieldValue.WaitText("123");
+            await filledNumberRow.Edit.Click();
+            await filledNumberRow.FieldValue.Input.ClearAndInputText("2qwe123QWE2");
+            await filledNumberRow.Save.Click();
+            await filledNumberRow.FieldValue.WaitText("2qwe123QWE2");
 
-            browser.WebDriver.Navigate().Refresh();
+            await businessObjectEditingPage.Page.ReloadAsync();
             filledNumberRow = businessObjectEditingPage.RootAccordion.FindField("DocumentNumber");
-            filledNumberRow.FieldValue.WaitText("2qwe123QWE2");
+            await filledNumberRow.FieldValue.WaitText("2qwe123QWE2");
 
             GetDocument(documentName, documentId).DocumentNumber.Should().Be("2qwe123QWE2");
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             var unfilledNumberRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_OrdersNumber");
-            unfilledNumberRow.FieldValue.WaitText("null");
-            unfilledNumberRow.Edit.Click();
-            unfilledNumberRow.FieldValue.Input.ClearAndInputText("123");
-            unfilledNumberRow.Save.Click();
-            unfilledNumberRow.FieldValue.WaitText("123");
+            await unfilledNumberRow.FieldValue.WaitText("null");
+            await unfilledNumberRow.Edit.Click();
+            await unfilledNumberRow.FieldValue.Input.ClearAndInputText("123");
+            await unfilledNumberRow.Save.Click();
+            await unfilledNumberRow.FieldValue.WaitText("123");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             unfilledNumberRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_OrdersNumber");
-            unfilledNumberRow.FieldValue.WaitText("123");
+            await unfilledNumberRow.FieldValue.WaitText("123");
 
             GetDocument(documentName, documentId).DocumentContent.OrdersNumber.Should().Be("123");
         }
@@ -74,46 +73,44 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что заданные значения сохраняются
         /// </summary>
         [Test]
-        public void TestChangeDocumentDates()
+        public async Task TestChangeDocumentDates()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var filledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentDate");
-            filledDateRow.FieldValue.WaitTextContains("2014-12-11");
-            filledDateRow.Edit.Click();
+            await filledDateRow.FieldValue.WaitTextContains("2014-12-11");
+            await filledDateRow.Edit.Click();
 
-            var expectedOffset = documentName == "CqlDocument" ? TimeSpan.Zero : DateTimeOffset.Now.Offset;
-            var expectedOffsetStr = $"+{expectedOffset:hh':'mm}";
-            filledDateRow.FieldValue.Date.ClearAndInputText("13.12.2014");
-            filledDateRow.FieldValue.Time.ClearAndInputText("10:18:13.567");
-            filledDateRow.FieldValue.TimeOffsetLabel.WaitText(expectedOffsetStr);
-            filledDateRow.Save.Click();
-            var expectedStr = $"2014-12-13T10:18:13.567{expectedOffsetStr}";
-            filledDateRow.FieldValue.WaitTextContains(expectedStr);
+            await filledDateRow.FieldValue.Date.ClearAndInputText("13.10.2016");
+            await filledDateRow.FieldValue.Time.ClearAndInputText("10:18:13.567");
+            await filledDateRow.FieldValue.TimeOffsetLabel.WaitText("+00:00");
+            await filledDateRow.Save.Click();
+            var expectedStr = "2016-10-13T10:18:13.567+00:00";
+            await filledDateRow.FieldValue.WaitTextContains(expectedStr);
 
-            browser.WebDriver.Navigate().Refresh();
+            await businessObjectEditingPage.Page.ReloadAsync();
             filledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentDate");
-            filledDateRow.FieldValue.WaitTextContains(expectedStr);
+            await filledDateRow.FieldValue.WaitTextContains(expectedStr);
 
-            GetDocument(documentName, documentId).DocumentDate.Should().Be(new DateTimeOffset(2014, 12, 13, 10, 18, 13, 567, expectedOffset));
+            GetDocument(documentName, documentId).DocumentDate.Should().Be(new DateTimeOffset(2016, 10, 13, 10, 18, 13, 567, TimeSpan.Zero));
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             var unfilledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_DeliveryDate");
-            unfilledDateRow.FieldValue.WaitText("null");
-            unfilledDateRow.Edit.Click();
-            unfilledDateRow.FieldValue.Date.ClearAndInputText("14.12.2014");
-            unfilledDateRow.FieldValue.Time.ClearAndInputText("20:19");
-            unfilledDateRow.FieldValue.TimeZoneSelect.SelectValueByText("UTC");
-            unfilledDateRow.Save.Click();
-            unfilledDateRow.FieldValue.WaitText("2014-12-14T20:19:00Z");
+            await unfilledDateRow.FieldValue.WaitText("null");
+            await unfilledDateRow.Edit.Click();
+            await unfilledDateRow.FieldValue.Date.ClearAndInputText("14.12.2014");
+            await unfilledDateRow.FieldValue.Time.ClearAndInputText("20:19");
+            await unfilledDateRow.FieldValue.TimeZoneSelect.SelectValueByText("UTC");
+            await unfilledDateRow.Save.Click();
+            await unfilledDateRow.FieldValue.WaitText("2014-12-14T20:19:00Z");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             unfilledDateRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_DeliveryDate");
-            unfilledDateRow.FieldValue.WaitText("2014-12-14T20:19:00Z");
+            await unfilledDateRow.FieldValue.WaitText("2014-12-14T20:19:00Z");
 
             GetDocument(documentName, documentId).DocumentContent.DeliveryDate.Should().Be(new DateTime(2014, 12, 14, 20, 19, 00, 00, DateTimeKind.Utc));
         }
@@ -124,40 +121,40 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Меняем на пустое значение, ждем, что засетится null.
         /// </summary>
         [Test]
-        public void TestChangeEnumValue()
+        public async Task TestChangeEnumValue()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var filledEnumRow = businessObjectEditingPage.RootAccordion.FindField("DocumentType");
-            filledEnumRow.FieldValue.WaitText("Orders");
-            filledEnumRow.Edit.Click();
-            filledEnumRow.FieldValue.EnumSelect.WaitItems(new[] {"Orders", "Desadv"});
-            filledEnumRow.FieldValue.EnumSelect.SelectValueByText("Desadv");
-            filledEnumRow.Save.Click();
-            filledEnumRow.FieldValue.WaitText("Desadv");
+            await filledEnumRow.FieldValue.WaitText("Orders");
+            await filledEnumRow.Edit.Click();
+            await filledEnumRow.FieldValue.EnumSelect.WaitItems(new[] {"Orders", "Desadv"});
+            await filledEnumRow.FieldValue.EnumSelect.SelectValueByText("Desadv");
+            await filledEnumRow.Save.Click();
+            await filledEnumRow.FieldValue.WaitText("Desadv");
 
-            browser.WebDriver.Navigate().Refresh();
+            await businessObjectEditingPage.Page.ReloadAsync();
             filledEnumRow = businessObjectEditingPage.RootAccordion.FindField("DocumentType");
-            filledEnumRow.FieldValue.WaitText("Desadv");
+            await filledEnumRow.FieldValue.WaitText("Desadv");
 
             GetDocument(documentName, documentId).DocumentType.Should().Be(DocumentType.Desadv);
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             var nullableEnumRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_OrderStatus");
-            nullableEnumRow.FieldValue.WaitText("Processed");
-            nullableEnumRow.Edit.Click();
-            nullableEnumRow.FieldValue.EnumSelect.WaitItems(new[] {"null", "Processed", "Failed"});
-            nullableEnumRow.FieldValue.EnumSelect.SelectValueByText("null");
-            nullableEnumRow.Save.Click();
-            nullableEnumRow.FieldValue.WaitText("null");
+            await nullableEnumRow.FieldValue.WaitText("Processed");
+            await nullableEnumRow.Edit.Click();
+            await nullableEnumRow.FieldValue.EnumSelect.WaitItems(new[] {"null", "Processed", "Failed"});
+            await nullableEnumRow.FieldValue.EnumSelect.SelectValueByText("null");
+            await nullableEnumRow.Save.Click();
+            await nullableEnumRow.FieldValue.WaitText("null");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             nullableEnumRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_OrderStatus");
-            nullableEnumRow.FieldValue.WaitText("null");
+            await nullableEnumRow.FieldValue.WaitText("null");
 
             GetDocument(documentName, documentId).DocumentContent.OrderStatus.Should().BeNull();
         }
@@ -166,40 +163,40 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Меняем значение с false на true и обратно, во всех случаях проверяем, что значение сохранится
         /// </summary>
         [Test]
-        public void TestChangeBooleanValue()
+        public async Task TestChangeBooleanValue()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var booleanRow = businessObjectEditingPage.RootAccordion.FindField("IsLargeDocument");
-            booleanRow.FieldValue.WaitText("false");
-            booleanRow.Edit.Click();
-            booleanRow.FieldValue.BooleanSelect.WaitItems(new[] {"false", "true"});
-            booleanRow.FieldValue.BooleanSelect.SelectValueByText("true");
-            booleanRow.Save.Click();
-            booleanRow.FieldValue.WaitText("true");
+            await booleanRow.FieldValue.WaitText("false");
+            await booleanRow.Edit.Click();
+            await booleanRow.FieldValue.BooleanSelect.WaitItems(new[] {"true", "false"});
+            await booleanRow.FieldValue.BooleanSelect.SelectValueByText("true");
+            await booleanRow.Save.Click();
+            await booleanRow.FieldValue.WaitText("true");
 
-            browser.WebDriver.Navigate().Refresh();
+            await businessObjectEditingPage.Page.ReloadAsync();
             booleanRow = businessObjectEditingPage.RootAccordion.FindField("IsLargeDocument");
-            booleanRow.FieldValue.WaitText("true");
+            await booleanRow.FieldValue.WaitText("true");
 
             GetDocument(documentName, documentId).IsLargeDocument.Should().BeTrue();
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             var nullableBoolRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_WasRead");
-            nullableBoolRow.FieldValue.WaitText("true");
-            nullableBoolRow.Edit.Click();
-            nullableBoolRow.FieldValue.BooleanSelect.WaitItems(new[] {"null", "false", "true"});
-            nullableBoolRow.FieldValue.BooleanSelect.SelectValueByText("null");
-            nullableBoolRow.Save.Click();
-            nullableBoolRow.FieldValue.WaitText("null");
+            await nullableBoolRow.FieldValue.WaitText("true");
+            await nullableBoolRow.Edit.Click();
+            await nullableBoolRow.FieldValue.BooleanSelect.WaitItems(new[] {"null", "true", "false"});
+            await nullableBoolRow.FieldValue.BooleanSelect.SelectValueByText("null");
+            await nullableBoolRow.Save.Click();
+            await nullableBoolRow.FieldValue.WaitText("null");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             nullableBoolRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_WasRead");
-            nullableBoolRow.FieldValue.WaitText("null");
+            await nullableBoolRow.FieldValue.WaitText("null");
 
             GetDocument(documentName, documentId).DocumentContent.WasRead.Should().BeNull();
         }
@@ -208,58 +205,55 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Меняем значение числового поля, ждем, что значение сохранится
         /// </summary>
         [Test]
-        public void TestChangeNumericValue()
+        public async Task TestChangeNumericValue()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var integerRow = businessObjectEditingPage.RootAccordion.FindField("ShardNumber");
-            integerRow.FieldValue.WaitText("0");
-            integerRow.Edit.Click();
-            integerRow.FieldValue.Input.AppendText($"{Keys.Control}a");
-            integerRow.FieldValue.Input.AppendText("12.,45");
-            integerRow.Save.Click();
-            integerRow.FieldValue.WaitText("1245");
-            integerRow.Edit.Click();
-            integerRow.FieldValue.Input.AppendText($"{Keys.Control}a");
-            integerRow.FieldValue.Input.AppendText("14ab");
-            integerRow.Save.Click();
-            integerRow.FieldValue.WaitText("14");
+            await integerRow.FieldValue.WaitText("0");
+            await integerRow.Edit.Click();
+            await integerRow.FieldValue.Input.SelectAndInputText("12.,45");
+            await integerRow.Save.Click();
+            await integerRow.FieldValue.WaitText("1245");
+            await integerRow.Edit.Click();
+            await integerRow.FieldValue.Input.SelectAndInputText("14ab");
+            await integerRow.Save.Click();
+            await integerRow.FieldValue.WaitText("14");
 
-            browser.WebDriver.Navigate().Refresh();
+            await businessObjectEditingPage.Page.ReloadAsync();
             integerRow = businessObjectEditingPage.RootAccordion.FindField("ShardNumber");
-            integerRow.FieldValue.WaitText("14");
+            await integerRow.FieldValue.WaitText("14");
 
             GetDocument(documentName, documentId).ShardNumber.Should().Be(14);
 
             var decimalRow = businessObjectEditingPage.RootAccordion.FindField("DocumentPrice");
-            decimalRow.FieldValue.WaitText("10.1");
-            decimalRow.Edit.Click();
-            decimalRow.FieldValue.Input.AppendText($"{Keys.Control}a");
-            decimalRow.FieldValue.Input.AppendText("12,45");
-            decimalRow.Save.Click();
-            decimalRow.FieldValue.WaitText("12.45");
+            await decimalRow.FieldValue.WaitText("10.1");
+            await decimalRow.Edit.Click();
+            await decimalRow.FieldValue.Input.SelectAndInputText("12,45");
+            await decimalRow.Save.Click();
+            await decimalRow.FieldValue.WaitText("12.45");
 
-            browser.WebDriver.Navigate().Refresh();
+            await businessObjectEditingPage.Page.ReloadAsync();
             decimalRow = businessObjectEditingPage.RootAccordion.FindField("DocumentPrice");
-            decimalRow.FieldValue.WaitText("12.45");
+            await decimalRow.FieldValue.WaitText("12.45");
 
             GetDocument(documentName, documentId).DocumentPrice.Should().Be(12.45m);
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             var nullableDecimalRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_TotalAmount");
-            nullableDecimalRow.FieldValue.WaitText("10.2");
-            nullableDecimalRow.Edit.Click();
-            nullableDecimalRow.FieldValue.Input.AppendText($"{Keys.Control}a{Keys.Delete}");
-            nullableDecimalRow.Save.Click();
-            nullableDecimalRow.FieldValue.WaitText("null");
+            await nullableDecimalRow.FieldValue.WaitText("10.2");
+            await nullableDecimalRow.Edit.Click();
+            await nullableDecimalRow.FieldValue.Input.Clear();
+            await nullableDecimalRow.Save.Click();
+            await nullableDecimalRow.FieldValue.WaitText("null");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
             nullableDecimalRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_TotalAmount");
-            nullableDecimalRow.FieldValue.WaitText("null");
+            await nullableDecimalRow.FieldValue.WaitText("null");
 
             GetDocument(documentName, documentId).DocumentContent.TotalAmount.Should().BeNull();
         }
@@ -269,48 +263,48 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Ждем, что изменения сохранятся
         /// </summary>
         [Test]
-        public void TestChangeValueInArrayElement()
+        public async Task TestChangeValueInArrayElement()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_0").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_0").ToggleButton.Click();
             var inArrayFieldRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_GoodItems_0_Name");
-            inArrayFieldRow.FieldValue.WaitText("Name of lintem");
-            inArrayFieldRow.Edit.Click();
-            inArrayFieldRow.FieldValue.Input.ClearAndInputText("Changed name");
-            inArrayFieldRow.Save.Click();
-            inArrayFieldRow.FieldValue.WaitText("Changed name");
+            await inArrayFieldRow.FieldValue.WaitText("Name of lintem");
+            await inArrayFieldRow.Edit.Click();
+            await inArrayFieldRow.FieldValue.Input.ClearAndInputText("Changed name");
+            await inArrayFieldRow.Save.Click();
+            await inArrayFieldRow.FieldValue.WaitText("Changed name");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_0").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_0").ToggleButton.Click();
             inArrayFieldRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_GoodItems_0_Name");
-            inArrayFieldRow.FieldValue.WaitText("Changed name");
+            await inArrayFieldRow.FieldValue.WaitText("Changed name");
 
             GetDocument(documentName, documentId).DocumentContent.GoodItems[0].Name.Should().Be("Changed name");
 
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1_CustomDeclarationNumbers").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1_CustomDeclarationNumbers").ToggleButton.Click();
             var inArrayInArrayFieldRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_GoodItems_1_CustomDeclarationNumbers_0");
-            inArrayInArrayFieldRow.FieldValue.WaitText("224");
-            inArrayInArrayFieldRow.Edit.Click();
-            inArrayInArrayFieldRow.FieldValue.Input.ClearAndInputText("225a");
-            inArrayInArrayFieldRow.Save.Click();
-            inArrayInArrayFieldRow.FieldValue.WaitText("225a");
+            await inArrayInArrayFieldRow.FieldValue.WaitText("224");
+            await inArrayInArrayFieldRow.Edit.Click();
+            await inArrayInArrayFieldRow.FieldValue.Input.ClearAndInputText("225a");
+            await inArrayInArrayFieldRow.Save.Click();
+            await inArrayInArrayFieldRow.FieldValue.WaitText("225a");
 
-            browser.WebDriver.Navigate().Refresh();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1").ToggleButton.Click();
-            businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1_CustomDeclarationNumbers").ToggleButton.Click();
+            await businessObjectEditingPage.Page.ReloadAsync();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1").ToggleButton.Click();
+            await businessObjectEditingPage.RootAccordion.FindAccordionToggle("DocumentContent_GoodItems_1_CustomDeclarationNumbers").ToggleButton.Click();
             inArrayInArrayFieldRow = businessObjectEditingPage.RootAccordion.FindField("DocumentContent_GoodItems_1_CustomDeclarationNumbers_0");
-            inArrayInArrayFieldRow.FieldValue.WaitText("225a");
+            await inArrayInArrayFieldRow.FieldValue.WaitText("225a");
 
             GetDocument(documentName, documentId).DocumentContent.GoodItems[1].CustomDeclarationNumbers[0].Should().Be("225a");
         }
@@ -319,15 +313,15 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что поля ScopeId и Id нельзя изменить
         /// </summary>
         [Test]
-        public void TestCanNotEditScopeIdAndId()
+        public async Task TestCanNotEditScopeIdAndId()
         {
             var documentId = CreateDocument(documentName);
 
-            using var browser = new BrowserForTests();
-            var businessObjectEditingPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
+            await using var browser = new BrowserForTests();
+            var businessObjectEditingPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>(documentName, $"Id={documentId}");
 
             var row = businessObjectEditingPage.RootAccordion.FindField("id");
-            row.Edit.WaitAbsence();
+            await row.Edit.WaitAbsence();
         }
 
         private static Guid CreateDocument(string documentName)

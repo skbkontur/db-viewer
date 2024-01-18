@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
 using SkbKontur.DbViewer.TestApi.EntityFramework;
+using SkbKontur.DbViewer.Tests.FrontTests.Controls;
 using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
 using SkbKontur.DbViewer.Tests.FrontTests.Pages;
 
@@ -16,20 +18,19 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что кнопка с удалением бизнес объекта на странице с таблицей доступна только с SuperUserAccessLevel.God
         /// </summary>
         [Test]
-        public void DeleteViaSearchPageRequiresGodAccess()
+        public async Task DeleteViaSearchPageRequiresGodAccess()
         {
             var ftpUser = CreateFtpUser();
 
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.GetFilter("Login").Input.ClearAndInputText(ftpUser.Login);
-            businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.OpenFilter.Click();
+            await (await businessObjectPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(ftpUser.Login);
+            await businessObjectPage.FilterModal.Apply.Click();
 
-            businessObjectPage = browser.RefreshUntil(businessObjectPage, x => x.BusinessObjectItems.IsPresent.Get());
-            businessObjectPage.BusinessObjectItems.WaitCount(1);
-            businessObjectPage.BusinessObjectItems[0].Delete.IsPresent.Wait().That(Is.False, "Delete link should only be present for gods");
+            await businessObjectPage.BusinessObjectItems.WaitCount(1);
+            await businessObjectPage.BusinessObjectItems[0].Delete.WaitAbsence();
         }
 
         /// <summary>
@@ -39,24 +40,23 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         /// <param name="confirmDeletion"></param>
         [TestCase(true)]
         [TestCase(false)]
-        public void DeleteViaSearchPage(bool confirmDeletion)
+        public async Task DeleteViaSearchPage(bool confirmDeletion)
         {
             var ftpUser = CreateFtpUser();
 
-            using var browser = new BrowserForTests();
-            var businessObjectPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("FtpUser");
+            await using var browser = new BrowserForTests();
+            var businessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("FtpUser");
 
-            businessObjectPage.OpenFilter.Click();
-            businessObjectPage.FilterModal.GetFilter("Login").Input.ClearAndInputText(ftpUser.Login);
-            businessObjectPage.FilterModal.Apply.Click();
+            await businessObjectPage.OpenFilter.Click();
+            await (await businessObjectPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(ftpUser.Login);
+            await businessObjectPage.FilterModal.Apply.Click();
 
-            businessObjectPage = browser.RefreshUntil(businessObjectPage, x => x.BusinessObjectItems.IsPresent.Get());
-            businessObjectPage.BusinessObjectItems.WaitCount(1);
-            businessObjectPage.BusinessObjectItems[0].Delete.Click();
-            ConfirmDeletion(businessObjectPage.ConfirmDeleteObjectModal, confirmDeletion);
+            await businessObjectPage.BusinessObjectItems.WaitCount(1);
+            await businessObjectPage.BusinessObjectItems[0].Delete.Click();
+            await ConfirmDeletion(businessObjectPage.ConfirmDeleteObjectModal, confirmDeletion);
 
             if (confirmDeletion)
-                businessObjectPage.BusinessObjectItems.WaitAbsence();
+                await businessObjectPage.BusinessObjectItems.WaitAbsence();
 
             AssertFtpUserExistence(ftpUser.Id, confirmDeletion);
         }
@@ -65,13 +65,13 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что кнопка с удалением бизнес объекта на странице с конкретным объектом доступна только с SuperUserAccessLevel.God
         /// </summary>
         [Test]
-        public void DeleteViaDetailsPageRequiresGodAccess()
+        public async Task DeleteViaDetailsPageRequiresGodAccess()
         {
             var ftpUser = CreateFtpUser();
 
-            using var browser = new BrowserForTests();
-            var detailsPage = browser.SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
-            detailsPage.Delete.IsPresent.Wait().That(Is.False, "Delete link should only be present for gods");
+            await using var browser = new BrowserForTests();
+            var detailsPage = await browser.SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
+            await detailsPage.Delete.WaitAbsence();
         }
 
         /// <summary>
@@ -81,27 +81,26 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         /// <param name="confirmDeletion"></param>
         [TestCase(true)]
         [TestCase(false)]
-        public void DeleteViaDetailsPage(bool confirmDeletion)
+        public async Task DeleteViaDetailsPage(bool confirmDeletion)
         {
             var ftpUser = CreateFtpUser();
 
-            using var browser = new BrowserForTests();
-            var detailsPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
-            detailsPage.Delete.Click();
-            ConfirmDeletion(detailsPage.ConfirmDeleteObjectModal, confirmDeletion);
+            await using var browser = new BrowserForTests();
+            var detailsPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectDetailsPage>("FtpUser", $"Id={ftpUser.Id}");
+            await detailsPage.Delete.Click();
+            await ConfirmDeletion(detailsPage.ConfirmDeleteObjectModal, confirmDeletion);
 
             if (confirmDeletion)
-                detailsPage.GoTo<BusinessObjectTablePage>();
+                await detailsPage.GoTo<BusinessObjectTablePage>().Header.WaitText("FtpUser");
 
             AssertFtpUserExistence(ftpUser.Id, confirmDeletion);
         }
 
-        private static void ConfirmDeletion(ConfirmDeleteObjectModal modal, bool confirmDeletion)
+        private static Task ConfirmDeletion(ConfirmDeleteObjectModal modal, bool confirmDeletion)
         {
-            if (confirmDeletion)
-                modal.Delete.Click();
-            else
-                modal.Cancel.Click();
+            return confirmDeletion
+                       ? modal.Delete.Click()
+                       : modal.Cancel.Click();
         }
 
         private static void AssertFtpUserExistence(Guid userId, bool deletionConfirmed)

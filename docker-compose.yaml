@@ -33,34 +33,6 @@ services:
     ports:
       - 5432:5432
 
-  selenoid:
-    container_name: selenoid
-    image: aerokube/selenoid:1.11.0
-    networks:
-      - default-network
-    ports:
-      - "4444:4444"
-    command: ["-container-network", "db-viewer_default-network"]
-    volumes:
-      - "./.selenoid:/etc/selenoid/"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-
-  selenoid-ui:
-    container_name: selenoid-ui
-    image: aerokube/selenoid-ui:1.10.10
-    networks:
-      - default-network
-    ports:
-      - "8081:8081"
-    command: ["--listen", ":8081", "--selenoid-uri", "http://selenoid:4444"]
-    depends_on:
-      postgres:
-        condition: service_healthy
-      cassandra:
-        condition: service_healthy
-      selenoid:
-        condition: service_started
-
 networks:
   default-network:
     driver: bridge

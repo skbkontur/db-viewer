@@ -1,133 +1,165 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 
-using FluentAssertions;
-
-using Kontur.RetryableAssertions.Configuration;
-using Kontur.RetryableAssertions.ValueProviding;
-using Kontur.Selone.Properties;
+using Microsoft.Playwright;
 
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using NUnit.Framework.Internal;
 
-using OpenQA.Selenium;
-
-using SKBKontur.SeleniumTesting;
-using SKBKontur.SeleniumTesting.Controls;
+using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Controls;
+using SkbKontur.DbViewer.Tests.FrontTests.Pages;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Helpers
 {
     public static class AssertionExtensions
     {
-        public static void WaitText(this Label compoundControl, string text)
-        {
-            compoundControl.Text.Wait().That(Is.EqualTo(text));
-        }
-
-        public static void WaitText(this Link compoundControl, string text)
-        {
-            compoundControl.Text.Wait().That(Is.EqualTo(text));
-        }
-
-        public static void WaitText(this CompoundControl compoundControl, string text)
-        {
-            compoundControl.Text.Wait().That(Is.EqualTo(text));
-        }
-
-        public static void WaitText(this Select select, string text)
-        {
-            select.SelectedValueText.Wait().That(Is.EqualTo(text));
-        }
-
-        public static void WaitTextContains(this Label button, params string[] substrings)
-        {
-            button.Text.Wait().That(ContainsMany(substrings));
-        }
-
-        public static void WaitTextContains(this CompoundControl button, params string[] substrings)
-        {
-            button.Text.Wait().That(ContainsMany(substrings));
-        }
-
-        public static void WaitCount<T>(this ControlListBase<T> controlList, int count)
+        public static Task<T> GetItemWithText<T>(this ControlList<T> list, Func<T, ControlBase> f, string text)
             where T : ControlBase
         {
-            controlList.Count.Wait().That(Is.EqualTo(count));
+            return list.Where(x => f(x).Locator.GetByText(text)).Single();
         }
 
-        public static void WaitItems(this ControlListBase<Label> labelsList, params string[] expectedItems)
+        public static async Task<T> ClickAndGoTo<T>(this ControlBase control)
+            where T : PageBase
         {
-            labelsList.Wait(x => x.Text).That(Is.EquivalentTo(expectedItems));
+            await control.Locator.ClickAsync();
+            return AutoFillControls.InitializePage<T>(control.Locator.Page);
         }
 
-        public static void WaitItems(this Select select, string[] items)
+        public static T GoTo<T>(this PageBase page)
+            where T : PageBase
         {
-            select.GetItemsList().WaitItems(items);
-            select.Click();
+            return AutoFillControls.InitializePage<T>(page.Page);
         }
 
-        public static IValueProvider<TResult[], TResult[]> Wait<T, TResult>(this ControlListBase<T> list, Func<T, IProp<TResult>> func)
+        public static async Task Clear(this Input input)
+        {
+            await input.Click();
+            await input.Locator.Page.Keyboard.PressAsync("Control+A+Delete");
+        }
+
+        public static Task ClearAndInputText(this Input input, string value)
+        {
+            return input.Locator.FillAsync(value);
+        }
+
+        public static async Task SelectAndInputText(this Input input, string value)
+        {
+            await input.Click();
+            await input.Locator.Page.Keyboard.PressAsync("Control+A");
+            await input.Locator.PressSequentiallyAsync(value);
+        }
+
+        public static async Task ClearAndInputText(this DatePicker datePicker, string value)
+        {
+            await datePicker.Locator.ClickAsync();
+            var input = datePicker.Locator.GetByTestId("InputLikeText__input");
+            await input.Page.Keyboard.PressAsync("Home");
+            await input.PressSequentiallyAsync(value);
+        }
+
+        public static Task WaitCount<T>(this ControlList<T> list, int count)
             where T : ControlBase
         {
-            return ValueProvider.Create(() => list.Select(x => func(x).Get()).ToArray());
+            return list.Expect().ToHaveCountAsync(count);
         }
 
-        public static T GetItemWithText<T>(this ControlListBase<T> list, Func<T, IProp<string>> f, string text)
+        public static async Task<T> Single<T>(this ControlList<T> list)
             where T : ControlBase
         {
-            return list.GetItemThat(x => f(x).Get().Should().Be(text));
+            await list.WaitCount(1);
+            return list[0];
         }
 
-        public static IValueProvider<T, T> Wait<T>(this IProp<T> property)
+        public static Task WaitCorrect(this ControlBase control)
         {
-            return ValueProvider.Create(property.Get, property.GetDescription);
+            return control.Expect().Not.ToHaveAttributeAsync("data-prop-error", "true");
         }
 
-        public static IValueProvider<T[], T[]> Wait<T>(this IEnumerable<IProp<T>> properties)
+        public static Task WaitIncorrect(this ControlBase control)
         {
-            return ValueProvider.Create(() => properties.Select(x => x.Get()).ToArray(), string.Join("\n", properties.Select(x => x.GetDescription())));
+            return control.Expect().ToHaveAttributeAsync("data-prop-error", "true");
         }
 
-        public static void That<T, TSource>(this IValueProvider<T, TSource> provider, IResolveConstraint constraint, string failMessage = "")
+        public static Task WaitPresence(this ControlBase control)
         {
-            var reusableConstraint = new ReusableConstraint(constraint);
-            var assertion = Assertion.FromDelegate<T>(x =>
-                {
-                    using (new TestExecutionContext.IsolatedContext())
-                    {
-                        Assert.That(x, reusableConstraint, message : failMessage);
-                    }
-                });
-            Kontur.RetryableAssertions.Wait.Assertion(provider, new AssertionConfiguration<T>
-                {
-                    Timeout = 20_000,
-                    Interval = 100,
-                    Assertion = assertion,
-                    ExceptionMatcher = exceptionMatcher,
-                });
+            return control.Expect().ToBeVisibleAsync();
         }
 
-        private static ControlList<Label> GetItemsList(this Select select)
+        public static Task WaitAbsence(this ControlBase control)
         {
-            select.Click();
-            var portal = select.Find<Portal>().By("noscript");
-            return portal.FindList().Of<Label>("MenuItem").By("Menu");
+            return control.Expect().Not.ToBeVisibleAsync();
         }
 
-        private static IResolveConstraint ContainsMany(string[] substrings)
+        public static Task WaitText(this ControlBase control, string value)
         {
-            if (substrings.Length == 0)
-                throw new InvalidOperationException("Expected ContainsSubstring constraint to have at least one substring");
-
-            Constraint result = Contains.Substring(substrings[0]);
-            foreach (var substring in substrings.Skip(1))
-                result = result.And.Contains(substring);
-
-            return result;
+            return control.Expect().ToHaveTextAsync(value);
         }
 
-        private static readonly IExceptionMatcher exceptionMatcher = ExceptionMatcher.FromTypes(typeof(WebDriverException), typeof(InvalidOperationException), typeof(ElementNotFoundException));
+        public static Task WaitText(this ControlBase control, params string[] values)
+        {
+            return control.Expect().ToHaveTextAsync(values);
+        }
+
+        public static Task WaitTextContains(this ControlBase control, string value)
+        {
+            return control.Expect().ToContainTextAsync(value);
+        }
+
+        public static async Task WaitItems(this Select select, string[] items)
+        {
+            await select.Click();
+            await select.Items.Expect().ToHaveTextAsync(items);
+            await select.Click();
+        }
+
+        public static async Task SelectValueByText(this Select select, string value)
+        {
+            await select.Click();
+            await select.Items.Locator.GetByText(value, new LocatorGetByTextOptions {Exact = true}).ClickAsync();
+        }
+
+        public static Task ExpectIsOpenedWithMessage(this Validation validation, string message)
+        {
+            return validation.PopupContent.WaitText(message);
+        }
+
+        public static Task Click(this ControlBase control)
+        {
+            return control.Locator.ClickAsync();
+        }
+
+        public static async Task<BrowserForTests> LoginAsSuperUser(this BrowserForTests browser)
+        {
+            await browser.SwitchToUri<BusinessObjectsPage>(new Uri("Admin", UriKind.Relative));
+            return browser;
+        }
+
+        public static async Task<TPage> Refresh<TPage>(this BrowserForTests browser, TPage page)
+            where TPage : PageBase
+        {
+            await browser.Page.ReloadAsync();
+            return browser.GoTo<TPage>();
+        }
+
+        public static async Task<TPage> RefreshUntil<TPage>(this BrowserForTests browser, TPage page, Func<TPage, Task<bool>> conditionFunc, string? cause = null, int timeout = 30000, int waitTimeout = 100)
+            where TPage : PageBase
+        {
+            var w = Stopwatch.StartNew();
+            if (await conditionFunc(page))
+                return page;
+            do
+            {
+                page = await browser.Refresh(page);
+                if (await conditionFunc(page))
+                    return page;
+                Thread.Sleep(waitTimeout);
+            } while (w.ElapsedMilliseconds < timeout);
+            Assert.Fail(cause ?? $"Не смогли дождаться страницу за {timeout} мс");
+            return default;
+        }
     }
 }

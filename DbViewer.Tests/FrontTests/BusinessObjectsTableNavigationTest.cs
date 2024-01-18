@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -16,29 +17,29 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Создаем 21 бизнес объект, в таблице с бизнес объектами смотрим, что появилось 2 страницы, на первой 20 объектов, на второй - 1
         /// </summary>
         [Test]
-        public void TestTwoPages()
+        public async Task TestTwoPages()
         {
             var scopeId = Guid.NewGuid().ToString();
             CreateFtpUsers(21, scopeId);
 
-            using var browser = new BrowserForTests();
+            await using var browser = new BrowserForTests();
 
-            var businessObjectsPage = browser.SwitchTo<BusinessObjectsPage>();
-            businessObjectsPage.FilterInput.ClearAndInputText("FtpUser");
-            var ftpUsersLink = businessObjectsPage.ObjectGroups[0].ObjectsList.GetItemWithText(x => x.ObjectLink.Text, "FtpUser");
+            var businessObjectsPage = await browser.SwitchTo<BusinessObjectsPage>();
+            await businessObjectsPage.FilterInput.ClearAndInputText("FtpUser");
+            var ftpUsersLink = await businessObjectsPage.ObjectGroups[0].ObjectsList.GetItemWithText(x => x.ObjectLink, "FtpUser");
 
-            var ftpUsersPage = ftpUsersLink.ObjectLink.ClickAndGoTo<BusinessObjectTablePage>();
-            ftpUsersPage.OpenFilter.Click();
-            ftpUsersPage.FilterModal.GetFilter("Login").Input.ClearAndInputText(scopeId);
-            ftpUsersPage.FilterModal.Apply.Click();
+            var ftpUsersPage = await ftpUsersLink.ObjectLink.ClickAndGoTo<BusinessObjectTablePage>();
+            await ftpUsersPage.OpenFilter.Click();
+            await (await ftpUsersPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(scopeId);
+            await ftpUsersPage.FilterModal.Apply.Click();
 
-            ftpUsersPage = browser.RefreshUntil(ftpUsersPage, page => page.ItemsCountInfo.Text.Get().Contains("Всего 21"));
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 0 по 20", "Всего 21");
-            ftpUsersPage.BusinessObjectItems.WaitCount(20);
-            ftpUsersPage.Paging.PagesCount.Wait().That(Is.EqualTo(2));
-            ftpUsersPage.Paging.GoToPage(2);
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 20 по 21", "Всего 21");
-            ftpUsersPage.BusinessObjectItems.WaitCount(1);
+            ftpUsersPage = await browser.RefreshUntil(ftpUsersPage, async page => (await page.ItemsCountInfo.Locator.TextContentAsync())?.Contains("Всего 21") == true);
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 0 по 20|Всего 21");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(20);
+            await ftpUsersPage.Paging.Pages.WaitCount(2);
+            await ftpUsersPage.Paging.Pages[1].Click();
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 20 по 21|Всего 21");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(1);
         }
 
         /// <summary>
@@ -47,39 +48,42 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Включаем отображение 50 объектов на одной странице, проверяем, что страниц стало 2, на первой 50 объектов, на второй - 1
         /// </summary>
         [Test]
-        public void TestThreePages()
+        public async Task TestThreePages()
         {
             var scopeId = Guid.NewGuid().ToString();
             CreateFtpUsers(51, scopeId);
 
-            using var browser = new BrowserForTests();
+            await using var browser = new BrowserForTests();
 
-            var ftpUsersPage = browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
-            ftpUsersPage.OpenFilter.Click();
-            ftpUsersPage.FilterModal.GetFilter("Login").Input.ClearAndInputText(scopeId);
-            ftpUsersPage.FilterModal.Apply.Click();
+            var ftpUsersPage = await browser.SwitchTo<BusinessObjectTablePage>("FtpUser");
+            await ftpUsersPage.OpenFilter.Click();
+            await (await ftpUsersPage.FilterModal.GetFilter("Login")).Input.ClearAndInputText(scopeId);
+            await ftpUsersPage.FilterModal.Apply.Click();
 
-            ftpUsersPage = browser.RefreshUntil(ftpUsersPage, page => page.ItemsCountInfo.Text.Get().Contains("Всего 51"));
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 0 по 20", "Всего 51");
-            ftpUsersPage.BusinessObjectItems.WaitCount(20);
-            ftpUsersPage.Paging.PagesCount.Wait().That(Is.EqualTo(3));
-            ftpUsersPage.Paging.GoToPage(2);
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 20 по 40", "Всего 51");
-            ftpUsersPage.BusinessObjectItems.WaitCount(20);
-            ftpUsersPage.Paging.GoToPage(3);
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 40 по 51", "Всего 51");
-            ftpUsersPage.BusinessObjectItems.WaitCount(11);
+            ftpUsersPage = await browser.RefreshUntil(ftpUsersPage, async page => (await page.ItemsCountInfo.Locator.TextContentAsync())?.Contains("Всего 51") == true);
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 0 по 20|Всего 51");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(20);
+            await ftpUsersPage.Paging.Pages.WaitCount(3);
+            await ftpUsersPage.Paging.Pages[1].Click();
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 20 по 40|Всего 51");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(20);
+            await ftpUsersPage.Paging.Pages[2].Click();
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 40 по 51|Всего 51");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(11);
 
-            ftpUsersPage.Paging.GoToPage(1);
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 0 по 20", "Всего 51");
-            ftpUsersPage.CountDropdown.CurrentCount.Click();
-            ftpUsersPage.CountDropdown.Menu.GetItemByUniqueTid("##50Items").Click();
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 0 по 50", "Всего 51");
-            ftpUsersPage.BusinessObjectItems.WaitCount(50);
-            ftpUsersPage.Paging.PagesCount.Wait().That(Is.EqualTo(2));
-            ftpUsersPage.Paging.GoToPage(2);
-            ftpUsersPage.ItemsCountInfo.WaitTextContains("Записи с 50 по 51", "Всего 51");
-            ftpUsersPage.BusinessObjectItems.WaitCount(1);
+            await ftpUsersPage.Paging.Pages[0].Click();
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 0 по 20|Всего 51");
+
+            await ftpUsersPage.CountDropdown.CurrentCount.Click();
+            await ftpUsersPage.CountDropdown.Menu.WaitText("50", "100");
+            await ftpUsersPage.CountDropdown.Menu[0].Click();
+
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 0 по 50|Всего 51");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(50);
+            await ftpUsersPage.Paging.Pages.WaitCount(2);
+            await ftpUsersPage.Paging.Pages[1].Click();
+            await ftpUsersPage.ItemsCountInfo.WaitText("Записи с 50 по 51|Всего 51");
+            await ftpUsersPage.BusinessObjectItems.WaitCount(1);
         }
 
         private static void CreateFtpUsers(int count, string login)

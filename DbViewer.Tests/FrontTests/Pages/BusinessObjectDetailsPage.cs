@@ -1,19 +1,16 @@
-﻿using OpenQA.Selenium.Remote;
+﻿using Microsoft.Playwright;
 
-using SkbKontur.DbViewer.Tests.FrontTests.AutoFill;
+using SkbKontur.DbViewer.Tests.FrontTests.Controls;
 using SkbKontur.DbViewer.Tests.FrontTests.Helpers;
-
-using SKBKontur.SeleniumTesting;
-using SKBKontur.SeleniumTesting.Controls;
+using SkbKontur.DbViewer.Tests.FrontTests.Playwright;
 
 namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
 {
-    [AutoFillControls]
     [PageRoute("BusinessObjects/{scopeId}/details?{id}")]
     public class BusinessObjectDetailsPage : PageBase
     {
-        public BusinessObjectDetailsPage(RemoteWebDriver webDriver)
-            : base(webDriver)
+        public BusinessObjectDetailsPage(IPage page)
+            : base(page)
         {
         }
 
@@ -24,7 +21,6 @@ namespace SkbKontur.DbViewer.Tests.FrontTests.Pages
 
         public ConfirmDeleteObjectModal ConfirmDeleteObjectModal { get; set; }
 
-        [LoadingComplete]
         public Accordion RootAccordion { get; set; }
     }
 }

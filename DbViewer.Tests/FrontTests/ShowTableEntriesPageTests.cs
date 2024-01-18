@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Cassandra.Data.Linq;
 
@@ -24,7 +25,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Заполняем поле правильным id и нам выдает 1 запись
         /// </summary>
         [Test]
-        public void TestObjectKeysValidation()
+        public async Task TestObjectKeysValidation()
         {
             var printingInfo = CqlDocumentsForTests.GetCqlDocumentPrintingInfo();
             var printingInfoId = printingInfo.Id.ToString();
@@ -32,26 +33,26 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocument(printingInfo);
 
-            using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await browser.SwitchTo<BusinessObjectTablePage>("DocumentPrintingInfo");
 
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.Apply.Click();
-            var searchField = showTableEntriesPage.FilterModal.GetFilter("Id");
-            searchField.InputValidation.ExpectIsOpenedWithMessage("Поле должно быть заполнено");
-            searchField.Input.ClearAndInputText(Guid.NewGuid().ToString());
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.OpenFilter.Click();
+            await showTableEntriesPage.FilterModal.Apply.Click();
+            var searchField = await showTableEntriesPage.FilterModal.GetFilter("Id");
+            await searchField.InputValidation.ExpectIsOpenedWithMessage("Поле должно быть заполнено");
+            await searchField.Input.ClearAndInputText(Guid.NewGuid().ToString());
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.BusinessObjectItems.WaitAbsence();
-            showTableEntriesPage.NothingFound.WaitPresence();
+            await showTableEntriesPage.BusinessObjectItems.WaitAbsence();
+            await showTableEntriesPage.NothingFound.WaitPresence();
 
-            showTableEntriesPage.OpenFilter.Click();
-            searchField = showTableEntriesPage.FilterModal.GetFilter("Id");
-            searchField.Input.ClearAndInputText(printingInfoId);
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.OpenFilter.Click();
+            searchField = await showTableEntriesPage.FilterModal.GetFilter("Id");
+            await searchField.Input.ClearAndInputText(printingInfoId);
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.BusinessObjectItems.WaitCount(1);
-            showTableEntriesPage.BusinessObjectItems[0].FindColumn("Id").WaitText(printingInfoId);
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(1);
+            await showTableEntriesPage.BusinessObjectItems[0].FindColumn("Id").WaitText(printingInfoId);
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Выбираем фильтр по DocumentType '>', должен найти последние 5 документов
         /// </summary>
         [Test]
-        public void TestFindDocumentWithClusteringKeyPart()
+        public async Task TestFindDocumentWithClusteringKeyPart()
         {
             var documents = CqlDocumentsForTests.GetCqlDocumentBindingMetaEntries(serializer);
             var firstPartnerPartyId = documents[0].FirstPartnerPartyId;
@@ -73,54 +74,60 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(documents);
 
-            using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("BindingType").EnumSelect.SelectValueByText("ByPriceList");
-            showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId").Input.ClearAndInputText(firstPartnerPartyId);
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await browser.SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("BindingType")).EnumSelect.SelectValueByText("ByPriceList");
+            await (await showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId")).Input.ClearAndInputText(firstPartnerPartyId);
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId").Input.WaitIncorrect();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentNumber").Input.WaitIncorrect();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentDate").DateTimeInTicks.WaitIncorrect();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentTime").DateTimeInTicks.WaitIncorrect();
-            showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId").Input.WaitCorrect();
+            await (await showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId")).Input.WaitIncorrect();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentNumber")).Input.WaitIncorrect();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentDate")).DateTimeInTicks.WaitIncorrect();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentTime")).DateTimeInTicks.WaitIncorrect();
+            await (await showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId")).Input.WaitCorrect();
 
-            showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId").Input.ClearAndInputText(secondPartnerPartyId);
-            showTableEntriesPage.FilterModal.GetFilter("DocumentNumber").Input.ClearAndInputText("0");
-            showTableEntriesPage.FilterModal.GetFilter("DocumentDate").Date.ClearAndInputText("10.10.2000");
-            showTableEntriesPage.FilterModal.GetFilter("DocumentTime").DateTimeInTicks.ClearAndInputText(new DateTime(2020, 10, 10, 13, 12, 11, DateTimeKind.Utc).Ticks.ToString());
+            await (await showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId")).Input.ClearAndInputText(secondPartnerPartyId);
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentNumber")).Input.ClearAndInputText("0");
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentDate")).Date.ClearAndInputText("10.10.2000");
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentTime")).DateTimeInTicks.ClearAndInputText(new DateTime(2020, 10, 10, 13, 12, 11, DateTimeKind.Utc).Ticks.ToString());
 
             var documentType = documents[0].DocumentType;
             var documentCirculationId = documents[0].DocumentCirculationId.ToString();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentType").Input.ClearAndInputText(documentType);
-            showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId").Input.ClearAndInputText(documentCirculationId);
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentType")).Input.ClearAndInputText(documentType);
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId")).Input.ClearAndInputText(documentCirculationId);
 
-            showTableEntriesPage.FilterModal.Apply.Click();
-            showTableEntriesPage.BusinessObjectItems.WaitCount(1);
-            showTableEntriesPage.BusinessObjectItems[0].FindColumn("DocumentCirculationId").WaitText(documentCirculationId);
+            await showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(1);
+            await showTableEntriesPage.BusinessObjectItems[0].FindColumn("DocumentCirculationId").WaitText(documentCirculationId);
 
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentType").Input.Clear();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId").Input.Clear();
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentType")).Input.Clear();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId")).Input.Clear();
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.BusinessObjectItems.WaitCount(10);
-            showTableEntriesPage.BusinessObjectItems.Wait(row => row.FindColumn("DocumentCirculationId").Text).That(Is.EquivalentTo(documents.Select(x => x.DocumentCirculationId.ToString())));
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(10);
+            await showTableEntriesPage.BusinessObjectItems
+                                      .Select(row => row.FindColumn("DocumentCirculationId"))
+                                      .WaitText(documents.Select(x => x.DocumentCirculationId.ToString()).ToArray());
 
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentType").Input.ClearAndInputText(documentType);
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentType")).Input.ClearAndInputText(documentType);
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.BusinessObjectItems.WaitCount(5);
-            showTableEntriesPage.BusinessObjectItems.Wait(row => row.FindColumn("DocumentType").Text).That(Is.All.EqualTo("Invoic"));
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(5);
+            await showTableEntriesPage.BusinessObjectItems
+                                      .Select(row => row.FindColumn("DocumentType"))
+                                      .WaitText(Enumerable.Range(0, 5).Select(_ => "Invoic").ToArray());
 
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentType").OperatorSelect.SelectValueByText(">");
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentType")).OperatorSelect.SelectValueByText(">");
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.BusinessObjectItems.WaitCount(5);
-            showTableEntriesPage.BusinessObjectItems.Wait(row => row.FindColumn("DocumentType").Text).That(Is.All.EqualTo("Orders"));
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(5);
+            await showTableEntriesPage.BusinessObjectItems
+                                      .Select(row => row.FindColumn("DocumentType"))
+                                      .WaitText(Enumerable.Range(0, 5).Select(_ => "Orders").ToArray());
         }
 
         /// <summary>
@@ -128,7 +135,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Находим один документ, заполнив PK и CK, удаляем его, проверяем, что осталось 9
         /// </summary>
         [Test]
-        public void TestDeleteDocumentWithClusteringKeyPart()
+        public async Task TestDeleteDocumentWithClusteringKeyPart()
         {
             var documents = CqlDocumentsForTests.GetCqlDocumentBindingMetaEntries(serializer);
             var firstPartnerPartyId = documents[0].FirstPartnerPartyId;
@@ -139,29 +146,29 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(documents);
 
-            using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("BindingType").EnumSelect.SelectValueByText("ByPriceList");
-            showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId").Input.ClearAndInputText(firstPartnerPartyId);
-            showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId").Input.ClearAndInputText(secondPartnerPartyId);
-            showTableEntriesPage.FilterModal.GetFilter("DocumentNumber").Input.ClearAndInputText("0");
-            showTableEntriesPage.FilterModal.GetFilter("DocumentDate").Date.ClearAndInputText("10.10.2000");
-            showTableEntriesPage.FilterModal.GetFilter("DocumentTime").DateTimeInTicks.ClearAndInputText(new DateTime(2020, 10, 10, 13, 12, 11, DateTimeKind.Utc).Ticks.ToString());
-            showTableEntriesPage.FilterModal.GetFilter("DocumentType").Input.ClearAndInputText(documentType);
-            showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId").Input.ClearAndInputText(documentCirculationId);
-            showTableEntriesPage.FilterModal.Apply.Click();
-            showTableEntriesPage.BusinessObjectItems.WaitCount(1);
-            showTableEntriesPage.BusinessObjectItems[0].FindColumn("DocumentCirculationId").WaitText(documentCirculationId);
-            showTableEntriesPage.BusinessObjectItems[0].Delete.Click();
-            showTableEntriesPage.ConfirmDeleteObjectModal.Delete.Click();
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("DocumentBindingsMeta");
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("BindingType")).EnumSelect.SelectValueByText("ByPriceList");
+            await (await showTableEntriesPage.FilterModal.GetFilter("FirstPartnerPartyId")).Input.ClearAndInputText(firstPartnerPartyId);
+            await (await showTableEntriesPage.FilterModal.GetFilter("SecondPartnerPartyId")).Input.ClearAndInputText(secondPartnerPartyId);
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentNumber")).Input.ClearAndInputText("0");
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentDate")).Date.ClearAndInputText("10.10.2000");
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentTime")).DateTimeInTicks.ClearAndInputText(new DateTime(2020, 10, 10, 13, 12, 11, DateTimeKind.Utc).Ticks.ToString());
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentType")).Input.ClearAndInputText(documentType);
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId")).Input.ClearAndInputText(documentCirculationId);
+            await showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(1);
+            await showTableEntriesPage.BusinessObjectItems[0].FindColumn("DocumentCirculationId").WaitText(documentCirculationId);
+            await showTableEntriesPage.BusinessObjectItems[0].Delete.Click();
+            await showTableEntriesPage.ConfirmDeleteObjectModal.Delete.Click();
 
-            showTableEntriesPage = browser.RefreshUntil(showTableEntriesPage, x => x.NothingFound.IsPresent.Get());
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentType").Input.Clear();
-            showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId").Input.Clear();
-            showTableEntriesPage.FilterModal.Apply.Click();
-            showTableEntriesPage.BusinessObjectItems.WaitCount(9);
+            showTableEntriesPage = await browser.RefreshUntil(showTableEntriesPage, x => x.NothingFound.Locator.IsVisibleAsync());
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentType")).Input.Clear();
+            await (await showTableEntriesPage.FilterModal.GetFilter("DocumentCirculationId")).Input.Clear();
+            await showTableEntriesPage.FilterModal.Apply.Click();
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(9);
 
             GetBindingMeta(documents[0]).Length.Should().Be(0);
         }
@@ -170,7 +177,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем сортировку и пейджинг
         /// </summary>
         [Test]
-        public void TestSortDocuments()
+        public async Task TestSortDocuments()
         {
             var id = Guid.NewGuid().ToString();
             var documents = Enumerable.Range(0, 100)
@@ -180,29 +187,29 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(documents);
 
-            using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.SwitchTo<BusinessObjectTablePage>("CqlActiveBoxState");
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("PartitionKey").Input.ClearAndInputText(id);
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await browser.SwitchTo<BusinessObjectTablePage>("CqlActiveBoxState");
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("PartitionKey")).Input.ClearAndInputText(id);
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.TableHeader.SortByColumn("Header_BoxId");
-            showTableEntriesPage.TableHeader.SortByColumn("Header_BoxId");
-            showTableEntriesPage.BusinessObjectItems.Wait(x => x.FindColumn("BoxId").Text).That(Is.EqualTo(GetBoxIds(documents)));
+            await showTableEntriesPage.TableHeader.SortByColumn("Header_BoxId");
+            await showTableEntriesPage.TableHeader.SortByColumn("Header_BoxId");
+            await showTableEntriesPage.BusinessObjectItems.Select(x => x.FindColumn("BoxId")).WaitText(GetBoxIds(documents));
 
-            showTableEntriesPage.Paging.GoToNextPage();
-            showTableEntriesPage.BusinessObjectItems.Wait(x => x.FindColumn("BoxId").Text).That(Is.EqualTo(GetBoxIds(documents, skip : 20)));
-            showTableEntriesPage.Paging.PagesCount.Wait().That(Is.EqualTo(5));
+            await showTableEntriesPage.Paging.Forward.Click();
+            await showTableEntriesPage.BusinessObjectItems.Select(x => x.FindColumn("BoxId")).WaitText(GetBoxIds(documents, skip : 20));
+            await showTableEntriesPage.Paging.Pages.WaitCount(5);
 
-            showTableEntriesPage.CountDropdown.CurrentCount.Click();
-            showTableEntriesPage.CountDropdown.Menu.GetItemByUniqueTid("##50Items").Click();
-            showTableEntriesPage.BusinessObjectItems.Wait(x => x.FindColumn("BoxId").Text).That(Is.EqualTo(GetBoxIds(documents, take : 50)));
-            showTableEntriesPage.Paging.PagesCount.Wait().That(Is.EqualTo(2));
+            await showTableEntriesPage.CountDropdown.CurrentCount.Click();
+            await showTableEntriesPage.CountDropdown.Menu[0].Click();
+            await showTableEntriesPage.BusinessObjectItems.Select(x => x.FindColumn("BoxId")).WaitText(GetBoxIds(documents, take : 50));
+            await showTableEntriesPage.Paging.Pages.WaitCount(2);
 
-            showTableEntriesPage.CountDropdown.CurrentCount.Click();
-            showTableEntriesPage.CountDropdown.Menu.GetItemByUniqueTid("##100Items").Click();
-            showTableEntriesPage.BusinessObjectItems.Wait(x => x.FindColumn("BoxId").Text).That(Is.EqualTo(GetBoxIds(documents, take : 100)));
-            showTableEntriesPage.Paging.WaitAbsence();
+            await showTableEntriesPage.CountDropdown.CurrentCount.Click();
+            await showTableEntriesPage.CountDropdown.Menu[1].Click();
+            await showTableEntriesPage.BusinessObjectItems.Select(x => x.FindColumn("BoxId")).WaitText(GetBoxIds(documents, take : 100));
+            await showTableEntriesPage.Paging.WaitAbsence();
         }
 
         /// <summary>
@@ -211,7 +218,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
         ///     Проверяем, что можем удалить документ
         /// </summary>
         [Test]
-        public void TestFindDocumentWithDifferentColumnTypes()
+        public async Task TestFindDocumentWithDifferentColumnTypes()
         {
             var document = CqlDocumentsForTests.GetCqlConnectorDeliveryContext(serializer);
             var document2 = CqlDocumentsForTests.GetCqlConnectorDeliveryContext(serializer);
@@ -219,23 +226,24 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
             using (var context = new CqlDbContext())
                 context.InsertDocuments(new[] {document, document2});
 
-            using var browser = new BrowserForTests();
-            var showTableEntriesPage = browser.LoginAsSuperUser().SwitchTo<BusinessObjectTablePage>("CqlConnectorDeliveryContext");
-            showTableEntriesPage.OpenFilter.Click();
-            showTableEntriesPage.FilterModal.GetFilter("TimeSliceId").DateTimeInTicks.ClearAndInputText(document.TimeSliceId.UtcTicks.ToString());
-            showTableEntriesPage.FilterModal.GetFilter("TimeSliceShardNumber").Input.ClearAndInputText(document.TimeSliceShardNumber.ToString());
-            showTableEntriesPage.FilterModal.GetFilter("ContextId").Input.ClearAndInputText(document.ContextId.ToString());
-            showTableEntriesPage.FilterModal.Apply.Click();
+            await using var browser = new BrowserForTests();
+            var showTableEntriesPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("CqlConnectorDeliveryContext");
+            await showTableEntriesPage.OpenFilter.Click();
+            await (await showTableEntriesPage.FilterModal.GetFilter("TimeSliceId")).DateTimeInTicks.ClearAndInputText(document.TimeSliceId.UtcTicks.ToString());
+            await (await showTableEntriesPage.FilterModal.GetFilter("TimeSliceShardNumber")).Input.ClearAndInputText(document.TimeSliceShardNumber.ToString());
+            await (await showTableEntriesPage.FilterModal.GetFilter("ContextId")).Input.ClearAndInputText(document.ContextId.ToString());
+            await showTableEntriesPage.FilterModal.Apply.Click();
 
-            showTableEntriesPage.BusinessObjectItems.WaitCount(1);
+            await showTableEntriesPage.BusinessObjectItems.WaitCount(1);
             var row = showTableEntriesPage.BusinessObjectItems[0];
-            row.FindColumn("TimeSliceId").WaitText(document.TimeSliceId.ToString("yyyy-MM-ddTHH:mm:ss.ffK"));
-            row.FindColumn("TimeSliceShardNumber").WaitText(document.TimeSliceShardNumber.ToString());
-            row.FindColumn("ContextId").WaitText(document.ContextId.ToString());
+            await row.FindColumn("TimeSliceId").WaitText(document.TimeSliceId.ToString("yyyy-MM-ddTHH:mm:ss.ffK"));
+            await row.FindColumn("TimeSliceShardNumber").WaitText(document.TimeSliceShardNumber.ToString());
+            await row.FindColumn("ContextId").WaitText(document.ContextId.ToString());
 
-            row.Delete.Click();
-            showTableEntriesPage.ConfirmDeleteObjectModal.Delete.Click();
-            browser.RefreshUntil(showTableEntriesPage, x => x.NothingFound.IsPresent.Get());
+            await row.Delete.Click();
+            await showTableEntriesPage.ConfirmDeleteObjectModal.Delete.Locator.HighlightAsync();
+            await showTableEntriesPage.ConfirmDeleteObjectModal.Delete.Click();
+            await browser.RefreshUntil(showTableEntriesPage, x => x.NothingFound.Locator.IsVisibleAsync());
 
             GetConnectorDeliveryContext(document).Length.Should().Be(0);
             GetConnectorDeliveryContext(document2).Single().Should().BeEquivalentTo(document2);

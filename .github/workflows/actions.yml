@@ -11,7 +11,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,9 +36,6 @@ jobs:
 
       - name: Install node dependencies
         run: corepack yarn --cwd db-viewer-ui --immutable
-      
-      - name: Pull docker images
-        run: docker pull selenoid/vnc:chrome_112.0
 
       - name: Build dotnet
         run: dotnet build --configuration Release ./DbViewer.sln
@@ -46,17 +43,20 @@ jobs:
       - name: Pack dotnet
         run: dotnet pack --no-build --configuration Release ./DbViewer.sln
 
+      - name: Install Playwright
+        run: pwsh ./DbViewer.Tests/bin/Release/net6.0/playwright.ps1 install chromium --with-deps
+
       - name: Build front
         run: yarn --cwd db-viewer-ui build
 
       - name: Check C# code style
-        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN && git diff --exit-code -- ':!./db-viewer-ui/.yarn'
+        run: dotnet jb cleanupcode DbViewer.sln --profile=CatalogueCleanup --exclude=./DbViewer.TestApi/Migrations/*.cs --verbosity=WARN --no-build && git diff --exit-code -- ':!./db-viewer-ui/.yarn'
 
       - name: Check front code
         run: yarn --cwd db-viewer-ui lint
 
       - name: Build docker-compose environment
-        run: docker-compose up -d
+        run: docker compose up -d --wait
       
       - name: Run db-viewer api
         run: docker build -t db-viewer-api ./DbViewer.TestApi && docker run -dp 5000:5000 --name db-viewer-api --network=db-viewer_default-network -e CASSANDRA_ADDRESS=cassandra -e POSTGRES_ADDRESS=postgres db-viewer-api
@@ -79,6 +79,13 @@ jobs:
             **/*.nupkg
             **/*.tgz
           if-no-files-found: error
+      
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: traces
+          path: DbViewer.Tests/bin/Release/net6.0/out/*.zip
 
   publish:
     runs-on: ubuntu-20.04

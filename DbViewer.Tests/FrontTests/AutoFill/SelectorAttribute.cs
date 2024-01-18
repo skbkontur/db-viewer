@@ -1,16 +1,14 @@
 using System;
 
-using SKBKontur.SeleniumTesting;
-
 namespace SkbKontur.DbViewer.Tests.FrontTests.AutoFill
 {
     public class SelectorAttribute : Attribute
     {
         public SelectorAttribute(string selector)
         {
-            Selector = new UniversalSelector(selector);
+            Selector = selector;
         }
 
-        public ISelector Selector { get; private set; }
+        public string Selector { get; }
     }
 }
