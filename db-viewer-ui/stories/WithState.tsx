@@ -9,29 +9,11 @@ interface WithStateProps<S> {
     ) => React.ReactElement;
 }
 
-interface WithStateState<S> {
-    state: S;
-}
-
-export class WithState<S> extends React.Component<WithStateProps<S>, WithStateState<S>> {
-    public state: WithStateState<S>;
-
-    public constructor(props: WithStateProps<S>) {
-        super(props);
-        this.state = { state: props.initial };
-    }
-
-    public render(): React.ReactElement {
-        return this.props.children(
-            this.state.state,
-            (x: Partial<S>) => {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                this.setState({ state: { ...this.state.state, ...x } });
-            },
-            (x: S) => {
-                this.setState({ state: x });
-            }
-        );
-    }
-}
+export const WithState = <S,>({ initial, children }: WithStateProps<S>): React.JSX.Element => {
+    const [state, setState] = React.useState(initial);
+    return children(
+        state,
+        (x: Partial<S>) => setState({ ...state, ...x }),
+        (x: S) => setState(x)
+    );
+};

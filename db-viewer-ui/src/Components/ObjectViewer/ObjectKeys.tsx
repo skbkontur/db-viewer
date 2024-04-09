@@ -14,12 +14,12 @@ interface ObjectKeysProps {
 
 export const ObjectKeys = ({ keys }: ObjectKeysProps): React.JSX.Element => (
     <ColumnStack block gap={2}>
-        {keys.map(x => (
-            <Fit key={x.name}>
+        {keys.map(({ name, value }) => (
+            <Fit key={name}>
                 <RowStack gap={2}>
-                    <Fit style={{ minWidth: 140 }}>{x.name}:</Fit>
+                    <Fit style={{ minWidth: 140 }}>{name}:</Fit>
                     <Fit>
-                        <AllowCopyToClipboard data-tid={x.name}>{x.value}</AllowCopyToClipboard>
+                        <AllowCopyToClipboard data-tid={name}>{value}</AllowCopyToClipboard>
                     </Fit>
                 </RowStack>
             </Fit>

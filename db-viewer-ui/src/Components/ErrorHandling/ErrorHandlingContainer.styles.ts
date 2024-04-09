@@ -10,9 +10,17 @@ export const jsStyles = {
         `;
     },
 
-    modalText(t: Theme): string {
+    modalHeader(t: Theme): string {
+        return css`
+            font-weight: 700;
+            color: ${t.textColorDefault};
+        `;
+    },
+
+    modalBody(t: Theme): string {
         return css`
             color: ${t.textColorDefault};
+            font-size: 16px;
         `;
     },
 
@@ -25,19 +33,9 @@ export const jsStyles = {
         `;
     },
 
-    content(): string {
-        return css`
-            & > p {
-                margin: 0;
-            }
-        `;
-    },
-
     userMessage(): string {
         return css`
-            & > p {
-                margin-bottom: ${baseSize}px;
-            }
+            margin: 0 0 ${baseSize}px 0;
         `;
     },
 

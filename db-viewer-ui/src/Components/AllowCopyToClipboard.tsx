@@ -12,21 +12,18 @@ export class CopyToClipboardToast {
     }
 }
 
-export class AllowCopyToClipboard extends React.Component<PropsWithChildren<{}>> {
-    public children: null | HTMLSpanElement = null;
+export const AllowCopyToClipboard = ({ children }: PropsWithChildren<{}>): React.JSX.Element => {
+    const childrenRef = React.useRef<HTMLSpanElement | null>(null);
 
-    public render(): React.ReactElement {
-        return (
-            <span>
-                <span ref={x => (this.children = x)}>{this.props.children}</span>{" "}
-                <Link icon={<CopyIcon16Regular />} onClick={this.handleCopy} />
-            </span>
-        );
-    }
-
-    private readonly handleCopy = () => {
-        if (this.children && !StringUtils.isNullOrWhitespace(this.children.innerText)) {
-            CopyToClipboardToast.copyText(this.children.innerText);
+    const handleCopy = (): void => {
+        if (childrenRef.current && !StringUtils.isNullOrWhitespace(childrenRef.current.innerText)) {
+            CopyToClipboardToast.copyText(childrenRef.current.innerText);
         }
     };
-}
+    return (
+        <span>
+            <span ref={childrenRef}>{children}</span>
+            <Link icon={<CopyIcon16Regular />} onClick={handleCopy} />
+        </span>
+    );
+};

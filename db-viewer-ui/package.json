@@ -57,7 +57,7 @@
   "devDependencies": {
     "@skbkontur/icons": "^1.7.3",
     "@skbkontur/react-selenium-testing": "^0.2.1",
-    "@skbkontur/react-ui": "^4.19.0",
+    "@skbkontur/react-ui": "^4.22.0",
     "@storybook/addon-actions": "^7.6.8",
     "@storybook/addons": "^7.6.8",
     "@storybook/cli": "^7.6.8",
