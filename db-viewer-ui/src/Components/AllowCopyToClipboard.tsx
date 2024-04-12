@@ -1,13 +1,12 @@
 import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
 import { Link, Toast } from "@skbkontur/react-ui";
-import copy from "copy-to-clipboard";
 import React, { PropsWithChildren } from "react";
 
 import { StringUtils } from "../Domain/Utils/StringUtils";
 
 export class CopyToClipboardToast {
     public static copyText(value: string): void {
-        copy(value);
+        navigator.clipboard.writeText(value);
         Toast.push("Скопировано в буфер");
     }
 }
