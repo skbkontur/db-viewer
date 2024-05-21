@@ -1,4 +1,5 @@
-import { Button, Modal, ThemeContext } from "@skbkontur/react-ui";
+import { MinusCircleIcon64Regular } from "@skbkontur/icons/icons/MinusCircleIcon/MinusCircleIcon64Regular";
+import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
 
 import { jsStyles } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal.styles";
@@ -11,21 +12,23 @@ interface DownloadLimitModalProps {
 export function DownloadLimitModal({ countLimit, onDownloadAbort }: DownloadLimitModalProps): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
-        <Modal width={500} onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
-            <Modal.Header data-tid="Header">
-                <span className={jsStyles.modalText(theme)}>Слишком большой список</span>
-            </Modal.Header>
-            <Modal.Body data-tid="Body">
-                <span className={jsStyles.modalText(theme)}>
-                    Мы умеем выгружать не более {countLimit} объектов из этой таблицы. Уточните запрос с помощью
-                    фильтров, чтобы записей стало меньше.
+        <MiniModal onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
+            <MiniModal.Header icon={<MinusCircleIcon64Regular />} data-tid="Header">
+                <span className={jsStyles.modalHeader(theme)}>Слишком большой список</span>
+            </MiniModal.Header>
+            <MiniModal.Body data-tid="Body">
+                <span className={jsStyles.modalBody(theme)}>
+                    <span className={jsStyles.modalCaption()}>
+                        Мы умеем выгружать не более {countLimit}&nbsp;объектов из&nbsp;этой таблицы.
+                    </span>
+                    <span>Уточните запрос с помощью фильтров</span>
                 </span>
-            </Modal.Body>
-            <Modal.Footer panel>
-                <Button data-tid="Cancel" onClick={onDownloadAbort}>
+            </MiniModal.Body>
+            <MiniModal.Footer>
+                <Button data-tid="Cancel" size="medium" onClick={onDownloadAbort}>
                     Понятно
                 </Button>
-            </Modal.Footer>
-        </Modal>
+            </MiniModal.Footer>
+        </MiniModal>
     );
 }

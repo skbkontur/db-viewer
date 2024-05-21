@@ -1423,6 +1423,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime-corejs3@npm:^7.23.9":
+  version: 7.24.4
+  resolution: "@babel/runtime-corejs3@npm:7.24.4"
+  dependencies:
+    core-js-pure: "npm:^3.30.2"
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: bc8566abb1e85b2eb5c5476db0712c5fd67bca3ed318d28ee44b1be95db866a5be31301cc6db980dbb7c8a0a73d8c7d7f87a8473106d8422d4937433c9d17c96
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:7.16.5":
   version: 7.16.5
   resolution: "@babel/runtime@npm:7.16.5"
@@ -2285,7 +2295,7 @@ __metadata:
     "@skbkontur/icons": "npm:^1.7.3"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
-    "@skbkontur/react-ui": "npm:^4.19.0"
+    "@skbkontur/react-ui": "npm:^4.22.0"
     "@skbkontur/react-ui-validations": "npm:^1.8.3"
     "@storybook/addon-actions": "npm:^7.6.8"
     "@storybook/addons": "npm:^7.6.8"
@@ -2298,7 +2308,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.18.1"
     "@typescript-eslint/parser": "npm:^6.18.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
-    copy-to-clipboard: "npm:^3.3.1"
     copyfiles: "npm:^2.4.1"
     date-fns: "npm:^2.29.1"
     eslint: "npm:^8.56.0"
@@ -2393,9 +2402,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/react-ui@npm:^4.19.0":
-  version: 4.19.0
-  resolution: "@skbkontur/react-ui@npm:4.19.0"
+"@skbkontur/react-ui@npm:^4.22.0":
+  version: 4.22.0
+  resolution: "@skbkontur/react-ui@npm:4.22.0"
   dependencies:
     "@babel/runtime": "npm:7.16.5"
     "@emotion/css": "npm:^11.7.1"
@@ -2408,6 +2417,7 @@ __metadata:
     normalize-wheel: "npm:^1.0.1"
     prop-types: "npm:^15.8.0"
     react-focus-lock: "npm:^2.7.1"
+    react-imask: "npm:^7.4.0"
     react-input-mask: "npm:2.0.4"
     react-is: "npm:^17.0.2"
     react-transition-group: "npm:^4.4.2"
@@ -2418,7 +2428,7 @@ __metadata:
   peerDependencies:
     react: ">=16.9"
     react-dom: ">=16.9"
-  checksum: d0ffa777aab5f90efeaae56de1c0fe22452f1793c2e3232c5e453ae3c9712682a801e8227be6c41dc3d0fd1c480178a79190e16f32afc4023fe5ad0c8daa40b0
+  checksum: 7cdfc03dffaa56975e733af978b66ed7b161fe9cd83b82dc1f6adad69c2179a1cd42d13216ac4bb7db801d48dc0769425b1f251a688ea492cd122e903a4c1898
   languageName: node
   linkType: hard
 
@@ -4497,15 +4507,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copy-to-clipboard@npm:^3.3.1":
-  version: 3.3.3
-  resolution: "copy-to-clipboard@npm:3.3.3"
-  dependencies:
-    toggle-selection: "npm:^1.0.6"
-  checksum: e0a325e39b7615108e6c1c8ac110ae7b829cdc4ee3278b1df6a0e4228c490442cc86444cd643e2da344fbc424b3aab8909e2fec82f8bc75e7e5b190b7c24eecf
-  languageName: node
-  linkType: hard
-
 "copyfiles@npm:^2.4.1":
   version: 2.4.1
   resolution: "copyfiles@npm:2.4.1"
@@ -4530,6 +4531,13 @@ __metadata:
   dependencies:
     browserslist: "npm:^4.22.2"
   checksum: aa21ad2f0c946be7a8ecef92233bc003a38fa27e43a925fcd9b79e32ae49b879e0f5c23459ffc310df38ee547389b8e5e43a6a8be0b2369b9b9ebf3d04ae69b9
+  languageName: node
+  linkType: hard
+
+"core-js-pure@npm:^3.30.2":
+  version: 3.36.1
+  resolution: "core-js-pure@npm:3.36.1"
+  checksum: 76389c2fb83d8fc5945129ff343801f60a99baf4ebf743521cb3b358f1f840ff4aeaa3676b48a4b09052140c7432776cdd5635ebf1b7a8b4b3bb1a2efcfd1c4c
   languageName: node
   linkType: hard
 
@@ -6455,6 +6463,15 @@ __metadata:
   version: 5.3.0
   resolution: "ignore@npm:5.3.0"
   checksum: 51594355cea4c6ad6b28b3b85eb81afa7b988a1871feefd7062baf136c95aa06760ee934fa9590e43d967bd377ce84a4cf6135fbeb6063e063f1182a0e9a3bcd
+  languageName: node
+  linkType: hard
+
+"imask@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "imask@npm:7.5.0"
+  dependencies:
+    "@babel/runtime-corejs3": "npm:^7.23.9"
+  checksum: 0b55f4c923c5861737432e832265d81a445ceffac2a42565595438efe8334623e3b144b17bddd1158a8dcb20a2e442f1e687c0ce0118b4c7b697ff79ebfd2643
   languageName: node
   linkType: hard
 
@@ -8780,6 +8797,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-imask@npm:^7.4.0":
+  version: 7.5.0
+  resolution: "react-imask@npm:7.5.0"
+  dependencies:
+    imask: "npm:^7.5.0"
+    prop-types: "npm:^15.8.1"
+  peerDependencies:
+    react: ">=0.14.0"
+  checksum: 9bc91bda0adbe69a7aca9c7849b73b7bba78888d290c0215e18b64ee80cbb0c82e617d34c2890136907c7e22fec836a21433d70af1851d7f18889692a95c864e
+  languageName: node
+  linkType: hard
+
 "react-input-mask@npm:2.0.4":
   version: 2.0.4
   resolution: "react-input-mask@npm:2.0.4"
@@ -10118,13 +10147,6 @@ __metadata:
   dependencies:
     is-number: "npm:^7.0.0"
   checksum: 10dda13571e1f5ad37546827e9b6d4252d2e0bc176c24a101252153ef435d83696e2557fe128c4678e4e78f5f01e83711c703eef9814eb12dab028580d45980a
-  languageName: node
-  linkType: hard
-
-"toggle-selection@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "toggle-selection@npm:1.0.6"
-  checksum: 9a0ed0ecbaac72b4944888dacd79fe0a55eeea76120a4c7e46b3bb3d85b24f086e90560bb22f5a965654a25ab43d79ec47dfdb3f1850ba740b14c5a50abc7040
   languageName: node
   linkType: hard
 

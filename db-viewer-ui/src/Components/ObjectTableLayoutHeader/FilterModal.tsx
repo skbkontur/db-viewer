@@ -47,7 +47,7 @@ export const FilterModal = ({
             disableClose={!allowClose}
             noClose={!allowClose}>
             <Modal.Header>
-                <span className={jsStyles.modalText(theme)}>Фильтр</span>
+                <span className={jsStyles.modalHeader(theme)}>Фильтр</span>
             </Modal.Header>
             <Modal.Body>
                 <ValidationContainer ref={container} scrollOffset={{ top: 100 }}>

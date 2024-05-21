@@ -1,5 +1,6 @@
-import { Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Button, Modal, ThemeContext } from "@skbkontur/react-ui";
+import { XCircleIcon64Regular } from "@skbkontur/icons/icons/XCircleIcon/XCircleIcon64Regular";
+import { ColumnStack } from "@skbkontur/react-stack-layout";
+import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
 
 import { jsStyles } from "./ConfirmDeleteObjectModal.styles";
@@ -12,25 +13,23 @@ interface ConfirmDeleteObjectModalProps {
 export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteObjectModalProps): React.ReactElement {
     const theme = React.useContext(ThemeContext);
     return (
-        <Modal ignoreBackgroundClick noClose data-tid="ConfirmDeleteObjectModal">
-            <Modal.Header>
-                <span className={jsStyles.modalText(theme)}>Подтвердите удаление объекта</span>
-            </Modal.Header>
-            <Modal.Body>
-                <span className={jsStyles.modalText(theme)}>Данные об объекте будут удалены безвозвратно</span>
-            </Modal.Body>
-            <Modal.Footer panel>
-                <RowStack gap={2} block>
-                    <Fit>
-                        <Button use="primary" onClick={onDelete} data-tid="Delete">
-                            Удалить
-                        </Button>
-                    </Fit>
-                    <Button onClick={onCancel} data-tid="Cancel">
+        <MiniModal ignoreBackgroundClick data-tid="ConfirmDeleteObjectModal">
+            <MiniModal.Header icon={<XCircleIcon64Regular />}>
+                <span className={jsStyles.modalHeader(theme)}>Удалить объект?</span>
+            </MiniModal.Header>
+            <MiniModal.Body>
+                <span className={jsStyles.modalBody(theme)}>Данные об объекте будут удалены безвозвратно</span>
+            </MiniModal.Body>
+            <MiniModal.Footer>
+                <ColumnStack gap={2} block>
+                    <Button size="medium" use="danger" onClick={onDelete} data-tid="Delete">
+                        Удалить
+                    </Button>
+                    <Button size="medium" onClick={onCancel} data-tid="Cancel">
                         Отменить
                     </Button>
-                </RowStack>
-            </Modal.Footer>
-        </Modal>
+                </ColumnStack>
+            </MiniModal.Footer>
+        </MiniModal>
     );
 }

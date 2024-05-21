@@ -36,7 +36,7 @@ namespace SkbKontur.DbViewer.Tests.FrontTests
 
             await businessObjectPage.DownloadLink.Click();
             await businessObjectPage.DownloadLimitModal.Header.WaitText("Слишком большой список");
-            await businessObjectPage.DownloadLimitModal.Body.WaitText("Мы умеем выгружать не более 50000 объектов из этой таблицы. Уточните запрос с помощью фильтров, чтобы записей стало меньше.");
+            await businessObjectPage.DownloadLimitModal.Body.WaitText("Мы умеем выгружать не более 50000 объектов из этой таблицы.Уточните запрос с помощью фильтров");
             await businessObjectPage.DownloadLimitModal.Cancel.Click();
 
             var adminBusinessObjectPage = await (await browser.LoginAsSuperUser()).SwitchTo<BusinessObjectTablePage>("UsersTable");

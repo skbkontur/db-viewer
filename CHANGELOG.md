@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.8 - 2024.05.21
+- Update react-ui
+- Add mini modals
+
 ## v1.7 - 2023.11.22
 - Update yarn to v4
 - Update node to v20
