@@ -12,7 +12,7 @@ export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps
     const theme = React.useContext(ThemeContext);
 
     return (
-        <MiniModal width={410}>
+        <MiniModal data-tid="ErrorHandlingContainerModal" width={410}>
             <MiniModal.Header data-tid="Header" icon={<XCircleIcon64Regular color="#FF5A49" />}>
                 <span className={jsStyles.modalHeader(theme)}>Произошла непредвиденная ошибка</span>
             </MiniModal.Header>
