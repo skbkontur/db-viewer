@@ -16,8 +16,8 @@ export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps
             <MiniModal.Header data-tid="Header" icon={<XCircleIcon64Regular color="#FF5A49" />}>
                 <span className={jsStyles.modalHeader(theme)}>Произошла непредвиденная ошибка</span>
             </MiniModal.Header>
-            <MiniModal.Body className={jsStyles.modalBody(theme)}>
-                Попробуйте повторить запрос или обновить страницу через некоторе время
+            <MiniModal.Body className={jsStyles.modalBody(theme)} data-tid="CallToActionInErrorMessage">
+                Попробуйте повторить запрос или обновить страницу через некоторое время
             </MiniModal.Body>
             <MiniModal.Footer>
                 <Button onClick={onClose} size="medium" data-tid="CloseButton">
