@@ -1,3 +1,4 @@
+import { CopyToClipboardToast } from "@skbkontur/edi-ui";
 import { CopyIcon16Regular } from "@skbkontur/icons/CopyIcon16Regular";
 import { TrashCanIcon16Regular } from "@skbkontur/icons/TrashCanIcon16Regular";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
@@ -6,7 +7,6 @@ import get from "lodash/get";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
-import { CopyToClipboardToast } from "../Components/AllowCopyToClipboard";
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
 import { CommonLayout } from "../Components/Layouts/CommonLayout";

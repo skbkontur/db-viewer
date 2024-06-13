@@ -117,7 +117,7 @@ export function renderForEdit(
                 <DateTimePickerWithTimeZone
                     value={value != null ? String(value) : null}
                     onChange={onChange}
-                    defaultTime={"00:00:00"}
+                    defaultTime="00:00:00"
                     timeZoneEditable={type === "DateTime"}
                 />
             );

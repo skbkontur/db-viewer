@@ -1,9 +1,9 @@
+import { StringUtils } from "@skbkontur/edi-ui";
 import { ThemeContext } from "@skbkontur/react-ui";
 import _ from "lodash";
 import React from "react";
 
 import { ObjectIdentifier } from "../../Domain/Api/DataTypes/ObjectIdentifier";
-import { StringUtils } from "../../Domain/Utils/StringUtils";
 
 import { ObjectLink } from "./ObjectLink";
 import { jsStyles } from "./ObjectTypes.styles";

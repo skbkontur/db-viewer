@@ -2288,10 +2288,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@skbkontur/colors@npm:0.4.4":
+  version: 0.4.4
+  resolution: "@skbkontur/colors@npm:0.4.4"
+  checksum: 9f560a9ed6ad0546b35778e866aa0b2525eb30b72c6ee2e8461f5724db3eca8e0f347719b913d0a5300ebbb9fa3fdeeb89dc66fb608105748be769c9f65d033d
+  languageName: node
+  linkType: hard
+
 "@skbkontur/db-viewer-ui@workspace:.":
   version: 0.0.0-use.local
   resolution: "@skbkontur/db-viewer-ui@workspace:."
   dependencies:
+    "@skbkontur/edi-ui": "npm:^0.2.4"
     "@skbkontur/icons": "npm:^1.7.3"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
@@ -2338,10 +2346,37 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@skbkontur/edi-ui@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "@skbkontur/edi-ui@npm:0.2.4"
+  dependencies:
+    "@skbkontur/colors": "npm:0.4.4"
+    "@skbkontur/icons": "npm:1.10.0"
+    "@skbkontur/react-stack-layout": "npm:1.2.0"
+    date-fns: "npm:2.21.1"
+    lodash.get: "npm:4.4.2"
+    lodash.isequal: "npm:4.5.0"
+    lodash.isplainobject: "npm:4.0.6"
+  peerDependencies:
+    "@skbkontur/icons": ">=1 <2"
+    "@skbkontur/react-ui": ">=4"
+    react: ">=16 <=18"
+    react-dom: ">=16 <=18"
+  checksum: 315a87be3b3bb8e7637b220e327e73c8cbaa32603a75484af64cda934be02920f386231e828b910d7970c8f3b0b8bb38e4d96dc52a2c41e5bb89e4e8f338873c
+  languageName: node
+  linkType: hard
+
 "@skbkontur/global-object@npm:^0.4.2":
   version: 0.4.4
   resolution: "@skbkontur/global-object@npm:0.4.4"
   checksum: bb5724cc6c6a5ac9ab516bb7e72e5e53963f481e8c0599e20f01fe3ac5c6623fab7e32b91d0d180a134954637de5658dbba1579ebe1940973f93b63720f570cd
+  languageName: node
+  linkType: hard
+
+"@skbkontur/icons@npm:1.10.0":
+  version: 1.10.0
+  resolution: "@skbkontur/icons@npm:1.10.0"
+  checksum: 1c95607c18532fb0ae409ea6e9ec27a7f6786d89dfab11da8b4991d061e65324db8194c4a42016607041eea3b95dc0d61488c299de558217681dfab073fd7e04
   languageName: node
   linkType: hard
 
@@ -2378,7 +2413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/react-stack-layout@npm:^1.0.3":
+"@skbkontur/react-stack-layout@npm:1.2.0, @skbkontur/react-stack-layout@npm:^1.0.3":
   version: 1.2.0
   resolution: "@skbkontur/react-stack-layout@npm:1.2.0"
   peerDependencies:
@@ -4625,6 +4660,13 @@ __metadata:
     whatwg-mimetype: "npm:^4.0.0"
     whatwg-url: "npm:^14.0.0"
   checksum: 5c40568c31b02641a70204ff233bc4e42d33717485d074244a98661e5f2a1e80e38fe05a5755dfaf2ee549f2ab509d6a3af2a85f4b2ad2c984e5d176695eaf46
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:2.21.1":
+  version: 2.21.1
+  resolution: "date-fns@npm:2.21.1"
+  checksum: abb7e94c0dd413bce1ee5c046c49bcc0d77eb848e4efacb31b78e2102ed5f67e6eb2cf25c17b3efdb7ddda97eb75c56163f99bfc6d0bfffd08ba908e40c1c3d7
   languageName: node
   linkType: hard
 
@@ -7293,10 +7335,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.isequal@npm:^4.5.0":
+"lodash.get@npm:4.4.2":
+  version: 4.4.2
+  resolution: "lodash.get@npm:4.4.2"
+  checksum: 2a4925f6e89bc2c010a77a802d1ba357e17ed1ea03c2ddf6a146429f2856a216663e694a6aa3549a318cbbba3fd8b7decb392db457e6ac0b83dc745ed0a17380
+  languageName: node
+  linkType: hard
+
+"lodash.isequal@npm:4.5.0, lodash.isequal@npm:^4.5.0":
   version: 4.5.0
   resolution: "lodash.isequal@npm:4.5.0"
   checksum: 82fc58a83a1555f8df34ca9a2cd300995ff94018ac12cc47c349655f0ae1d4d92ba346db4c19bbfc90510764e0c00ddcc985a358bdcd4b3b965abf8f2a48a214
+  languageName: node
+  linkType: hard
+
+"lodash.isplainobject@npm:4.0.6":
+  version: 4.0.6
+  resolution: "lodash.isplainobject@npm:4.0.6"
+  checksum: 29c6351f281e0d9a1d58f1a4c8f4400924b4c79f18dfc4613624d7d54784df07efaff97c1ff2659f3e085ecf4fff493300adc4837553104cef2634110b0d5337
   languageName: node
   linkType: hard
 

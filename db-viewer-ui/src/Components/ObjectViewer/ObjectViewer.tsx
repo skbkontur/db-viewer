@@ -1,9 +1,9 @@
+import { Accordion } from "@skbkontur/edi-ui";
 import React from "react";
 
 import { ObjectDescription } from "../../Domain/Api/DataTypes/ObjectDescription";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { PropertyMetaInformationUtils } from "../../Domain/Objects/PropertyMetaInformationUtils";
-import { Accordion } from "../Accordion/Accordion";
 
 import { ObjectRenderer } from "./ObjectRenderer";
 
@@ -15,37 +15,25 @@ interface ObjectViewerProps {
     allowEdit: boolean;
 }
 
-export class ObjectViewer extends React.Component<ObjectViewerProps> {
-    public render(): React.ReactElement {
-        const { objectInfo } = this.props;
-        return (
-            <div>
-                <Accordion
-                    data-tid="RootAccordion"
-                    renderCaption={this.renderCaption}
-                    renderValue={this.renderValue}
-                    title={null}
-                    value={objectInfo}
-                    defaultCollapsed
-                    showToggleAll
-                />
-            </div>
-        );
-    }
-
-    private handleChange = (value: any, path: string[]) => {
+export const ObjectViewer = ({
+    objectMeta,
+    objectInfo,
+    onChange,
+    allowEdit,
+    customRenderer,
+}: ObjectViewerProps): React.ReactElement => {
+    const handleChange = (value: any, path: string[]) => {
         let serverValue = value;
-        if (value != null) {
+        if (value) {
             serverValue = String(value);
             if (value instanceof Date) {
                 serverValue = value.toISOString();
             }
         }
-        this.props.onChange(serverValue, path);
+        onChange(serverValue, path);
     };
 
-    private renderCaption = (path: string[]) => {
-        const { objectMeta } = this.props;
+    const renderCaption = (path: string[]) => {
         const propertyMeta = PropertyMetaInformationUtils.getPropertyTypeByPath(objectMeta.typeMetaInformation, path);
         let typeName = propertyMeta.type.originalTypeName;
         if (typeName === "Byte[]") {
@@ -54,8 +42,7 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
         return `Тип: ${typeName}`;
     };
 
-    private renderValue = (target: { [key: string]: any }, path: string[]) => {
-        const { objectMeta, allowEdit, customRenderer } = this.props;
+    const renderValue = (target: Record<string, any>, path: string[]) => {
         const typeMeta = objectMeta.typeMetaInformation;
         return (
             <ObjectRenderer
@@ -65,8 +52,18 @@ export class ObjectViewer extends React.Component<ObjectViewerProps> {
                 property={PropertyMetaInformationUtils.getPropertyTypeByPath(typeMeta, path)}
                 objectType={objectMeta.identifier}
                 allowEdit={allowEdit}
-                onChange={this.handleChange}
+                onChange={handleChange}
             />
         );
     };
-}
+    return (
+        <Accordion
+            data-tid="RootAccordion"
+            renderCaption={renderCaption}
+            renderValue={renderValue}
+            value={objectInfo}
+            defaultCollapsed
+            showToggleAll
+        />
+    );
+};

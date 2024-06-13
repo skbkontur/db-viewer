@@ -1,6 +1,7 @@
+import { StringUtils } from "@skbkontur/edi-ui";
+
 import { Condition } from "../Api/DataTypes/Condition";
 import { Sort } from "../Api/DataTypes/Sort";
-import { StringUtils } from "../Utils/StringUtils";
 
 import { ObjectSearchQuery } from "./ObjectSearchQuery";
 import {

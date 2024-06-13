@@ -1,11 +1,6 @@
+import { RussianDateFormat, Time, TimeZone, TimeUtils, StringUtils, DateUtils } from "@skbkontur/edi-ui";
 import { DatePicker as DefaultDatePicker } from "@skbkontur/react-ui";
 import React from "react";
-
-import { RussianDateFormat } from "../../Domain/DataTypes/DateTimeRange";
-import { Time, TimeZone } from "../../Domain/DataTypes/Time";
-import { DateUtils } from "../../Domain/Utils/DateUtils";
-import { StringUtils } from "../../Domain/Utils/StringUtils";
-import { TimeUtils } from "../../Domain/Utils/TimeUtils";
 
 interface DatePickerProps {
     value: Nullable<Date>;
@@ -88,8 +83,8 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
 
     private readonly convertStringToDate = (newStringifiedDate: RussianDateFormat): Date => {
         const { timeZone } = this.props;
-        const date = DateUtils.convertStringToDate(newStringifiedDate);
-        const ISODate = DateUtils.convertDateToString(date, null, "yyyy-MM-dd");
+        const date = DateUtils.parseDate(newStringifiedDate);
+        const ISODate = DateUtils.formatDate(date, "yyyy-MM-dd");
         const time = this.props.defaultTime || defaultTime;
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
         return new Date(`${ISODate}T${time}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
@@ -97,6 +92,6 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
 
     private readonly convertDateToStringWithTimezone = (date: Nullable<Date | string>, timeZone?: number) => {
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        return date ? DateUtils.convertDateToString(date, timeZoneOffset) : "";
+        return date ? DateUtils.formatDate(date, "dd.MM.yyyy", timeZoneOffset) : "";
     };
 }

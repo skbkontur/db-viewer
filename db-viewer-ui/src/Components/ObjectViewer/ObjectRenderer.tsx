@@ -2,9 +2,9 @@ import { ArrowDUturnLeftDownIcon16Regular } from "@skbkontur/icons/ArrowDUturnLe
 import { CheckAIcon16Regular } from "@skbkontur/icons/CheckAIcon16Regular";
 import { ToolPencilLineIcon16Regular } from "@skbkontur/icons/ToolPencilLineIcon16Regular";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Link } from "@skbkontur/react-ui";
+import { Button } from "@skbkontur/react-ui";
 import get from "lodash/get";
-import React from "react";
+import React, { useState } from "react";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
@@ -25,79 +25,81 @@ interface ObjectRendererProps {
     customRenderer: ICustomRenderer;
 }
 
-interface ObjectRendererState {
-    editableMode: boolean;
-    value: any;
-}
+export const ObjectRenderer = ({
+    target,
+    objectType,
+    customRenderer,
+    path,
+    property,
+    allowEdit,
+    onChange,
+}: ObjectRendererProps): React.ReactElement => {
+    const [editableMode, setEditableMode] = useState(false);
+    const [value, setValue] = useState(undefined);
 
-export class ObjectRenderer extends React.Component<ObjectRendererProps, ObjectRendererState> {
-    public state: ObjectRendererState = {
-        editableMode: false,
-        value: undefined,
+    const handleClick = () => {
+        setEditableMode(true);
+        setValue(getByPath(target, path));
     };
 
-    public render(): React.ReactElement {
-        const { path, target, property, objectType, customRenderer } = this.props;
-        const value = this.state.editableMode ? this.state.value : getByPath(target, path);
-        const { editableMode } = this.state;
-        const canEdit = this.canEditProperty();
-        return (
-            <RowStack gap={2} baseline block data-tid="FieldRow">
-                <Fit data-tid="FieldValue">
-                    {editableMode
-                        ? renderForEdit(value, property, objectType, this.handleChange, customRenderer)
-                        : renderForDetails(target, path, property, objectType, customRenderer)}
-                </Fit>
-                <Fill />
-                {canEdit && !editableMode && (
-                    <Fit>
-                        <Link icon={<ToolPencilLineIcon16Regular />} onClick={this.handleClick} data-tid="Edit" />
-                    </Fit>
-                )}
-                {canEdit && editableMode && (
-                    <Fit>
-                        <Link icon={<CheckAIcon16Regular />} onClick={this.handleSaveChanges} data-tid="Save">
-                            Сохранить
-                        </Link>
-                    </Fit>
-                )}
-                {canEdit && editableMode && (
-                    <Fit>
-                        <Link
-                            icon={<ArrowDUturnLeftDownIcon16Regular />}
-                            onClick={this.handleCancelChanges}
-                            data-tid="Cancel">
-                            Отменить
-                        </Link>
-                    </Fit>
-                )}
-            </RowStack>
-        );
-    }
-
-    private readonly handleClick = () => {
-        this.setState({
-            editableMode: true,
-            value: getByPath(this.props.target, this.props.path),
-        });
+    const handleChange = (value: any) => {
+        setValue(value);
     };
 
-    private readonly handleChange = (value: any) => {
-        this.setState({ value: value });
+    const handleSaveChanges = () => {
+        onChange(value, path);
+        setEditableMode(false);
+        setValue(undefined);
     };
 
-    private readonly handleSaveChanges = () => {
-        this.props.onChange(this.state.value, this.props.path);
-        this.setState({ editableMode: false, value: undefined });
+    const handleCancelChanges = () => {
+        setEditableMode(false);
+        setValue(undefined);
     };
 
-    private readonly handleCancelChanges = () => {
-        this.setState({ editableMode: false, value: undefined });
-    };
-
-    private readonly canEditProperty = () => {
-        const { property, allowEdit } = this.props;
+    const canEditProperty = () => {
         const type = property.type.typeName;
         return type != null && !type.includes("[]") && !property.isIdentity && property.isEditable && allowEdit;
     };
-}
+
+    const canEdit = canEditProperty();
+    return (
+        <RowStack gap={2} baseline block data-tid="FieldRow">
+            <Fit data-tid="FieldValue">
+                {editableMode
+                    ? renderForEdit(
+                          editableMode ? value : getByPath(target, path),
+                          property,
+                          objectType,
+                          handleChange,
+                          customRenderer
+                      )
+                    : renderForDetails(target, path, property, objectType, customRenderer)}
+            </Fit>
+            <Fill />
+            {canEdit && !editableMode && (
+                <Fit>
+                    <Button use="link" icon={<ToolPencilLineIcon16Regular />} onClick={handleClick} data-tid="Edit" />
+                </Fit>
+            )}
+            {canEdit && editableMode && (
+                <Fit>
+                    <Button use="link" icon={<CheckAIcon16Regular />} onClick={handleSaveChanges} data-tid="Save">
+                        Сохранить
+                    </Button>
+                </Fit>
+            )}
+            {canEdit && editableMode && (
+                <Fit>
+                    <Button
+                        use="link"
+                        icon={<ArrowDUturnLeftDownIcon16Regular />}
+                        onClick={handleCancelChanges}
+                        data-tid="Cancel">
+                        Отменить
+                    </Button>
+                </Fit>
+            )}
+        </RowStack>
+    );
+};

@@ -1,8 +1,5 @@
+import { Time, TimeZone, TimeUtils, DateUtils } from "@skbkontur/edi-ui";
 import React from "react";
-
-import { Time, TimeZone } from "../../Domain/DataTypes/Time";
-import { DateUtils } from "../../Domain/Utils/DateUtils";
-import { TimeUtils } from "../../Domain/Utils/TimeUtils";
 
 import { DatePicker } from "./DatePicker";
 import { jsStyles } from "./DateTimePicker.styles";
@@ -28,13 +25,13 @@ export function DateTimePicker({
     const [time, setTime] = React.useState<Nullable<string>>(null);
     React.useEffect(() => setTimeToState(value, timeZone), [value, timeZone]);
 
-    const handleTimeChange = (e: React.SyntheticEvent<any>, newTime: Time): void => {
+    const handleTimeChange = (newTime: Time): void => {
         if (value === null || value === undefined) {
             return;
         }
 
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        const date = DateUtils.convertDateToString(value, timeZoneOffset, "yyyy-MM-dd");
+        const date = DateUtils.formatDate(value, "yyyy-MM-dd", timeZoneOffset);
         const newDateTime = new Date(`${date}T${newTime}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
         onChange(newDateTime);
     };
@@ -45,7 +42,7 @@ export function DateTimePicker({
         }
 
         const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        const time = DateUtils.convertDateToString(date, timeZoneOffset, "HH:mm");
+        const time = DateUtils.formatDate(date, "HH:mm", timeZoneOffset);
         setTime(time);
     };
 
@@ -70,7 +67,7 @@ export function DateTimePicker({
                     error={error}
                     defaultTime={defaultTime}
                     disabled={disabled || value === null}
-                    onChange={handleTimeChange}
+                    onChange={(e, time) => handleTimeChange(time)}
                 />
             </span>
         </span>

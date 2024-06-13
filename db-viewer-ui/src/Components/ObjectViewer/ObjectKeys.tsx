@@ -1,7 +1,6 @@
+import { AllowCopyToClipboard } from "@skbkontur/edi-ui";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import React from "react";
-
-import { AllowCopyToClipboard } from "../AllowCopyToClipboard";
 
 interface ObjectKey {
     name: string;
