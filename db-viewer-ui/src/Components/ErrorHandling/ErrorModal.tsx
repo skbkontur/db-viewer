@@ -1,7 +1,6 @@
+import { CopyToClipboardToast } from "@skbkontur/edi-ui";
 import { Button, Modal, ThemeContext } from "@skbkontur/react-ui";
 import React from "react";
-
-import { CopyToClipboardToast } from "../AllowCopyToClipboard";
 
 import { jsStyles } from "./ErrorHandlingContainer.styles";
 import { StackTrace } from "./StackTrace";

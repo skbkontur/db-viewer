@@ -1,9 +1,9 @@
+import { StringUtils } from "@skbkontur/edi-ui";
 import flatten from "lodash/flatten";
 
 import { Condition } from "../Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../Api/DataTypes/PropertyMetaInformation";
 import { TypeMetaInformation } from "../Api/DataTypes/TypeMetaInformation";
-import { StringUtils } from "../Utils/StringUtils";
 
 const defaultType: TypeMetaInformation = {
     isNullable: false,

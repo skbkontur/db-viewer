@@ -1,3 +1,4 @@
+import { TimeUtils, StringUtils } from "@skbkontur/edi-ui";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Input } from "@skbkontur/react-ui";
 import { tooltip, ValidationInfo, ValidationWrapper } from "@skbkontur/react-ui-validations";
@@ -6,9 +7,6 @@ import React from "react";
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
-import { ticksToTimestamp, timestampToTicks } from "../../Domain/Utils/ConvertTimeUtil";
-import { StringUtils } from "../../Domain/Utils/StringUtils";
-import { TimeUtils } from "../../Domain/Utils/TimeUtils";
 import { validateObjectField } from "../../Domain/Utils/ValidationUtils";
 import { DateTimePicker } from "../DateTimeRangePicker/DateTimePicker";
 import { FormRow } from "../FormRow/FormRow";
@@ -60,8 +58,8 @@ export class ObjectFilter extends React.Component<ObjectFilterProps> {
                             defaultTime={""}
                             error={false}
                             timeZone={TimeUtils.TimeZones.UTC}
-                            onChange={date => this.updateItem(property, { value: timestampToTicks(date) })}
-                            value={value ? ticksToTimestamp(value) : null}
+                            onChange={date => this.updateItem(property, { value: TimeUtils.timestampToTicks(date) })}
+                            value={value ? TimeUtils.ticksToTimestamp(value) : null}
                         />
                     </Fit>
                     <Fit>

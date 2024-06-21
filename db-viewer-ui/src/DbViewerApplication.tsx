@@ -23,42 +23,40 @@ export const DbViewerApplication = ({
     identifierKeywords,
     useErrorHandlingContainer,
     withGoBackUrl,
-}: DbViewerApplicationProps): React.ReactElement => {
-    return (
-        <Routes>
-            <Route
-                path="/"
-                element={
-                    <ObjectTypesContainer
-                        withGoBackUrl={withGoBackUrl}
-                        useErrorHandlingContainer={useErrorHandlingContainer}
-                        identifierKeywords={identifierKeywords}
-                        dbViewerApi={dbViewerApi}
-                    />
-                }
-            />
-            <Route
-                path=":objectId"
-                element={
-                    <ObjectTableContainer
-                        isSuperUser={isSuperUser}
-                        dbViewerApi={dbViewerApi}
-                        customRenderer={customRenderer}
-                        useErrorHandlingContainer={useErrorHandlingContainer}
-                    />
-                }
-            />
-            <Route
-                path=":objectId/details"
-                element={
-                    <ObjectDetailsContainer
-                        isSuperUser={isSuperUser}
-                        dbViewerApi={dbViewerApi}
-                        customRenderer={customRenderer}
-                        useErrorHandlingContainer={useErrorHandlingContainer}
-                    />
-                }
-            />
-        </Routes>
-    );
-};
+}: DbViewerApplicationProps): React.ReactElement => (
+    <Routes>
+        <Route
+            path="/"
+            element={
+                <ObjectTypesContainer
+                    withGoBackUrl={withGoBackUrl}
+                    useErrorHandlingContainer={useErrorHandlingContainer}
+                    identifierKeywords={identifierKeywords}
+                    dbViewerApi={dbViewerApi}
+                />
+            }
+        />
+        <Route
+            path=":objectId"
+            element={
+                <ObjectTableContainer
+                    isSuperUser={isSuperUser}
+                    dbViewerApi={dbViewerApi}
+                    customRenderer={customRenderer}
+                    useErrorHandlingContainer={useErrorHandlingContainer}
+                />
+            }
+        />
+        <Route
+            path=":objectId/details"
+            element={
+                <ObjectDetailsContainer
+                    isSuperUser={isSuperUser}
+                    dbViewerApi={dbViewerApi}
+                    customRenderer={customRenderer}
+                    useErrorHandlingContainer={useErrorHandlingContainer}
+                />
+            }
+        />
+    </Routes>
+);

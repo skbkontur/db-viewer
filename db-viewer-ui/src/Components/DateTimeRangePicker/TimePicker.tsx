@@ -1,8 +1,6 @@
+import { Time, TimeUtils } from "@skbkontur/edi-ui";
 import { Input } from "@skbkontur/react-ui";
 import React from "react";
-
-import { Time } from "../../Domain/DataTypes/Time";
-import { DateUtils } from "../../Domain/Utils/DateUtils";
 
 interface TimePickerProps {
     error?: boolean;
@@ -43,11 +41,11 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         this.setState({ value: value });
     };
 
-    private handleBlur = (e: React.SyntheticEvent<any>) => {
+    private handleBlur = (e: React.SyntheticEvent) => {
         const { defaultTime } = this.props;
         const { value } = this.state;
         const trimmed = value.endsWith(".") || value.endsWith(":") ? value.slice(0, -1) : value;
-        if (DateUtils.isCorrectTime(trimmed)) {
+        if (TimeUtils.isCorrectTime(trimmed)) {
             this.props.onChange(e, trimmed);
             if (defaultTime === trimmed) {
                 this.setState({ value: emptyValue });
@@ -60,7 +58,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
 
     private handleFocus = () => {
         const { defaultTime } = this.props;
-        if (!DateUtils.isCorrectTime(this.state.value)) {
+        if (!TimeUtils.isCorrectTime(this.state.value)) {
             this.setState({ value: defaultTime });
         }
     };

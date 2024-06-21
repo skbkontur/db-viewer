@@ -1,8 +1,8 @@
+import { TimeUtils } from "@skbkontur/edi-ui";
 import { action } from "@storybook/addon-actions";
 import React from "react";
 
 import { DatePicker } from "../../src/Components/DateTimeRangePicker/DatePicker";
-import { TimeUtils } from "../../src/Domain/Utils/TimeUtils";
 import { WithState } from "../WithState";
 
 function getInitialValue(value: Date): { value: Date } {

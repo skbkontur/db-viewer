@@ -1,8 +1,6 @@
+import { DateUtils, Time } from "@skbkontur/edi-ui";
 import { Select } from "@skbkontur/react-ui";
-import React from "react";
-
-import { Time } from "../../Domain/DataTypes/Time";
-import { DateUtils } from "../../Domain/Utils/DateUtils";
+import React, { useState, useEffect } from "react";
 
 import { DatePicker } from "./DatePicker";
 import { jsStyles } from "./DateTimePicker.styles";
@@ -17,19 +15,23 @@ interface DateTimePickerWithTimeZone {
     timeZoneEditable?: boolean;
 }
 
-export function DateTimePickerWithTimeZone({
+export const DateTimePickerWithTimeZone = ({
     error,
     defaultTime,
     value,
     onChange,
     disabled,
     timeZoneEditable,
-}: DateTimePickerWithTimeZone): React.ReactElement {
-    const [time, setTime] = React.useState<Nullable<string>>(null);
-    const [offset, setOffset] = React.useState<Nullable<string>>(null);
-    const [date, setDate] = React.useState<Nullable<Date>>(null);
-    React.useEffect(() => loadState(value), [value]);
-    React.useEffect(() => handleDateTimeChange(date, time, offset), [date, time, offset]);
+}: DateTimePickerWithTimeZone): React.ReactElement => {
+    const [time, setTime] = useState<Nullable<string>>(null);
+    const [offset, setOffset] = useState<Nullable<string>>(null);
+    const [date, setDate] = useState<Nullable<Date>>(null);
+    useEffect(() => {
+        loadState(value);
+    }, [value]);
+    useEffect(() => {
+        handleDateTimeChange(date, time, offset);
+    }, [date, time, offset]);
 
     const handleDateTimeChange = (
         newDate: Nullable<Date>,
@@ -40,7 +42,7 @@ export function DateTimePickerWithTimeZone({
             onChange(null);
             return;
         }
-        const date = DateUtils.convertDateToString(newDate, 0, "yyyy-MM-dd");
+        const date = DateUtils.formatDate(newDate, "yyyy-MM-dd", 0);
         const newDateTime = `${date}T${newTime ?? defaultTime}${newOffset ?? ""}`;
         onChange(newDateTime);
     };
@@ -53,7 +55,7 @@ export function DateTimePickerWithTimeZone({
         setOffset(timeOffset);
         const dateTimeWithoutTimezone = timeOffset ? dateStr.slice(0, -timeOffset.length) : dateStr;
         setDate(DateUtils.fromLocalToUtc(new Date(dateTimeWithoutTimezone)));
-        setTime(DateUtils.convertDateToString(dateTimeWithoutTimezone, null, "HH:mm:ss.SSS"));
+        setTime(DateUtils.formatDate(dateTimeWithoutTimezone, "HH:mm:ss.SSS"));
     };
 
     const getTimeZoneString = (date: string): Nullable<string> => {
@@ -72,7 +74,7 @@ export function DateTimePickerWithTimeZone({
                     data-tid="Date"
                     value={date}
                     defaultTime={defaultTime}
-                    onChange={newDate => setDate(newDate)}
+                    onChange={setDate}
                     error={error}
                     disabled={disabled}
                     width={110}
@@ -85,7 +87,7 @@ export function DateTimePickerWithTimeZone({
                     error={error}
                     defaultTime={defaultTime}
                     disabled={disabled || !date}
-                    onChange={(_, newTime) => setTime(newTime)}
+                    onChange={(e, time) => setTime(time)}
                     useSeconds
                 />
             </span>
@@ -104,4 +106,4 @@ export function DateTimePickerWithTimeZone({
             </span>
         </span>
     );
-}
+};
