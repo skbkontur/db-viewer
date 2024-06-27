@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Database Viewer with custom configuration",
   "main": "./index.js",
+  "sideEffects": false,
   "license": "MIT",
   "repository": {
     "type": "git",
