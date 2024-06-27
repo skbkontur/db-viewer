@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Database Viewer with custom configuration",
   "main": "./index.js",
+  "sideEffects": false,
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -47,10 +48,9 @@
     "react-router-dom": ">=6 <7"
   },
   "dependencies": {
-    "@skbkontur/edi-ui": "^0.2.4",
+    "@skbkontur/edi-ui": "^0.2.10",
     "@skbkontur/react-stack-layout": "^1.0.3",
     "@skbkontur/react-ui-validations": "^1.8.3",
-    "date-fns": "^2.29.1",
     "lodash": "^4.17.20",
     "tslib": "^2.3.0"
   },

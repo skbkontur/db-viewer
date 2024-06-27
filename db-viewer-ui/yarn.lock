@@ -1442,7 +1442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.23.8
   resolution: "@babel/runtime@npm:7.23.8"
   dependencies:
@@ -2288,10 +2288,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/colors@npm:0.4.4":
-  version: 0.4.4
-  resolution: "@skbkontur/colors@npm:0.4.4"
-  checksum: 9f560a9ed6ad0546b35778e866aa0b2525eb30b72c6ee2e8461f5724db3eca8e0f347719b913d0a5300ebbb9fa3fdeeb89dc66fb608105748be769c9f65d033d
+"@skbkontur/colors@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@skbkontur/colors@npm:0.5.0"
+  checksum: bea69f8269116a77cfa10c9b6c5b9445a8f4801c5877d86b655642b7a010a9e008385ff58a335e55fdbfde15f61a350672d895fd3b2d8907b17d36d1ec5e8b60
   languageName: node
   linkType: hard
 
@@ -2299,7 +2299,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skbkontur/db-viewer-ui@workspace:."
   dependencies:
-    "@skbkontur/edi-ui": "npm:^0.2.4"
+    "@skbkontur/edi-ui": "npm:^0.2.10"
     "@skbkontur/icons": "npm:^1.7.3"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
@@ -2317,7 +2317,6 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.18.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
     copyfiles: "npm:^2.4.1"
-    date-fns: "npm:^2.29.1"
     eslint: "npm:^8.56.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-import-resolver-node: "npm:^0.3.9"
@@ -2346,11 +2345,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skbkontur/edi-ui@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "@skbkontur/edi-ui@npm:0.2.4"
+"@skbkontur/edi-ui@npm:^0.2.10":
+  version: 0.2.10
+  resolution: "@skbkontur/edi-ui@npm:0.2.10"
   dependencies:
-    "@skbkontur/colors": "npm:0.4.4"
+    "@skbkontur/colors": "npm:^0.5.0"
     "@skbkontur/icons": "npm:1.10.0"
     "@skbkontur/react-stack-layout": "npm:1.2.0"
     date-fns: "npm:2.21.1"
@@ -2362,7 +2361,7 @@ __metadata:
     "@skbkontur/react-ui": ">=4"
     react: ">=16 <=18"
     react-dom: ">=16 <=18"
-  checksum: 315a87be3b3bb8e7637b220e327e73c8cbaa32603a75484af64cda934be02920f386231e828b910d7970c8f3b0b8bb38e4d96dc52a2c41e5bb89e4e8f338873c
+  checksum: cd2edffdf90770f933cb33b32c61048cbbec777f0d4e89f5b403039bb619365d0c951983aa813e2b8ca8f9001634d0b06bad68b75a8af5c8cdef6b71e5b0f172
   languageName: node
   linkType: hard
 
@@ -4667,15 +4666,6 @@ __metadata:
   version: 2.21.1
   resolution: "date-fns@npm:2.21.1"
   checksum: abb7e94c0dd413bce1ee5c046c49bcc0d77eb848e4efacb31b78e2102ed5f67e6eb2cf25c17b3efdb7ddda97eb75c56163f99bfc6d0bfffd08ba908e40c1c3d7
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^2.29.1":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.21.0"
-  checksum: 70b3e8ea7aaaaeaa2cd80bd889622a4bcb5d8028b4de9162cbcda359db06e16ff6e9309e54eead5341e71031818497f19aaf9839c87d1aba1e27bb4796e758a9
   languageName: node
   linkType: hard
 
