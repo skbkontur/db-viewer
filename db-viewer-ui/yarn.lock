@@ -2288,10 +2288,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/colors@npm:0.4.4":
-  version: 0.4.4
-  resolution: "@skbkontur/colors@npm:0.4.4"
-  checksum: 9f560a9ed6ad0546b35778e866aa0b2525eb30b72c6ee2e8461f5724db3eca8e0f347719b913d0a5300ebbb9fa3fdeeb89dc66fb608105748be769c9f65d033d
+"@skbkontur/colors@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@skbkontur/colors@npm:0.5.0"
+  checksum: bea69f8269116a77cfa10c9b6c5b9445a8f4801c5877d86b655642b7a010a9e008385ff58a335e55fdbfde15f61a350672d895fd3b2d8907b17d36d1ec5e8b60
   languageName: node
   linkType: hard
 
@@ -2299,7 +2299,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skbkontur/db-viewer-ui@workspace:."
   dependencies:
-    "@skbkontur/edi-ui": "npm:^0.2.4"
+    "@skbkontur/edi-ui": "npm:^0.2.10"
     "@skbkontur/icons": "npm:^1.7.3"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
@@ -2346,11 +2346,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skbkontur/edi-ui@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "@skbkontur/edi-ui@npm:0.2.4"
+"@skbkontur/edi-ui@npm:^0.2.10":
+  version: 0.2.10
+  resolution: "@skbkontur/edi-ui@npm:0.2.10"
   dependencies:
-    "@skbkontur/colors": "npm:0.4.4"
+    "@skbkontur/colors": "npm:^0.5.0"
     "@skbkontur/icons": "npm:1.10.0"
     "@skbkontur/react-stack-layout": "npm:1.2.0"
     date-fns: "npm:2.21.1"
@@ -2362,7 +2362,7 @@ __metadata:
     "@skbkontur/react-ui": ">=4"
     react: ">=16 <=18"
     react-dom: ">=16 <=18"
-  checksum: 315a87be3b3bb8e7637b220e327e73c8cbaa32603a75484af64cda934be02920f386231e828b910d7970c8f3b0b8bb38e4d96dc52a2c41e5bb89e4e8f338873c
+  checksum: cd2edffdf90770f933cb33b32c61048cbbec777f0d4e89f5b403039bb619365d0c951983aa813e2b8ca8f9001634d0b06bad68b75a8af5c8cdef6b71e5b0f172
   languageName: node
   linkType: hard
 
