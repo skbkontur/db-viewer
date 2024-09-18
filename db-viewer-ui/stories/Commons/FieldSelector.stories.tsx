@@ -19,6 +19,19 @@ export const Default = (): React.ReactElement => (
     />
 );
 
+export const WithSelectAll = (): React.ReactElement => (
+    <FieldSelector
+        hiddenFields={[]}
+        fieldDefinitions={[
+            { name: "name1", caption: "Name 1" },
+            { name: "name2", caption: "Name 2" },
+        ]}
+        onShowField={action("onShowField")}
+        onHideField={action("onHideField")}
+        showSelectAllButton
+    />
+);
+
 export const LongStrings = (): React.ReactElement => (
     <FieldSelector
         hiddenFields={[]}
