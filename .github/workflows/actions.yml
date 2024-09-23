@@ -55,7 +55,7 @@ jobs:
       - name: Check front code
         run: yarn --cwd db-viewer-ui lint
 
-      - name: Build docker-compose environment
+      - name: Build docker compose environment
         run: docker compose up -d --wait
       
       - name: Run db-viewer api
@@ -69,7 +69,7 @@ jobs:
 
       - name: Stop docker containers
         if: always()
-        run: docker rm -f db-viewer-api && docker-compose down
+        run: docker rm -f db-viewer-api && docker compose down
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
