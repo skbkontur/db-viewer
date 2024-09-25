@@ -21,7 +21,7 @@ interface FieldSelectorProps {
     showSelectAllButton?: boolean;
 }
 
-function filterFieldDefintionsByText(fieldDefinitions: FieldDefinition[], text: string): FieldDefinition[] {
+function filterFieldDefinitionsByText(fieldDefinitions: FieldDefinition[], text: string): FieldDefinition[] {
     if (!text) {
         return fieldDefinitions;
     }
@@ -80,27 +80,29 @@ export function FieldSelector({
         );
     };
 
-    const fieldDefinitionsFiltered = filterFieldDefintionsByText(fieldDefinitions, searchText);
+    const fieldDefinitionsFiltered = filterFieldDefinitionsByText(fieldDefinitions, searchText);
 
     const nothingToDisplay = <span className={jsStyles.nothingToDisplay(theme)}>Ничего не найдено</span>;
     const allFieldsSelected = isAllFieldSelected(fieldDefinitionsFiltered);
     return (
         <div className={jsStyles.root()}>
-            <Input
-                data-tid="FilterInput"
-                leftIcon={<SearchLoupeIcon16Regular />}
-                value={searchText}
-                width={300}
-                onValueChange={setSearchText}
-            />
-            {showSelectAllButton && (
-                <div
-                    data-tid={"TypesSelectAll"}
-                    onClick={() => handleSelectAll(fieldDefinitionsFiltered)}
-                    className={jsStyles.selectAll(theme)}>
-                    {allFieldsSelected ? "Снять выбор с найденных" : "Выбрать все найденные"}
-                </div>
-            )}
+            <RowStack gap={5} verticalAlign="baseline">
+                <Input
+                    data-tid="FilterInput"
+                    leftIcon={<SearchLoupeIcon16Regular />}
+                    value={searchText}
+                    width={300}
+                    onValueChange={setSearchText}
+                />
+                {showSelectAllButton && (
+                    <Checkbox
+                        data-tid="TypesSelectAll"
+                        onValueChange={() => handleSelectAll(fieldDefinitionsFiltered)}
+                        checked={allFieldsSelected}>
+                        Все найденные
+                    </Checkbox>
+                )}
+            </RowStack>
             <RowStack data-tid="ColumnCheckboxes" className={jsStyles.fieldList()} block gap={4}>
                 {fieldDefinitionsFiltered.length === 0 ? <Fit>{nothingToDisplay}</Fit> : null}
 
