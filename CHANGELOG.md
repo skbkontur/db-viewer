@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.9 - 2025.01.27
+- Follow and processing the status of the redirect code (302) for the fetch method
+
 ## v1.8 - 2024.05.21
 - Update react-ui
 - Add mini modals

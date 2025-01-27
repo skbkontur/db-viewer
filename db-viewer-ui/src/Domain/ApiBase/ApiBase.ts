@@ -22,6 +22,7 @@ export default class ApiBase {
             ["Content-Type"]: "application/json",
         },
         ["credentials"]: "same-origin",
+        redirect: "follow",
     };
     public prefix: string;
 
@@ -58,11 +59,15 @@ export default class ApiBase {
             method: "POST",
             body: JSON.stringify(body),
         });
+
         await this.checkStatus(response);
+        this.processRedirect(response);
+
         const textResult = await response.text();
         if (textResult !== "") {
             return JSON.parse(textResult);
         }
+
         return undefined;
     }
 
@@ -107,9 +112,11 @@ export default class ApiBase {
             ...ApiBase.additionalHeaders,
             method: "GET",
         });
+
         await this.checkStatus(response);
-        const result = await response.json();
-        return result;
+        this.processRedirect(response);
+
+        return response.json();
     }
 
     public async delete(url: string, body: {}): Promise<any> {
@@ -118,11 +125,21 @@ export default class ApiBase {
             method: "DELETE",
             body: JSON.stringify(body),
         });
+
         await this.checkStatus(response);
+        this.processRedirect(response);
+
         const textResult = await response.text();
         if (textResult !== "") {
             return JSON.parse(textResult);
         }
+
         return undefined;
+    }
+
+    private processRedirect(response: Response): void {
+        if (response.redirected && response.url) {
+            location.href = response.url;
+        }
     }
 }
