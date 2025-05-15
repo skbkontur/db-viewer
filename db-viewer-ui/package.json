@@ -38,7 +38,7 @@
     "lint": "run-s \"lint:*\"",
     "lint:tsc": "tsc --noEmit",
     "lint:eslint": "eslint ./ --ext .js,.jsx,.ts,.tsx --cache --quiet",
-    "test": "vitest"
+    "test": "vitest --run"
   },
   "peerDependencies": {
     "@skbkontur/icons": ">=1 <2",

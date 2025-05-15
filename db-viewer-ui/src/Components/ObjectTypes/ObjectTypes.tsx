@@ -1,6 +1,8 @@
 import { StringUtils } from "@skbkontur/edi-ui";
 import { ThemeContext } from "@skbkontur/react-ui";
-import _ from "lodash";
+import groupBy from "lodash/groupBy";
+import orderBy from "lodash/orderBy";
+import toPairs from "lodash/toPairs";
 import React from "react";
 
 import { ObjectIdentifier } from "../../Domain/Api/DataTypes/ObjectIdentifier";
@@ -26,11 +28,13 @@ export function ObjectTypes({ objects, filter, identifierKeywords }: ObjectTypes
     };
 
     const getGrouped = (objects: ObjectIdentifier[]): Array<[string, ObjectIdentifier[]]> => {
-        return _(objects)
-            .orderBy(item => getIdentifierWithoutKeywords(item.identifier).toUpperCase())
-            .groupBy(item => getIdentifierWithoutKeywords(item.identifier)[0].toUpperCase())
-            .toPairs()
-            .value();
+        const orderedObjects = orderBy(objects, item => getIdentifierWithoutKeywords(item.identifier).toUpperCase());
+
+        const groupedObjects = groupBy(orderedObjects, item =>
+            getIdentifierWithoutKeywords(item.identifier)[0].toUpperCase()
+        );
+
+        return toPairs(groupedObjects);
     };
 
     const getFiltered = (objects: ObjectIdentifier[], filter: string): ObjectIdentifier[] => {
@@ -93,7 +97,7 @@ export function ObjectTypes({ objects, filter, identifierKeywords }: ObjectTypes
         );
     };
 
-    const categorized = _.groupBy(objects, x => x.schemaDescription.schemaName);
+    const categorized = groupBy(objects, x => x.schemaDescription.schemaName);
     return (
         <div data-tid="ObjectGroups">
             {Object.keys(categorized).map(schemaName => renderSchema(schemaName, categorized[schemaName]))}

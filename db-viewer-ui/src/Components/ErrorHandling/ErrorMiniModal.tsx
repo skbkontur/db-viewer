@@ -8,7 +8,7 @@ interface ErrorHandlingContainerMiniModalProps {
     onClose(): void;
 }
 
-export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps): React.JSX.Element => {
+export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
 
     return (

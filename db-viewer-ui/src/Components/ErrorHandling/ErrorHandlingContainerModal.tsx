@@ -16,7 +16,7 @@ interface ErrorHandlingContainerModalProps {
 export const ErrorHandlingContainerModal = ({
     onClose,
     ...restProps
-}: ErrorHandlingContainerModalProps): React.JSX.Element => {
+}: ErrorHandlingContainerModalProps): React.ReactElement => {
     const showStack = useDeveloperMode();
 
     return showStack ? <ErrorModal {...restProps} onClose={onClose} /> : <ErrorMiniModal onClose={onClose} />;

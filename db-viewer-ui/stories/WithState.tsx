@@ -9,7 +9,7 @@ interface WithStateProps<S> {
     ) => React.ReactElement;
 }
 
-export const WithState = <S,>({ initial, children }: WithStateProps<S>): React.JSX.Element => {
+export const WithState = <S,>({ initial, children }: WithStateProps<S>): React.ReactElement => {
     const [state, setState] = React.useState(initial);
     return children(
         state,
