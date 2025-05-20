@@ -48,7 +48,7 @@
     "react-router-dom": ">=6 <7"
   },
   "dependencies": {
-    "@skbkontur/edi-ui": "^0.2.10",
+    "@skbkontur/edi-ui": "^0.4.0",
     "@skbkontur/react-stack-layout": "^1.0.3",
     "@skbkontur/react-ui-validations": "^2.1.0",
     "lodash": "^4.17.20",

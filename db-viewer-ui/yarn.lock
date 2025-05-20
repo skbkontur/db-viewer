@@ -2330,10 +2330,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/colors@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "@skbkontur/colors@npm:0.5.0"
-  checksum: 10/bea69f8269116a77cfa10c9b6c5b9445a8f4801c5877d86b655642b7a010a9e008385ff58a335e55fdbfde15f61a350672d895fd3b2d8907b17d36d1ec5e8b60
+"@skbkontur/colors@npm:0.5.1":
+  version: 0.5.1
+  resolution: "@skbkontur/colors@npm:0.5.1"
+  checksum: 10/af1185e1cc3b25085d11a9d7d3967b930cca692e143fd10b05726467eded737069a03e865fce4e2e58b43a54d07e2fa3a6c85a53fc87538aaa2e2c1f178e8140
   languageName: node
   linkType: hard
 
@@ -2341,7 +2341,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skbkontur/db-viewer-ui@workspace:."
   dependencies:
-    "@skbkontur/edi-ui": "npm:^0.2.10"
+    "@skbkontur/edi-ui": "npm:^0.4.0"
     "@skbkontur/icons": "npm:^1.7.3"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
@@ -2387,23 +2387,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skbkontur/edi-ui@npm:^0.2.10":
-  version: 0.2.10
-  resolution: "@skbkontur/edi-ui@npm:0.2.10"
+"@skbkontur/edi-ui@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@skbkontur/edi-ui@npm:0.4.0"
   dependencies:
-    "@skbkontur/colors": "npm:^0.5.0"
-    "@skbkontur/icons": "npm:1.10.0"
+    "@skbkontur/colors": "npm:0.5.1"
+    "@skbkontur/icons": "npm:^1.16.0"
     "@skbkontur/react-stack-layout": "npm:1.2.0"
-    date-fns: "npm:2.21.1"
+    date-fns: "npm:3.6.0"
     lodash.get: "npm:4.4.2"
     lodash.isequal: "npm:4.5.0"
     lodash.isplainobject: "npm:4.0.6"
+    tslib: "npm:^1"
   peerDependencies:
     "@skbkontur/icons": ">=1 <2"
-    "@skbkontur/react-ui": ">=4"
+    "@skbkontur/react-ui": ">=5 <6"
     react: ">=16 <=18"
     react-dom: ">=16 <=18"
-  checksum: 10/cd2edffdf90770f933cb33b32c61048cbbec777f0d4e89f5b403039bb619365d0c951983aa813e2b8ca8f9001634d0b06bad68b75a8af5c8cdef6b71e5b0f172
+  checksum: 10/815885f7de8a6523f3976b7cfdb8f32ff3bcd8610475d3a04bd5141c93700e937b629e51a95c64745824e394732497e042038a3cad024d46ca4dffd6ddcd4525
   languageName: node
   linkType: hard
 
@@ -2414,10 +2415,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/icons@npm:1.10.0":
-  version: 1.10.0
-  resolution: "@skbkontur/icons@npm:1.10.0"
-  checksum: 10/1c95607c18532fb0ae409ea6e9ec27a7f6786d89dfab11da8b4991d061e65324db8194c4a42016607041eea3b95dc0d61488c299de558217681dfab073fd7e04
+"@skbkontur/icons@npm:^1.16.0":
+  version: 1.18.0
+  resolution: "@skbkontur/icons@npm:1.18.0"
+  dependencies:
+    tslib: "npm:^2.8.0"
+  checksum: 10/afe7ede0d81234ad1f726645ffe255cd2a80f3236a71a1e252db92d031838c0bf5312a0ae034aef861a8eda4fda46424e981ef0fb1cfc3943963a23783ce4483
   languageName: node
   linkType: hard
 
@@ -4732,10 +4735,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:2.21.1":
-  version: 2.21.1
-  resolution: "date-fns@npm:2.21.1"
-  checksum: 10/abb7e94c0dd413bce1ee5c046c49bcc0d77eb848e4efacb31b78e2102ed5f67e6eb2cf25c17b3efdb7ddda97eb75c56163f99bfc6d0bfffd08ba908e40c1c3d7
+"date-fns@npm:3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 10/cac35c58926a3b5d577082ff2b253612ec1c79eb6754fddef46b6a8e826501ea2cb346ecbd211205f1ba382ddd1f9d8c3f00bf433ad63cc3063454d294e3a6b8
   languageName: node
   linkType: hard
 
@@ -10333,7 +10336,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.13.0":
+"tslib@npm:^1, tslib@npm:^1.13.0":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 10/7dbf34e6f55c6492637adb81b555af5e3b4f9cc6b998fb440dac82d3b42bdc91560a35a5fb75e20e24a076c651438234da6743d139e4feabf0783f3cdfe1dddb
@@ -10344,6 +10347,13 @@ __metadata:
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10/bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.8.0":
+  version: 2.8.1
+  resolution: "tslib@npm:2.8.1"
+  checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
   languageName: node
   linkType: hard
 
