@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.10 - 2025.05.28
+- Update react-ui
+- Update edi-ui
+
 ## v1.9 - 2025.01.27
 - Follow and processing the status of the redirect code (302) for the fetch method
 

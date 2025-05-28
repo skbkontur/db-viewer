@@ -1,6 +1,6 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Loader, Paging } from "@skbkontur/react-ui";
-import React, { useEffect, useState } from "react";
+import React, { type ReactElement, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
@@ -75,13 +75,13 @@ export const ObjectTableContainer = ({
         }
     }, [query]);
 
-    function handleChangeModalFilter(value: Nullable<Partial<ObjectSearchQuery>>): void {
+    const handleChangeModalFilter = (value: Nullable<Partial<ObjectSearchQuery>>): void => {
         if (!value) {
             updateQuery(getDefaultQuery());
         } else {
             updateQuery(value);
         }
-    }
+    };
 
     const handleCheckCount = async (): Promise<void> => {
         if (!metaInformation) {
@@ -170,12 +170,12 @@ export const ObjectTableContainer = ({
         navigate(getQuery(query, { offset: (page - 1) * query.count }));
     };
 
-    function renderItemsCount(
+    const renderItemsCount = (
         offset: number,
         countPerPage: number,
         count: number,
         countLimit: number
-    ): React.ReactElement {
+    ): ReactElement => {
         const total = count > countLimit ? countLimit : count;
         const firstNumber = Math.min(total, offset);
         const lastNumber = Math.min(total, offset + countPerPage);
@@ -189,9 +189,9 @@ export const ObjectTableContainer = ({
                 <Fit>Всего {count > countLimit ? `${countLimit.toString()}+` : count}</Fit>
             </RowStack>
         );
-    }
+    };
 
-    function renderPageNavigation(): null | React.ReactElement {
+    const renderPageNavigation = (): null | React.ReactElement => {
         const { offset, count } = query;
         if (!objects) {
             return null;
@@ -209,7 +209,7 @@ export const ObjectTableContainer = ({
                 onPageChange={goToPage}
             />
         );
-    }
+    };
 
     const { offset, count, sorts } = query;
     let properties: PropertyMetaInformation[] = [];

@@ -14,7 +14,7 @@ interface ErrorModalProps {
     onClose(): void;
 }
 
-export const ErrorModal = ({ canClose, onClose, stack, serverStack, message }: ErrorModalProps): React.JSX.Element => {
+export const ErrorModal = ({ canClose, onClose, stack, serverStack, message }: ErrorModalProps): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
 
     const copyData = (stack: Nullable<string>) => {

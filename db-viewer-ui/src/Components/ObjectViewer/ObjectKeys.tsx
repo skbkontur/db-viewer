@@ -11,7 +11,7 @@ interface ObjectKeysProps {
     keys: ObjectKey[];
 }
 
-export const ObjectKeys = ({ keys }: ObjectKeysProps): React.JSX.Element => (
+export const ObjectKeys = ({ keys }: ObjectKeysProps): React.ReactElement => (
     <ColumnStack block gap={2}>
         {keys.map(({ name, value }) => (
             <Fit key={name}>

@@ -1,3 +1,4 @@
+import { LIGHT_THEME, ThemeContext, ThemeFactory } from "@skbkontur/react-ui";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
@@ -24,39 +25,41 @@ export const DbViewerApplication = ({
     useErrorHandlingContainer,
     withGoBackUrl,
 }: DbViewerApplicationProps): React.ReactElement => (
-    <Routes>
-        <Route
-            path="/"
-            element={
-                <ObjectTypesContainer
-                    withGoBackUrl={withGoBackUrl}
-                    useErrorHandlingContainer={useErrorHandlingContainer}
-                    identifierKeywords={identifierKeywords}
-                    dbViewerApi={dbViewerApi}
-                />
-            }
-        />
-        <Route
-            path=":objectId"
-            element={
-                <ObjectTableContainer
-                    isSuperUser={isSuperUser}
-                    dbViewerApi={dbViewerApi}
-                    customRenderer={customRenderer}
-                    useErrorHandlingContainer={useErrorHandlingContainer}
-                />
-            }
-        />
-        <Route
-            path=":objectId/details"
-            element={
-                <ObjectDetailsContainer
-                    isSuperUser={isSuperUser}
-                    dbViewerApi={dbViewerApi}
-                    customRenderer={customRenderer}
-                    useErrorHandlingContainer={useErrorHandlingContainer}
-                />
-            }
-        />
-    </Routes>
+    <ThemeContext.Provider value={ThemeFactory.create({ linkTextDecorationColor: "transparent" }, LIGHT_THEME)}>
+        <Routes>
+            <Route
+                path="/"
+                element={
+                    <ObjectTypesContainer
+                        withGoBackUrl={withGoBackUrl}
+                        useErrorHandlingContainer={useErrorHandlingContainer}
+                        identifierKeywords={identifierKeywords}
+                        dbViewerApi={dbViewerApi}
+                    />
+                }
+            />
+            <Route
+                path=":objectId"
+                element={
+                    <ObjectTableContainer
+                        isSuperUser={isSuperUser}
+                        dbViewerApi={dbViewerApi}
+                        customRenderer={customRenderer}
+                        useErrorHandlingContainer={useErrorHandlingContainer}
+                    />
+                }
+            />
+            <Route
+                path=":objectId/details"
+                element={
+                    <ObjectDetailsContainer
+                        isSuperUser={isSuperUser}
+                        dbViewerApi={dbViewerApi}
+                        customRenderer={customRenderer}
+                        useErrorHandlingContainer={useErrorHandlingContainer}
+                    />
+                }
+            />
+        </Routes>
+    </ThemeContext.Provider>
 );

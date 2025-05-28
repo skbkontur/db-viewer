@@ -12,7 +12,7 @@ interface StackTraceProps {
     onCopy(): void;
 }
 
-export const StackTrace = ({ caption, trace, onCopy }: StackTraceProps): React.JSX.Element => {
+export const StackTrace = ({ caption, trace, onCopy }: StackTraceProps): React.ReactElement => {
     const theme = React.useContext(ThemeContext);
 
     return (
