@@ -1,10 +1,11 @@
 import { DateUtils, Time } from "@skbkontur/edi-ui";
 import { Select } from "@skbkontur/react-ui";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, type ReactElement } from "react";
 
 import { DatePicker } from "./DatePicker";
 import { jsStyles } from "./DateTimePicker.styles";
 import { TimePicker } from "./TimePicker";
+import { buildDateTime, getTimeZoneString } from "./helpers";
 
 interface DateTimePickerWithTimeZone {
     error?: boolean;
@@ -22,49 +23,36 @@ export const DateTimePickerWithTimeZone = ({
     onChange,
     disabled,
     timeZoneEditable,
-}: DateTimePickerWithTimeZone): React.ReactElement => {
+}: DateTimePickerWithTimeZone): ReactElement => {
     const [time, setTime] = useState<Nullable<string>>(null);
     const [offset, setOffset] = useState<Nullable<string>>(null);
     const [date, setDate] = useState<Nullable<Date>>(null);
-    useEffect(() => {
-        loadState(value);
-    }, [value]);
-    useEffect(() => {
-        handleDateTimeChange(date, time, offset);
-    }, [date, time, offset]);
 
-    const handleDateTimeChange = (
-        newDate: Nullable<Date>,
-        newTime: Nullable<Time>,
-        newOffset: Nullable<string>
-    ): void => {
-        if (!newDate) {
-            onChange(null);
+    useEffect(() => {
+        if (!value) {
             return;
         }
-        const date = DateUtils.formatDate(newDate, "yyyy-MM-dd", 0);
-        const newDateTime = `${date}T${newTime ?? defaultTime}${newOffset ?? ""}`;
-        onChange(newDateTime);
-    };
-
-    const loadState = (dateStr: Nullable<string>): void => {
-        if (!dateStr) {
-            return;
-        }
-        const timeOffset = getTimeZoneString(dateStr);
+        const timeOffset = getTimeZoneString(value);
         setOffset(timeOffset);
-        const dateTimeWithoutTimezone = timeOffset ? dateStr.slice(0, -timeOffset.length) : dateStr;
+        const dateTimeWithoutTimezone = timeOffset ? value.slice(0, -timeOffset.length) : value;
         setDate(DateUtils.fromLocalToUtc(new Date(dateTimeWithoutTimezone)));
         setTime(DateUtils.formatDate(dateTimeWithoutTimezone, "HH:mm:ss.SSS"));
+    }, [value]);
+
+    const handleDateChange = (newDate: Nullable<Date>): void => {
+        setDate(newDate);
+        onChange(buildDateTime(newDate, time, offset, defaultTime));
     };
 
-    const getTimeZoneString = (date: string): Nullable<string> => {
-        const timezoneRegex = /.*T.*(Z|[+-].*)/i;
-        const matches = date.match(timezoneRegex);
-        if (!matches || matches.length < 2) {
-            return null;
-        }
-        return matches[1];
+    const handleTimeChange = (newTime: Time): void => {
+        setTime(newTime);
+        onChange(buildDateTime(date, newTime, offset, defaultTime));
+    };
+
+    const handleOffsetChange = (offset: string): void => {
+        const nextOffset = offset === "local" ? null : "Z";
+        setOffset(nextOffset);
+        onChange(buildDateTime(date, time, nextOffset, defaultTime));
     };
 
     return (
@@ -74,7 +62,7 @@ export const DateTimePickerWithTimeZone = ({
                     data-tid="Date"
                     value={date}
                     defaultTime={defaultTime}
-                    onChange={setDate}
+                    onChange={handleDateChange}
                     error={error}
                     disabled={disabled}
                     width={110}
@@ -87,7 +75,7 @@ export const DateTimePickerWithTimeZone = ({
                     error={error}
                     defaultTime={defaultTime}
                     disabled={disabled || !date}
-                    onChange={(e, time) => setTime(time)}
+                    onChange={handleTimeChange}
                     useSeconds
                 />
             </span>
@@ -98,7 +86,7 @@ export const DateTimePickerWithTimeZone = ({
                         defaultValue="UTC"
                         value={offset ? "UTC" : "local"}
                         items={["UTC", "local"]}
-                        onValueChange={v => setOffset(v === "local" ? null : "Z")}
+                        onValueChange={handleOffsetChange}
                     />
                 ) : (
                     <span data-tid="TimeOffsetLabel">{offset}</span>

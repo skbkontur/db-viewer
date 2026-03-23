@@ -1,6 +1,6 @@
 import { ThemeContext } from "@skbkontur/react-ui";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
-import React from "react";
+import { Fragment, useContext, type ReactElement } from "react";
 import { useLocation } from "react-router";
 
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
@@ -28,10 +28,10 @@ function ObjectLinkInternal({ identifier, keywords, theme }: ObjectLinkInternalP
         return (
             <>
                 {splitByKeyword.map((item, i) => (
-                    <React.Fragment key={item}>
+                    <Fragment key={item}>
                         {<ObjectLinkInternal identifier={item} keywords={rest} theme={theme} />}
                         {i < splitByKeyword.length - 1 && <span className={jsStyles.mutedKeyword(theme)}>{first}</span>}
-                    </React.Fragment>
+                    </Fragment>
                 ))}
             </>
         );
@@ -39,8 +39,8 @@ function ObjectLinkInternal({ identifier, keywords, theme }: ObjectLinkInternalP
     return <ObjectLinkInternal identifier={identifier} keywords={rest} theme={theme} />;
 }
 
-export const ObjectLink = ({ identifier, keywords }: ObjectIdentifierProps): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const ObjectLink = ({ identifier, keywords }: ObjectIdentifierProps): ReactElement => {
+    const theme = useContext(ThemeContext);
     const { pathname } = useLocation();
     return (
         <div data-tid="ObjectItem">

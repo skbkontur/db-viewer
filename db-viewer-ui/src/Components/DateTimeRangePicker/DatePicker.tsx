@@ -1,11 +1,13 @@
-import { RussianDateFormat, Time, TimeZone, TimeUtils, StringUtils, DateUtils } from "@skbkontur/edi-ui";
+import { RussianDateFormat, StringUtils, Time, TimeUtils, TimeZone } from "@skbkontur/edi-ui";
 import { DatePicker as DefaultDatePicker } from "@skbkontur/react-ui";
-import React from "react";
+import { useEffect, useState, type ReactElement } from "react";
+
+import { convertDateToStringWithTimezone, convertStringToDate } from "./helpers";
 
 interface DatePickerProps {
     value: Nullable<Date>;
     onChange: (value: Nullable<Date>) => void;
-    width?: React.ReactText;
+    width?: string | number;
     minDate?: Date | string;
     maxDate?: Date | string;
     isHoliday?: (day: string, isWeekend: boolean) => boolean;
@@ -15,10 +17,6 @@ interface DatePickerProps {
     error?: boolean;
 }
 
-interface DatePickerState {
-    date: string;
-}
-
 const DatePickerDefaultProps = {
     width: 120,
     minDate: "01.01.1900",
@@ -26,50 +24,25 @@ const DatePickerDefaultProps = {
     isHoliday: (_day: string, isWeekend: boolean) => isWeekend,
 };
 
-const defaultTime = "00:00";
+export const DatePicker = ({
+    defaultTime = "00:00",
+    maxDate,
+    minDate,
+    onChange,
+    timeZone = TimeUtils.TimeZones.UTC,
+    value,
+    ...restProps
+}: DatePickerProps): ReactElement => {
+    const [date, setDate] = useState("");
 
-export class DatePicker extends React.Component<DatePickerProps, DatePickerState> {
-    public state = {
-        date: "",
-    };
+    useEffect(() => {
+        setDate(convertDateToStringWithTimezone(value, timeZone));
+    }, [value, timeZone]);
 
-    public static defaultProps = {
-        timeZone: TimeUtils.TimeZones.UTC,
-    };
-
-    public componentDidMount(): void {
-        const { value, timeZone } = this.props;
-        const stringifiedDate = this.convertDateToStringWithTimezone(value, timeZone);
-        this.setState({ date: stringifiedDate });
-    }
-
-    public componentDidUpdate(prevProps: DatePickerProps): void {
-        const { value, timeZone } = this.props;
-        if (prevProps.value !== this.props.value) {
-            const stringifiedDate = this.convertDateToStringWithTimezone(value, timeZone);
-            this.setState({ date: stringifiedDate });
-        }
-    }
-
-    public render(): React.ReactElement {
-        const { minDate, maxDate, timeZone } = this.props;
-
-        return (
-            <DefaultDatePicker
-                {...DatePickerDefaultProps}
-                {...this.props}
-                maxDate={this.convertDateToStringWithTimezone(maxDate, timeZone)}
-                minDate={this.convertDateToStringWithTimezone(minDate, timeZone)}
-                value={this.state.date}
-                onValueChange={this.handleChange}
-            />
-        );
-    }
-
-    private readonly handleChange = (newStringifiedDate: RussianDateFormat): void => {
-        this.setState({ date: newStringifiedDate });
+    const handleChange = (newStringifiedDate: RussianDateFormat): void => {
+        setDate(newStringifiedDate);
         if (StringUtils.isNullOrWhitespace(newStringifiedDate)) {
-            this.props.onChange(null);
+            onChange(null);
             return;
         }
 
@@ -77,21 +50,17 @@ export class DatePicker extends React.Component<DatePickerProps, DatePickerState
             return;
         }
 
-        const newDate = this.convertStringToDate(newStringifiedDate);
-        this.props.onChange(newDate);
+        onChange(convertStringToDate(newStringifiedDate, defaultTime, timeZone));
     };
 
-    private readonly convertStringToDate = (newStringifiedDate: RussianDateFormat): Date => {
-        const { timeZone } = this.props;
-        const date = DateUtils.parseDate(newStringifiedDate);
-        const ISODate = DateUtils.formatDate(date, "yyyy-MM-dd");
-        const time = this.props.defaultTime || defaultTime;
-        const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        return new Date(`${ISODate}T${time}${TimeUtils.timeZoneOffsetToString(timeZoneOffset)}`);
-    };
-
-    private readonly convertDateToStringWithTimezone = (date: Nullable<Date | string>, timeZone?: number) => {
-        const timeZoneOffset = TimeUtils.getTimeZoneOffsetOrDefault(timeZone);
-        return date ? DateUtils.formatDate(date, "dd.MM.yyyy", timeZoneOffset) : "";
-    };
-}
+    return (
+        <DefaultDatePicker
+            {...DatePickerDefaultProps}
+            {...restProps}
+            maxDate={convertDateToStringWithTimezone(maxDate, timeZone)}
+            minDate={convertDateToStringWithTimezone(minDate, timeZone)}
+            value={date}
+            onValueChange={handleChange}
+        />
+    );
+};

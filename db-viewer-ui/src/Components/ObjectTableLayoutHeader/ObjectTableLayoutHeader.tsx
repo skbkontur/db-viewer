@@ -1,3 +1,4 @@
+import { StringUtils } from "@skbkontur/edi-ui";
 import { NetDownloadIcon16Regular } from "@skbkontur/icons/NetDownloadIcon16Regular";
 import { SettingsGearIcon16Regular } from "@skbkontur/icons/SettingsGearIcon16Regular";
 import { UiFilterFunnelIcon16Regular } from "@skbkontur/icons/UiFilterFunnelIcon16Regular";
@@ -5,7 +6,7 @@ import { XCircleIcon16Regular } from "@skbkontur/icons/XCircleIcon16Regular";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Tooltip } from "@skbkontur/react-ui";
 import difference from "lodash/difference";
-import React from "react";
+import { useEffect, useState, type ReactElement } from "react";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { CountResult } from "../../Domain/Api/DataTypes/CountResult";
@@ -24,7 +25,7 @@ interface ObjectTableLayoutHeaderProps {
     query: ObjectSearchQuery;
     allowReadAll: boolean;
     properties: PropertyMetaInformation[];
-    onChange: (x0: null | Partial<ObjectSearchQuery>) => void;
+    onChange: (update: null | Partial<ObjectSearchQuery>) => void;
     onDownloadClick: () => void;
     onDownloadAbort: () => void;
     downloading: boolean;
@@ -33,104 +34,27 @@ interface ObjectTableLayoutHeaderProps {
     downloadCount?: CountResult;
 }
 
-interface ObjectTableLayoutHeaderState {
-    showFilterModal: boolean;
-    modalEditingConditions: Condition[];
-}
+export const ObjectTableLayoutHeader = ({
+    query,
+    allowReadAll,
+    properties,
+    onChange,
+    onDownloadClick,
+    onDownloadAbort,
+    downloading,
+    showModalFilter,
+    showDownloadModal,
+    downloadCount,
+}: ObjectTableLayoutHeaderProps): ReactElement => {
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    const [modalEditingConditions, setModalEditingConditions] = useState<Condition[]>([]);
 
-export class ObjectTableLayoutHeader extends React.Component<
-    ObjectTableLayoutHeaderProps,
-    ObjectTableLayoutHeaderState
-> {
-    public state: ObjectTableLayoutHeaderState = {
-        showFilterModal: false,
-        modalEditingConditions: [],
-    };
+    useEffect(() => {
+        setShowFilterModal(showModalFilter);
+        setModalEditingConditions(query.conditions || []);
+    }, [query.conditions, showModalFilter]);
 
-    public componentDidMount(): void {
-        this.setState({
-            modalEditingConditions: this.props.query.conditions || [],
-        });
-    }
-
-    public componentDidUpdate(prevProps: ObjectTableLayoutHeaderProps): void {
-        const { query, showModalFilter } = this.props;
-        if (query.conditions !== prevProps.query.conditions || showModalFilter !== prevProps.showModalFilter) {
-            this.setState({
-                showFilterModal: showModalFilter,
-                modalEditingConditions: this.props.query.conditions || [],
-            });
-        }
-    }
-
-    public render(): React.ReactElement {
-        const {
-            query,
-            allowReadAll,
-            properties,
-            onChange,
-            onDownloadClick,
-            onDownloadAbort,
-            downloading,
-            showDownloadModal,
-            downloadCount,
-        } = this.props;
-        const { showFilterModal, modalEditingConditions } = this.state;
-        const allowCloseModal =
-            allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties);
-        return (
-            <RowStack baseline block gap={2} style={{ flexWrap: "wrap" }}>
-                <Fit className={jsStyles.filter()}>
-                    <Link
-                        icon={<UiFilterFunnelIcon16Regular />}
-                        onClick={this.handleOpenFilterModal}
-                        data-tid="OpenFilter">
-                        Фильтрация
-                    </Link>
-                </Fit>
-                <Fit className={jsStyles.countSelector()}>
-                    <CountOfRecordsSelector count={query.count} onChange={value => onChange({ count: value })} />
-                </Fit>
-                <Fit>
-                    <Link icon={<XCircleIcon16Regular />} onClick={() => onChange(null)} data-tid="ClearFilter">
-                        Очистить фильтр
-                    </Link>
-                </Fit>
-                <Fit>
-                    <Tooltip render={() => this.renderFieldSelectorTooltipContent()} pos="bottom right" trigger="click">
-                        <Link icon={<SettingsGearIcon16Regular />} data-tid="FieldSettings">
-                            Настроить поля
-                        </Link>
-                    </Tooltip>
-                </Fit>
-                <Fit>
-                    <Link
-                        icon={downloading ? <Spinner /> : <NetDownloadIcon16Regular />}
-                        onClick={onDownloadClick}
-                        disabled={downloading}
-                        data-tid="DownloadLink">
-                        Выгрузить всё в Excel
-                    </Link>
-                </Fit>
-                {showFilterModal && (
-                    <FilterModal
-                        allowClose={allowCloseModal}
-                        onClose={this.handleCloseFilterModal}
-                        modalEditingConditions={modalEditingConditions}
-                        tableColumns={properties.filter(x => x.isSearchable)}
-                        onChangeFilter={x => this.setState({ modalEditingConditions: x })}
-                        onApplyFilter={this.handleApplyFilter}
-                    />
-                )}
-                {showDownloadModal && downloadCount && (
-                    <DownloadLimitModal countLimit={downloadCount.countLimit} onDownloadAbort={onDownloadAbort} />
-                )}
-            </RowStack>
-        );
-    }
-
-    private renderFieldSelectorTooltipContent(): null | React.ReactElement {
-        const { query, properties, onChange } = this.props;
+    const renderFieldSelectorTooltipContent = (): null | ReactElement => {
         const { hiddenColumns } = query;
         if (properties.length === 0) {
             return null;
@@ -146,21 +70,66 @@ export class ObjectTableLayoutHeader extends React.Component<
                 onHideField={fieldNames => onChange({ hiddenColumns: [...hiddenColumns, ...fieldNames] })}
             />
         );
-    }
-
-    private readonly handleOpenFilterModal = () => {
-        this.setState({ showFilterModal: true });
     };
 
-    private readonly handleCloseFilterModal = () => {
-        this.setState({ showFilterModal: false });
-    };
-
-    private readonly handleApplyFilter = () => {
-        this.props.onChange({
-            conditions: this.state.modalEditingConditions.filter(x => x.value != null && x.value.trim() !== ""),
+    const handleApplyFilter = () => {
+        onChange({
+            conditions: modalEditingConditions.filter(x => !StringUtils.isNullOrWhitespace(x.value)),
             offset: 0,
         });
-        this.setState({ showFilterModal: false });
+        setShowFilterModal(false);
     };
-}
+
+    const allowCloseModal =
+        allowReadAll || PropertyMetaInformationUtils.hasFilledRequiredFields(query.conditions || [], properties);
+
+    return (
+        <RowStack baseline block gap={2} style={{ flexWrap: "wrap" }}>
+            <Fit className={jsStyles.filter()}>
+                <Link
+                    icon={<UiFilterFunnelIcon16Regular />}
+                    onClick={() => setShowFilterModal(true)}
+                    data-tid="OpenFilter">
+                    Фильтрация
+                </Link>
+            </Fit>
+            <Fit className={jsStyles.countSelector()}>
+                <CountOfRecordsSelector count={query.count} onChange={value => onChange({ count: value })} />
+            </Fit>
+            <Fit>
+                <Link icon={<XCircleIcon16Regular />} onClick={() => onChange(null)} data-tid="ClearFilter">
+                    Очистить фильтр
+                </Link>
+            </Fit>
+            <Fit>
+                <Tooltip render={() => renderFieldSelectorTooltipContent()} pos="bottom right" trigger="click">
+                    <Link icon={<SettingsGearIcon16Regular />} data-tid="FieldSettings">
+                        Настроить поля
+                    </Link>
+                </Tooltip>
+            </Fit>
+            <Fit>
+                <Link
+                    icon={downloading ? <Spinner /> : <NetDownloadIcon16Regular />}
+                    onClick={onDownloadClick}
+                    disabled={downloading}
+                    data-tid="DownloadLink">
+                    Выгрузить всё в Excel
+                </Link>
+            </Fit>
+            {showFilterModal && (
+                <FilterModal
+                    allowClose={allowCloseModal}
+                    onClose={() => setShowFilterModal(false)}
+                    modalEditingConditions={modalEditingConditions}
+                    tableColumns={properties.filter(x => x.isSearchable)}
+                    onChangeFilter={setModalEditingConditions}
+                    onApplyFilter={handleApplyFilter}
+                />
+            )}
+            {showDownloadModal && downloadCount && (
+                <DownloadLimitModal countLimit={downloadCount.countLimit} onDownloadAbort={onDownloadAbort} />
+            )}
+        </RowStack>
+    );
+};

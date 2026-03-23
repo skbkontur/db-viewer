@@ -1,6 +1,6 @@
 import { CopyToClipboardToast } from "@skbkontur/edi-ui";
 import { Button, Modal, ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 
 import { jsStyles } from "./ErrorHandlingContainer.styles";
 import { StackTrace } from "./StackTrace";
@@ -14,8 +14,8 @@ interface ErrorModalProps {
     onClose(): void;
 }
 
-export const ErrorModal = ({ canClose, onClose, stack, serverStack, message }: ErrorModalProps): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const ErrorModal = ({ canClose, onClose, stack, serverStack, message }: ErrorModalProps): ReactElement => {
+    const theme = useContext(ThemeContext);
 
     const copyData = (stack: Nullable<string>) => {
         if (stack) {

@@ -1,5 +1,5 @@
 import { Spinner as UiSpinner } from "@skbkontur/react-ui";
-import React from "react";
+import type { ReactElement } from "react";
 
 import { jsStyles } from "./Spinner.styles";
 
@@ -7,12 +7,8 @@ interface SpinnerProps {
     caption?: string;
 }
 
-export class Spinner extends React.Component<SpinnerProps> {
-    public render(): React.ReactElement {
-        return (
-            <span className={jsStyles.root()}>
-                <UiSpinner type="mini" caption={this.props.caption || ""} />
-            </span>
-        );
-    }
-}
+export const Spinner = ({ caption = "" }: SpinnerProps): ReactElement => (
+    <span className={jsStyles.root()}>
+        <UiSpinner type="mini" caption={caption} />
+    </span>
+);

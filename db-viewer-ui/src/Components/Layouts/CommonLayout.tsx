@@ -1,25 +1,20 @@
 import { ArrowALeftIcon24Regular } from "@skbkontur/icons/ArrowALeftIcon24Regular";
 import { Loader, ThemeContext } from "@skbkontur/react-ui";
-import React, { CSSProperties } from "react";
+import { type CSSProperties, type ReactElement, type ReactNode, useContext } from "react";
 
 import { RouterLink } from "../RouterLink/RouterLink";
 
 import { jsStyles } from "./CommonLayout.styles";
 
 interface CommonLayoutProps {
-    topRightTools?: Nullable<React.ReactElement> | string;
-    children?: React.ReactNode;
+    topRightTools?: Nullable<ReactElement> | string;
+    children?: ReactNode;
     withArrow?: boolean;
     style?: CSSProperties;
 }
 
-export function CommonLayout({
-    children,
-    topRightTools,
-    withArrow,
-    ...restProps
-}: CommonLayoutProps): React.ReactElement {
-    const theme = React.useContext(ThemeContext);
+export function CommonLayout({ children, topRightTools, withArrow, ...restProps }: CommonLayoutProps): ReactElement {
+    const theme = useContext(ThemeContext);
     return (
         <div className={`${jsStyles.commonLayout(theme)} ${withArrow ? jsStyles.withArrow() : ""}`} {...restProps}>
             {topRightTools && <div className={jsStyles.topRightTools()}>{topRightTools}</div>}
@@ -29,11 +24,11 @@ export function CommonLayout({
 }
 
 interface CommonLayoutContentProps {
-    children?: React.ReactNode;
+    children?: ReactNode;
     className?: void | string;
 }
 
-CommonLayout.Content = function Content({ children, ...restProps }: CommonLayoutContentProps): React.ReactElement {
+CommonLayout.Content = function Content({ children, ...restProps }: CommonLayoutContentProps): ReactElement {
     return (
         <div className={jsStyles.content()} {...restProps}>
             {children}
@@ -42,19 +37,14 @@ CommonLayout.Content = function Content({ children, ...restProps }: CommonLayout
 };
 
 interface CommonLayoutHeaderProps {
-    title: string | React.ReactElement;
-    tools?: React.ReactElement;
-    children?: React.ReactElement;
+    title: string | ReactElement;
+    tools?: ReactElement;
+    children?: ReactElement;
     borderBottom?: boolean;
 }
 
-CommonLayout.Header = function Header({
-    title,
-    tools,
-    children,
-    borderBottom,
-}: CommonLayoutHeaderProps): React.ReactElement {
-    const theme = React.useContext(ThemeContext);
+CommonLayout.Header = function Header({ title, tools, children, borderBottom }: CommonLayoutHeaderProps): ReactElement {
+    const theme = useContext(ThemeContext);
     return (
         <div className={`${jsStyles.headerWrapper()} ${borderBottom ? jsStyles.borderBottom(theme) : ""}`}>
             <div className={jsStyles.header()}>
@@ -72,8 +62,8 @@ interface CommonLayoutGoBackProps {
     to: string;
 }
 
-CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProps): React.ReactElement {
-    const theme = React.useContext(ThemeContext);
+CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProps): ReactElement {
+    const theme = useContext(ThemeContext);
     return (
         <RouterLink data-tid="GoBack" to={to} className={jsStyles.backLink()}>
             <ArrowALeftIcon24Regular align="none" className={jsStyles.backLinkIcon(theme)} />
@@ -82,13 +72,13 @@ CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProp
 };
 
 interface ContentLoaderProps {
-    children?: React.ReactNode;
+    children?: ReactNode;
     active: boolean;
     type?: "big";
     caption?: string;
 }
 
-CommonLayout.ContentLoader = function ContentLoader(props: ContentLoaderProps): React.ReactElement {
+CommonLayout.ContentLoader = function ContentLoader(props: ContentLoaderProps): ReactElement {
     const { active, children, ...restProps } = props;
 
     return (
