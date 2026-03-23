@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactElement } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { ObjectDetailsContainer } from "./Containers/ObjectDetailsContainer";
@@ -23,7 +23,7 @@ export const DbViewerApplication = ({
     identifierKeywords,
     useErrorHandlingContainer,
     withGoBackUrl,
-}: DbViewerApplicationProps): React.ReactElement => (
+}: DbViewerApplicationProps): ReactElement => (
     <Routes>
         <Route
             path="/"

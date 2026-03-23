@@ -9,7 +9,7 @@ import React from "react";
 import { withRouter } from "storybook-addon-react-router-v6";
 
 import { CommonLayout } from "../../src/Components/Layouts/CommonLayout";
-import { ScrollableContainer } from "../../src/Components/Layouts/ScrollableContainer";
+import { ScrollableContainer } from "../../src/Components/ScrollableContainer/ScrollableContainer";
 
 interface SpaceFilterProps {
     width?: number | string;

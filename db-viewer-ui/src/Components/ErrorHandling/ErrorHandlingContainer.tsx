@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect, useRef, type ReactElement } from "react";
 
 import { ApiErrorInfo } from "../../Domain/ApiBase/ApiError";
 
@@ -11,54 +11,51 @@ interface ErrorHandlingContainerState {
     showModal: boolean;
 }
 
-export class ErrorHandlingContainer extends React.Component<{}, ErrorHandlingContainerState> {
-    public state: ErrorHandlingContainerState = {
+export const ErrorHandlingContainer = (): ReactElement => {
+    const [{ error, isFatal, showModal, stack }, setState] = useState<ErrorHandlingContainerState>({
         isFatal: false,
         error: null,
         stack: null,
         showModal: false,
-    };
+    });
 
-    public oldOnunhandledrejection: null | ((e: PromiseRejectionEvent, ...rest: any[]) => void) = null;
+    const oldOnunhandledrejection = useRef<null | ((e: PromiseRejectionEvent, ...rest: any[]) => void)>(null);
 
-    public componentDidMount(): void {
-        this.oldOnunhandledrejection = window.onunhandledrejection;
+    useEffect(() => {
+        oldOnunhandledrejection.current = window.onunhandledrejection;
         window.onunhandledrejection = (e: any, ...restArgs: any[]) => {
-            if (this.oldOnunhandledrejection) {
-                this.oldOnunhandledrejection(e, ...restArgs);
+            if (oldOnunhandledrejection.current) {
+                oldOnunhandledrejection.current(e, ...restArgs);
             }
             if (typeof e.preventDefault === "function") {
                 e.preventDefault();
             }
-            this.setState({
+            setState({
                 showModal: true,
                 isFatal: false,
                 error: e.reason,
                 stack: e.reason.stack,
             });
         };
-    }
+        return () => {
+            window.onunhandledrejection = oldOnunhandledrejection.current;
+        };
+    }, []);
 
-    public componentWillUnmount(): void {
-        window.onunhandledrejection = this.oldOnunhandledrejection;
-    }
+    const handleHideModal = () => setState(s => ({ ...s, showModal: false }));
 
-    private handleHideModal = () => this.setState({ showModal: false });
-    public render(): React.ReactElement {
-        const { isFatal, showModal, stack, error } = this.state;
-        const { message, serverErrorType, serverStackTrace } = (error || {}) as ApiErrorInfo;
-        return (
-            <div>
-                {showModal && (
-                    <ErrorHandlingContainerModal
-                        canClose={!isFatal}
-                        onClose={this.handleHideModal}
-                        message={serverErrorType + ": " + message}
-                        stack={stack}
-                        serverStack={serverStackTrace}
-                    />
-                )}
-            </div>
-        );
-    }
-}
+    const { message, serverErrorType, serverStackTrace } = (error || {}) as ApiErrorInfo;
+    return (
+        <div>
+            {showModal && (
+                <ErrorHandlingContainerModal
+                    canClose={!isFatal}
+                    onClose={handleHideModal}
+                    message={serverErrorType + ": " + message}
+                    stack={stack}
+                    serverStack={serverStackTrace}
+                />
+            )}
+        </div>
+    );
+};

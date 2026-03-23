@@ -1,6 +1,6 @@
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Loader, Paging } from "@skbkontur/react-ui";
-import React, { type ReactElement, useEffect, useState } from "react";
+import { type ReactElement, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
@@ -41,7 +41,7 @@ export const ObjectTableContainer = ({
     customRenderer,
     useErrorHandlingContainer,
     isSuperUser,
-}: ObjectTableProps): React.ReactElement => {
+}: ObjectTableProps): ReactElement => {
     const { search, pathname } = useLocation();
     const navigate = useNavigate();
     const { objectId = "" } = useParams<"objectId">();
@@ -52,28 +52,24 @@ export const ObjectTableContainer = ({
     const [metaInformation, setMetaInformation] = useState<ObjectDescription | null>(null);
     const [query, setQuery] = useState<ObjectSearchQuery>(getDefaultQuery());
     const [downloading, setDownloading] = useState(false);
-    const [shouldLoadObjects, setShouldLoadObjects] = useState(false);
     const [showDownloadModal, setShowDownloadModal] = useState(false);
     const [downloadCount, setDownloadCount] = useState<CountResult | undefined>(undefined);
+
+    const initialLoadDone = useRef(false);
 
     useEffect(() => {
         loadData();
     }, []);
 
     useEffect(() => {
-        if (metaInformation) {
-            const nextQuery = parseQuery(search, metaInformation);
-            setQuery(nextQuery);
-            setShouldLoadObjects(true);
+        if (!initialLoadDone.current || !metaInformation) {
+            return;
         }
+        const nextQuery = parseQuery(search, metaInformation);
+        setQuery(nextQuery);
+        setLoading(true);
+        loadObjectsIfAllowed(metaInformation, nextQuery).finally(() => setLoading(false));
     }, [search]);
-
-    useEffect(() => {
-        if (shouldLoadObjects) {
-            setShouldLoadObjects(false);
-            loadObjectsWithLoader();
-        }
-    }, [query]);
 
     const handleChangeModalFilter = (value: Nullable<Partial<ObjectSearchQuery>>): void => {
         if (!value) {
@@ -191,7 +187,7 @@ export const ObjectTableContainer = ({
         );
     };
 
-    const renderPageNavigation = (): null | React.ReactElement => {
+    const renderPageNavigation = (): null | ReactElement => {
         const { offset, count } = query;
         if (!objects) {
             return null;
@@ -300,24 +296,13 @@ export const ObjectTableContainer = ({
     async function loadData() {
         setLoading(true);
         try {
-            const metaInformation = await dbViewerApi.getMeta(objectId);
-            const query = parseQuery(search, metaInformation);
-            setMetaInformation(metaInformation);
-            setQuery(query);
-            await loadObjectsIfAllowed(metaInformation, query);
+            const meta = await dbViewerApi.getMeta(objectId);
+            const parsedQuery = parseQuery(search, meta);
+            setMetaInformation(meta);
+            setQuery(parsedQuery);
+            await loadObjectsIfAllowed(meta, parsedQuery);
         } finally {
-            setLoading(false);
-        }
-    }
-
-    async function loadObjectsWithLoader(): Promise<void> {
-        if (!metaInformation) {
-            return;
-        }
-        setLoading(true);
-        try {
-            await loadObjectsIfAllowed(metaInformation, query);
-        } finally {
+            initialLoadDone.current = true;
             setLoading(false);
         }
     }
@@ -360,7 +345,6 @@ export const ObjectTableContainer = ({
             ...queryUpdate,
             offset,
         };
-        setQuery(newQuery);
         navigate(getQuery(newQuery));
     }
 

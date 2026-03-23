@@ -2,7 +2,7 @@ import { SearchLoupeIcon16Regular } from "@skbkontur/icons/SearchLoupeIcon16Regu
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Checkbox, Input, ThemeContext } from "@skbkontur/react-ui";
 import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";
-import React from "react";
+import { useContext, useEffect, useState, type ReactElement } from "react";
 
 import { jsStyles } from "./FieldSelector.styles";
 
@@ -40,11 +40,11 @@ export function FieldSelector({
     onShowField,
     onHideField,
     showSelectAllButton,
-}: FieldSelectorProps): React.ReactElement {
-    const [searchText, setSearchText] = React.useState("");
-    const theme = React.useContext(ThemeContext);
+}: FieldSelectorProps): ReactElement {
+    const [searchText, setSearchText] = useState("");
+    const theme = useContext(ThemeContext);
 
-    React.useEffect(() => layoutEventsEmit(), [searchText]);
+    useEffect(() => layoutEventsEmit(), [searchText]);
 
     const isAllFieldSelected = (fieldDefinition: FieldDefinition[]): boolean => {
         return !fieldDefinition.map(x => x.name).some(x => hiddenFields.includes(x));
@@ -67,7 +67,7 @@ export function FieldSelector({
         }
     };
 
-    const renderFieldSelector = (fieldDefinition: FieldDefinition): React.ReactElement => {
+    const renderFieldSelector = (fieldDefinition: FieldDefinition): ReactElement => {
         return (
             <div className={jsStyles.field()} key={fieldDefinition.name + fieldDefinition.caption}>
                 <Checkbox

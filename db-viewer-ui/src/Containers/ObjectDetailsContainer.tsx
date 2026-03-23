@@ -4,7 +4,7 @@ import { TrashCanIcon16Regular } from "@skbkontur/icons/TrashCanIcon16Regular";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button } from "@skbkontur/react-ui";
 import get from "lodash/get";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 
 import { ConfirmDeleteObjectModal } from "../Components/ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
@@ -32,7 +32,7 @@ export const ObjectDetailsContainer = ({
     dbViewerApi,
     customRenderer,
     useErrorHandlingContainer,
-}: ObjectDetailsProps): React.ReactElement => {
+}: ObjectDetailsProps): ReactElement => {
     const { search, pathname } = useLocation();
     const navigate = useNavigate();
     const { objectId = "" } = useParams<"objectId">();

@@ -1,5 +1,5 @@
 import { ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 
 const clouds = [
     <path
@@ -29,8 +29,8 @@ const clouds = [
     />,
 ];
 
-export const CloudsFar = (): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const CloudsFar = (): ReactElement => {
+    const theme = useContext(ThemeContext);
     return (
         <svg
             id="clouds-far"
@@ -68,8 +68,8 @@ export const CloudsFar = (): React.ReactElement => {
     );
 };
 
-export const CloudsMed = (): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const CloudsMed = (): ReactElement => {
+    const theme = useContext(ThemeContext);
     return (
         <svg
             id="clouds-med"
@@ -89,7 +89,7 @@ export const CloudsMed = (): React.ReactElement => {
 };
 
 export function CloudsNear() {
-    const theme = React.useContext(ThemeContext);
+    const theme = useContext(ThemeContext);
     return (
         <svg
             id="clouds-near"

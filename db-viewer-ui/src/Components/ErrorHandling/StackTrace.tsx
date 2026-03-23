@@ -1,7 +1,7 @@
 import { CopyIcon16Light } from "@skbkontur/icons/icons/CopyIcon/CopyIcon16Light";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 
 import { jsStyles } from "./ErrorHandlingContainer.styles";
 
@@ -12,8 +12,8 @@ interface StackTraceProps {
     onCopy(): void;
 }
 
-export const StackTrace = ({ caption, trace, onCopy }: StackTraceProps): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const StackTrace = ({ caption, trace, onCopy }: StackTraceProps): ReactElement => {
+    const theme = useContext(ThemeContext);
 
     return (
         <section>

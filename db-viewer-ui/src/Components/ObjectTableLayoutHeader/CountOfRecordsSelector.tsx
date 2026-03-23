@@ -1,7 +1,7 @@
 import { ArrowCDownIcon16Regular } from "@skbkontur/icons/icons/ArrowCDownIcon/ArrowCDownIcon16Regular";
 import { CounterIcon16Regular } from "@skbkontur/icons/icons/CounterIcon/CounterIcon16Regular";
 import { DropdownMenu, Link, MenuItem } from "@skbkontur/react-ui";
-import React from "react";
+import type { ReactElement } from "react";
 
 interface CountOfRecordsSelectorProps {
     count: number;
@@ -11,8 +11,8 @@ interface CountOfRecordsSelectorProps {
 export const CountOfRecordsSelector = ({
     count: currentCount,
     onChange,
-}: CountOfRecordsSelectorProps): React.ReactElement => {
-    const renderLinkDropdownItem = (count: number): React.ReactElement | null => {
+}: CountOfRecordsSelectorProps): ReactElement => {
+    const renderLinkDropdownItem = (count: number): ReactElement | null => {
         if (count === currentCount) {
             return null;
         }

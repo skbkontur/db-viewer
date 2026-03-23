@@ -36,7 +36,7 @@ export default class ApiBase {
             let serverResponse;
             try {
                 serverResponse = JSON.parse(errorText);
-            } catch (e) {
+            } catch {
                 serverResponse = null;
             }
             if (serverResponse != null) {

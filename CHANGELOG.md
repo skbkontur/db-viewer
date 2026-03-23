@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0 - 2026.03.23
+- Update react-ui to latest 18 version
+- Rewrite class components to functional
+- Update peerDeps for react
+
 ## v1.10 - 2025.05.28
 - Update react-ui
 - Update edi-ui

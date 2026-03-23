@@ -2,15 +2,15 @@ import { UiFilterSortADefaultIcon16Regular } from "@skbkontur/icons/UiFilterSort
 import { UiFilterSortAHighToLowIcon16Regular } from "@skbkontur/icons/UiFilterSortAHighToLowIcon16Regular";
 import { UiFilterSortALowToHighIcon16Regular } from "@skbkontur/icons/UiFilterSortALowToHighIcon16Regular";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, useEffect, useState, type ReactElement } from "react";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { Sort } from "../../Domain/Api/DataTypes/Sort";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
 import { ConfirmDeleteObjectModal } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal";
-import { ScrollableContainer } from "../Layouts/ScrollableContainer";
 import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
 import { RouterLink } from "../RouterLink/RouterLink";
+import { ScrollableContainer } from "../ScrollableContainer/ScrollableContainer";
 
 import { jsStyles } from "./ObjectTable.styles";
 
@@ -38,11 +38,11 @@ export function ObjectTable({
     currentSorts,
     allowDelete,
     allowSort,
-}: ObjectTableProps): React.ReactElement {
-    const [showConfirmModal, setShowConfirmModal] = React.useState(false);
-    const [deletedIndex, setDeletedIndex] = React.useState<number | null>(null);
-    const theme = React.useContext(ThemeContext);
-    React.useEffect(() => window.scrollTo(0, 0), [items]);
+}: ObjectTableProps): ReactElement {
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [deletedIndex, setDeletedIndex] = useState<number | null>(null);
+    const theme = useContext(ThemeContext);
+    useEffect(() => window.scrollTo(0, 0), [items]);
 
     const handleDeleteItem = () => {
         if (deletedIndex != null) {
@@ -60,8 +60,8 @@ export function ObjectTable({
         setShowConfirmModal(true);
         setDeletedIndex(index);
     };
-    const renderEmpty = (count: number): React.ReactElement[] => {
-        const arr: React.ReactElement[] = [];
+    const renderEmpty = (count: number): ReactElement[] => {
+        const arr: ReactElement[] = [];
         for (let i = 0; i < count; i++) {
             arr.push(
                 <th key={i} className={jsStyles.cell()}>
@@ -72,8 +72,8 @@ export function ObjectTable({
         return arr;
     };
 
-    const getIcon = (name: string, currentSort: Sort[]): React.ReactElement => {
-        const dictionary: { [key: string]: React.ReactElement } = {
+    const getIcon = (name: string, currentSort: Sort[]): ReactElement => {
+        const dictionary: { [key: string]: ReactElement } = {
             Ascending: <UiFilterSortALowToHighIcon16Regular />,
             Descending: <UiFilterSortAHighToLowIcon16Regular />,
         };
@@ -85,7 +85,7 @@ export function ObjectTable({
         return <UiFilterSortADefaultIcon16Regular />;
     };
 
-    const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): React.ReactElement => {
+    const renderTableHeader = (item: PropertyMetaInformation, key: number, allowSort: boolean): ReactElement => {
         const name = item.name;
         const content =
             item.isSortable && allowSort ? (
@@ -106,8 +106,8 @@ export function ObjectTable({
         );
     };
 
-    const renderControls = (item: object, index: number): React.ReactElement[] => {
-        const arr: React.ReactElement[] = [];
+    const renderControls = (item: object, index: number): ReactElement[] => {
+        const arr: ReactElement[] = [];
         let key = 0;
         let pathToItem = "";
         if (item) {
@@ -132,7 +132,7 @@ export function ObjectTable({
         return arr;
     };
 
-    const renderCell = (item: any, key: string, type: PropertyMetaInformation): React.ReactElement => {
+    const renderCell = (item: any, key: string, type: PropertyMetaInformation): ReactElement => {
         return (
             <td key={key} className={jsStyles.cell()} data-tid={key}>
                 {renderForTableCell(item, [key], type, objectType, customRenderer)}

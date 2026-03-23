@@ -1,6 +1,6 @@
 import { XCircleIcon64Regular } from "@skbkontur/icons/icons/XCircleIcon/XCircleIcon64Regular";
 import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 
 import { jsStyles } from "./ErrorHandlingContainer.styles";
 
@@ -8,8 +8,8 @@ interface ErrorHandlingContainerMiniModalProps {
     onClose(): void;
 }
 
-export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps): ReactElement => {
+    const theme = useContext(ThemeContext);
 
     return (
         <MiniModal data-tid="ErrorHandlingContainerModal" width={410}>

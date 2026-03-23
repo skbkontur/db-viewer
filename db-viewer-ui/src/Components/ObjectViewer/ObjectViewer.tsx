@@ -1,5 +1,5 @@
 import { Accordion } from "@skbkontur/edi-ui";
-import React from "react";
+import type { ReactElement } from "react";
 
 import { ObjectDescription } from "../../Domain/Api/DataTypes/ObjectDescription";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
@@ -21,7 +21,7 @@ export const ObjectViewer = ({
     onChange,
     allowEdit,
     customRenderer,
-}: ObjectViewerProps): React.ReactElement => {
+}: ObjectViewerProps): ReactElement => {
     const handleChange = (value: any, path: string[]) => {
         let serverValue = value;
         if (value) {

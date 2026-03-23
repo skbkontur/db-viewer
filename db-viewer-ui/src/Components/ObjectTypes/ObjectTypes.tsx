@@ -3,7 +3,7 @@ import { ThemeContext } from "@skbkontur/react-ui";
 import groupBy from "lodash/groupBy";
 import orderBy from "lodash/orderBy";
 import toPairs from "lodash/toPairs";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 
 import { ObjectIdentifier } from "../../Domain/Api/DataTypes/ObjectIdentifier";
 
@@ -16,8 +16,8 @@ interface ObjectTypesProps {
     identifierKeywords: string[];
 }
 
-export function ObjectTypes({ objects, filter, identifierKeywords }: ObjectTypesProps) {
-    const theme = React.useContext(ThemeContext);
+export const ObjectTypes = ({ objects, filter, identifierKeywords }: ObjectTypesProps) => {
+    const theme = useContext(ThemeContext);
 
     const getIdentifierWithoutKeywords = (identifier: string): string => {
         let result = identifier;
@@ -41,7 +41,7 @@ export function ObjectTypes({ objects, filter, identifierKeywords }: ObjectTypes
         return objects.filter(item => StringUtils.checkWordByCase(item.identifier, filter));
     };
 
-    const renderTypes = (objects: ObjectIdentifier[], displayGroups: boolean): React.ReactElement => {
+    const renderTypes = (objects: ObjectIdentifier[], displayGroups: boolean): ReactElement => {
         if (!displayGroups) {
             return (
                 <div className={jsStyles.root()} data-tid="ObjectsList">
@@ -103,4 +103,4 @@ export function ObjectTypes({ objects, filter, identifierKeywords }: ObjectTypes
             {Object.keys(categorized).map(schemaName => renderSchema(schemaName, categorized[schemaName]))}
         </div>
     );
-}
+};
