@@ -142,9 +142,10 @@ jobs:
 
       - name: Publish NPM
         run: |
+          npm whoami
           for file in ./db-viewer-ui/dist/*.tgz; do
             echo "Will publish $file"
-            npm publish $file --ignore-scripts
+            npm publish $file --ignore-scripts --access public
           done
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
