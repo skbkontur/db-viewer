@@ -1,5 +1,5 @@
 import { ThemeContext } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 import { useLocation } from "react-router";
 
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
@@ -8,8 +8,8 @@ import { CommonLayout } from "../Layouts/CommonLayout";
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
 import { jsStyles } from "./ObjectNotFoundPage.styles";
 
-export const ObjectNotFoundPage = (): React.ReactElement => {
-    const theme = React.useContext(ThemeContext);
+export const ObjectNotFoundPage = (): ReactElement => {
+    const theme = useContext(ThemeContext);
     const { pathname } = useLocation();
     return (
         <div style={{ backgroundColor: theme.bgDefault }}>

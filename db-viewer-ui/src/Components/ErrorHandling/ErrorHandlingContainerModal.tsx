@@ -1,4 +1,4 @@
-import React from "react";
+import type { ReactElement } from "react";
 
 import { ErrorMiniModal } from "./ErrorMiniModal";
 import { ErrorModal } from "./ErrorModal";
@@ -16,7 +16,7 @@ interface ErrorHandlingContainerModalProps {
 export const ErrorHandlingContainerModal = ({
     onClose,
     ...restProps
-}: ErrorHandlingContainerModalProps): React.ReactElement => {
+}: ErrorHandlingContainerModalProps): ReactElement => {
     const showStack = useDeveloperMode();
 
     return showStack ? <ErrorModal {...restProps} onClose={onClose} /> : <ErrorMiniModal onClose={onClose} />;

@@ -4,7 +4,7 @@ import { ToolPencilLineIcon16Regular } from "@skbkontur/icons/ToolPencilLineIcon
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button } from "@skbkontur/react-ui";
 import get from "lodash/get";
-import React, { useState } from "react";
+import { useState, type ReactElement } from "react";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { ICustomRenderer } from "../../Domain/Objects/CustomRenderer";
@@ -33,7 +33,7 @@ export const ObjectRenderer = ({
     property,
     allowEdit,
     onChange,
-}: ObjectRendererProps): React.ReactElement => {
+}: ObjectRendererProps): ReactElement => {
     const [editableMode, setEditableMode] = useState(false);
     const [value, setValue] = useState(undefined);
 

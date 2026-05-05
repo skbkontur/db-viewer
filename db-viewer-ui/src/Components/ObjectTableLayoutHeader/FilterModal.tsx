@@ -1,7 +1,7 @@
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
-import React from "react";
+import { useContext, useRef, type ReactElement } from "react";
 import { useLocation } from "react-router";
 
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
@@ -27,10 +27,10 @@ export const FilterModal = ({
     onChangeFilter,
     onApplyFilter,
     allowClose,
-}: FilterModalProps): React.ReactElement => {
+}: FilterModalProps): ReactElement => {
     const { pathname } = useLocation();
-    const container = React.useRef<ValidationContainer>(null);
-    const theme = React.useContext(ThemeContext);
+    const container = useRef<ValidationContainer>(null);
+    const theme = useContext(ThemeContext);
 
     const handleApplyFilter = async () => {
         const isValid = (await container.current?.validate()) ?? true;

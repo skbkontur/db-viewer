@@ -1,7 +1,7 @@
 import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
 
 export const jsStyles = {
-    container(): string {
+    root(): string {
         return css`
             width: 100%;
             position: relative;
@@ -50,7 +50,7 @@ export const jsStyles = {
         `;
     },
 
-    root(): string {
+    container(): string {
         return css`
             width: 100%;
             overflow-x: auto;

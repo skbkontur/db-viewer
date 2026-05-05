@@ -1,8 +1,8 @@
 import "./react-selenium-prep";
 import "@skbkontur/react-selenium-testing";
 
-import React from "react";
-import ReactDom from "react-dom";
+import type { ReactElement } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { DbViewerApplication, DbViewerApi, NullCustomRenderer } from "./src";
@@ -35,10 +35,13 @@ const AdminToolsEntryPoint = () => (
     </BrowserRouter>
 );
 
-function AdminRedirect(): React.ReactElement {
+function AdminRedirect(): ReactElement {
     document.cookie = "isSuperUser=true";
     localStorage.setItem("isSuperUser", "true");
     return <Navigate to="/BusinessObjects" replace />;
 }
 
-ReactDom.render(<AdminToolsEntryPoint />, document.getElementById("content"));
+const container = document.getElementById("content") as HTMLElement;
+const root = createRoot(container);
+
+root.render(<AdminToolsEntryPoint />);

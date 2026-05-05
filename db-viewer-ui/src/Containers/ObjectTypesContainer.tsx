@@ -1,6 +1,6 @@
 import { ColumnStack, Fit } from "@skbkontur/react-stack-layout";
 import { Input, Loader } from "@skbkontur/react-ui";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 import { useLocation } from "react-router";
 
 import { ErrorHandlingContainer } from "../Components/ErrorHandling/ErrorHandlingContainer";
@@ -22,7 +22,7 @@ export const ObjectTypesContainer = ({
     useErrorHandlingContainer,
     identifierKeywords,
     withGoBackUrl,
-}: ObjectTypesProps): React.ReactElement => {
+}: ObjectTypesProps): ReactElement => {
     const [loading, setLoading] = useState(false);
     const { pathname } = useLocation();
     const [objects, setObjects] = useState<ObjectIdentifier[]>([]);

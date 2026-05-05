@@ -1,5 +1,5 @@
 import { Select, ThemeContext, SelectProps } from "@skbkontur/react-ui";
-import React from "react";
+import { useContext, type ReactElement } from "react";
 
 import { ObjectFieldFilterOperator } from "../../Domain/Api/DataTypes/ObjectFieldFilterOperator";
 
@@ -9,7 +9,7 @@ interface OperatorSelectProps {
     availableValues: ObjectFieldFilterOperator[];
 }
 
-function operatorToString(operation: ObjectFieldFilterOperator): string {
+const operatorToString = (operation: ObjectFieldFilterOperator): string => {
     const filterOperators = {
         GreaterThanOrEquals: ">=",
         LessThanOrEquals: "<=",
@@ -23,31 +23,28 @@ function operatorToString(operation: ObjectFieldFilterOperator): string {
         return result;
     }
     return "=";
-}
+};
 
-export function OperatorSelect(props: OperatorSelectProps): React.ReactElement {
-    const { availableValues, value, onChange } = props;
-    return (
-        <StyledSelect
-            width={70}
-            data-tid="OperatorSelect"
-            items={availableValues.map(x => [x, operatorToString(x)] as [ObjectFieldFilterOperator, string])}
-            onValueChange={(nextValue: any) => {
-                if (nextValue != null) {
-                    onChange(nextValue);
-                }
-            }}
-            value={value || undefined}
-        />
-    );
-}
+export const OperatorSelect = ({ availableValues, onChange, value }: OperatorSelectProps): ReactElement => (
+    <StyledSelect
+        width={70}
+        data-tid="OperatorSelect"
+        items={availableValues.map(x => [x, operatorToString(x)] as [ObjectFieldFilterOperator, string])}
+        onValueChange={nextValue => {
+            if (nextValue !== null && nextValue !== undefined) {
+                onChange(nextValue);
+            }
+        }}
+        value={value || undefined}
+    />
+);
 
-export function StyledSelect<TValue = {}, TItem = {}>(props: SelectProps<TValue, TItem>): React.ReactElement {
-    const theme = React.useContext(ThemeContext);
+export const StyledSelect = <TValue = {}, TItem = {}>(props: SelectProps<TValue, TItem>): ReactElement => {
+    const theme = useContext(ThemeContext);
     return (
         <Select<TValue, TItem>
             {...(props as any)}
             renderItem={(value: any, item: any) => <span style={{ color: theme.textColorDefault }}>{item}</span>}
         />
     );
-}
+};
