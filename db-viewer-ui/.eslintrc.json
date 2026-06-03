@@ -39,8 +39,10 @@
     "ignorePatterns": ["dist/", "react-selenium-testing.js"],
     "settings": {
         "import/resolver": {
+            "typescript": true,
             "node": {
-                "paths": ["src"]
+                "paths": ["src"],
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
             }
         },
         "react": {

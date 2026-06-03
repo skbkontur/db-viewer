@@ -1,7 +1,7 @@
-import { MoneyCurrencyRubleIcon16Regular } from "@skbkontur/icons/MoneyCurrencyRubleIcon16Regular";
-import { PlusIcon16Regular } from "@skbkontur/icons/PlusIcon16Regular";
-import { SearchLoupeIcon16Regular } from "@skbkontur/icons/SearchLoupeIcon16Regular";
-import { UiMenuBars3HIcon16Regular } from "@skbkontur/icons/UiMenuBars3HIcon16Regular";
+import { IconMoneyCurrencyRubleRegular16 } from "@skbkontur/icons/IconMoneyCurrencyRubleRegular16";
+import { IconPlusRegular16 } from "@skbkontur/icons/IconPlusRegular16";
+import { IconSearchLoupeRegular16 } from "@skbkontur/icons/IconSearchLoupeRegular16";
+import { IconUiMenuBars3HRegular16 } from "@skbkontur/icons/IconUiMenuBars3HRegular16";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link } from "@skbkontur/react-ui";
 import { action } from "@storybook/addon-actions";
@@ -70,12 +70,12 @@ export const TitledLayoutWithTools = (): React.ReactElement => (
                 tools={
                     <RowStack baseline block gap={2}>
                         <Fit>
-                            <Link icon={<SearchLoupeIcon16Regular />} onClick={action("tool1")}>
+                            <Link icon={<IconSearchLoupeRegular16 />} onClick={action("tool1")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
                         <Fit>
-                            <Link icon={<PlusIcon16Regular />} onClick={action("tool2")}>
+                            <Link icon={<IconPlusRegular16 />} onClick={action("tool2")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
@@ -98,12 +98,12 @@ export const TitledLayoutWithRightAlignedTools = (): React.ReactElement => (
                     <RowStack baseline block gap={2}>
                         <Fill />
                         <Fit>
-                            <Link icon={<SearchLoupeIcon16Regular />} onClick={action("tool1")}>
+                            <Link icon={<IconSearchLoupeRegular16 />} onClick={action("tool1")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
                         <Fit>
-                            <Link icon={<PlusIcon16Regular />} onClick={action("tool2")}>
+                            <Link icon={<IconPlusRegular16 />} onClick={action("tool2")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
@@ -140,12 +140,12 @@ export const TitledWithBackToPreviousWithRightAlignedToolsAndContent = (): React
                     <RowStack baseline block gap={2}>
                         <Fill />
                         <Fit>
-                            <Link icon={<SearchLoupeIcon16Regular />} onClick={action("tool1")}>
+                            <Link icon={<IconSearchLoupeRegular16 />} onClick={action("tool1")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
                         <Fit>
-                            <Link icon={<PlusIcon16Regular />} onClick={action("tool2")}>
+                            <Link icon={<IconPlusRegular16 />} onClick={action("tool2")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
@@ -177,22 +177,22 @@ export const TitledWithBackToPreviousWithRightAlignedToolsAndContentAndLongHeade
                     <RowStack baseline block gap={2}>
                         <Fill />
                         <Fit>
-                            <Link icon={<SearchLoupeIcon16Regular />} onClick={action("tool1")}>
+                            <Link icon={<IconSearchLoupeRegular16 />} onClick={action("tool1")}>
                                 Инструмент 1
                             </Link>
                         </Fit>
                         <Fit>
-                            <Link icon={<PlusIcon16Regular />} onClick={action("tool2")}>
+                            <Link icon={<IconPlusRegular16 />} onClick={action("tool2")}>
                                 Инструмент 2
                             </Link>
                         </Fit>
                         <Fit>
-                            <Link icon={<UiMenuBars3HIcon16Regular />} onClick={action("tool3")}>
+                            <Link icon={<IconUiMenuBars3HRegular16 />} onClick={action("tool3")}>
                                 Инструмент 3
                             </Link>
                         </Fit>
                         <Fit>
-                            <Link icon={<MoneyCurrencyRubleIcon16Regular />} onClick={action("tool4")}>
+                            <Link icon={<IconMoneyCurrencyRubleRegular16 />} onClick={action("tool4")}>
                                 Инструмент 4
                             </Link>
                         </Fit>

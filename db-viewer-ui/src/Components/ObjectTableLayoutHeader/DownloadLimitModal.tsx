@@ -1,4 +1,4 @@
-import { MinusCircleIcon64Regular } from "@skbkontur/icons/icons/MinusCircleIcon/MinusCircleIcon64Regular";
+import { IconMinusCircleRegular64 } from "@skbkontur/icons/IconMinusCircleRegular64";
 import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
 import { useContext, type ReactElement } from "react";
 
@@ -13,7 +13,7 @@ export function DownloadLimitModal({ countLimit, onDownloadAbort }: DownloadLimi
     const theme = useContext(ThemeContext);
     return (
         <MiniModal onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
-            <MiniModal.Header icon={<MinusCircleIcon64Regular />} data-tid="Header">
+            <MiniModal.Header icon={<IconMinusCircleRegular64 />} data-tid="Header">
                 <span className={jsStyles.modalHeader(theme)}>Слишком большой список</span>
             </MiniModal.Header>
             <MiniModal.Body data-tid="Body">
