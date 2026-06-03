@@ -1,4 +1,4 @@
-import { XCircleIcon64Regular } from "@skbkontur/icons/icons/XCircleIcon/XCircleIcon64Regular";
+import { IconXCircleRegular64 } from "@skbkontur/icons/IconXCircleRegular64";
 import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
 import { useContext, type ReactElement } from "react";
 
@@ -13,7 +13,7 @@ export const ErrorMiniModal = ({ onClose }: ErrorHandlingContainerMiniModalProps
 
     return (
         <MiniModal data-tid="ErrorHandlingContainerModal" width={410}>
-            <MiniModal.Header data-tid="Header" icon={<XCircleIcon64Regular color="#FF5A49" />}>
+            <MiniModal.Header data-tid="Header" icon={<IconXCircleRegular64 color="#FF5A49" />}>
                 <span className={jsStyles.modalHeader(theme)}>Произошла непредвиденная ошибка</span>
             </MiniModal.Header>
             <MiniModal.Body className={jsStyles.modalBody(theme)} data-tid="CallToActionInErrorMessage">

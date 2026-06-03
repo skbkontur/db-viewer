@@ -1,4 +1,4 @@
-import { ArrowALeftIcon24Regular } from "@skbkontur/icons/ArrowALeftIcon24Regular";
+import { IconArrowALeftRegular24 } from "@skbkontur/icons/IconArrowALeftRegular24";
 import { Loader, ThemeContext } from "@skbkontur/react-ui";
 import { type CSSProperties, type ReactElement, type ReactNode, useContext } from "react";
 
@@ -66,7 +66,7 @@ CommonLayout.GoBack = function CommonLayoutGoBack({ to }: CommonLayoutGoBackProp
     const theme = useContext(ThemeContext);
     return (
         <RouterLink data-tid="GoBack" to={to} className={jsStyles.backLink()}>
-            <ArrowALeftIcon24Regular align="none" className={jsStyles.backLinkIcon(theme)} />
+            <IconArrowALeftRegular24 align="none" className={jsStyles.backLinkIcon(theme)} />
         </RouterLink>
     );
 };

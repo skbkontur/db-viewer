@@ -1,4 +1,4 @@
-import { CopyIcon16Light } from "@skbkontur/icons/icons/CopyIcon/CopyIcon16Light";
+import { IconCopyLight16 } from "@skbkontur/icons/IconCopyLight16";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
 import { useContext, type ReactElement } from "react";
@@ -22,7 +22,7 @@ export const StackTrace = ({ caption, trace, onCopy }: StackTraceProps): ReactEl
                     <h4 className={jsStyles.header()}>{caption}</h4>
                 </Fit>
                 <Fit>
-                    <Link icon={<CopyIcon16Light />} onClick={onCopy}>
+                    <Link icon={<IconCopyLight16 />} onClick={onCopy}>
                         Скопировать
                     </Link>
                 </Fit>

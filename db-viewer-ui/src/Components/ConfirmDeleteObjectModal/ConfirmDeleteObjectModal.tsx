@@ -1,4 +1,4 @@
-import { XCircleIcon64Regular } from "@skbkontur/icons/icons/XCircleIcon/XCircleIcon64Regular";
+import { IconXCircleRegular64 } from "@skbkontur/icons/IconXCircleRegular64";
 import { ColumnStack } from "@skbkontur/react-stack-layout";
 import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
 import { useContext, type ReactElement } from "react";
@@ -14,7 +14,7 @@ export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteOb
     const theme = useContext(ThemeContext);
     return (
         <MiniModal ignoreBackgroundClick data-tid="ConfirmDeleteObjectModal">
-            <MiniModal.Header icon={<XCircleIcon64Regular />}>
+            <MiniModal.Header icon={<IconXCircleRegular64 />}>
                 <span className={jsStyles.modalHeader(theme)}>Удалить объект?</span>
             </MiniModal.Header>
             <MiniModal.Body>
