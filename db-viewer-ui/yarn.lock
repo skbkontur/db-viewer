@@ -2388,10 +2388,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@skbkontur/colors@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@skbkontur/colors@npm:1.1.1"
-  checksum: 10/6931243a5746615b19ada44ec4a2d29e8e078fd3ba63158bb164b9e0003d912f7a9ff26f73f1ab13a4b6f3c7fce2299a7068853c0b7474941d519c892eb03d87
+"@skbkontur/colors@npm:^2.1.7":
+  version: 2.1.7
+  resolution: "@skbkontur/colors@npm:2.1.7"
+  dependencies:
+    "@types/apca-w3": "npm:0.1.3"
+    "@types/culori": "npm:4.0.1"
+    apca-w3: "npm:0.1.9"
+    culori: "npm:4.0.2"
+  checksum: 10/c558c20f82a628766d62c5daccf33f2d21711433e1a336fa09e77836ac847ea7031a1b2959dddb16d4b03dd44afd359c00c28ce7ad1cb11a23a8442548ffda60
   languageName: node
   linkType: hard
 
@@ -2399,7 +2404,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@skbkontur/db-viewer-ui@workspace:."
   dependencies:
-    "@skbkontur/edi-ui": "npm:^0.4.3"
+    "@skbkontur/edi-ui": "npm:^0.4.4"
     "@skbkontur/icons": "npm:^2.0.10"
     "@skbkontur/react-selenium-testing": "npm:^0.2.1"
     "@skbkontur/react-stack-layout": "npm:^1.0.3"
@@ -2446,11 +2451,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@skbkontur/edi-ui@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "@skbkontur/edi-ui@npm:0.4.3"
+"@skbkontur/edi-ui@npm:^0.4.4":
+  version: 0.4.4
+  resolution: "@skbkontur/edi-ui@npm:0.4.4"
   dependencies:
-    "@skbkontur/colors": "npm:^1.1.1"
+    "@skbkontur/colors": "npm:^2.1.7"
     "@skbkontur/icons": "npm:^2.0.10"
     "@skbkontur/react-stack-layout": "npm:^1.2.0"
     date-fns: "npm:^3.6.0"
@@ -2459,11 +2464,12 @@ __metadata:
     lodash.isplainobject: "npm:^4.0.6"
     tslib: "npm:^1"
   peerDependencies:
+    "@skbkontur/colors": ">=2 <3"
     "@skbkontur/icons": ">=2 <3"
     "@skbkontur/react-ui": ">=5 <6"
     react: ">=16 <=18"
     react-dom: ">=16 <=18"
-  checksum: 10/8690e47c67abab6077902e02d820263f28fce530249873afe33d1ead3031c4509654820f8beff892f979b1e091cd7a431be9937f32027da2f4ed03dc260766e6
+  checksum: 10/072eb1c12d69e3cb0096d57a376ecffb15a57040cf0a38d98d8ae89d56d780f9e869608dc798facebcd2811396266c2fef19e4f026585c154bb3ee5071e36f74
   languageName: node
   linkType: hard
 
@@ -3119,6 +3125,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/apca-w3@npm:0.1.3":
+  version: 0.1.3
+  resolution: "@types/apca-w3@npm:0.1.3"
+  checksum: 10/e1772bba0e5e965dec6d6ec1f1bdf3e41c69495d78b3c22297e652c511740d7c9ec02dce58e80d38aead3238a8d3e843203e41c61d307ede47821fec5d98d5cb
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.0.0, @types/babel__core@npm:^7.18.0, @types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -3185,6 +3198,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10/b4172927cd1387cf037c3ade785ef46c87537b7bc2803d7f6663b4904d0c5d6f726415d1adb2fee4fecb21746738f11336076449265d46be4ce110cc3a8c8436
+  languageName: node
+  linkType: hard
+
+"@types/culori@npm:4.0.1":
+  version: 4.0.1
+  resolution: "@types/culori@npm:4.0.1"
+  checksum: 10/34240fce795cdcbeefbbb4ec1fd6adec1c7edafa949131586176649c21d912236d151bf7af53de161454a6c2fa259a4ddd54f204c66e67e8b9ecfd90b9021c68
   languageName: node
   linkType: hard
 
@@ -4059,6 +4079,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"apca-w3@npm:0.1.9":
+  version: 0.1.9
+  resolution: "apca-w3@npm:0.1.9"
+  dependencies:
+    colorparsley: "npm:^0.1.8"
+  checksum: 10/df2b109aa6c08655c4699b4a4b8eb9c823fc3563f93c70a2bcfabd8cd8aa6a7501fb6d4b289d3befa05e0b772a6725167704cb28fbec4c5cf85f4780c9f314f3
+  languageName: node
+  linkType: hard
+
 "app-root-dir@npm:^1.0.2":
   version: 1.0.2
   resolution: "app-root-dir@npm:1.0.2"
@@ -4727,6 +4756,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"colorparsley@npm:^0.1.8":
+  version: 0.1.8
+  resolution: "colorparsley@npm:0.1.8"
+  checksum: 10/f4ece36583c6837c111dd8ca0e9316505be93d03f6f8c8880a3c93a6d1103cbe6071aad54fc7e48c4b0e2026a4276d988dd271760da9c1ad856b1ec5f3282b83
+  languageName: node
+  linkType: hard
+
 "combined-stream@npm:^1.0.8":
   version: 1.0.8
   resolution: "combined-stream@npm:1.0.8"
@@ -4959,6 +4995,13 @@ __metadata:
   version: 3.2.3
   resolution: "csstype@npm:3.2.3"
   checksum: 10/ad41baf7e2ffac65ab544d79107bf7cd1a4bb9bab9ac3302f59ab4ba655d5e30942a8ae46e10ba160c6f4ecea464cc95b975ca2fefbdeeacd6ac63f12f99fe1f
+  languageName: node
+  linkType: hard
+
+"culori@npm:4.0.2":
+  version: 4.0.2
+  resolution: "culori@npm:4.0.2"
+  checksum: 10/9d297ca5c6fc86b2637200e1d9edb5a7d1015a2e978a6748781ef53c9577269ce1df96dc0925b0002239c85665ba881a3d580564dfd2807c65ee65dc2e829849
   languageName: node
   linkType: hard
 
