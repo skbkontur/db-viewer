@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.2 - 2026.06.08
+- Update edi-ui, colors 2.0, icons 2.0
+
 ## v2.0 - 2026.03.23
 - Update react-ui to latest 18 version
 - Rewrite class components to functional
