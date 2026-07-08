@@ -42,7 +42,9 @@ export function ObjectTable({
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [deletedIndex, setDeletedIndex] = useState<number | null>(null);
     const theme = useContext(ThemeContext);
-    useEffect(() => window.scrollTo(0, 0), [items]);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [items]);
 
     const handleDeleteItem = () => {
         if (deletedIndex != null) {
