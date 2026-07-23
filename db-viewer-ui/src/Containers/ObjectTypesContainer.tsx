@@ -39,7 +39,7 @@ export const ObjectTypesContainer = ({
             {withGoBackUrl && <CommonLayout.GoBack to={RouteUtils.backUrl(pathname)} />}
             <CommonLayout.Header title="Список Объектов" />
             <CommonLayout.Content>
-                <Loader type="big" active={loading}>
+                <Loader size="large" active={loading}>
                     <ColumnStack block stretch>
                         <Fit>
                             <Input

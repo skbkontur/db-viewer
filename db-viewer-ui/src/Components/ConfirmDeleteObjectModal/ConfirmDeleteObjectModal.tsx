@@ -1,9 +1,10 @@
 import { IconXCircleRegular64 } from "@skbkontur/icons/IconXCircleRegular64";
 import { ColumnStack } from "@skbkontur/react-stack-layout";
 import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useContext, type ReactElement } from "react";
 
-import { jsStyles } from "./ConfirmDeleteObjectModal.styles";
+import { getStyles } from "./ConfirmDeleteObjectModal.styles";
 
 interface ConfirmDeleteObjectModalProps {
     onDelete: () => void;
@@ -11,6 +12,7 @@ interface ConfirmDeleteObjectModalProps {
 }
 
 export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteObjectModalProps): ReactElement {
+    const jsStyles = useStyles(getStyles);
     const theme = useContext(ThemeContext);
     return (
         <MiniModal ignoreBackgroundClick data-tid="ConfirmDeleteObjectModal">
@@ -25,7 +27,7 @@ export function ConfirmDeleteObjectModal({ onDelete, onCancel }: ConfirmDeleteOb
                     <Button size="medium" use="danger" onClick={onDelete} data-tid="Delete">
                         Удалить
                     </Button>
-                    <Button size="medium" onClick={onCancel} data-tid="Cancel">
+                    <Button size="medium" use="outline" onClick={onCancel} data-tid="Cancel">
                         Отменить
                     </Button>
                 </ColumnStack>

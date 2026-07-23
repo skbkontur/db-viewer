@@ -1,7 +1,7 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     routerLink(t: Theme) {
         return css`
             color: ${t.linkColor};
@@ -12,4 +12,4 @@ export const jsStyles = {
             }
         `;
     },
-};
+}));

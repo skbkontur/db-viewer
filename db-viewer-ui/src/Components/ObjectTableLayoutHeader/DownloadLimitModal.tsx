@@ -1,8 +1,9 @@
 import { IconMinusCircleRegular64 } from "@skbkontur/icons/IconMinusCircleRegular64";
 import { Button, MiniModal, ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useContext, type ReactElement } from "react";
 
-import { jsStyles } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal.styles";
+import { getStyles } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal.styles";
 
 interface DownloadLimitModalProps {
     countLimit: number;
@@ -10,6 +11,7 @@ interface DownloadLimitModalProps {
 }
 
 export function DownloadLimitModal({ countLimit, onDownloadAbort }: DownloadLimitModalProps): ReactElement {
+    const jsStyles = useStyles(getStyles);
     const theme = useContext(ThemeContext);
     return (
         <MiniModal onClose={onDownloadAbort} ignoreBackgroundClick data-tid="DownloadLimitModal">
@@ -25,7 +27,7 @@ export function DownloadLimitModal({ countLimit, onDownloadAbort }: DownloadLimi
                 </span>
             </MiniModal.Body>
             <MiniModal.Footer>
-                <Button data-tid="Cancel" size="medium" onClick={onDownloadAbort}>
+                <Button data-tid="Cancel" size="medium" use="outline" onClick={onDownloadAbort}>
                     Понятно
                 </Button>
             </MiniModal.Footer>

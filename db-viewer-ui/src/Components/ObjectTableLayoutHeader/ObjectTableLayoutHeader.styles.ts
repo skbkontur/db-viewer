@@ -1,6 +1,6 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     filter(): string {
         return css`
             font-weight: bold;
@@ -12,4 +12,4 @@ export const jsStyles = {
             padding: 10px;
         `;
     },
-};
+}));

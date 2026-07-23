@@ -1,5 +1,6 @@
 import { StringUtils } from "@skbkontur/edi-ui";
 import { ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import groupBy from "lodash/groupBy";
 import orderBy from "lodash/orderBy";
 import toPairs from "lodash/toPairs";
@@ -8,7 +9,7 @@ import { useContext, type ReactElement } from "react";
 import { ObjectIdentifier } from "../../Domain/Api/DataTypes/ObjectIdentifier";
 
 import { ObjectLink } from "./ObjectLink";
-import { jsStyles } from "./ObjectTypes.styles";
+import { getStyles } from "./ObjectTypes.styles";
 
 interface ObjectTypesProps {
     objects: ObjectIdentifier[];
@@ -17,6 +18,7 @@ interface ObjectTypesProps {
 }
 
 export const ObjectTypes = ({ objects, filter, identifierKeywords }: ObjectTypesProps) => {
+    const jsStyles = useStyles(getStyles);
     const theme = useContext(ThemeContext);
 
     const getIdentifierWithoutKeywords = (identifier: string): string => {

@@ -241,7 +241,7 @@ export const ObjectTableContainer = ({
                 }
             />
             <CommonLayout.Content>
-                <Loader type="big" active={loading}>
+                <Loader size="large" active={loading}>
                     <ColumnStack gap={4}>
                         <Fit>
                             {objects &&

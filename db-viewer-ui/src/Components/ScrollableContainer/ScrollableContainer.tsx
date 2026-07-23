@@ -1,7 +1,8 @@
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import debounce from "lodash/debounce";
 import { type CSSProperties, type PropsWithChildren, useEffect, useRef, type ReactElement } from "react";
 
-import { jsStyles } from "./ScrollableContainer.styles";
+import { getStyles } from "./ScrollableContainer.styles";
 import { updateScrollbarPosition, isScrollbarInViewport } from "./helpers";
 
 interface ScrollableContainerProps {
@@ -16,6 +17,7 @@ export const ScrollableContainer = ({
     style,
     scrollStyle = {},
 }: PropsWithChildren<ScrollableContainerProps>): ReactElement => {
+    const jsStyles = useStyles(getStyles);
     const scrollLeft = useRef(0);
     const scrollingSource = useRef<"none" | "container" | "scrollbar">("none");
 

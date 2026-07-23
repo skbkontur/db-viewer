@@ -1,6 +1,6 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     root(): string {
         return css`
             display: inline-block;
@@ -8,4 +8,4 @@ export const jsStyles = {
             margin-top: -1px;
         `;
     },
-};
+}));

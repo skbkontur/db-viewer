@@ -1,4 +1,5 @@
 import { ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useContext, type ReactElement } from "react";
 import { useLocation } from "react-router";
 
@@ -6,9 +7,10 @@ import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { CommonLayout } from "../Layouts/CommonLayout";
 
 import { CloudsFar, CloudsMed, CloudsNear } from "./Clouds";
-import { jsStyles } from "./ObjectNotFoundPage.styles";
+import { getStyles } from "./ObjectNotFoundPage.styles";
 
 export const ObjectNotFoundPage = (): ReactElement => {
+    const jsStyles = useStyles(getStyles);
     const theme = useContext(ThemeContext);
     const { pathname } = useLocation();
     return (

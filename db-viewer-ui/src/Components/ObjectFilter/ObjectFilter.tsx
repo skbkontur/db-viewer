@@ -1,6 +1,6 @@
 import { TimeUtils, StringUtils } from "@skbkontur/edi-ui";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Input } from "@skbkontur/react-ui";
+import { Input, MaskedInput } from "@skbkontur/react-ui";
 import { tooltip, ValidationInfo, ValidationWrapper } from "@skbkontur/react-ui-validations";
 import type { ReactElement } from "react";
 
@@ -72,10 +72,11 @@ export const ObjectFilter = ({ conditions, onChange, tableColumns }: ObjectFilte
                             data-tid="DateTimeValidation"
                             renderMessage={tooltip("right middle")}
                             validationInfo={getValidation(property, value)}>
-                            <Input
+                            <MaskedInput
                                 mask="999999999999999999"
+                                unmask
                                 data-tid={"DateTimeInTicks"}
-                                onValueChange={nextValue => updateItem(property, { value: nextValue })}
+                                onValueChange={nextValue => updateItem(property, { value: nextValue || null })}
                                 value={value ? value : ""}
                             />
                         </ValidationWrapper>

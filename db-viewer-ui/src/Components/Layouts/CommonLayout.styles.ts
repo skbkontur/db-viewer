@@ -1,4 +1,4 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
 export const baseSize = 5;
@@ -7,7 +7,7 @@ const newBaseSize = 4;
 const globalHorizontalPadding = newBaseSize * 7;
 const globalVerticalPadding = newBaseSize * 10;
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     commonLayout(t: Theme): string {
         return css`
             color: ${t.textColorDefault};
@@ -116,4 +116,4 @@ export const jsStyles = {
             flex: 1 1 auto;
         `;
     },
-};
+}));

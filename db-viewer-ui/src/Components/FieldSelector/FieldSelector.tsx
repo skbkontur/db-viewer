@@ -2,9 +2,10 @@ import { IconSearchLoupeRegular16 } from "@skbkontur/icons/IconSearchLoupeRegula
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Checkbox, Input, ThemeContext } from "@skbkontur/react-ui";
 import { emit as layoutEventsEmit } from "@skbkontur/react-ui/lib/LayoutEvents";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useContext, useEffect, useState, type ReactElement } from "react";
 
-import { jsStyles } from "./FieldSelector.styles";
+import { getStyles } from "./FieldSelector.styles";
 
 const MAX_ITEMS_FOR_SPLITTING_BY_2_COLUMNS = 30;
 
@@ -41,6 +42,7 @@ export function FieldSelector({
     onHideField,
     showSelectAllButton,
 }: FieldSelectorProps): ReactElement {
+    const jsStyles = useStyles(getStyles);
     const [searchText, setSearchText] = useState("");
     const theme = useContext(ThemeContext);
 

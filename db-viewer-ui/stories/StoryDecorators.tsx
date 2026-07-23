@@ -25,7 +25,7 @@ const ValidationContainerWithSubmitButtonWrapper: React.FC<{ children: React.Rea
             <div>
                 <div>{children}</div>
                 <RowStack gap={1} verticalAlign="center">
-                    <Button use="primary" onClick={handleSubmit}>
+                    <Button use="accent" onClick={handleSubmit}>
                         Submit
                     </Button>
                     {caption}
