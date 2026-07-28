@@ -1,6 +1,6 @@
 import { Time, TimeUtils } from "@skbkontur/edi-ui";
 import { MaskedInput } from "@skbkontur/react-ui";
-import { useEffect, useState, type ReactElement, useMemo } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 
 import { padTime } from "./helpers";
 
@@ -25,18 +25,15 @@ export const TimePicker = ({
 }: TimePickerProps): ReactElement => {
     const [innerValue, setInnerValue] = useState(() => value ?? "");
 
-    const formatChars = useMemo(
-        () => ({
-            "9": "[0-9]",
-            H: "[0-2]",
-            h: innerValue.startsWith("2") ? "[0-3]" : "[0-9]",
-            M: "[0-5]",
-            m: "[0-9]",
-            S: "[0-5]",
-            s: "[0-9]",
-        }),
-        [innerValue]
-    );
+    const formatChars = {
+        "9": "[0-9]",
+        H: "[0-2]",
+        h: innerValue.startsWith("2") ? "[0-3]" : "[0-9]",
+        M: "[0-5]",
+        m: "[0-9]",
+        S: "[0-5]",
+        s: "[0-9]",
+    };
 
     useEffect(() => {
         setInnerValue(value ?? "");

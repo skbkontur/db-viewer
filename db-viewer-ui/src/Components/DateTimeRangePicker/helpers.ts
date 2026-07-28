@@ -47,10 +47,12 @@ export const padTime = (input: string, useSeconds?: boolean): string => {
 
     const hours = h.padStart(2, "0");
     const minutes = m.padEnd(2, "0");
+    const seconds = s.padEnd(2, "0");
+    const milliseconds = ms.padEnd(3, "0");
 
     if (!useSeconds) {
         return `${hours}:${minutes}`;
     }
 
-    return `${hours}:${minutes}:${s.padEnd(2, "0")}.${ms.padEnd(3, "0")}`;
+    return `${hours}:${minutes}:${seconds}.${milliseconds}`;
 };
