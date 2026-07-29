@@ -1,9 +1,10 @@
 import { IconCopyLight16 } from "@skbkontur/icons/IconCopyLight16";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useContext, type ReactElement } from "react";
 
-import { jsStyles } from "./ErrorHandlingContainer.styles";
+import { getStyles } from "./ErrorHandlingContainer.styles";
 
 interface StackTraceProps {
     caption: string;
@@ -13,6 +14,7 @@ interface StackTraceProps {
 }
 
 export const StackTrace = ({ caption, trace, onCopy }: StackTraceProps): ReactElement => {
+    const jsStyles = useStyles(getStyles);
     const theme = useContext(ThemeContext);
 
     return (

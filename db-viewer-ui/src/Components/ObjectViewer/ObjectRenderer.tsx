@@ -2,7 +2,7 @@ import { IconArrowDUturnLeftDownRegular16 } from "@skbkontur/icons/IconArrowDUtu
 import { IconCheckARegular16 } from "@skbkontur/icons/IconCheckARegular16";
 import { IconToolPencilLineRegular16 } from "@skbkontur/icons/IconToolPencilLineRegular16";
 import { Fill, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Button } from "@skbkontur/react-ui";
+import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import { useState, type ReactElement } from "react";
 
@@ -79,25 +79,30 @@ export const ObjectRenderer = ({
             <Fill />
             {canEdit && !editableMode && (
                 <Fit>
-                    <Button use="link" icon={<IconToolPencilLineRegular16 />} onClick={handleClick} data-tid="Edit" />
+                    <Link
+                        component="button"
+                        icon={<IconToolPencilLineRegular16 />}
+                        onClick={handleClick}
+                        data-tid="Edit"
+                    />
                 </Fit>
             )}
             {canEdit && editableMode && (
                 <Fit>
-                    <Button use="link" icon={<IconCheckARegular16 />} onClick={handleSaveChanges} data-tid="Save">
+                    <Link component="button" icon={<IconCheckARegular16 />} onClick={handleSaveChanges} data-tid="Save">
                         Сохранить
-                    </Button>
+                    </Link>
                 </Fit>
             )}
             {canEdit && editableMode && (
                 <Fit>
-                    <Button
-                        use="link"
+                    <Link
+                        component="button"
                         icon={<IconArrowDUturnLeftDownRegular16 />}
                         onClick={handleCancelChanges}
                         data-tid="Cancel">
                         Отменить
-                    </Button>
+                    </Link>
                 </Fit>
             )}
         </RowStack>

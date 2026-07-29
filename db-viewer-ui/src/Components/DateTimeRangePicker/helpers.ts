@@ -36,3 +36,23 @@ export const buildDateTime = (
     const datePart = DateUtils.formatDate(date, "yyyy-MM-dd", 0);
     return `${datePart}T${time ?? defaultTime}${offset ?? ""}`;
 };
+
+export const padTime = (input: string, useSeconds?: boolean): string => {
+    const cleaned = input?.replace(/[:.]+$/, "");
+    if (!cleaned) {
+        return "";
+    }
+    const [h = "", m = "", rest = ""] = cleaned.split(":");
+    const [s = "", ms = ""] = rest.split(".");
+
+    const hours = h.padStart(2, "0");
+    const minutes = m.padEnd(2, "0");
+    const seconds = s.padEnd(2, "0");
+    const milliseconds = ms.padEnd(3, "0");
+
+    if (!useSeconds) {
+        return `${hours}:${minutes}`;
+    }
+
+    return `${hours}:${minutes}:${seconds}.${milliseconds}`;
+};

@@ -2,6 +2,7 @@ import { IconUiFilterSortADefaultRegular16 } from "@skbkontur/icons/IconUiFilter
 import { IconUiFilterSortAHighToLowRegular16 } from "@skbkontur/icons/IconUiFilterSortAHighToLowRegular16";
 import { IconUiFilterSortALowToHighRegular16 } from "@skbkontur/icons/IconUiFilterSortALowToHighRegular16";
 import { Link, ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useContext, useEffect, useState, type ReactElement } from "react";
 
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
@@ -12,7 +13,7 @@ import { renderForTableCell } from "../ObjectViewer/ObjectItemRender";
 import { RouterLink } from "../RouterLink/RouterLink";
 import { ScrollableContainer } from "../ScrollableContainer/ScrollableContainer";
 
-import { jsStyles } from "./ObjectTable.styles";
+import { getStyles } from "./ObjectTable.styles";
 
 interface ObjectTableProps {
     customRenderer: ICustomRenderer;
@@ -39,6 +40,7 @@ export function ObjectTable({
     allowDelete,
     allowSort,
 }: ObjectTableProps): ReactElement {
+    const jsStyles = useStyles(getStyles);
     const [showConfirmModal, setShowConfirmModal] = useState(false);
     const [deletedIndex, setDeletedIndex] = useState<number | null>(null);
     const theme = useContext(ThemeContext);

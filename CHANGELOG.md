@@ -1,5 +1,8 @@
 # Changelog
 
+## v2.3 - 2026.07.28
+- Update edi-ui, ReactUI 6.0
+
 ## v2.2 - 2026.06.08
 - Update edi-ui, colors 2.0, icons 2.0
 

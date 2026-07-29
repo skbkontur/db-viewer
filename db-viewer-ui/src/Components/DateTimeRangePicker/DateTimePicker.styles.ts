@@ -1,8 +1,8 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 
 import { baseSize } from "../Layouts/CommonLayout.styles";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     dateRangeItem(): string {
         return css`
             margin-right: ${baseSize * 2}px;
@@ -13,4 +13,4 @@ export const jsStyles = {
             }
         `;
     },
-};
+}));

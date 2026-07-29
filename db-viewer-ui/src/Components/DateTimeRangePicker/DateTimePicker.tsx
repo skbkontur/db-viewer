@@ -1,8 +1,9 @@
 import { Time, TimeZone, TimeUtils, DateUtils } from "@skbkontur/edi-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { useEffect, useState, type ReactElement } from "react";
 
 import { DatePicker } from "./DatePicker";
-import { jsStyles } from "./DateTimePicker.styles";
+import { getStyles } from "./DateTimePicker.styles";
 import { TimePicker } from "./TimePicker";
 
 interface DateTimePickerProps {
@@ -22,6 +23,7 @@ export function DateTimePicker({
     timeZone,
     disabled,
 }: DateTimePickerProps): ReactElement {
+    const jsStyles = useStyles(getStyles);
     const [time, setTime] = useState<Nullable<string>>(null);
     useEffect(() => setTimeToState(value, timeZone), [value, timeZone]);
 

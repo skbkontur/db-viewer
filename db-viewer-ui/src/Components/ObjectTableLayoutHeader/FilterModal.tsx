@@ -1,5 +1,6 @@
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Button, Link, Modal, ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { ValidationContainer } from "@skbkontur/react-ui-validations";
 import { useContext, useRef, type ReactElement } from "react";
 import { useLocation } from "react-router";
@@ -7,7 +8,7 @@ import { useLocation } from "react-router";
 import { Condition } from "../../Domain/Api/DataTypes/Condition";
 import { PropertyMetaInformation } from "../../Domain/Api/DataTypes/PropertyMetaInformation";
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
-import { jsStyles } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal.styles";
+import { getStyles } from "../ConfirmDeleteObjectModal/ConfirmDeleteObjectModal.styles";
 import { ObjectFilter } from "../ObjectFilter/ObjectFilter";
 import { RouterLink } from "../RouterLink/RouterLink";
 
@@ -28,6 +29,7 @@ export const FilterModal = ({
     onApplyFilter,
     allowClose,
 }: FilterModalProps): ReactElement => {
+    const jsStyles = useStyles(getStyles);
     const { pathname } = useLocation();
     const container = useRef<ValidationContainer>(null);
     const theme = useContext(ThemeContext);
@@ -61,13 +63,13 @@ export const FilterModal = ({
             <Modal.Footer panel>
                 <RowStack baseline block gap={2}>
                     <Fit>
-                        <Button onClick={handleApplyFilter} use="primary" data-tid="Apply">
+                        <Button onClick={handleApplyFilter} use="accent" data-tid="Apply">
                             Применить
                         </Button>
                     </Fit>
                     <Fit>
                         {allowClose && (
-                            <Button onClick={onClose} data-tid="Close">
+                            <Button onClick={onClose} use="outline" data-tid="Close">
                                 Закрыть
                             </Button>
                         )}

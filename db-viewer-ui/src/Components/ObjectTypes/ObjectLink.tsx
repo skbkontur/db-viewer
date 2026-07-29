@@ -1,4 +1,5 @@
 import { ThemeContext } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 import { Fragment, useContext, type ReactElement } from "react";
 import { useLocation } from "react-router";
@@ -6,7 +7,7 @@ import { useLocation } from "react-router";
 import { RouteUtils } from "../../Domain/Utils/RouteUtils";
 import { RouterLink } from "../RouterLink/RouterLink";
 
-import { jsStyles } from "./ObjectTypes.styles";
+import { getStyles } from "./ObjectTypes.styles";
 
 interface ObjectIdentifierProps {
     identifier: string;
@@ -18,6 +19,7 @@ interface ObjectLinkInternalProps extends ObjectIdentifierProps {
 }
 
 function ObjectLinkInternal({ identifier, keywords, theme }: ObjectLinkInternalProps) {
+    const jsStyles = useStyles(getStyles);
     if (keywords.length === 0) {
         return <>{identifier}</>;
     }

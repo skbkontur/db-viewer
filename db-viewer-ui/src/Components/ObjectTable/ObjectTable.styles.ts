@@ -1,7 +1,7 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     tableWrapper(): string {
         return css`
             white-space: nowrap;
@@ -46,4 +46,4 @@ export const jsStyles = {
             border-spacing: 0;
         `;
     },
-};
+}));

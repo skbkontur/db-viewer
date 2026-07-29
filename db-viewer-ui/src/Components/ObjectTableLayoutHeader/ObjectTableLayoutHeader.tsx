@@ -5,6 +5,7 @@ import { IconUiFilterFunnelRegular16 } from "@skbkontur/icons/IconUiFilterFunnel
 import { IconXCircleRegular16 } from "@skbkontur/icons/IconXCircleRegular16";
 import { Fit, RowStack } from "@skbkontur/react-stack-layout";
 import { Link, Tooltip } from "@skbkontur/react-ui";
+import { useStyles } from "@skbkontur/react-ui/lib/renderEnvironment";
 import difference from "lodash/difference";
 import { useEffect, useState, type ReactElement } from "react";
 
@@ -18,7 +19,7 @@ import { FieldSelector } from "../FieldSelector/FieldSelector";
 import { CountOfRecordsSelector } from "./CountOfRecordsSelector";
 import { DownloadLimitModal } from "./DownloadLimitModal";
 import { FilterModal } from "./FilterModal";
-import { jsStyles } from "./ObjectTableLayoutHeader.styles";
+import { getStyles } from "./ObjectTableLayoutHeader.styles";
 import { Spinner } from "./Spinner";
 
 interface ObjectTableLayoutHeaderProps {
@@ -46,6 +47,7 @@ export const ObjectTableLayoutHeader = ({
     showDownloadModal,
     downloadCount,
 }: ObjectTableLayoutHeaderProps): ReactElement => {
+    const jsStyles = useStyles(getStyles);
     const [showFilterModal, setShowFilterModal] = useState(false);
     const [modalEditingConditions, setModalEditingConditions] = useState<Condition[]>([]);
 

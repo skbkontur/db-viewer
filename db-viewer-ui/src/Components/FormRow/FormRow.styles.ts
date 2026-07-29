@@ -1,7 +1,7 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     caption(t: Theme): string {
         return css`
             color: ${t.textColorDefault};
@@ -9,4 +9,4 @@ export const jsStyles = {
             box-sizing: border-box;
         `;
     },
-};
+}));

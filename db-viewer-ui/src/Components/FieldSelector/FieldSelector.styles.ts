@@ -1,9 +1,9 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
 import { baseSize } from "../Layouts/CommonLayout.styles";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     root(): string {
         return css`
             min-width: 500px;
@@ -56,4 +56,4 @@ export const jsStyles = {
             }
         `;
     },
-};
+}));

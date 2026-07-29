@@ -1,6 +1,8 @@
 import { Time, TimeUtils } from "@skbkontur/edi-ui";
-import { Input } from "@skbkontur/react-ui";
+import { MaskedInput } from "@skbkontur/react-ui";
 import { useEffect, useState, type ReactElement } from "react";
+
+import { padTime } from "./helpers";
 
 interface TimePickerProps {
     error?: boolean;
@@ -12,15 +14,6 @@ interface TimePickerProps {
     useSeconds?: boolean;
 }
 
-const unlessNull = <T,>(value: Nullable<T>, defaultValue: T): T => {
-    if (value === null || value === undefined) {
-        return defaultValue;
-    }
-    return value;
-};
-
-const emptyValue = "";
-
 export const TimePicker = ({
     disabled,
     warning,
@@ -30,42 +23,47 @@ export const TimePicker = ({
     value,
     onChange,
 }: TimePickerProps): ReactElement => {
-    const [innerValue, setInnerValue] = useState(() => unlessNull(value, emptyValue));
+    const [innerValue, setInnerValue] = useState(() => value ?? "");
+
+    const formatChars = {
+        "9": "[0-9]",
+        H: "[0-2]",
+        h: innerValue.startsWith("2") ? "[0-3]" : "[0-9]",
+        M: "[0-5]",
+        m: "[0-9]",
+        S: "[0-5]",
+        s: "[0-9]",
+    };
 
     useEffect(() => {
-        setInnerValue(unlessNull(value, emptyValue));
+        setInnerValue(value ?? "");
     }, [value]);
 
     const handleBlur = () => {
-        const trimmed = innerValue.endsWith(".") || innerValue.endsWith(":") ? innerValue.slice(0, -1) : innerValue;
-        if (TimeUtils.isCorrectTime(trimmed)) {
-            onChange(trimmed);
-            if (defaultTime === trimmed) {
-                setInnerValue(emptyValue);
-            }
-        } else {
-            setInnerValue(emptyValue);
-            onChange(defaultTime || "00:00");
-        }
-    };
+        const paddedTime = padTime(innerValue, useSeconds);
 
-    const handleFocus = () => {
-        if (!TimeUtils.isCorrectTime(innerValue)) {
-            setInnerValue(defaultTime);
+        if (paddedTime && TimeUtils.isCorrectTime(paddedTime)) {
+            setInnerValue(paddedTime);
+            onChange(paddedTime);
+            return;
         }
+        const fallback = defaultTime || (useSeconds ? "00:00:00.000" : "00:00");
+        setInnerValue(fallback);
+        onChange(fallback);
     };
 
     return (
-        <Input
+        <MaskedInput
+            unmask
             disabled={disabled}
-            mask={useSeconds ? "99:99:99.999" : "99:99"}
+            mask={useSeconds ? "Hh{:}Mm{:}Ss{.}999" : "Hh{:}Mm"}
+            formatChars={formatChars}
             value={innerValue}
             width={useSeconds ? 96 : 58}
             error={error}
             placeholder={disabled ? undefined : defaultTime}
             onValueChange={setInnerValue}
             onBlur={handleBlur}
-            onFocus={handleFocus}
             warning={warning}
         />
     );

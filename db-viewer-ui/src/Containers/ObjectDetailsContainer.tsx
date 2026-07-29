@@ -2,7 +2,7 @@ import { CopyToClipboardToast } from "@skbkontur/edi-ui";
 import { IconCopyRegular16 } from "@skbkontur/icons/IconCopyRegular16";
 import { IconTrashCanRegular16 } from "@skbkontur/icons/IconTrashCanRegular16";
 import { ColumnStack, Fit, RowStack } from "@skbkontur/react-stack-layout";
-import { Button } from "@skbkontur/react-ui";
+import { Link } from "@skbkontur/react-ui";
 import get from "lodash/get";
 import { useEffect, useState, type ReactElement } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
@@ -119,23 +119,23 @@ export const ObjectDetailsContainer = ({
                     tools={
                         <RowStack block baseline gap={2}>
                             <Fit>
-                                <Button
-                                    use="link"
+                                <Link
+                                    component="button"
                                     icon={<IconCopyRegular16 />}
                                     onClick={handleCopyObject}
                                     data-tid="Copy">
                                     Скопировать
-                                </Button>
+                                </Link>
                             </Fit>
                             <Fit>
                                 {allowDelete && isSuperUser && (
-                                    <Button
-                                        use="link"
+                                    <Link
+                                        component="button"
                                         icon={<IconTrashCanRegular16 />}
                                         onClick={handleTryDeleteObject}
                                         data-tid="Delete">
                                         Удалить
-                                    </Button>
+                                    </Link>
                                 )}
                             </Fit>
                         </RowStack>

@@ -1,7 +1,7 @@
-import { css } from "@skbkontur/react-ui/lib/theming/Emotion";
+import { memoizeGetStyles } from "@skbkontur/react-ui/lib/theming/Emotion";
 import { Theme } from "@skbkontur/react-ui/lib/theming/Theme";
 
-export const jsStyles = {
+export const getStyles = memoizeGetStyles(({ css }) => ({
     content() {
         return css`
             margin: 100px auto 10px auto;
@@ -33,4 +33,4 @@ export const jsStyles = {
             line-height: 25px;
         `;
     },
-};
+}));
